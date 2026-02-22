@@ -1,0 +1,784 @@
+   CST8507: NATURAL
+LANGUAGE PROCESSING
+
+        WEEK#6
+  SEQUENCE TO SEQUENCE
+     MODELS (SEQ2SEQ)
+
+       DEVELOPED BY
+
+       HALA OWN, PH.D.
+       Lesson Agenda
+• Midterm(week 7)
+
+• Bidirectional Long Short Term Memory (Bi-LSTM)
+
+• The encoder-decoder framework
+
+• Attention mechanisms
+
+
+
+
+                                                   Page 2
+Midterm
+ Midterm is on Tuesday, Feb. 23, at 2:00 pm.
+• The exam will consist of 30 questions, including multiple-choice and
+  true/false questions, with no essay questions.
+• Material includes from week 1 – week 6
+• You will have 60 minutes to complete the exam.
+• The exam is closed book. However, you may bring one cheat sheet: a
+  single letter-size page (8.5 × 11 inches) that may be used on both sides.
+• Ensure that you leave a 5 cm by 5 cm space in the top-left corner of
+  each side of your cheat sheet for the proctor's signature. If this specific
+  area is missing, you will not be allowed to use any cheat sheet during
+  the exam.
+• Try to arrive early to allow sufficient time for setup.
+
+                                                                                3
+Midterm
+
+• Read the instruction before starting your exam.
+• Write your name and ID number on the spaces provided on the
+  questionnaire and Answer sheet.
+• Make sure to have your ID.
+• Read carefully the ICT exam conduct outline
+• Please do not forget to bring your HB pencils and eraser.
+• Scantron answer sheets will be provided to you before the start of
+  the exam together with the questionnaire.
+• Submit both the questionnaire and the Scantron answer sheet
+
+                                                                       4
+How to Prepare
+▪ Lecture summary slides are a good place to start:
+
+     they don’t have all the details, but make sure you understand the details underlying the
+
+     main points mentioned.
+
+
+▪ Do the labs! Make sure you understand the answers you get.
+
+▪ Code-Examples demonstrated during the lecture (check lecture materials
+
+  folder on Brightspace).
+
+▪ Hybrid work
+
+
+                                                                                                5
+Questions
+
+
+
+
+            6
+Recap :N-garm
+
+
+
+
+                7
+Bigram Probability
+
+I have a dog whose name is Lucy.
+I have two cats.
+ they like playing with Lucy.
+
+
+
+
+                                   8
+Recap :RNN
+Designed to handle sequential data by maintaining a hidden state
+that captures information from previous time steps.
+
+
+
+
+         Source of image: deeplearning.ai
+                                                                   9
+   Recap: LSTM
+LSTM networks are a type of RNN that can learn long-term dependencies. They use
+gates (input, forget, and output gates)to control the flow of information, making
+them effective for tasks requiring memory over long sequences.
+ RNN vs LSTM cell
+
+RNN
+                    LSTM
+
+
+
+
+                           11
+         Types Of Sequence Problems in NLP Task
+
+
+output
+
+
+
+RNN/L
+STM
+
+
+
+ Input
+
+
+             Image                Image                      Sentimental             Stock Market   Translation
+          classification        captioning                    analysis                prediction
+
+
+
+
+                   source: http://karpathy.github.io/2015/05/21/rnn-eﬀectiveness/)
+                   (
+Bidirectional Long Short-Term Memory (Bi-LSTM):
+Motivation
+
+
+
+
+      The movie was terribly exciting!
+Bidirectional Long Short-Term Memory (Bi-LSTM):
+Motivation             positive
+
+
+
+
+                        Sentence encoding
+
+
+
+
+             the             movie      was   terribly   exciting   !
+
+
+        Slide credit: Daniel Jurafsky
+                                                                        14
+Bi-LSTM…
+                                                        This contextual representation of “terribly”
+                                                        has both left and right context!
+
+
+
+
+  Concatenated
+  hidden states
+
+
+
+
+  Backward RNN
+
+
+
+  Forward RNN
+
+
+
+
+                            the           movie   was        terribly      exciting         !
+
+                  Slide credit: Daniel Jurafsky
+                                                                                                       15
+Bi-LSTM…
+
+
+
+
+    Source of image: deeplearning.ai
+                                       16
+Bi-LSTM…
+
+
+
+
+           17
+Bidirectional RNNs
+On timestep t:                      This is a general notation to mean “compute
+                                    one forward step of the RNN” – it could be a
+                                    vanilla, LSTM or GRU computation.
+
+
+
+               Forward RNN                                                     Generally, these
+                                                                               two RNNs have
+             Backward RNN                                                      separate weights
+
+Concatenated hidden states
+
+
+
+
+               We regard this as “the hidden
+               state” of a bidirectional RNN.
+               This is what we pass on to the
+               next parts of the network.
+
+          Slide credit: Daniel Jurafsky
+                                                                                                  18
+Bidirectional Long Short-Term Memory (Bi-LSTM)…
+
+
+
+
+  Single forward LSTM layer   Bi-LSTM model
+
+
+                                                  19
+     Bi-LSTM model Architecture for Classification
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Embedding, Bidirectional,
+LSTM, Dense
+model = Sequential([
+      Embedding(input_dim=vocab_size,
+                output_dim=embedding_dim,
+                input_length=max_len),
+      Bidirectional(LSTM(n_lstm)),
+      Dense(1, activation='sigmoid')
+])
+                                                                20
+Multi-layer                                                                    The hidden states from RNN layer i
+                                                                               are the inputs to RNN layer i+1
+RNNs\LSTM
+    RNN layer 3
+
+
+
+
+    RNN layer 2
+
+
+
+
+    RNN layer 1
+
+
+
+
+                           the             movie   was   terribly   exciting         !
+
+           Slide credit: Daniel Jurafsky
+                                                                                                                    21
+Multi-layer RNNs…
+
+
+
+
+                    22
+Types of Sequence Problems
+
+
+
+
+    source: http://karpathy.github.io/2015/05/21/rnn-eﬀectiveness/)
+    (
+Introduction to Sequence-to-Sequence
+(Seq2Seq)
+
+
+• Seq2Seq is a type of model used to transform one
+
+  sequence into another sequence.
+
+• Commonly used in tasks where the input and output are
+
+  sequences of varying lengths.
+
+                                                          24
+(Encoder-Decoder) Model
+solution to Seq2Seq task
+
+
+
+
+      Image source: https://pradeep-dhote9.medium.com/seq2seq-encoder-decoder-
+      lstm-model-1a1c9a43bbac
+                                                                                 25
+Machine Translation (MT)
+• The sequence-to-sequence model is an example of a
+  Conditional Language Model.
+   • Language Model : task is predicting the next word of the target
+     sentence y
+   • Conditional :predictions are also conditioned on the source
+     sentence x
+
+• MT directly calculates                 :
+
+
+                                                               Probability of next target word, given
+                                                           target words so far and source sentence x
+
+
+
+                           Slide credit: Daniel Jurafsky
+                                                                                                        26
+              Training a Neural Machine Translation system                            = negative log
+                                                         = negative log                                     = negative log
+                                      𝑇
+                                 1                        prob of “he”                prob of “with”        prob of <END>
+                            𝐽=     ෍ 𝐽𝑡
+                                 𝑇                   =         𝐽1 + 𝐽2 + 𝐽3 + 𝐽4 + 𝐽5 + 𝐽6 + 𝐽7
+                                  𝑡=1
+
+
+
+
+                                                                                                  𝑦ො (5)   𝑦ො 6   𝑦ො 7
+
+
+
+
+Encoder RNN                                                                                                                  Decoder RNN
+
+
+                  il    a        m’       entarté         <START> he            hit       me      with     a      pie
+
+
+              Source sentence (from corpus)                        Target sentence (from corpus)
+
+                                          Seq2seq is optimized as a single system.
+                                          Backpropagation operates “end-to-end”.
+
+                                                    Slide credit: Daniel Jurafsky
+                                                                                                                                           27
+              Neural Machine Translation(Testing)
+              The sequence-to-sequence model
+                                                                             Target sentence (output)
+                Encoding of the source sentence.
+                  Provides initial hidden state
+                                                          he           hit        me    with          a       pie <END>
+                       for Decoder RNN.
+
+                                                      argmax       argmax      argmax   argmax   argmax   argmax   argmax
+
+
+
+Encoder RNN                                                                                                                 Decoder RNN
+
+
+                   il     a    m’   entarté         <START> he                    hit    me      with          a     pie
+
+
+                    Source sentence (input)                    Decoder RNN is a Language Model that generates
+                                                                  target sentence, conditioned on encoding.
+
+                   Encoder RNN produces
+                     an encoding of the                          Note: This diagram shows test time behavior:
+                      source sentence.                         decoder output is fed in     as next step’s input
+
+                                              Slide credit: Daniel Jurafsky
+                                                                                                                                          28
+              Sequence-to-sequence: bottlenecks problem
+                    Encoding of the
+                   source sentence.
+              This needs to capture all                                     Target sentence (output)
+               information about the
+                  source sentence.                               he   hit      me    with    a     pie <END>
+              Information bottleneck!
+
+
+
+
+Encoder RNN                                                                                                      Decoder RNN
+
+
+                     il     a    m’       entarté         <START> he           hit   me     with       a   pie
+
+
+                     Source sentence (input)
+                                                                       Problems with this architecture?
+
+                                 Slide credit: Daniel Jurafsky
+                                                                                                                               29
+Sequence-to-sequence: Limitations
+
+
+
+
+                             Pair of RNN used for translation
+
+
+      Natural Language Processing with Transformers, O’Reilly Media, Inc, 2022
+                                                                                 30
+Solution with Attention
+
+
+
+
+        Image source:https://www.directenergyregulatedservices.com/blog/kw-
+        vs-kwh-whats-difference                                               31
+What is attention?
+
+• Attention is a weighted average over a set of inputs
+
+• How should we compute this weighted average?
+   Compute pairwise similarity between each encoder hidden
+   state and decoder hidden state.
+    Convert pairwise similarity scores to probability distribution
+    (using softmax) over encoder hidden states and compute
+    weighted average
+
+                                                                     32
+     Attention
+Solution to the bottleneck problem.
+Benefits
+     ➢ Improved handling of variable-length input sequences.
+     ➢ Enhanced modeling of long-range dependencies.
+     ➢ Better performance in tasks where certain parts of the input sequence are more
+       relevant to specific parts of the output sequence.
+
+
+Core idea: on each step of the decoder, use direct connection to the
+encoder to focus on a particular part of the source sequence
+
+
+
+
+33
+Sequence-to-sequence with attention
+                         dot product
+
+
+
+
+    Attention
+
+     scores
+
+    Encoder
+      RNN
+
+
+
+                il   a      m’     entarté           <START>
+
+
+                Source sentence (input)
+
+                     Slide credit: Daniel Jurafsky
+Sequence-to-sequence with attention…
+                             dot product
+
+
+
+
+     Attention
+
+      scores
+
+     Encoder
+      RNN
+
+
+
+                 il      a      m’      entarté       <START>
+
+
+                  Source sentence (input)
+
+                      Slide credit: Daniel Jurafsky
+35
+     Sequence-to-sequence with attention…
+                                    dot product
+
+
+
+
+         Attention
+
+          scores
+
+         Encoder
+           RNN
+
+
+
+                     il         a       m’     entarté    <START>
+
+
+                     Source sentence (input)
+
+                          Slide credit: Daniel Jurafsky
+36
+Sequence-to-sequence with attention…
+                               dot product
+
+
+
+
+   Attention
+
+    scores
+
+   Encoder
+     RNN
+
+
+
+                  il       a      m’     entarté   <START>
+
+
+                   Source sentence (input)
+
+               Slide credit: Daniel Jurafsky
+Sequence-to-sequence with attention…
+                                               On this decoder timestep, we’re
+                                               mostly focusing on the first
+
+
+    Attention Attention
+                                               encoder hidden state (”he”)
+
+
+
+                                                                Take softmax to turn the scores
+
+     scores distribution
+                                                                 into a probability distribution
+
+
+
+
+    Encoder
+      RNN
+
+
+
+                           il        a       m’     entarté     <START>
+
+
+                           Source sentence (input)
+
+                                Slide credit: Daniel Jurafsky
+Sequence-to-sequence
+               Attention
+                         with attention…
+                                                                        Use the attention distribution to take a
+                                                  output                weighted sum of the encoder hidden
+                                                                        states.
+
+      Attention Attention                                               The attention output mostly contains
+                                                                        information from the hidden states that
+                                                                        received high attention.
+
+       scores distribution
+
+
+      Encoder
+        RNN
+
+
+
+                             il      a       m’     entarté   <START>
+
+
+                             Source sentence (input)
+                             Slide credit: Daniel Jurafsky
+39
+Sequence-to-sequence with attention…
+                                                  Attention         he
+                                                   output
+                                                                            Concatenate attention output with
+
+
+      Attention Attention
+                                                                    𝑦1^     decoder hidden state, then use to
+                                                                            compute 𝑦1^as before
+
+
+
+
+       scores distribution
+
+
+      Encoder
+       RNN
+
+
+
+                             il       a      m’     entarté       <START>
+
+
+ 40                          Source sentence (input)
+                                  Slide credit: Daniel Jurafsky
+Sequence-to-sequence with attention
+                                                Attention                hit
+                                                 output
+
+
+
+     Attention Attention
+                                                                        𝑦2^
+
+
+
+
+      scores distribution
+
+
+     Encoder
+       RNN
+
+
+
+                            il      a      m’      entarté       <START> he
+
+
+41                          Source sentence (input)
+                                 Slide credit: Daniel Jurafsky
+Sequence-to-sequence with attention…
+                                                    Attention                 me
+                                                     output
+
+
+
+     Attention Attention
+                                                                              𝑦3^
+
+
+
+
+      scores distribution
+
+
+     Encoder
+       RNN
+
+
+
+                            il          a      m’     entarté    <START> he   hit
+
+
+                            Source sentence (input)
+
+42                               Slide credit: Daniel Jurafsky
+Sequence-to-sequence with attention…
+                                             Attention                               with
+                                              output
+
+
+
+     Attention Attention
+                                                                                     𝑦4^
+
+
+
+
+      scores distribution
+
+
+     Encoder
+       RNN
+
+
+
+                            il   a      m’     entarté            <START> he   hit   me
+
+
+                            Source sentence (input)
+                                  Slide credit: Daniel Jurafsky
+43
+Sequence-to-sequence
+              Attention
+                        with attention…
+                                                                                       a
+                                                  output
+
+
+
+     Attention Attention
+                                                                                      𝑦5^
+
+
+
+
+      scores distribution
+
+
+     Encoder
+       RNN
+
+
+
+                             il      a       m’     entarté   <START> he   hit   me   with
+
+
+44                           Source sentence (input)
+
+                            Slide credit: Daniel Jurafsky
+Sequence-to-sequence with attention…
+                                             Attention                                          pie
+                                              output
+
+
+
+     Attention Attention
+                                                                                                𝑦6^
+
+
+
+
+      scores distribution
+
+
+
+
+                                                                                                      Decoder RNN
+     Encoder
+       RNN
+
+
+
+                            il   a      m’     entarté           <START> he   hit   me   with    a
+
+
+                            Source sentence (input)
+                                 Slide credit: Daniel Jurafsky
+45
+Attention Mechanism Benefits vs Challenges
+
+
+ How does attention address the temporal bottleneck in
+ sequence-to-sequence models?
+
+
+
+
+                                                         46
+Transformers(2017)
+
+
+
+
+       *https://arxiv.org/abs/1706.03762   47
+ What is Transformer
+
+• The Transformer in NLP is a novel architecture that aims to solve
+  sequence-to-sequence tasks while handling long-range dependencies
+  with ease.
+• The Transformer was proposed in the paper Attention Is All You Need *.
+
+
+• Relying entirely on self-attention to compute representations of
+   its input and output.
+
+
+
+           *https://arxiv.org/abs/1706.03762
+                                                                           48
+Transformer Architecture
+
+
+
+
+                           49
+Q&A
+
+
+
+
+      50
+

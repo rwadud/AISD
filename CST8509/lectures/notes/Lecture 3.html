@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RL Lecture Notes — Gymnasium, Custom Environments & Stable Baselines 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf9f6;
+    --text: #1a1a1a;
+    --text-muted: #555;
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --green: #16a34a;
+    --green-light: #dcfce7;
+    --orange: #ea580c;
+    --orange-light: #fff7ed;
+    --red: #dc2626;
+    --red-light: #fef2f2;
+    --purple: #7c3aed;
+    --purple-light: #f3e8ff;
+    --border: #e2e0dc;
+    --code-bg: #f0ede8;
+    --diagram-bg: #f8f7f4;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    font-size: 17px;
+    padding: 0 20px 80px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  header {
+    padding: 50px 0 30px;
+    border-bottom: 2px solid var(--text);
+    margin-bottom: 40px;
+  }
+  header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.5px;
+  }
+  header p {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+
+  h2 {
+    font-size: 1.45rem;
+    font-weight: 700;
+    margin: 48px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: -0.3px;
+  }
+  h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 30px 0 8px;
+  }
+  p { margin: 10px 0; }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85em;
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  pre {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    padding: 20px 24px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 16px 0;
+    line-height: 1.6;
+  }
+  pre .kw { color: #cba6f7; }
+  pre .fn { color: #89b4fa; }
+  pre .str { color: #a6e3a1; }
+  pre .cm { color: #6c7086; font-style: italic; }
+  pre .num { color: #fab387; }
+  pre .op { color: #89dceb; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 0.92rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    background: var(--diagram-bg);
+  }
+
+  /* Diagram containers */
+  .diagram {
+    background: var(--diagram-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 20px 20px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  .diagram svg { max-width: 100%; height: auto; }
+  .diagram-caption {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 12px;
+    text-align: center;
+  }
+
+  /* Callout boxes */
+  .callout {
+    border-left: 4px solid var(--accent);
+    background: var(--accent-light);
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 20px 0;
+    font-size: 0.95rem;
+  }
+  .callout.green { border-color: var(--green); background: var(--green-light); }
+  .callout.orange { border-color: var(--orange); background: var(--orange-light); }
+  .callout.red { border-color: var(--red); background: var(--red-light); }
+  .callout.purple { border-color: var(--purple); background: var(--purple-light); }
+  .callout strong { font-weight: 600; }
+
+  /* Example boxes */
+  .example {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin: 20px 0;
+    overflow: hidden;
+  }
+  .example-header {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 10px 20px;
+    background: var(--diagram-bg);
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+  .example-body { padding: 16px 20px; font-size: 0.95rem; }
+
+  .key-term {
+    font-weight: 600;
+    color: var(--accent-dark);
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  @media (max-width: 640px) {
+    .two-col { grid-template-columns: 1fr; }
+  }
+  .col-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    background: #fff;
+  }
+  .col-card h4 {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 8px;
+    color: var(--accent-dark);
+  }
+
+  hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  .summary-table td:first-child {
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--accent-dark);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Gymnasium Environments, Custom Environments &amp; Stable Baselines 3</h1>
+  <p>Reinforcement Learning Lecture Notes</p>
+</header>
+
+<!-- ============================================ -->
+<h2>1. The Role of Simulators in Reinforcement Learning</h2>
+
+<p>For trivial environments (grid worlds, toy problems), we can code the dynamics directly. For non-trivial domains — robotics, autonomous driving, complex games — we need <span class="key-term">simulators</span>. A simulator provides a virtual version of the real environment where an agent can safely explore, fail, and learn without real-world consequences.</p>
+
+<p>Not every domain has a good simulator. For example, there is no reliable simulator for the stock market. But for robotics platforms like the iRobot Create 3, a Gazebo-based simulator can model a house environment where the simulated robot subscribes to ROS 2 topics (e.g., <code>cmd_vel</code>) and behaves just like the physical robot.</p>
+
+<div class="example">
+  <div class="example-header">🤔 Think of it this way</div>
+  <div class="example-body">
+    Learning to drive in a simulator is like learning to cook by following a recipe in a video game — you can burn as many virtual meals as you want without wasting real food. RL agents need the same freedom to fail thousands of times before they get good.
+  </div>
+</div>
+
+<hr>
+
+<!-- ============================================ -->
+<h2>2. Gymnasium (formerly OpenAI Gym)</h2>
+
+<h3>2.1 What Is Gymnasium?</h3>
+<p>Gymnasium is the standard Python library for defining and interacting with RL environments. It is the successor to OpenAI Gym and provides a unified interface that allows any RL algorithm to work with any compatible environment.</p>
+
+<h3>2.2 Migration from Gym to Gymnasium</h3>
+<p>The standard migration trick:</p>
+
+<pre><span class="kw">import</span> gymnasium <span class="kw">as</span> gym
+<span class="kw">from</span> gymnasium <span class="kw">import</span> spaces  <span class="cm"># must use 'gymnasium' here, NOT 'gym'</span>
+
+<span class="cm"># After imports, 'gym' refers to gymnasium</span>
+env <span class="op">=</span> gym.<span class="fn">make</span>(<span class="str">"CliffWalking-v0"</span>)  <span class="cm"># ✓ works</span></pre>
+
+<div class="callout orange">
+  <strong>⚠ Import trap:</strong> After <code>import gymnasium as gym</code>, you might expect <code>from gym import spaces</code> to work. It won't — it would pull in the old <em>gym</em> library. Always write <code>from gymnasium import spaces</code>. The alias <code>gym</code> only takes effect <em>after</em> all imports are finished.
+</div>
+
+<h3>2.3 Key Changes from Gym → Gymnasium</h3>
+<table>
+  <tr><th>Change</th><th>Details</th></tr>
+  <tr><td><code>reset()</code> takes a <code>seed</code></td><td>Enables reproducibility. Same seed → same pseudo-random sequence.</td></tr>
+  <tr><td><code>step()</code> returns 5 values</td><td>Returns <code>(obs, reward, terminated, truncated, info)</code>. The 5th value <code>truncated</code> is new.</td></tr>
+</table>
+
+<h3>2.4 Terminated vs. Truncated</h3>
+
+<div class="diagram">
+  <svg viewBox="0 0 740 220" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+    <defs>
+      <marker id="arrowG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#16a34a"/></marker>
+      <marker id="arrowO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ea580c"/></marker>
+    </defs>
+
+    <!-- Terminated path -->
+    <rect x="10" y="15" width="350" height="190" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="185" y="42" text-anchor="middle" font-size="13" font-weight="600" fill="#166534">TERMINATED</text>
+    <rect x="28" y="60" width="58" height="34" rx="6" fill="#fff" stroke="#16a34a"/>
+    <text x="57" y="82" text-anchor="middle" font-size="11" fill="#1a1a1a">Start</text>
+    <line x1="86" y1="77" x2="108" y2="77" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrowG)"/>
+    <rect x="112" y="60" width="58" height="34" rx="6" fill="#fff" stroke="#16a34a"/>
+    <text x="141" y="82" text-anchor="middle" font-size="11" fill="#1a1a1a">Step</text>
+    <line x1="170" y1="77" x2="192" y2="77" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrowG)"/>
+    <rect x="196" y="60" width="58" height="34" rx="6" fill="#fff" stroke="#16a34a"/>
+    <text x="225" y="82" text-anchor="middle" font-size="11" fill="#1a1a1a">Step</text>
+    <line x1="254" y1="77" x2="276" y2="77" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrowG)"/>
+    <rect x="280" y="57" width="68" height="40" rx="6" fill="#16a34a" stroke="#16a34a"/>
+    <text x="314" y="75" text-anchor="middle" font-size="10" font-weight="600" fill="#fff">🏁 Goal</text>
+    <text x="314" y="89" text-anchor="middle" font-size="9" fill="#dcfce7">Reached</text>
+    <text x="185" y="125" text-anchor="middle" font-size="11" fill="#166534">Episode ended naturally.</text>
+    <text x="185" y="145" text-anchor="middle" font-size="10.5" fill="#166534">Example: Agent reaches the goal in cliff-walking.</text>
+    <text x="185" y="175" text-anchor="middle" font-size="11.5" font-weight="600" fill="#166534">terminated = True</text>
+
+    <!-- Truncated path -->
+    <rect x="380" y="15" width="350" height="190" rx="12" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+    <text x="555" y="42" text-anchor="middle" font-size="13" font-weight="600" fill="#9a3412">TRUNCATED</text>
+    <rect x="398" y="60" width="58" height="34" rx="6" fill="#fff" stroke="#ea580c"/>
+    <text x="427" y="82" text-anchor="middle" font-size="11" fill="#1a1a1a">Start</text>
+    <line x1="456" y1="77" x2="478" y2="77" stroke="#ea580c" stroke-width="1.5" marker-end="url(#arrowO)"/>
+    <rect x="482" y="60" width="58" height="34" rx="6" fill="#fff" stroke="#ea580c"/>
+    <text x="511" y="82" text-anchor="middle" font-size="11" fill="#1a1a1a">Step</text>
+    <line x1="540" y1="77" x2="562" y2="77" stroke="#ea580c" stroke-width="1.5"/>
+    <text x="572" y="82" font-size="18">💥</text>
+    <rect x="596" y="57" width="120" height="40" rx="6" fill="#ea580c" stroke="#ea580c"/>
+    <text x="656" y="75" text-anchor="middle" font-size="10" font-weight="600" fill="#fff">Off Track!</text>
+    <text x="656" y="89" text-anchor="middle" font-size="9" fill="#fed7aa">Unrecoverable</text>
+    <text x="555" y="125" text-anchor="middle" font-size="11" fill="#9a3412">Episode ended early — goal never reached.</text>
+    <text x="555" y="145" text-anchor="middle" font-size="10.5" fill="#9a3412">Example: Race car leaves the track.</text>
+    <text x="555" y="175" text-anchor="middle" font-size="11.5" font-weight="600" fill="#9a3412">truncated = True</text>
+  </svg>
+  <div class="diagram-caption">Terminated = natural end (goal reached). Truncated = early stop (unrecoverable situation). Both signal the end of an episode.</div>
+</div>
+
+<div class="callout">
+  <strong>Cliff-walking note (Sutton &amp; Barto, p. 132):</strong> Falling off the cliff does <em>not</em> end the episode — the agent is sent back to start and the episode continues. The episode only terminates when the goal is reached. Truncation is not used here.
+</div>
+
+<h3>2.5 Reproducibility and Seeds</h3>
+<p>All randomness in computing is <span class="key-term">pseudo-random</span> — generated by deterministic algorithms from a starting seed. Given the same seed, the exact same "random" numbers are produced every time.</p>
+
+<div class="example">
+  <div class="example-header">💡 Example — Why seeds matter</div>
+  <div class="example-body">
+    <p>Imagine you train a Q-learning agent with <code>seed=42</code> and it learns a great policy. Your colleague uses <code>seed=7</code> with <em>identical</em> hyperparameters and the agent performs terribly. Nothing changed except the seed — the random exploration happened to take different paths. This is why <strong>recording and controlling seeds is essential</strong> for reproducible experiments.</p>
+  </div>
+</div>
+
+<hr>
+
+<!-- ============================================ -->
+<h2>3. The Gymnasium Environment Interface</h2>
+
+<p>Every Gymnasium environment implements a standard set of methods, functioning like an <span class="key-term">interface</span> (similar to a Java interface — a defined contract of methods):</p>
+
+<table>
+  <tr><th>Method</th><th>Purpose</th></tr>
+  <tr><td><code>__init__(self, ...)</code></td><td><strong>Constructor</strong> — sets up render mode, observation/action spaces, internal state.</td></tr>
+  <tr><td><code>reset(self, seed=None)</code></td><td><strong>Reset</strong> — returns environment to initial state. Returns initial observation.</td></tr>
+  <tr><td><code>step(self, action)</code></td><td><strong>Step</strong> — executes an action. Returns <code>(obs, reward, terminated, truncated, info)</code>.</td></tr>
+  <tr><td><code>render(self)</code></td><td><strong>Render</strong> — produces human-viewable display (often via Pygame).</td></tr>
+  <tr><td><code>close(self)</code></td><td><strong>Close</strong> — cleans up resources (sub-processes, windows, etc.).</td></tr>
+</table>
+
+<div class="diagram">
+  <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+    <defs>
+      <marker id="arrowB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/></marker>
+      <marker id="arrowBk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/></marker>
+    </defs>
+
+    <!-- Agent box -->
+    <rect x="50" y="30" width="180" height="100" rx="12" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <text x="140" y="65" text-anchor="middle" font-size="15" font-weight="700" fill="#1e40af">AGENT</text>
+    <text x="140" y="85" text-anchor="middle" font-size="11" fill="#2563eb">Q-learning / DQN / PPO</text>
+    <text x="140" y="102" text-anchor="middle" font-size="11" fill="#2563eb">Selects actions, learns</text>
+
+    <!-- Environment box -->
+    <rect x="430" y="30" width="220" height="100" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+    <text x="540" y="65" text-anchor="middle" font-size="15" font-weight="700" fill="#166534">ENVIRONMENT</text>
+    <text x="540" y="85" text-anchor="middle" font-size="11" fill="#16a34a">Cliff-walk / Blocks World</text>
+    <text x="540" y="102" text-anchor="middle" font-size="11" fill="#16a34a">Simulates world dynamics</text>
+
+    <!-- Action arrow (top) -->
+    <path d="M 230 55 Q 350 10 430 55" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowB)"/>
+    <text x="330" y="26" text-anchor="middle" font-size="12" font-weight="600" fill="#2563eb">action</text>
+    <text x="330" y="42" text-anchor="middle" font-size="10" fill="#555">env.step(action)</text>
+
+    <!-- Return arrow (bottom) -->
+    <path d="M 430 110 Q 350 160 230 110" fill="none" stroke="#555" stroke-width="2" marker-end="url(#arrowBk)"/>
+    <text x="330" y="152" text-anchor="middle" font-size="10" fill="#555">obs, reward, terminated, truncated, info</text>
+
+    <!-- Loop annotation -->
+    <rect x="130" y="170" width="440" height="110" rx="10" fill="#f8f7f4" stroke="#e2e0dc" stroke-width="1"/>
+    <text x="350" y="196" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1a1a">The Episode Loop</text>
+    <text x="350" y="218" text-anchor="middle" font-size="11" fill="#555">1. env.reset() → get initial observation</text>
+    <text x="350" y="236" text-anchor="middle" font-size="11" fill="#555">2. Agent picks action → env.step(action) → get obs, reward, done</text>
+    <text x="350" y="254" text-anchor="middle" font-size="11" fill="#555">3. Agent updates Q-table (learns)</text>
+    <text x="350" y="272" text-anchor="middle" font-size="11" fill="#555">4. If terminated or truncated → env.reset(), new episode</text>
+  </svg>
+  <div class="diagram-caption">The agent–environment interaction loop. The agent sends actions; the environment returns observations and rewards.</div>
+</div>
+
+<hr>
+
+<!-- ============================================ -->
+<h2>4. The Agent–Environment Interaction Loop</h2>
+
+<h3>4.1 What the Agent Needs from the Environment</h3>
+<p>Before learning can begin, a Q-learning agent must determine two things:</p>
+
+<div class="two-col">
+  <div class="col-card">
+    <h4>① Number of States</h4>
+    <p>Determines the <strong>rows</strong> of the Q-table. In cliff-walking: 48 states (0–47). In Blocks World: ~120 configurations.</p>
+  </div>
+  <div class="col-card">
+    <h4>② Number of Actions</h4>
+    <p>Determines the <strong>columns</strong> of the Q-table. In cliff-walking: 4 (up/down/left/right). In Blocks World: ~90 move actions.</p>
+  </div>
+</div>
+
+<p>The Q-table shape is always <code>(n_states, n_actions)</code>. The agent doesn't initially know what the actions <em>do</em> — it just knows they're numbered 0, 1, 2, … and discovers their effects through trial and error.</p>
+
+<pre><span class="cm"># Agent discovers environment dimensions automatically</span>
+env <span class="op">=</span> gym.<span class="fn">make</span>(<span class="str">"CliffWalking-v0"</span>)
+n_states  <span class="op">=</span> env.observation_space.n   <span class="cm"># 48</span>
+n_actions <span class="op">=</span> env.action_space.n        <span class="cm"># 4</span>
+Q <span class="op">=</span> np.<span class="fn">zeros</span>((n_states, n_actions))  <span class="cm"># 48 × 4 table</span></pre>
+
+<h3>4.2 The Full Loop in Code</h3>
+<pre>env <span class="op">=</span> gym.<span class="fn">make</span>(<span class="str">"CliffWalking-v0"</span>)
+obs, info <span class="op">=</span> env.<span class="fn">reset</span>(seed<span class="op">=</span><span class="num">42</span>)
+
+<span class="kw">for</span> episode <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1000</span>):
+    obs, info <span class="op">=</span> env.<span class="fn">reset</span>()
+    done <span class="op">=</span> <span class="kw">False</span>
+
+    <span class="kw">while not</span> done:
+        action <span class="op">=</span> agent.<span class="fn">choose_action</span>(obs)
+        next_obs, reward, terminated, truncated, info <span class="op">=</span> env.<span class="fn">step</span>(action)
+        agent.<span class="fn">learn</span>(obs, action, reward, next_obs)
+        obs <span class="op">=</span> next_obs
+        done <span class="op">=</span> terminated <span class="kw">or</span> truncated
+
+env.<span class="fn">close</span>()</pre>
+
+<hr>
+
+<!-- ============================================ -->
+<h2>5. Observation Spaces and Action Spaces</h2>
+
+<p>Spaces are Gymnasium's formal way of describing what observations look like and what actions are available.</p>
+
+<h3>5.1 Fundamental Space Types</h3>
+
+<div class="diagram">
+  <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+    <!-- Discrete -->
+    <rect x="20" y="15" width="200" height="130" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="120" y="40" text-anchor="middle" font-size="13" font-weight="700" fill="#1e40af">Discrete(n)</text>
+    <text x="120" y="60" text-anchor="middle" font-size="11" fill="#555">Finite set of integers</text>
+    <g transform="translate(45,75)">
+      <rect width="30" height="26" rx="4" fill="#2563eb"/><text x="15" y="18" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">0</text>
+      <rect x="38" width="30" height="26" rx="4" fill="#2563eb"/><text x="53" y="18" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">1</text>
+      <rect x="76" width="30" height="26" rx="4" fill="#2563eb"/><text x="91" y="18" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">2</text>
+      <rect x="114" width="30" height="26" rx="4" fill="#2563eb"/><text x="129" y="18" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">3</text>
+    </g>
+    <text x="120" y="130" text-anchor="middle" font-size="10" fill="#555">e.g. Discrete(4) → 4 actions</text>
+
+    <!-- Box -->
+    <rect x="250" y="15" width="200" height="130" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="350" y="40" text-anchor="middle" font-size="13" font-weight="700" fill="#166534">Box(low, high)</text>
+    <text x="350" y="60" text-anchor="middle" font-size="11" fill="#555">Bounded numeric values</text>
+    <rect x="285" y="72" width="130" height="46" rx="6" fill="#fff" stroke="#16a34a" stroke-dasharray="4"/>
+    <text x="350" y="93" text-anchor="middle" font-size="11" fill="#166534">low=0 ──── high=4</text>
+    <text x="350" y="108" text-anchor="middle" font-size="10" fill="#16a34a">shape=(2,) → (x, y)</text>
+    <text x="350" y="130" text-anchor="middle" font-size="10" fill="#555">e.g. agent position in grid</text>
+
+    <!-- Dict -->
+    <rect x="480" y="15" width="200" height="130" rx="10" fill="#f3e8ff" stroke="#7c3aed" stroke-width="1.5"/>
+    <text x="580" y="40" text-anchor="middle" font-size="13" font-weight="700" fill="#5b21b6">Dict({...})</text>
+    <text x="580" y="60" text-anchor="middle" font-size="11" fill="#555">Named sub-spaces</text>
+    <rect x="500" y="70" width="160" height="22" rx="4" fill="#ede9fe"/>
+    <text x="580" y="86" text-anchor="middle" font-size="10" fill="#5b21b6">"agent" → Box(0,4, shape=(2,))</text>
+    <rect x="500" y="96" width="160" height="22" rx="4" fill="#ede9fe"/>
+    <text x="580" y="112" text-anchor="middle" font-size="10" fill="#5b21b6">"target" → Box(0,4, shape=(2,))</text>
+    <text x="580" y="130" text-anchor="middle" font-size="10" fill="#555">e.g. 5×5 grid with target</text>
+
+    <!-- MultiBinary -->
+    <rect x="20" y="170" width="200" height="130" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="120" y="195" text-anchor="middle" font-size="13" font-weight="700" fill="#991b1b">MultiBinary(n)</text>
+    <text x="120" y="215" text-anchor="middle" font-size="11" fill="#555">Binary array</text>
+    <g transform="translate(35,228)">
+      <rect width="28" height="22" rx="3" fill="#dc2626"/><text x="14" y="16" text-anchor="middle" font-size="11" fill="#fff">0</text>
+      <rect x="32" width="28" height="22" rx="3" fill="#dc2626"/><text x="46" y="16" text-anchor="middle" font-size="11" fill="#fff">1</text>
+      <rect x="64" width="28" height="22" rx="3" fill="#dc2626"/><text x="78" y="16" text-anchor="middle" font-size="11" fill="#fff">1</text>
+      <rect x="96" width="28" height="22" rx="3" fill="#dc2626"/><text x="110" y="16" text-anchor="middle" font-size="11" fill="#fff">0</text>
+      <rect x="128" width="28" height="22" rx="3" fill="#dc2626"/><text x="142" y="16" text-anchor="middle" font-size="11" fill="#fff">1</text>
+    </g>
+    <text x="120" y="280" text-anchor="middle" font-size="10" fill="#555">e.g. feature presence/absence</text>
+
+    <!-- MultiDiscrete -->
+    <rect x="250" y="170" width="200" height="130" rx="10" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+    <text x="350" y="195" text-anchor="middle" font-size="13" font-weight="700" fill="#9a3412">MultiDiscrete</text>
+    <text x="350" y="215" text-anchor="middle" font-size="11" fill="#555">Multiple discrete variables</text>
+    <g transform="translate(275,228)">
+      <rect width="44" height="22" rx="3" fill="#ea580c"/><text x="22" y="16" text-anchor="middle" font-size="10" fill="#fff">0..4</text>
+      <rect x="52" width="44" height="22" rx="3" fill="#ea580c"/><text x="74" y="16" text-anchor="middle" font-size="10" fill="#fff">0..2</text>
+      <rect x="104" width="44" height="22" rx="3" fill="#ea580c"/><text x="126" y="16" text-anchor="middle" font-size="10" fill="#fff">0..7</text>
+    </g>
+    <text x="350" y="280" text-anchor="middle" font-size="10" fill="#555">e.g. [5, 3, 8] distinct ranges</text>
+
+    <!-- sample() note -->
+    <rect x="480" y="170" width="200" height="130" rx="10" fill="#f8f7f4" stroke="#e2e0dc" stroke-width="1.5"/>
+    <text x="580" y="198" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1a1a">.sample()</text>
+    <text x="580" y="218" text-anchor="middle" font-size="11" fill="#555">Every space supports</text>
+    <text x="580" y="238" text-anchor="middle" font-size="11" fill="#555">random sampling:</text>
+    <text x="580" y="265" text-anchor="middle" font-size="11" fill="#2563eb" font-weight="500">space.sample()</text>
+    <text x="580" y="285" text-anchor="middle" font-size="10" fill="#555">Returns a valid random element</text>
+  </svg>
+  <div class="diagram-caption">The fundamental Gymnasium space types. Each formally describes a set of valid values.</div>
+</div>
+
+<h3>5.2 Example: Dict Observation Space (5×5 Grid)</h3>
+
+<pre>observation_space <span class="op">=</span> spaces.<span class="fn">Dict</span>({
+    <span class="str">"agent"</span>:  spaces.<span class="fn">Box</span>(<span class="num">0</span>, size <span class="op">-</span> <span class="num">1</span>, shape<span class="op">=</span>(<span class="num">2</span>,), dtype<span class="op">=</span>int),
+    <span class="str">"target"</span>: spaces.<span class="fn">Box</span>(<span class="num">0</span>, size <span class="op">-</span> <span class="num">1</span>, shape<span class="op">=</span>(<span class="num">2</span>,), dtype<span class="op">=</span>int),
+})
+action_space <span class="op">=</span> spaces.<span class="fn">Discrete</span>(<span class="num">4</span>)</pre>
+
+<div class="example">
+  <div class="example-header">💡 Concrete example — Reading the observation</div>
+  <div class="example-body">
+    <p>In a 5×5 grid, the agent is at (1, 0) and the target is at (4, 4):</p>
+    <pre style="margin:8px 0">{"agent": array([1, 0]), "target": array([4, 4])}</pre>
+    <p>The Box says: each value is an integer between 0 and 4, and there are 2 values (x, y). Both "agent" and "target" follow the same format.</p>
+  </div>
+</div>
+
+<h3>5.3 Adapting Spaces</h3>
+<p>Converting from a 5×5 grid to a 12×4 cliff-walking grid requires changing the observation space: x goes 0–11 (12 columns), y goes 0–3 (4 rows), and the target entry can be removed if the goal is fixed.</p>
+
+<hr>
+
+<!-- ============================================ -->
+<h2>6. Agents, Algorithms, and Mix-and-Match</h2>
+
+<div class="callout purple">
+  <strong>Key principle:</strong> Agents are implementations of algorithms, and agents can be <strong>mixed and matched</strong> with environments. A Q-learning agent can learn cliff-walking, taxi, <em>or</em> Blocks World — only the Q-table dimensions change.
+</div>
+
+<div class="diagram">
+  <svg viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+    <defs>
+      <marker id="arrowM" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/></marker>
+    </defs>
+
+    <!-- Agents column -->
+    <text x="100" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#1e40af">AGENTS</text>
+    <rect x="25" y="35" width="150" height="36" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="100" y="58" text-anchor="middle" font-size="12" fill="#1e40af" font-weight="600">Q-Learning</text>
+    <rect x="25" y="82" width="150" height="36" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="100" y="105" text-anchor="middle" font-size="12" fill="#1e40af" font-weight="600">DQN</text>
+    <rect x="25" y="129" width="150" height="36" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="100" y="152" text-anchor="middle" font-size="12" fill="#1e40af" font-weight="600">PPO</text>
+
+    <!-- Environments column -->
+    <text x="575" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#166534">ENVIRONMENTS</text>
+    <rect x="480" y="35" width="190" height="36" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="575" y="58" text-anchor="middle" font-size="12" fill="#166534" font-weight="600">Cliff-Walking</text>
+    <rect x="480" y="82" width="190" height="36" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="575" y="105" text-anchor="middle" font-size="12" fill="#166534" font-weight="600">Taxi</text>
+    <rect x="480" y="129" width="190" height="36" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="575" y="152" text-anchor="middle" font-size="12" fill="#166534" font-weight="600">Blocks World</text>
+
+    <!-- Crossing lines -->
+    <line x1="175" y1="53" x2="480" y2="53" stroke="#aaa" stroke-width="1" stroke-dasharray="4"/>
+    <line x1="175" y1="53" x2="480" y2="100" stroke="#aaa" stroke-width="1" stroke-dasharray="4"/>
+    <line x1="175" y1="53" x2="480" y2="147" stroke="#aaa" stroke-width="1" stroke-dasharray="4"/>
+    <line x1="175" y1="100" x2="480" y2="53" stroke="#aaa" stroke-width="1" stroke-dasharray="4"/>
+    <line x1="175" y1="100" x2="480" y2="100" stroke="#aaa" stroke-width="1" stroke-dasharray="4"/>
+    <line x1="175" y1="100" x2="480" y2="147" stroke="#aaa" stroke-width="1" stroke-dasharray="4"/>
+    <line x1="175" y1="147" x2="480" y2="53" stroke="#aaa" stroke-width="1" stroke-dasharray="4"/>
+    <line x1="175" y1="147" x2="480" y2="100" stroke="#aaa" stroke-width="1" stroke-dasharray="4"/>
+    <line x1="175" y1="147" x2="480" y2="147" stroke="#aaa" stroke-width="1" stroke-dasharray="4"/>
+
+    <!-- Standard interface label -->
+    <rect x="240" y="180" width="220" height="38" rx="8" fill="#f3e8ff" stroke="#7c3aed" stroke-width="1.5"/>
+    <text x="350" y="204" text-anchor="middle" font-size="12" font-weight="600" fill="#5b21b6">Gymnasium Standard Interface</text>
+  </svg>
+  <div class="diagram-caption">Any agent can be paired with any environment via Gymnasium's standard interface — reset(), step(), etc.</div>
+</div>
+
+<hr>
+
+<!-- ============================================ -->
+<h2>7. Stable Baselines 3 (SB3)</h2>
+
+<h3>7.1 What Is It?</h3>
+<p>Stable Baselines 3 is a library of <span class="key-term">standard, well-tested RL algorithms</span> packaged for easy use with Gymnasium environments. The "baseline" refers to foundational algorithms you'll commonly use in practice.</p>
+
+<h3>7.2 Key Algorithms</h3>
+<table>
+  <tr><th>Algorithm</th><th>Type</th><th>Notes</th></tr>
+  <tr><td><strong>DQN</strong></td><td>Value-based (neural net)</td><td>Neural network approximates the Q-function. Famously used for Atari games.</td></tr>
+  <tr><td><strong>PPO</strong></td><td>Policy gradient</td><td>Directly optimizes the policy. Popular and robust.</td></tr>
+</table>
+
+<h3>7.3 Training and Exploitation — Two Phases</h3>
+
+<div class="diagram">
+  <svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+    <defs>
+      <marker id="arrowT" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/></marker>
+    </defs>
+
+    <!-- Phase 1 -->
+    <rect x="20" y="20" width="260" height="80" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="150" y="48" text-anchor="middle" font-size="14" font-weight="700" fill="#1e40af">Phase 1: Training</text>
+    <text x="150" y="68" text-anchor="middle" font-size="11" fill="#555">model.learn(total_timesteps=10000)</text>
+    <text x="150" y="86" text-anchor="middle" font-size="11" fill="#555">Agent explores, fails, updates weights</text>
+
+    <!-- Arrow -->
+    <line x1="290" y1="60" x2="360" y2="60" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowT)"/>
+    <text x="325" y="52" text-anchor="middle" font-size="10" fill="#2563eb" font-weight="500">save</text>
+
+    <!-- Phase 2 -->
+    <rect x="370" y="20" width="300" height="80" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="520" y="48" text-anchor="middle" font-size="14" font-weight="700" fill="#166534">Phase 2: Exploitation</text>
+    <text x="520" y="68" text-anchor="middle" font-size="11" fill="#555">model.predict(obs) → action</text>
+    <text x="520" y="86" text-anchor="middle" font-size="11" fill="#555">Trained agent acts using learned policy</text>
+  </svg>
+</div>
+
+<pre><span class="kw">from</span> stable_baselines3 <span class="kw">import</span> DQN
+
+<span class="cm"># Phase 1: Train</span>
+env <span class="op">=</span> gym.<span class="fn">make</span>(<span class="str">"MyEnv-v0"</span>)
+model <span class="op">=</span> <span class="fn">DQN</span>(<span class="str">"MlpPolicy"</span>, env)
+model.<span class="fn">learn</span>(total_timesteps<span class="op">=</span><span class="num">10000</span>)
+model.<span class="fn">save</span>(<span class="str">"dqn_model"</span>)
+
+<span class="cm"># Phase 2: Exploit</span>
+model <span class="op">=</span> DQN.<span class="fn">load</span>(<span class="str">"dqn_model"</span>)
+obs, info <span class="op">=</span> env.<span class="fn">reset</span>()
+<span class="kw">while True</span>:
+    action, _ <span class="op">=</span> model.<span class="fn">predict</span>(obs)
+    obs, reward, terminated, truncated, info <span class="op">=</span> env.<span class="fn">step</span>(action)
+    <span class="kw">if</span> terminated <span class="kw">or</span> truncated:
+        obs, info <span class="op">=</span> env.<span class="fn">reset</span>()</pre>
+
+<h3>7.4 Policy Types</h3>
+
+<div class="two-col">
+  <div class="col-card">
+    <h4>MlpPolicy</h4>
+    <p>Use when the observation space is <strong>flat</strong> — a single <code>Discrete</code> or <code>Box</code>. MLP = Multi-Layer Perceptron (feedforward neural network).</p>
+    <pre style="font-size:0.78rem;margin-top:8px"><span class="fn">DQN</span>(<span class="str">"MlpPolicy"</span>, env)</pre>
+  </div>
+  <div class="col-card">
+    <h4>MultiInputPolicy</h4>
+    <p>Use when the observation space is a <strong>Dict</strong> with multiple named sub-spaces (e.g., agent pos + target pos).</p>
+    <pre style="font-size:0.78rem;margin-top:8px"><span class="fn">DQN</span>(<span class="str">"MultiInputPolicy"</span>, env)</pre>
+  </div>
+</div>
+
+<h3>7.5 Why DQN / PPO Struggle with Integer States</h3>
+
+<p>Neural network methods expect <strong>rich, high-dimensional observations</strong> — normalized vectors, RGB images, etc. Feeding them a raw integer like "state 23" is not informative to a neural network. Q-learning is fine with integers because it uses a lookup table, not a neural net.</p>
+
+<div class="example">
+  <div class="example-header">🤔 Analogy</div>
+  <div class="example-body">
+    <p>Imagine someone gives you a number — "42" — and asks you to predict what room it describes. That's hard. Now imagine they give you a <em>photograph</em> of the room. Much easier. Neural networks work the same way: they need descriptive, information-rich inputs — not opaque ID numbers.</p>
+  </div>
+</div>
+
+<hr>
+
+<!-- ============================================ -->
+<h2>8. Blocks World as an RL Environment</h2>
+
+<h3>8.1 The Domain</h3>
+<p>Blocks World is a classic AI planning domain. Three blocks (A, B, C) exist on a table with four positions. Blocks can be on the table or stacked on other blocks. The goal: rearrange blocks from a starting configuration to a target configuration.</p>
+
+<h3>8.2 State Representation</h3>
+
+<div class="diagram">
+  <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+    <!-- CURRENT CONFIGURATION (left side) -->
+    <text x="175" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1a1a">Current Configuration</text>
+
+    <!-- Table surface -->
+    <rect x="40" y="180" width="270" height="10" rx="2" fill="#8b7355"/>
+    <text x="77" y="206" text-anchor="middle" font-size="10" fill="#555">pos 1</text>
+    <text x="147" y="206" text-anchor="middle" font-size="10" fill="#555">pos 2</text>
+    <text x="217" y="206" text-anchor="middle" font-size="10" fill="#555">pos 3</text>
+    <text x="287" y="206" text-anchor="middle" font-size="10" fill="#555">pos 4</text>
+
+    <!-- Block C on pos 4 -->
+    <rect x="260" y="140" width="55" height="40" rx="5" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
+    <text x="288" y="165" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">C</text>
+
+    <!-- Block A on top of C -->
+    <rect x="260" y="97" width="55" height="40" rx="5" fill="#ef4444" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="288" y="122" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">A</text>
+
+    <!-- Block B on pos 2 -->
+    <rect x="120" y="140" width="55" height="40" rx="5" fill="#3b82f6" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="148" y="165" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">B</text>
+
+    <!-- Legend for current config -->
+    <text x="62" y="55" font-size="10" fill="#555">A is on → C (block)</text>
+    <text x="62" y="71" font-size="10" fill="#555">B is on → 2 (table pos)</text>
+    <text x="62" y="87" font-size="10" fill="#555">C is on → 4 (table pos)</text>
+
+    <!-- State encoding box -->
+    <rect x="55" y="222" width="240" height="30" rx="6" fill="#fff7ed" stroke="#ea580c"/>
+    <text x="175" y="242" text-anchor="middle" font-size="12" fill="#9a3412" font-weight="600">State string: "C 2 4"</text>
+
+    <!-- ===== Divider ===== -->
+    <line x1="370" y1="12" x2="370" y2="290" stroke="#e2e0dc" stroke-width="1" stroke-dasharray="6"/>
+
+    <!-- TARGET CONFIGURATION (right side) -->
+    <text x="545" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1a1a">Target Configuration</text>
+
+    <!-- Target table surface -->
+    <rect x="400" y="180" width="270" height="10" rx="2" fill="#8b7355"/>
+    <text x="437" y="206" text-anchor="middle" font-size="10" fill="#555">pos 1</text>
+    <text x="507" y="206" text-anchor="middle" font-size="10" fill="#555">pos 2</text>
+    <text x="577" y="206" text-anchor="middle" font-size="10" fill="#555">pos 3</text>
+    <text x="647" y="206" text-anchor="middle" font-size="10" fill="#555">pos 4</text>
+
+    <!-- A on pos 1 -->
+    <rect x="410" y="140" width="55" height="40" rx="5" fill="#ef4444" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="438" y="165" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">A</text>
+
+    <!-- B on pos 2 -->
+    <rect x="480" y="140" width="55" height="40" rx="5" fill="#3b82f6" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="508" y="165" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">B</text>
+
+    <!-- C on top of B -->
+    <rect x="480" y="97" width="55" height="40" rx="5" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
+    <text x="508" y="122" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">C</text>
+
+    <!-- Legend for target config -->
+    <text x="422" y="55" font-size="10" fill="#555">A is on → 1 (table pos)</text>
+    <text x="422" y="71" font-size="10" fill="#555">B is on → 2 (table pos)</text>
+    <text x="422" y="87" font-size="10" fill="#555">C is on → B (block)</text>
+
+    <!-- Target encoding box -->
+    <rect x="415" y="222" width="240" height="30" rx="6" fill="#dcfce7" stroke="#16a34a"/>
+    <text x="535" y="242" text-anchor="middle" font-size="12" fill="#166534" font-weight="600">Target string: "1 2 B"</text>
+  </svg>
+  <div class="diagram-caption">Each 3-character string encodes a full block configuration: (where A is, where B is, where C is).</div>
+</div>
+
+<p><strong>Constraints on valid configurations:</strong></p>
+<p>A block cannot be on itself. Two blocks cannot occupy the same location. At least one block must sit directly on the table ("grounded" — no circular stacking like A on B, B on C, C on A).</p>
+<p>Under these constraints, there are approximately <strong>120 valid configurations</strong>.</p>
+
+<h3>8.3 Actions</h3>
+<p>Actions take the form <code>move(Block, From, To)</code>. Not all actions are valid in all states (e.g., you can't move a block with something on top of it). There are approximately <strong>90 possible actions</strong>.</p>
+
+<h3>8.4 Two Approaches to State Design</h3>
+
+<div class="diagram">
+  <svg viewBox="0 0 700 195" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+    <!-- Phase 1 -->
+    <rect x="20" y="15" width="310" height="160" rx="10" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+    <text x="175" y="42" text-anchor="middle" font-size="13" font-weight="700" fill="#9a3412">Phase 1: 3-Digit State</text>
+    <text x="175" y="65" text-anchor="middle" font-size="11" fill="#555">State = current config only</text>
+    
+    <rect x="50" y="80" width="100" height="28" rx="5" fill="#fed7aa" stroke="#ea580c"/>
+    <text x="100" y="99" text-anchor="middle" font-size="12" font-weight="600" fill="#9a3412">C 2 4</text>
+    
+    <text x="175" y="130" text-anchor="middle" font-size="11" fill="#555">~120 states × ~90 actions</text>
+    <text x="175" y="148" text-anchor="middle" font-size="11" fill="#555">Q-table: 120 × 90 = 10,800</text>
+    <text x="175" y="166" text-anchor="middle" font-size="10" fill="#9a3412">Agent doesn't know the target!</text>
+
+    <!-- Phase 2 -->
+    <rect x="370" y="15" width="310" height="160" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="525" y="42" text-anchor="middle" font-size="13" font-weight="700" fill="#166534">Phase 2: 6-Digit State</text>
+    <text x="525" y="65" text-anchor="middle" font-size="11" fill="#555">State = current + target</text>
+    
+    <rect x="400" y="80" width="100" height="28" rx="5" fill="#fed7aa" stroke="#ea580c"/>
+    <text x="450" y="99" text-anchor="middle" font-size="12" font-weight="600" fill="#9a3412">C 2 4</text>
+    <rect x="520" y="80" width="100" height="28" rx="5" fill="#bbf7d0" stroke="#16a34a"/>
+    <text x="570" y="99" text-anchor="middle" font-size="12" font-weight="600" fill="#166534">1 2 B</text>
+    
+    <text x="525" y="130" text-anchor="middle" font-size="11" fill="#555">~14,400 states × ~90 actions</text>
+    <text x="525" y="148" text-anchor="middle" font-size="11" fill="#555">Q-table: 14,400 × 90 = 1.3M</text>
+    <text x="525" y="166" text-anchor="middle" font-size="10" fill="#166534">Agent knows the target → can learn directed policy</text>
+  </svg>
+  <div class="diagram-caption">Including the target in the state gives the agent more information but dramatically increases the Q-table size.</div>
+</div>
+
+<h3>8.5 Model-Based vs. Model-Free</h3>
+
+<p>The Blocks World environment uses a Prolog model internally to compute state transitions. We <em>could</em> give the agent access to this model (model-based), letting it plan a direct path to the goal. Instead, we withhold it — the agent must learn purely from interaction (model-free).</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+    <text x="360" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a1a">Taxonomy of RL Agents</text>
+
+    <rect x="15" y="40" width="162" height="72" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="96" y="62" text-anchor="middle" font-size="11" font-weight="600" fill="#1e40af">Value Function Only</text>
+    <text x="96" y="80" text-anchor="middle" font-size="10" fill="#555">No explicit policy</text>
+    <text x="96" y="100" text-anchor="middle" font-size="9.5" fill="#2563eb">e.g. Q-Learning</text>
+
+    <rect x="192" y="40" width="162" height="72" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="273" y="62" text-anchor="middle" font-size="11" font-weight="600" fill="#166534">Policy Only</text>
+    <text x="273" y="80" text-anchor="middle" font-size="10" fill="#555">No value function</text>
+    <text x="273" y="100" text-anchor="middle" font-size="9.5" fill="#16a34a">Direct state→action mapping</text>
+
+    <rect x="369" y="40" width="162" height="72" rx="8" fill="#f3e8ff" stroke="#7c3aed" stroke-width="1.5"/>
+    <text x="450" y="62" text-anchor="middle" font-size="11" font-weight="600" fill="#5b21b6">Both</text>
+    <text x="450" y="80" text-anchor="middle" font-size="10" fill="#555">Policy + value function</text>
+    <text x="450" y="100" text-anchor="middle" font-size="9.5" fill="#7c3aed">e.g. Actor-Critic</text>
+
+    <rect x="546" y="40" width="162" height="72" rx="8" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+    <text x="627" y="62" text-anchor="middle" font-size="11" font-weight="600" fill="#9a3412">Model-Based</text>
+    <text x="627" y="80" text-anchor="middle" font-size="10" fill="#555">Has env model, can plan</text>
+    <text x="627" y="100" text-anchor="middle" font-size="9.5" fill="#ea580c">Knows transition dynamics</text>
+
+    <rect x="15" y="140" width="693" height="42" rx="8" fill="#f8f7f4" stroke="#e2e0dc"/>
+    <text x="362" y="166" text-anchor="middle" font-size="11" fill="#555">Our Blocks World agent is <tspan font-weight="700" fill="#1e40af">model-free</tspan> (value function only via Q-learning) — even though the environment has a model.</text>
+  </svg>
+</div>
+
+<hr>
+
+<!-- ============================================ -->
+<h2>9. Prolog Integration for Environment Dynamics</h2>
+
+<h3>9.1 Why Prolog?</h3>
+<p>Prolog excels at combinatorial enumeration and logical constraint satisfaction. Generating all ~120 valid block configurations with constraints (no self-stacking, no duplicates, grounded) is concise in Prolog but would be significantly more complex in Python.</p>
+
+<h3>9.2 Code as Data</h3>
+<p>Prolog (and Lisp) follow a paradigm called <span class="key-term">code as data</span> — program code and data are the same thing. This enables runtime modification using <code>assert</code> (add fact) and <code>retract</code> (remove fact). While non-logical, these are essential for simulating state changes.</p>
+
+<h3>9.3 Key Prolog Predicates</h3>
+
+<table>
+  <tr><th>Predicate</th><th>Purpose</th></tr>
+  <tr><td><code>reset</code></td><td>Retracts all block positions, asserts the standard initial state.</td></tr>
+  <tr><td><code>enumerate_states</code></td><td>Generates all valid 3-digit config strings under constraints.</td></tr>
+  <tr><td><code>enumerate_actions</code></td><td>Lists all <code>move(Block, From, To)</code> combinations.</td></tr>
+  <tr><td><code>step(Action)</code></td><td>Checks if move is possible, computes new positions, retracts old state, asserts new state.</td></tr>
+</table>
+
+<h3>9.4 State Enumeration Constraints</h3>
+
+<div class="diagram">
+  <svg viewBox="0 0 700 190" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+    <text x="350" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1a1a">Constraints for Valid Block Configurations</text>
+
+    <rect x="20" y="38" width="200" height="56" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="120" y="60" text-anchor="middle" font-size="11" font-weight="600" fill="#991b1b">No Self-Stacking</text>
+    <text x="120" y="80" text-anchor="middle" font-size="10" fill="#555">A ≠ "A", B ≠ "B", C ≠ "C"</text>
+
+    <rect x="250" y="38" width="200" height="56" rx="8" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+    <text x="350" y="60" text-anchor="middle" font-size="11" font-weight="600" fill="#9a3412">No Duplicate Positions</text>
+    <text x="350" y="80" text-anchor="middle" font-size="10" fill="#555">A ≠ B, B ≠ C, A ≠ C</text>
+
+    <rect x="480" y="38" width="200" height="56" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="580" y="60" text-anchor="middle" font-size="11" font-weight="600" fill="#1e40af">Grounded</text>
+    <text x="580" y="80" text-anchor="middle" font-size="10" fill="#555">≥1 block on table (no cycles)</text>
+
+    <!-- Examples -->
+    <rect x="20" y="115" width="320" height="60" rx="8" fill="#dcfce7" stroke="#16a34a"/>
+    <text x="180" y="136" text-anchor="middle" font-size="11" font-weight="600" fill="#166534">✓ Valid: "C 2 4"</text>
+    <text x="180" y="155" text-anchor="middle" font-size="10" fill="#555">A on C, B on pos 2, C on pos 4. C is on the table → grounded.</text>
+
+    <rect x="360" y="115" width="320" height="60" rx="8" fill="#fef2f2" stroke="#dc2626"/>
+    <text x="520" y="136" text-anchor="middle" font-size="11" font-weight="600" fill="#991b1b">✗ Invalid: "B C A"</text>
+    <text x="520" y="155" text-anchor="middle" font-size="10" fill="#555">A on B, B on C, C on A. Circular! Nothing is on the table.</text>
+  </svg>
+</div>
+
+<h3>9.5 The Step Predicate — How It Works</h3>
+
+<div class="example">
+  <div class="example-header">⚙ Step execution walkthrough</div>
+  <div class="example-body">
+    <p>Given <code>step(move(A, C, 1))</code> — "move block A from C to position 1":</p>
+    <p><strong>1.</strong> Check: Is A clear? (nothing on top of A) → Yes ✓<br>
+    <strong>2.</strong> Check: Is position 1 clear? → Yes ✓<br>
+    <strong>3.</strong> Compute: After this move, A→1, B→2, C→4<br>
+    <strong>4.</strong> <code>retract</code> old positions (A on C, B on 2, C on 4)<br>
+    <strong>5.</strong> <code>assert</code> new positions (A on 1, B on 2, C on 4)</p>
+    <p>State changes from <strong>"C24"</strong> → <strong>"124"</strong></p>
+  </div>
+</div>
+
+<h3>9.6 Python–Prolog Communication</h3>
+<p>The SWI-Prolog library (<code>pyswip</code>) lets Python call Prolog predicates as functions. The environment's <code>step()</code> method internally calls Prolog's <code>step</code> predicate. The <code>close()</code> method shuts down the Prolog interpreter to prevent orphaned background processes.</p>
+
+<hr>
+
+<!-- ============================================ -->
+<h2>10. Building a Custom Gymnasium Environment</h2>
+
+<h3>10.1 General Approach</h3>
+<p>Copy an existing simple environment (e.g., a 5×5 grid world), then modify it for your domain — change the observation space, action space, reward structure, step logic, reset logic, and rendering.</p>
+
+<h3>10.2 Package Structure</h3>
+<pre>package_name/
+├── pyproject.toml
+└── package_name/
+    └── envs/
+        └── my_env.py</pre>
+
+<p>Once registered:</p>
+<pre>env <span class="op">=</span> gym.<span class="fn">make</span>(<span class="str">"MyEnv-v0"</span>, render_mode<span class="op">=</span><span class="str">"human"</span>)</pre>
+
+<h3>10.3 What Must Be Defined</h3>
+<p>In the environment class: <code>observation_space</code> and <code>action_space</code> (as <code>gymnasium.spaces</code> objects), plus all five interface methods: <code>__init__</code>, <code>reset</code>, <code>step</code>, <code>render</code>, and <code>close</code>.</p>
+
+<hr>
+
+<!-- ============================================ -->
+<h2>11. The Q-Table and How It Scales</h2>
+
+<p>The Q-table is a 2D array: <strong>rows = states</strong>, <strong>columns = actions</strong>, <strong>each cell = learned Q-value</strong>.</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+    <text x="360" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a1a">Q-Table Size Comparison</text>
+
+    <!-- Cliff-walking (small) -->
+    <rect x="40" y="50" width="90" height="90" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="85" y="100" text-anchor="middle" font-size="10" fill="#1e40af" font-weight="600">48 × 4</text>
+    <text x="85" y="160" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1a1a">Cliff-Walking</text>
+    <text x="85" y="178" text-anchor="middle" font-size="10" fill="#555">192 entries</text>
+    <text x="85" y="196" text-anchor="middle" font-size="10" fill="#16a34a" font-weight="500">Fast ⚡</text>
+
+    <!-- Blocks 3-digit (medium) -->
+    <rect x="220" y="50" width="130" height="90" rx="6" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+    <text x="285" y="100" text-anchor="middle" font-size="10" fill="#9a3412" font-weight="600">120 × 90</text>
+    <text x="285" y="160" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1a1a">Blocks (3-digit)</text>
+    <text x="285" y="178" text-anchor="middle" font-size="10" fill="#555">10,800 entries</text>
+    <text x="285" y="196" text-anchor="middle" font-size="10" fill="#ea580c" font-weight="500">Moderate 🕐</text>
+
+    <!-- Blocks 6-digit (large) -->
+    <rect x="440" y="40" width="240" height="110" rx="6" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="560" y="100" text-anchor="middle" font-size="10" fill="#991b1b" font-weight="600">14,400 × 90</text>
+    <text x="560" y="170" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1a1a">Blocks (6-digit)</text>
+    <text x="560" y="188" text-anchor="middle" font-size="10" fill="#555">1,296,000 entries</text>
+    <text x="560" y="206" text-anchor="middle" font-size="10" fill="#dc2626" font-weight="500">Slow 🐢</text>
+
+    <!-- Bottom note -->
+    <rect x="100" y="232" width="520" height="36" rx="6" fill="#f8f7f4" stroke="#e2e0dc"/>
+    <text x="360" y="255" text-anchor="middle" font-size="11" fill="#555">More states × more actions = larger table = longer training → <tspan font-weight="600" fill="#1a1a1a">curse of dimensionality</tspan></text>
+  </svg>
+</div>
+
+<h3>Visualizing the Q-Table</h3>
+<p>For grid worlds, the Q-table can be mapped onto the grid shape — each cell shows Q-values, making the learned policy visible. For Blocks World, this is less intuitive since states lack natural spatial arrangement; transitions jump between configurations rather than moving through adjacent cells.</p>
+
+<hr>
+
+<!-- ============================================ -->
+<h2>12. Summary of Key Concepts</h2>
+
+<table class="summary-table">
+  <tr><th>Concept</th><th>Key Point</th></tr>
+  <tr><td>Gymnasium</td><td>Standard Python library for RL environments; successor to OpenAI Gym.</td></tr>
+  <tr><td>Environment Interface</td><td><code>reset()</code>, <code>step()</code>, <code>render()</code>, <code>close()</code> — any env implements these, any agent can call them.</td></tr>
+  <tr><td>Observation Space</td><td>Formal description of observations (Discrete, Box, Dict, etc.).</td></tr>
+  <tr><td>Action Space</td><td>Formal description of available actions (usually Discrete for tabular RL).</td></tr>
+  <tr><td>Terminated vs. Truncated</td><td>Terminated = natural end. Truncated = early stop. New in Gymnasium.</td></tr>
+  <tr><td>Seeds</td><td>Same seed → same pseudo-random sequence → reproducible experiments.</td></tr>
+  <tr><td>Mix-and-Match</td><td>Same algorithm works on different environments; same env works with different algorithms.</td></tr>
+  <tr><td>Stable Baselines 3</td><td>Library of standard RL algorithms (DQN, PPO, etc.) compatible with Gymnasium.</td></tr>
+  <tr><td>MlpPolicy vs. MultiInputPolicy</td><td>Mlp for flat observations; MultiInput for Dict observations.</td></tr>
+  <tr><td>Q-Table Scaling</td><td>More states × actions = larger table = longer training (curse of dimensionality).</td></tr>
+  <tr><td>Model-Free vs. Model-Based</td><td>Model-free learns from interaction; model-based can plan with internal model.</td></tr>
+  <tr><td>Code as Data (Prolog)</td><td><code>assert</code>/<code>retract</code> modify the program at runtime for state simulation.</td></tr>
+</table>
+
+</body>
+</html>

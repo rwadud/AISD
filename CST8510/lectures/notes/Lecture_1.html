@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Notes — Holistic Evaluation of RAG Systems</title>
+<style>
+  :root {
+    --bg: #fdfdfd;
+    --card: #ffffff;
+    --border: #e2e8f0;
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --green: #16a34a;
+    --green-light: #dcfce7;
+    --orange: #ea580c;
+    --orange-light: #fff7ed;
+    --red: #dc2626;
+    --red-light: #fef2f2;
+    --purple: #7c3aed;
+    --purple-light: #f5f3ff;
+    --teal: #0d9488;
+    --teal-light: #f0fdfa;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  header {
+    text-align: center;
+    padding: 2.5rem 1rem 2rem;
+    margin-bottom: 2rem;
+    border-bottom: 3px solid var(--accent);
+  }
+  header h1 { font-size: 2rem; color: var(--accent-dark); margin-bottom: 0.3rem; }
+  header .subtitle { color: var(--text-muted); font-size: 1.05rem; }
+  header .course { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; }
+
+  /* Table of Contents */
+  .toc {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .toc h2 { font-size: 1.1rem; margin-bottom: 0.75rem; color: var(--accent-dark); }
+  .toc ol { padding-left: 1.25rem; }
+  .toc li { margin-bottom: 0.3rem; }
+  .toc a { color: var(--accent); text-decoration: none; font-size: 0.95rem; }
+  .toc a:hover { text-decoration: underline; }
+
+  /* Sections */
+  section { margin-bottom: 2.5rem; }
+  h2 {
+    font-size: 1.4rem;
+    color: var(--accent-dark);
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.4rem;
+    margin-bottom: 1rem;
+  }
+  h3 { font-size: 1.15rem; color: var(--text); margin: 1.25rem 0 0.5rem; }
+
+  p { margin-bottom: 0.75rem; }
+
+  ul, ol { padding-left: 1.5rem; margin-bottom: 0.75rem; }
+  li { margin-bottom: 0.35rem; }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .card.accent { border-left: 4px solid var(--accent); }
+  .card.green { border-left: 4px solid var(--green); background: var(--green-light); }
+  .card.orange { border-left: 4px solid var(--orange); background: var(--orange-light); }
+  .card.red { border-left: 4px solid var(--red); background: var(--red-light); }
+  .card.purple { border-left: 4px solid var(--purple); background: var(--purple-light); }
+  .card.teal { border-left: 4px solid var(--teal); background: var(--teal-light); }
+
+  .card-title {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Key term */
+  .term {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent-dark);
+    padding: 0.1rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.93rem;
+  }
+  th, td {
+    padding: 0.65rem 0.75rem;
+    border: 1px solid var(--border);
+    text-align: left;
+  }
+  th {
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+
+  /* Diagram containers */
+  .diagram {
+    display: flex;
+    justify-content: center;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+  }
+  .diagram svg { max-width: 100%; height: auto; }
+
+  /* Flowchart via CSS */
+  .flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 1.25rem 0;
+  }
+  .flow-step {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    font-weight: 600;
+    font-size: 0.88rem;
+    text-align: center;
+    min-width: 120px;
+    color: var(--accent-dark);
+  }
+  .flow-arrow {
+    font-size: 1.4rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* Score bar visualization */
+  .score-bar-container { margin: 0.4rem 0; }
+  .score-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+  }
+  .score-bar {
+    height: 22px;
+    background: #e2e8f0;
+    border-radius: 11px;
+    overflow: hidden;
+  }
+  .score-fill {
+    height: 100%;
+    border-radius: 11px;
+    transition: width 0.5s;
+  }
+
+  /* Highlight box */
+  .highlight {
+    background: #fffbeb;
+    border: 1px solid #fbbf24;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+  .highlight strong { color: #92400e; }
+
+  /* Grid layout for cards */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  /* Badge */
+  .badge {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border-radius: 9999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+  .badge-green { background: var(--green-light); color: var(--green); }
+  .badge-orange { background: var(--orange-light); color: var(--orange); }
+  .badge-red { background: var(--red-light); color: var(--red); }
+
+  /* Footer */
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 640px) {
+    body { padding: 1rem; }
+    header h1 { font-size: 1.5rem; }
+    .flow { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Holistic Evaluation of RAG Systems</h1>
+  <div class="subtitle">Comprehensive Study Notes — Lecture Transcript 1</div>
+  <div class="course">CST8510 — Evaluation of GenAI Applications</div>
+</header>
+
+<!-- TABLE OF CONTENTS -->
+<nav class="toc">
+  <h2>Table of Contents</h2>
+  <ol>
+    <li><a href="#s1">Why Evaluate GenAI Applications Holistically?</a></li>
+    <li><a href="#s2">Key Risks: Bias, Hallucination, Drift &amp; Emergent Behaviors</a></li>
+    <li><a href="#s3">Security &amp; Regulatory Concerns</a></li>
+    <li><a href="#s4">RAG System Components to Evaluate</a></li>
+    <li><a href="#s5">Evaluation Paradigms Overview</a></li>
+    <li><a href="#s6">Evaluation Across the SDLC</a></li>
+    <li><a href="#s7">Reference-Based Metrics: ROUGE, BLEU, METEOR, BERTScore</a></li>
+    <li><a href="#s8">Reference-Free Evaluation &amp; LLM-as-a-Judge</a></li>
+    <li><a href="#s9">Three Types of LLM-as-Judge Evaluation</a></li>
+    <li><a href="#s10">Practical Exercise: ROUGE Score Computation</a></li>
+    <li><a href="#s11">Practical Exercise: LLM-as-a-Judge for Summarization</a></li>
+    <li><a href="#s12">Alignment with Business Metrics</a></li>
+  </ol>
+</nav>
+
+<!-- ====== SECTION 1 ====== -->
+<section id="s1">
+  <h2>1. Why Evaluate GenAI Applications Holistically?</h2>
+
+  <p>The quality of a RAG system's final output depends on <strong>every stage</strong> of the pipeline: knowledge base construction, vector embeddings, chunk size &amp; strategy, retrieval quality, prompt design, model selection, and temperature settings. Evaluating only the final output is insufficient.</p>
+
+  <div class="card accent">
+    <div class="card-title">Core Insight</div>
+    <p>Lab performance ≠ Real-world performance. Standard benchmark datasets are curated and clean; real data is messy, has missing values, and changes over time.</p>
+  </div>
+
+  <h3>Reasons for Evaluation</h3>
+  <div class="grid">
+    <div class="card teal">
+      <div class="card-title">Output Quality</div>
+      Measure precision, recall, and business-relevant metrics to ensure the system meets quality targets.
+    </div>
+    <div class="card purple">
+      <div class="card-title">Bias &amp; Fairness</div>
+      Detect algorithmic biases (e.g., racial profiling in loan applications) inherited from training data.
+    </div>
+    <div class="card orange">
+      <div class="card-title">Model Drift</div>
+      Data distributions change over time — new products, new queries — causing performance degradation.
+    </div>
+    <div class="card green">
+      <div class="card-title">Regulatory Compliance</div>
+      Ensure PII and sensitive data are not leaked through prompts or outputs.
+    </div>
+    <div class="card accent">
+      <div class="card-title">Trust Building</div>
+      Users only adopt AI products they trust. Consistent, high-quality outputs build that trust.
+    </div>
+    <div class="card red">
+      <div class="card-title">Prevent Harmful Outputs</div>
+      Customer-facing apps must never produce rude, offensive, or garbage responses.
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card accent">
+      <div class="card-title">Model Improvement</div>
+      You cannot improve what you cannot measure. Unless you know your current precision, accuracy, or summarization quality, you have no baseline to improve upon.
+    </div>
+    <div class="card orange">
+      <div class="card-title">Deployment &amp; Latency</div>
+      If a RAG application takes more than 3-5 seconds, or a customer support agent takes over a minute, users will not tolerate it. Infrastructure and latency must be evaluated.
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 2 ====== -->
+<section id="s2">
+  <h2>2. Key Risks: Bias, Hallucination, Drift &amp; Emergent Behaviors</h2>
+
+  <h3>Algorithmic Bias</h3>
+  <p>ML models can encode societal biases present in training data. Example: a mortgage processing agent may discriminate based on name or zip code, inferring racial profiles and assigning higher default risk unfairly.</p>
+
+  <h3>Hallucination</h3>
+  <div class="card red">
+    <div class="card-title">Mathematically Proven: Hallucination Cannot Be Fully Eliminated</div>
+    <p>LLMs can fabricate citations, references, and article titles. The author name may be real but the article is invented. This is especially dangerous in legal, medical, and academic contexts.</p>
+    <p><strong>Mitigation:</strong> Instruct models not to fabricate; use integrated search tools; apply RAG with verified sources.</p>
+  </div>
+
+  <h3>Performance Drift</h3>
+  <p>Models lack knowledge of events after their training cutoff. Queries about new trends, products, or cyber attacks yield outdated or incorrect information.</p>
+
+  <h3>Emergent / Unintended Behaviors</h3>
+  <div class="card orange">
+    <div class="card-title">LLMs May "Hide" Their Reasoning</div>
+    <ul>
+      <li>Research (notably by Anthropic) shows LLMs can exhibit deceptive behavior — saying one thing while "thinking" another internally.</li>
+      <li>When asked to "explain step by step," the model generates plausible-looking logical steps but may not actually compute that way internally (it approximates).</li>
+      <li>These emergent behaviors are increasingly being discovered and are a growing area of concern.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ====== SECTION 3 ====== -->
+<section id="s3">
+  <h2>3. Security &amp; Regulatory Concerns</h2>
+
+  <div class="card red">
+    <div class="card-title">Reverse Engineering Threats</div>
+    <ul>
+      <li><strong>Prompt extraction:</strong> Attackers can reverse-engineer system prompts from model behavior.</li>
+      <li><strong>Training data extraction:</strong> It is possible to infer training data from model outputs.</li>
+      <li><strong>Model jailbreaking:</strong> Once an attacker identifies the model, known jailbreak techniques can be applied.</li>
+      <li><strong>Mitigation:</strong> These risks can be mitigated but never fully eliminated — defense in depth is essential.</li>
+    </ul>
+  </div>
+
+  <h3>Guardrails Architecture</h3>
+  <div class="flow">
+    <div class="flow-step">User Input</div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step" style="background:#fef2f2;border-color:var(--red);">Input Guardrails<br><small>Sanitize &amp; filter</small></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">LLM Processing</div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step" style="background:#fef2f2;border-color:var(--red);">Output Guardrails<br><small>Check for harm</small></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">User Output</div>
+  </div>
+  <p style="text-align:center;color:var(--text-muted);font-size:0.9rem;">Guardrails are applied on <strong>both</strong> input and output. Evaluation must verify guardrails are working — you're testing the <em>entire system</em>, not just the LLM.</p>
+</section>
+
+<!-- ====== SECTION 4 ====== -->
+<section id="s4">
+  <h2>4. RAG System Components to Evaluate</h2>
+
+  <div class="diagram">
+    <svg viewBox="0 0 800 260" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, system-ui, sans-serif">
+      <!-- Background boxes -->
+      <rect x="10" y="30" width="160" height="200" rx="12" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+      <rect x="210" y="30" width="160" height="200" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+      <rect x="410" y="30" width="160" height="200" rx="12" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+      <rect x="610" y="30" width="170" height="200" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+
+      <!-- Titles -->
+      <text x="90" y="60" text-anchor="middle" font-weight="700" font-size="14" fill="#1e40af">Knowledge Base</text>
+      <text x="290" y="60" text-anchor="middle" font-weight="700" font-size="14" fill="#166534">Retrieval</text>
+      <text x="490" y="60" text-anchor="middle" font-weight="700" font-size="14" fill="#9a3412">Prompt Engineering</text>
+      <text x="695" y="60" text-anchor="middle" font-weight="700" font-size="14" fill="#5b21b6">Generation</text>
+
+      <!-- Items -->
+      <text x="90" y="90" text-anchor="middle" font-size="12" fill="#334155">Vector store quality</text>
+      <text x="90" y="112" text-anchor="middle" font-size="12" fill="#334155">Chunking strategy</text>
+      <text x="90" y="134" text-anchor="middle" font-size="12" fill="#334155">Chunk size</text>
+      <text x="90" y="156" text-anchor="middle" font-size="12" fill="#334155">Embedding model</text>
+      <text x="90" y="178" text-anchor="middle" font-size="12" fill="#334155">Data freshness</text>
+
+      <text x="290" y="90" text-anchor="middle" font-size="12" fill="#334155">Relevance of results</text>
+      <text x="290" y="112" text-anchor="middle" font-size="12" fill="#334155">Retrieval accuracy</text>
+      <text x="290" y="134" text-anchor="middle" font-size="12" fill="#334155">Top-k selection</text>
+      <text x="290" y="156" text-anchor="middle" font-size="12" fill="#334155">Query processing</text>
+
+      <text x="490" y="90" text-anchor="middle" font-size="12" fill="#334155">Template design</text>
+      <text x="490" y="112" text-anchor="middle" font-size="12" fill="#334155">Context injection</text>
+      <text x="490" y="134" text-anchor="middle" font-size="12" fill="#334155">Instruction clarity</text>
+      <text x="490" y="156" text-anchor="middle" font-size="12" fill="#334155">Few-shot examples</text>
+
+      <text x="695" y="90" text-anchor="middle" font-size="12" fill="#334155">Model selection</text>
+      <text x="695" y="112" text-anchor="middle" font-size="12" fill="#334155">Temperature setting</text>
+      <text x="695" y="134" text-anchor="middle" font-size="12" fill="#334155">Output quality</text>
+      <text x="695" y="156" text-anchor="middle" font-size="12" fill="#334155">Latency</text>
+
+      <!-- Arrows -->
+      <line x1="175" y1="130" x2="205" y2="130" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowGray)"/>
+      <line x1="375" y1="130" x2="405" y2="130" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowGray)"/>
+      <line x1="575" y1="130" x2="605" y2="130" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+      <defs>
+        <marker id="arrowGray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/>
+        </marker>
+      </defs>
+
+      <!-- Label -->
+      <text x="400" y="255" text-anchor="middle" font-size="12" fill="#64748b" font-style="italic">Each component must be evaluated independently and as part of the whole system</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ====== SECTION 5 ====== -->
+<section id="s5">
+  <h2>5. Evaluation Paradigms Overview</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Paradigm</th>
+        <th>Description</th>
+        <th>When to Use</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Human Evaluation</strong></td>
+        <td>Domain experts manually rate outputs</td>
+        <td>High-stakes decisions; final validation</td>
+      </tr>
+      <tr>
+        <td><strong>Automatic Metrics</strong></td>
+        <td>Algorithmic scores (ROUGE, BLEU, etc.)</td>
+        <td>Quick, repeatable quality checks</td>
+      </tr>
+      <tr>
+        <td><strong>Adversarial Testing</strong></td>
+        <td>Probe for data leakage, jailbreaks, edge cases</td>
+        <td>Security audits; robustness testing</td>
+      </tr>
+      <tr>
+        <td><strong>User Feedback</strong></td>
+        <td>Direct feedback from real end-users</td>
+        <td>Post-deployment, production systems</td>
+      </tr>
+      <tr>
+        <td><strong>A/B Testing</strong></td>
+        <td>Compare two models (e.g., GPT-4 vs Llama 3)</td>
+        <td>Model selection; quality vs. cost trade-offs</td>
+      </tr>
+      <tr>
+        <td><strong>Benchmarking</strong></td>
+        <td>Evaluate on standard datasets (math, NLP, code)</td>
+        <td>Pre-deployment; model comparison</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="highlight">
+    <strong>Note on Human Evaluation:</strong> A paper from the University of Edinburgh argues that human evaluation is <em>not always</em> the gold standard. Humans tend to perceive confident, verbose, assertive LLM outputs as more accurate. Individual biases and scalability concerns further limit reliability. Human evaluation is also not cost-effective at enterprise scale.
+  </div>
+</section>
+
+<!-- ====== SECTION 6 ====== -->
+<section id="s6">
+  <h2>6. Evaluation Across the SDLC</h2>
+
+  <p>Evaluation should be considered at <strong>every stage</strong> of the Secure Software Development Life Cycle (SSDLC), not just at the end.</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 820 320" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, system-ui, sans-serif">
+      <!-- Timeline line -->
+      <line x1="60" y1="150" x2="770" y2="150" stroke="#cbd5e1" stroke-width="3"/>
+
+      <!-- Stages -->
+      <!-- 1 -->
+      <circle cx="100" cy="150" r="22" fill="#2563eb" stroke="#1e40af" stroke-width="2"/>
+      <text x="100" y="155" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">1</text>
+      <text x="100" y="195" text-anchor="middle" font-size="11" fill="#1e293b" font-weight="600">Requirements</text>
+      <text x="100" y="212" text-anchor="middle" font-size="10" fill="#64748b">Define evaluation</text>
+      <text x="100" y="226" text-anchor="middle" font-size="10" fill="#64748b">criteria &amp; metrics</text>
+
+      <!-- 2 -->
+      <circle cx="240" cy="150" r="22" fill="#16a34a" stroke="#166534" stroke-width="2"/>
+      <text x="240" y="155" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">2</text>
+      <text x="240" y="195" text-anchor="middle" font-size="11" fill="#1e293b" font-weight="600">Data Collection</text>
+      <text x="240" y="212" text-anchor="middle" font-size="10" fill="#64748b">Evaluate data quality,</text>
+      <text x="240" y="226" text-anchor="middle" font-size="10" fill="#64748b">bias &amp; fairness</text>
+
+      <!-- 3 -->
+      <circle cx="380" cy="150" r="22" fill="#ea580c" stroke="#9a3412" stroke-width="2"/>
+      <text x="380" y="155" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">3</text>
+      <text x="380" y="195" text-anchor="middle" font-size="11" fill="#1e293b" font-weight="600">Development</text>
+      <text x="380" y="212" text-anchor="middle" font-size="10" fill="#64748b">Automatic metrics,</text>
+      <text x="380" y="226" text-anchor="middle" font-size="10" fill="#64748b">iterative scoring</text>
+
+      <!-- 4 -->
+      <circle cx="520" cy="150" r="22" fill="#7c3aed" stroke="#5b21b6" stroke-width="2"/>
+      <text x="520" y="155" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">4</text>
+      <text x="520" y="195" text-anchor="middle" font-size="11" fill="#1e293b" font-weight="600">Testing</text>
+      <text x="520" y="212" text-anchor="middle" font-size="10" fill="#64748b">Extensive evaluation</text>
+      <text x="520" y="226" text-anchor="middle" font-size="10" fill="#64748b">on unseen test data</text>
+
+      <!-- 5 -->
+      <circle cx="650" cy="150" r="22" fill="#dc2626" stroke="#991b1b" stroke-width="2"/>
+      <text x="650" y="155" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">5</text>
+      <text x="650" y="195" text-anchor="middle" font-size="11" fill="#1e293b" font-weight="600">Deployment</text>
+      <text x="650" y="212" text-anchor="middle" font-size="10" fill="#64748b">Real-world data</text>
+      <text x="650" y="226" text-anchor="middle" font-size="10" fill="#64748b">performance testing</text>
+
+      <!-- 6 -->
+      <circle cx="760" cy="150" r="22" fill="#0d9488" stroke="#115e59" stroke-width="2"/>
+      <text x="760" y="155" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">6</text>
+      <text x="760" y="195" text-anchor="middle" font-size="11" fill="#1e293b" font-weight="600">Monitoring</text>
+      <text x="760" y="212" text-anchor="middle" font-size="10" fill="#64748b">Continuous periodic</text>
+      <text x="760" y="226" text-anchor="middle" font-size="10" fill="#64748b">metric tracking</text>
+
+      <!-- Top label -->
+      <text x="410" y="50" text-anchor="middle" font-size="14" fill="#1e40af" font-weight="700">Secure Software Development Life Cycle (SSDLC)</text>
+      <text x="410" y="70" text-anchor="middle" font-size="11" fill="#64748b">Evaluation mindset at every stage</text>
+
+      <!-- Arrows -->
+      <line x1="122" y1="150" x2="218" y2="150" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrSdlc)"/>
+      <line x1="262" y1="150" x2="358" y2="150" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrSdlc)"/>
+      <line x1="402" y1="150" x2="498" y2="150" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrSdlc)"/>
+      <line x1="542" y1="150" x2="628" y2="150" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrSdlc)"/>
+      <line x1="672" y1="150" x2="738" y2="150" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrSdlc)"/>
+
+      <defs>
+        <marker id="arrSdlc" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#cbd5e1"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+</section>
+
+<!-- ====== SECTION 7 ====== -->
+<section id="s7">
+  <h2>7. Reference-Based Metrics: ROUGE, BLEU, METEOR, BERTScore</h2>
+
+  <p><strong>Reference-based evaluation</strong> compares model output against a ground-truth reference (usually human-created). These are two inputs to a function: the generated text and the reference text.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Full Name</th>
+        <th>Focus</th>
+        <th>Method</th>
+        <th>Needs LLM?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="term">ROUGE</span></td>
+        <td>Recall-Oriented Understudy for Gisting Evaluation</td>
+        <td><span class="badge badge-blue">Recall</span></td>
+        <td>N-gram overlap: what fraction of reference n-grams appear in the generated summary</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td><span class="term">BLEU</span></td>
+        <td>Bilingual Evaluation Understudy</td>
+        <td><span class="badge badge-green">Precision</span></td>
+        <td>N-gram overlap: what fraction of generated n-grams appear in the reference</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td><span class="term">METEOR</span></td>
+        <td>Metric for Evaluation of Translation with Explicit Ordering</td>
+        <td><span class="badge badge-orange">Semantic</span></td>
+        <td>Like BLEU/ROUGE but handles <strong>synonyms</strong> and <strong>stemming</strong> (e.g., "running" ≈ "run")</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td><span class="term">BERTScore</span></td>
+        <td>Bidirectional Encoder Representations from Transformers (Score)</td>
+        <td><span class="badge badge-red">Deep Semantic</span></td>
+        <td>Uses BERT embeddings to measure <strong>semantic similarity</strong> between texts</td>
+        <td>Yes (BERT)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="diagram">
+    <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, system-ui, sans-serif">
+      <!-- Spectrum bar -->
+      <defs>
+        <linearGradient id="specGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#93c5fd"/>
+          <stop offset="100%" stop-color="#7c3aed"/>
+        </linearGradient>
+      </defs>
+      <rect x="80" y="80" width="540" height="30" rx="15" fill="url(#specGrad)" opacity="0.3"/>
+
+      <!-- Labels -->
+      <text x="350" y="40" text-anchor="middle" font-size="14" font-weight="700" fill="#1e293b">Metric Sophistication Spectrum</text>
+      <text x="80" y="65" text-anchor="start" font-size="11" fill="#64748b">Exact match</text>
+      <text x="620" y="65" text-anchor="end" font-size="11" fill="#64748b">Semantic understanding</text>
+
+      <!-- Dots on spectrum -->
+      <circle cx="140" cy="95" r="18" fill="#2563eb"/>
+      <text x="140" y="100" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">ROUGE</text>
+      <text x="140" y="140" text-anchor="middle" font-size="10" fill="#334155">Recall-based</text>
+      <text x="140" y="155" text-anchor="middle" font-size="10" fill="#334155">n-gram overlap</text>
+
+      <circle cx="290" cy="95" r="18" fill="#16a34a"/>
+      <text x="290" y="100" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">BLEU</text>
+      <text x="290" y="140" text-anchor="middle" font-size="10" fill="#334155">Precision-based</text>
+      <text x="290" y="155" text-anchor="middle" font-size="10" fill="#334155">n-gram overlap</text>
+
+      <circle cx="430" cy="95" r="18" fill="#ea580c"/>
+      <text x="430" y="100" text-anchor="middle" font-size="9" fill="#fff" font-weight="700">METEOR</text>
+      <text x="430" y="140" text-anchor="middle" font-size="10" fill="#334155">+ Synonyms</text>
+      <text x="430" y="155" text-anchor="middle" font-size="10" fill="#334155">+ Stemming</text>
+
+      <circle cx="560" cy="95" r="18" fill="#7c3aed"/>
+      <text x="560" y="100" text-anchor="middle" font-size="9" fill="#fff" font-weight="700">BERT</text>
+      <text x="560" y="140" text-anchor="middle" font-size="10" fill="#334155">Embedding-based</text>
+      <text x="560" y="155" text-anchor="middle" font-size="10" fill="#334155">semantic similarity</text>
+    </svg>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">Key Limitation of ROUGE &amp; BLEU</div>
+    <p>Both rely on <strong>exact n-gram matches</strong>. If the generated summary uses a synonym or paraphrase, the score drops even though the meaning is preserved. METEOR and BERTScore address this limitation.</p>
+  </div>
+
+  <h3>Additional Metrics</h3>
+  <ul>
+    <li><strong>Coverage:</strong> How much important content from the source is included in the summary.</li>
+    <li><strong>Compression Ratio:</strong> Size of original text vs. size of summary.</li>
+  </ul>
+
+  <h3>Computing These Metrics</h3>
+  <p>ROUGE, BLEU, and METEOR are all <strong>deterministic Python functions</strong> — they do not require an LLM. Libraries like <span class="term">NLTK</span> (Natural Language Toolkit) provide implementations. METEOR uses an external synonym database. BERTScore is the only one requiring a model (BERT).</p>
+</section>
+
+<!-- ====== SECTION 8 ====== -->
+<section id="s8">
+  <h2>8. Reference-Free Evaluation &amp; LLM-as-a-Judge</h2>
+
+  <h3>When You Don't Have a Reference</h3>
+  <p>Many real-world evaluations are <strong>subjective</strong>: helpfulness, fluency, relevance, coherence, tone. There is no clear ground truth for summarization quality or story generation. N-gram metrics cannot capture these qualities.</p>
+
+  <h3>LLM-as-a-Judge Methodology</h3>
+  <div class="flow">
+    <div class="flow-step">AI System Output</div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step" style="background:#f5f3ff;border-color:var(--purple);">LLM Judge<br><small>(more powerful model)</small></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">Score + Reasoning</div>
+  </div>
+
+  <h3>Advantages of LLM-as-a-Judge</h3>
+  <div class="grid">
+    <div class="card green">
+      <div class="card-title">Scalability</div>
+      Evaluate thousands of outputs per day at cents per call (vs. ~$100/hr for humans).
+    </div>
+    <div class="card teal">
+      <div class="card-title">Domain Adaptability</div>
+      Easily switch domains (healthcare to finance) using RAG or prompting — no retraining humans.
+    </div>
+    <div class="card purple">
+      <div class="card-title">Complex Reasoning</div>
+      Can process dense legal/medical documents with multiple layers of context if prompted correctly.
+    </div>
+  </div>
+
+  <h3>Use Case: Customer Service Chatbot Evaluation</h3>
+  <div class="card teal">
+    <p>When evaluating a customer service chatbot, an LLM judge can assess subjective dimensions that traditional metrics cannot:</p>
+    <ul>
+      <li><strong>Friendliness:</strong> Is the response warm and approachable?</li>
+      <li><strong>Underlying concern:</strong> Does it address the customer's real issue, not just the surface question?</li>
+      <li><strong>Professional tone:</strong> Is the language formal and appropriate, not casual?</li>
+      <li><strong>Cultural nuances:</strong> A chatbot developed in the US and deployed in the Middle East or Asia must respect local norms of politeness and manners.</li>
+      <li><strong>Customer satisfaction:</strong> Is the response likely to leave the customer satisfied?</li>
+    </ul>
+  </div>
+
+  <div class="highlight">
+    <strong>Best use of LLM-as-a-Judge:</strong> When the output is subjective, evaluation requires contextual understanding, multiple aspects must be assessed together, and traditional metrics cannot capture qualitative dimensions. For objective metrics (accuracy, precision, recall) with ground truth, use deterministic functions instead.
+  </div>
+</section>
+
+<!-- ====== SECTION 9 ====== -->
+<section id="s9">
+  <h2>9. Three Types of LLM-as-Judge Evaluation</h2>
+
+  <div class="card accent">
+    <div class="card-title">1. Single Output Scoring (No Reference)</div>
+    <p>The LLM assigns a score based on defined criteria/rubric only.</p>
+    <p><strong>Worked Example:</strong> An e-commerce chatbot responds: <em>"I understand your frustration with the delayed delivery. Our team is working on your order and you'd receive a tracking number within 24 hours."</em></p>
+    <p>Rubric given to the LLM judge:</p>
+    <ul>
+      <li><strong>Score 1:</strong> Unprofessional or dismissive</li>
+      <li><strong>Score 2:</strong> Professional but provides an incomplete solution</li>
+      <li><strong>Score 3:</strong> Professional, empathetic, and provides clear resolution</li>
+    </ul>
+    <p><span class="badge badge-blue">Simple</span> <span class="badge badge-green">Scalable</span></p>
+  </div>
+  <div class="card green">
+    <div class="card-title">2. Single Output Scoring (With Reference)</div>
+    <p>The LLM compares the output against a reference answer and scores based on a rubric.</p>
+    <p><strong>Worked Example:</strong></p>
+    <ul>
+      <li><strong>LLM output:</strong> <em>"The new environmental law requires companies to reduce carbon emissions by 30% by 2030."</em></li>
+      <li><strong>Reference:</strong> <em>"The Environmental Protection Act of 2024 mandates a 30% reduction in carbon emissions for companies with over 500 employees by 2030, with annual progress reports required."</em></li>
+      <li><strong>Missing:</strong> The 500-employee threshold and the annual progress reports requirement.</li>
+    </ul>
+    <p>Rubric: 1 = inaccurate, 2 = partially accurate but missing key details, 3 = accurate but incomplete, 4 = complete and accurate match. This output would likely score <strong>2 or 3</strong> depending on the judge.</p>
+    <p><span class="badge badge-orange">More Context</span> <span class="badge badge-blue">Moderate Complexity</span></p>
+  </div>
+  <div class="card purple">
+    <div class="card-title">3. Pairwise Comparison</div>
+    <p>The LLM compares two outputs and selects the better one with reasoning.</p>
+    <p><strong>Worked Example — Two product descriptions:</strong></p>
+    <ul>
+      <li><strong>Response A:</strong> <em>"Our wireless headphone offers 20-hour battery life and noise cancellation."</em></li>
+      <li><strong>Response B:</strong> <em>"Experience uninterrupted music with our wireless headphones featuring 20-hour battery life, advanced noise cancellation, and comfortable memory foam ear cups."</em></li>
+    </ul>
+    <p>The LLM judge selects <strong>Response B</strong> — it highlights features and benefits while maintaining clarity and engagement.</p>
+    <p><span class="badge badge-red">Most Consistent</span> <span class="badge badge-orange">Less Scalable</span></p>
+  </div>
+
+  <h3>Comparison of the Three Types</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Dimension</th>
+        <th>Single (No Ref)</th>
+        <th>Single (With Ref)</th>
+        <th>Pairwise</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Use Case</strong></td>
+        <td>Simple, independent tasks</td>
+        <td>Complex tasks needing context</td>
+        <td>Relative quality assessment</td>
+      </tr>
+      <tr>
+        <td><strong>Scalability</strong></td>
+        <td>High</td>
+        <td>Medium</td>
+        <td>Low (pairs grow exponentially)</td>
+      </tr>
+      <tr>
+        <td><strong>Implementation</strong></td>
+        <td>Easiest</td>
+        <td>Moderate</td>
+        <td>Most difficult</td>
+      </tr>
+      <tr>
+        <td><strong>Consistency</strong></td>
+        <td>Lower</td>
+        <td>Medium</td>
+        <td>Highest</td>
+      </tr>
+      <tr>
+        <td><strong>Explainability</strong></td>
+        <td>Lower</td>
+        <td>Medium</td>
+        <td>Best</td>
+      </tr>
+      <tr>
+        <td><strong>Robustness to LLM Updates</strong></td>
+        <td>Most affected</td>
+        <td>Moderately affected</td>
+        <td>Least affected</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="card orange">
+    <div class="card-title">Critical Rubric Design Rule</div>
+    <p>Always give LLMs a <strong>discrete scale with a description for each value</strong> (like a rubric). Do NOT use continuous ranges like "score between 0 and 100" — the LLM cannot meaningfully distinguish between, say, 50 and 73. Instead, define 3-5 levels with clear criteria for each.</p>
+  </div>
+</section>
+
+<!-- ====== SECTION 10 ====== -->
+<section id="s10">
+  <h2>10. Practical Exercise: ROUGE Score Computation</h2>
+
+  <h3>Dataset: CNN/DailyMail</h3>
+  <div class="card teal">
+    <ul>
+      <li><strong>Source:</strong> Hugging Face (originally from CNN &amp; Daily Mail journalists)</li>
+      <li><strong>Size:</strong> ~287,000 news articles with editorial summaries</li>
+      <li><strong>Lab subset:</strong> ~100 samples each for train/validation/test (~10 rows used in demo)</li>
+      <li><strong>Fields:</strong> <code>article</code> (text) and <code>highlights</code> (reference summary)</li>
+    </ul>
+  </div>
+
+  <h3>Workflow</h3>
+  <div class="flow">
+    <div class="flow-step">Load article</div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">Generate prompt<br><small>"Summarize in ~100 words"</small></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">Call LLM<br><small>(GPT-4o Mini)</small></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">Get generated summary</div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">Compute ROUGE<br><small>(deterministic function)</small></div>
+  </div>
+
+  <h3>Example Results (Ebola Article)</h3>
+  <div class="score-bar-container">
+    <div class="score-label"><span>Recall</span><span>68%</span></div>
+    <div class="score-bar"><div class="score-fill" style="width:68%;background:var(--green);"></div></div>
+  </div>
+  <div class="score-bar-container">
+    <div class="score-label"><span>Precision</span><span>24%</span></div>
+    <div class="score-bar"><div class="score-fill" style="width:24%;background:var(--orange);"></div></div>
+  </div>
+  <div class="score-bar-container">
+    <div class="score-label"><span>F1 (Harmonic Mean)</span><span>36%</span></div>
+    <div class="score-bar"><div class="score-fill" style="width:36%;background:var(--accent);"></div></div>
+  </div>
+
+  <div class="highlight">
+    <strong>Why the precision-recall gap?</strong> The generated summary was longer and included specific details (e.g., "The Royal Free Hospital in London") absent from the reference summary. Longer summaries tend to have higher recall (capturing more content) but lower precision (more n-grams not in the reference). <strong>Best practice:</strong> Standardize output length before comparison.
+  </div>
+</section>
+
+<!-- ====== SECTION 11 ====== -->
+<section id="s11">
+  <h2>11. Practical Exercise: LLM-as-a-Judge for Summarization</h2>
+
+  <h3>Six Evaluation Dimensions (from research paper)</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Dimension</th>
+        <th>What It Measures</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Coherence</strong></td><td>How logically and seamlessly ideas flow in the summary</td></tr>
+      <tr><td><strong>Completeness</strong></td><td>How well the summary captures all important points</td></tr>
+      <tr><td><strong>Conciseness</strong></td><td>How effectively it conveys essentials without unnecessary detail</td></tr>
+      <tr><td><strong>Consistency</strong></td><td>Whether the summary aligns with facts without contradictions (hallucination check)</td></tr>
+      <tr><td><strong>Readability</strong></td><td>How easy it is to read and understand</td></tr>
+      <tr><td><strong>Syntax</strong></td><td>Grammatical correctness and sentence structure</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Example Scores (Ebola Article Summary, judged by GPT-4.1)</h3>
+  <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:0.5rem;"><em>Note: Coherence uses a 0-10 scale (from the paper's prompt); other dimensions use 0-100. Bars are normalized to percentage for visual comparison.</em></p>
+  <div class="score-bar-container">
+    <div class="score-label"><span>Coherence</span><span>9 / 10 (= 90%)</span></div>
+    <div class="score-bar"><div class="score-fill" style="width:90%;background:#2563eb;"></div></div>
+  </div>
+  <div class="score-bar-container">
+    <div class="score-label"><span>Completeness</span><span>85 / 100</span></div>
+    <div class="score-bar"><div class="score-fill" style="width:85%;background:#16a34a;"></div></div>
+  </div>
+  <div class="score-bar-container">
+    <div class="score-label"><span>Conciseness</span><span>85 / 100</span></div>
+    <div class="score-bar"><div class="score-fill" style="width:85%;background:#ea580c;"></div></div>
+  </div>
+  <div class="score-bar-container">
+    <div class="score-label"><span>Consistency</span><span>98 / 100</span></div>
+    <div class="score-bar"><div class="score-fill" style="width:98%;background:#7c3aed;"></div></div>
+  </div>
+  <div class="score-bar-container">
+    <div class="score-label"><span>Readability</span><span>85 / 100</span></div>
+    <div class="score-bar"><div class="score-fill" style="width:85%;background:#0d9488;"></div></div>
+  </div>
+  <div class="score-bar-container">
+    <div class="score-label"><span>Syntax</span><span>90 / 100</span></div>
+    <div class="score-bar"><div class="score-fill" style="width:90%;background:#dc2626;"></div></div>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">Observations</div>
+    <ul>
+      <li>Scores tend to cluster in the <strong>mid-to-high range</strong> — this is a known pattern with LLM judges.</li>
+      <li>Changing the judge model (e.g., GPT-4.1 to GPT-4.1 Mini) can shift scores — always use a <strong>more powerful model</strong> for judging than the one being evaluated.</li>
+      <li>The judge evaluates against the <strong>original article</strong>, not the reference summary.</li>
+      <li>Each evaluation prompt uses <strong>chain-of-thought reasoning</strong>: the LLM explains its reasoning before arriving at a score.</li>
+    </ul>
+  </div>
+
+  <h3>Prompt Design Pattern for LLM-as-a-Judge</h3>
+  <div class="card purple">
+    <ol>
+      <li>Assign a role: <em>"You are an expert language model tasked with evaluating [dimension]..."</em></li>
+      <li>Define the dimension clearly</li>
+      <li>Specify the scoring scale with descriptions for each level</li>
+      <li>Request chain-of-thought reasoning before the score</li>
+      <li>Specify output format: score + reason</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ====== SECTION 12 ====== -->
+<section id="s12">
+  <h2>12. Alignment with Business Metrics</h2>
+
+  <p>A high evaluation score does not automatically mean business success. Different stakeholders have different priorities:</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, system-ui, sans-serif">
+      <!-- Center -->
+      <circle cx="300" cy="150" r="50" fill="#2563eb" opacity="0.9"/>
+      <text x="300" y="145" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">Business</text>
+      <text x="300" y="162" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">Priorities</text>
+
+      <!-- Petals -->
+      <ellipse cx="160" cy="80" rx="75" ry="35" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+      <text x="160" y="85" text-anchor="middle" font-size="11" fill="#166534" font-weight="600">Readability &amp; Fluency</text>
+
+      <ellipse cx="440" cy="80" rx="75" ry="35" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+      <text x="440" y="85" text-anchor="middle" font-size="11" fill="#9a3412" font-weight="600">Factual Correctness</text>
+
+      <ellipse cx="130" cy="220" rx="75" ry="35" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+      <text x="130" y="225" text-anchor="middle" font-size="11" fill="#5b21b6" font-weight="600">Cost Reduction</text>
+
+      <ellipse cx="300" cy="275" rx="75" ry="35" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+      <text x="300" y="280" text-anchor="middle" font-size="11" fill="#991b1b" font-weight="600">Low Latency</text>
+
+      <ellipse cx="470" cy="220" rx="75" ry="35" fill="#f0fdfa" stroke="#0d9488" stroke-width="2"/>
+      <text x="470" y="225" text-anchor="middle" font-size="11" fill="#115e59" font-weight="600">Depth of Reasoning</text>
+
+      <!-- Lines -->
+      <line x1="260" y1="120" x2="210" y2="100" stroke="#94a3b8" stroke-width="1.5"/>
+      <line x1="340" y1="120" x2="390" y2="100" stroke="#94a3b8" stroke-width="1.5"/>
+      <line x1="260" y1="180" x2="180" y2="200" stroke="#94a3b8" stroke-width="1.5"/>
+      <line x1="300" y1="200" x2="300" y2="240" stroke="#94a3b8" stroke-width="1.5"/>
+      <line x1="340" y1="180" x2="420" y2="200" stroke="#94a3b8" stroke-width="1.5"/>
+    </svg>
+  </div>
+
+  <div class="card green">
+    <div class="card-title">Key Takeaway</div>
+    <p>Always ask the client: <em>"What are your priority metrics?"</em> Some clients value readability and fluency over depth. Others need factual correctness above all else. Evaluation criteria must align with what the customer values most, balancing quality against cost and latency constraints.</p>
+  </div>
+</section>
+
+<!-- ====== KEY TAKEAWAYS ====== -->
+<section>
+  <h2>Key Takeaways</h2>
+  <div class="card accent" style="border-left-width:6px;">
+    <ol style="padding-left:1.2rem;">
+      <li><strong>Evaluate holistically</strong> — not just the output, but the entire pipeline (knowledge base, retrieval, prompting, generation, guardrails).</li>
+      <li><strong>Lab ≠ Production</strong> — benchmark performance on clean data does not predict real-world results.</li>
+      <li><strong>Hallucination cannot be eliminated</strong> — it can only be mitigated through grounding, RAG, and explicit instructions.</li>
+      <li><strong>Build evaluation into the SDLC</strong> — from requirements through continuous monitoring.</li>
+      <li><strong>Reference-based metrics</strong> (ROUGE, BLEU, METEOR, BERTScore) are deterministic and scalable but limited to objective comparison.</li>
+      <li><strong>LLM-as-a-Judge</strong> is ideal for subjective, multi-dimensional evaluation at scale — but requires well-designed rubrics with discrete scoring levels.</li>
+      <li><strong>Human evaluation has limits</strong> — humans are biased toward confident, verbose LLM outputs.</li>
+      <li><strong>Pairwise comparison</strong> is more consistent and robust to model updates, but less scalable than single-output scoring.</li>
+      <li><strong>Align evaluation with business metrics</strong> — what matters most depends on the customer's priorities.</li>
+    </ol>
+  </div>
+</section>
+
+<footer>
+  CST8510 — Evaluation of GenAI Applications | Study Notes generated from Lecture Transcript 1
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM Evaluation Frameworks & Observability — Study Notes</title>
+<style>
+  :root {
+    --accent-blue: #2563eb;
+    --accent-green: #16a34a;
+    --accent-orange: #ea580c;
+    --accent-red: #dc2626;
+    --accent-purple: #7c3aed;
+    --accent-teal: #0d9488;
+    --bg: #ffffff;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+    --card-bg: #f8fafc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    padding: 2rem 1rem;
+  }
+
+  .container { max-width: 960px; margin: 0 auto; }
+
+  /* Header */
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 3px solid var(--accent-blue);
+  }
+  header h1 { font-size: 2rem; color: var(--accent-blue); margin-bottom: 0.25rem; }
+  header .subtitle { font-size: 1.15rem; color: var(--text-light); margin-bottom: 0.25rem; }
+  header .course { font-size: 0.95rem; color: var(--accent-purple); font-weight: 600; }
+
+  /* Table of Contents */
+  .toc {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2.5rem;
+  }
+  .toc h2 { font-size: 1.25rem; margin-bottom: 0.75rem; color: var(--accent-blue); }
+  .toc ol { padding-left: 1.25rem; }
+  .toc li { margin-bottom: 0.35rem; }
+  .toc a { color: var(--accent-blue); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+
+  /* Sections */
+  section { margin-bottom: 2.5rem; }
+  h2 {
+    font-size: 1.5rem;
+    color: var(--accent-blue);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 0.4rem;
+    margin-bottom: 1rem;
+  }
+  h3 { font-size: 1.15rem; color: var(--text); margin: 1.25rem 0 0.5rem; }
+  p { margin-bottom: 0.75rem; }
+
+  /* Cards */
+  .card {
+    border-left: 4px solid var(--accent-blue);
+    background: var(--card-bg);
+    padding: 1rem 1.25rem;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 1rem;
+  }
+  .card.green { border-left-color: var(--accent-green); }
+  .card.orange { border-left-color: var(--accent-orange); }
+  .card.red { border-left-color: var(--accent-red); }
+  .card.purple { border-left-color: var(--accent-purple); }
+  .card.teal { border-left-color: var(--accent-teal); }
+  .card strong { display: block; margin-bottom: 0.3rem; }
+
+  /* Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .grid .card { margin-bottom: 0; }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+  }
+  th, td { padding: 0.6rem 0.85rem; text-align: left; border: 1px solid var(--border); }
+  th { background: var(--accent-blue); color: #fff; font-weight: 600; }
+  th.green { background: var(--accent-green); }
+  th.purple { background: var(--accent-purple); }
+  th.teal { background: var(--accent-teal); }
+  th.orange { background: var(--accent-orange); }
+  tr:nth-child(even) { background: var(--card-bg); }
+
+  /* Highlight Box */
+  .highlight {
+    background: #fef9c3;
+    border: 1px solid #facc15;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .highlight::before { content: "Note: "; font-weight: 700; }
+
+  /* Badge */
+  .badge {
+    display: inline-block;
+    padding: 0.15rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #fff;
+    margin-right: 0.35rem;
+    vertical-align: middle;
+  }
+  .badge.blue { background: var(--accent-blue); }
+  .badge.green { background: var(--accent-green); }
+  .badge.orange { background: var(--accent-orange); }
+  .badge.red { background: var(--accent-red); }
+  .badge.purple { background: var(--accent-purple); }
+  .badge.teal { background: var(--accent-teal); }
+
+  /* Term */
+  .term {
+    background: #dbeafe;
+    padding: 0.1rem 0.45rem;
+    border-radius: 4px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* Flowchart */
+  .flowchart {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+    font-size: 0.92rem;
+  }
+  .flow-step {
+    background: var(--accent-blue);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+  }
+  .flow-step.green { background: var(--accent-green); }
+  .flow-step.purple { background: var(--accent-purple); }
+  .flow-step.teal { background: var(--accent-teal); }
+  .flow-step.orange { background: var(--accent-orange); }
+  .flow-arrow { font-size: 1.3rem; color: var(--text-light); padding: 0 0.15rem; }
+
+  /* Progress bars */
+  .score-bar-container { margin-bottom: 0.75rem; }
+  .score-label { font-size: 0.9rem; margin-bottom: 0.2rem; font-weight: 600; }
+  .score-bar {
+    height: 22px;
+    background: #e2e8f0;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .score-fill {
+    height: 100%;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    padding-left: 0.6rem;
+    font-size: 0.78rem;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* SVG containers */
+  .diagram { text-align: center; margin: 1.25rem 0; }
+  .diagram svg { max-width: 100%; height: auto; }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    header h1 { font-size: 1.5rem; }
+    .grid { grid-template-columns: 1fr; }
+    .flowchart { flex-direction: column; align-items: stretch; text-align: center; }
+    .flow-arrow { transform: rotate(90deg); text-align: center; }
+    table { font-size: 0.82rem; }
+    th, td { padding: 0.4rem 0.5rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<header>
+  <h1>LLM Evaluation Frameworks &amp; Observability</h1>
+  <div class="subtitle">Traces, Spans, G-Eval, RAGAS, and DeepEval</div>
+  <div class="course">CST8510 &mdash; Applied Machine Learning</div>
+</header>
+
+<!-- TABLE OF CONTENTS -->
+<nav class="toc">
+  <h2>Table of Contents</h2>
+  <ol>
+    <li><a href="#s1">Recap: LLM Evaluation &amp; Subjective Metrics</a></li>
+    <li><a href="#s2">LLM-as-a-Judge: Three Approaches &amp; Biases</a></li>
+    <li><a href="#s3">Self-Reflection vs. Application Evaluation</a></li>
+    <li><a href="#s4">Observability &mdash; Concepts &amp; Importance</a></li>
+    <li><a href="#s5">Telemetry Data: Traces, Spans &amp; Sessions</a></li>
+    <li><a href="#s6">OpenTelemetry &amp; Instrumentation Approaches</a></li>
+    <li><a href="#s7">Trace Data Structure &amp; Code Example</a></li>
+    <li><a href="#s8">Observability Frameworks Landscape</a></li>
+    <li><a href="#s9">Cloud Provider Observability (AWS)</a></li>
+    <li><a href="#s10">G-Eval Framework</a></li>
+    <li><a href="#s11">RAGAS Framework</a></li>
+    <li><a href="#s12">DeepEval Library</a></li>
+    <li><a href="#s13">Evaluation Rubrics &amp; Structured Criteria</a></li>
+    <li><a href="#s14">Key Takeaways</a></li>
+  </ol>
+</nav>
+
+<!-- SECTION 1 -->
+<section id="s1">
+  <h2>1. Recap: LLM Evaluation &amp; Subjective Metrics</h2>
+  <p>When evaluating an LLM application, you must evaluate <strong>every component</strong> individually, because degradation in any single component can affect the overall result.</p>
+
+  <div class="card purple">
+    <strong>Composite Score</strong>
+    A combined score across all components of the LLM pipeline. Each component (retrieval, generation, post-processing) contributes to the final quality.
+  </div>
+
+  <p>Many LLM use cases are <span class="term">subjective</span> in nature &mdash; e.g., evaluating chatbot response tone, informativeness, or helpfulness. Standard objective measures are insufficient for these qualities.</p>
+
+  <div class="card green">
+    <strong>Solution: LLM-as-a-Judge</strong>
+    Use a more powerful LLM to evaluate the output of the application. This addresses the difficulty of creating objective metrics for subjective qualities.
+  </div>
+</section>
+
+<!-- SECTION 2 -->
+<section id="s2">
+  <h2>2. LLM-as-a-Judge: Three Approaches &amp; Biases</h2>
+
+  <h3>2.1 Three Approaches</h3>
+  <div class="grid">
+    <div class="card">
+      <strong>Without Reference</strong>
+      Evaluate the output on its own merits using only the rubric criteria (no ground truth provided).
+    </div>
+    <div class="card green">
+      <strong>With Reference</strong>
+      Evaluate the output against a known reference answer or ground truth.
+    </div>
+    <div class="card purple">
+      <strong>Comparison</strong>
+      Compare two or more outputs and judge which is better relative to each other.
+    </div>
+  </div>
+
+  <div class="highlight">Always provide explicit rubrics with individual scoring criteria. Ask the LLM to score on an individual scale and define what each value means.</div>
+
+  <h3>2.2 Biases in LLM Judges</h3>
+  <table>
+    <tr><th class="orange" style="width:30%">Bias</th><th class="orange">Description</th></tr>
+    <tr>
+      <td><strong>Self-Preference Bias</strong></td>
+      <td>LLMs tend to prefer text generated by a similar class of LLMs (e.g., GPT-4 judges may favor GPT-4 outputs over Gemini). This stems from shared training data patterns, hyperparameters, and alignment.</td>
+    </tr>
+    <tr>
+      <td><strong>Authority Bias</strong></td>
+      <td>If the text references authoritative figures (scientists, experts), the LLM gives it higher scores &mdash; mirroring human cognitive bias.</td>
+    </tr>
+  </table>
+
+  <div class="card green">
+    <strong>Mitigation Strategies</strong>
+    Remove authority references from evaluated text. Use detailed rubrics. Repeat evaluation with different judge models. Use multiple runs for robustness.
+  </div>
+</section>
+
+<!-- SECTION 3 -->
+<section id="s3">
+  <h2>3. Self-Reflection vs. Application Evaluation</h2>
+  <table>
+    <tr><th class="purple" style="width:35%">Concept</th><th class="purple">Description</th></tr>
+    <tr>
+      <td><strong>Self-Reflection</strong></td>
+      <td>A <em>prompting strategy</em> where the LLM reviews and improves its own answers iteratively.</td>
+    </tr>
+    <tr>
+      <td><strong>Application Evaluation</strong></td>
+      <td>Evaluating each <em>component</em> of an LLM application (retrieval, generation, etc.) with distinct metrics. This is what we focus on.</td>
+    </tr>
+  </table>
+  <p>Both are valid but serve different purposes. Self-reflection improves outputs at runtime; application evaluation measures quality for debugging and optimization.</p>
+</section>
+
+<!-- SECTION 4 -->
+<section id="s4">
+  <h2>4. Observability &mdash; Concepts &amp; Importance</h2>
+
+  <div class="card teal">
+    <strong>Definition</strong>
+    <span class="term">Observability</span> is the ability to understand a software system's behavior by examining its inputs, outputs, and intermediate data &mdash; <strong>without</strong> needing to read or understand the internal code.
+  </div>
+
+  <p>In LLM applications (e.g., RAG systems), you need to capture <strong>intermediate values</strong>: What contexts were retrieved? What was the LLM "thinking" during self-reflection? What embeddings were generated?</p>
+
+  <p>You can implement observability at every level &mdash; down to each individual function, logging its input and output. Observability helps <strong>locate where</strong> a problem occurs, but you may need further, more granular logging to identify the <strong>root cause</strong>.</p>
+
+  <h3>4.1 Why Observability Matters</h3>
+  <div class="grid">
+    <div class="card red">
+      <strong>Debugging Agents</strong>
+      Most agents break in production. Traces reveal where and why failures occur.
+    </div>
+    <div class="card orange">
+      <strong>Security</strong>
+      Traces help detect prompt injection, jailbreaking, and other attack vectors.
+    </div>
+    <div class="card green">
+      <strong>Evaluation</strong>
+      Captured logs enable offline evaluation of each pipeline component.
+    </div>
+  </div>
+
+  <h3>4.2 Microservices Context</h3>
+  <p>Modern software uses <span class="term">microservices</span> architectures. A single request may call multiple services, APIs, and LLMs. Observability traces the entire route and collects metadata from each point.</p>
+</section>
+
+<!-- SECTION 5 -->
+<section id="s5">
+  <h2>5. Telemetry Data: Traces, Spans &amp; Sessions</h2>
+
+  <div class="card">
+    <strong>Telemetry</strong>
+    A type of data (like image or text) emitted by an instrumented system for observability purposes. It extends traditional logs into <span class="term">traces</span>, <span class="term">spans</span>, <span class="term">metrics</span>, and <span class="term">logs</span>.
+  </div>
+
+  <h3>5.1 Traces</h3>
+  <p>A <span class="term">trace</span> records the complete path of a single request through a distributed application. Each request gets a unique <strong>trace ID</strong>.</p>
+
+  <h3>5.2 Cybersecurity RAG Example (MITRE ATT&amp;CK)</h3>
+  <p>A cybersecurity administrator builds a RAG database containing the <span class="term">MITRE ATT&amp;CK</span> framework &mdash; a universal knowledge base of attack techniques. They ask: <em>"What do we know about SQL injection? What does MITRE say about SQL injection?"</em></p>
+
+  <div class="flowchart">
+    <div class="flow-step">Query: SQL injection info</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step green">Convert to embedding</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step teal">Query MITRE vector DB</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step purple">Get context output</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step orange">Combine query + context</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step">LLM generates response</div>
+  </div>
+
+  <p>This five-step flow is the typical RAG pipeline. Each step generates a span; all spans together form one trace.</p>
+
+  <h3>5.3 Travel Knowledge Base &mdash; Trace Example</h3>
+  <p>Simpler example: A travel knowledge base query &mdash; <em>"What are the best places to visit in Paris?"</em></p>
+
+  <div class="flowchart">
+    <div class="flow-step">Query received</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step green">Convert to embedding</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step teal">Query vector DB</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step purple">Retrieve context</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step orange">Combine query + context</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step">LLM generates response</div>
+  </div>
+
+  <p>Each step in this flow is captured as a <span class="term">span</span>. The collection of all spans for one query forms a single trace.</p>
+
+  <h3>5.4 Sessions, Traces, and Spans Hierarchy</h3>
+
+  <div class="diagram">
+    <svg width="520" height="220" viewBox="0 0 520 220">
+      <rect x="10" y="10" width="500" height="200" rx="12" fill="#f0f9ff" stroke="#2563eb" stroke-width="2"/>
+      <text x="260" y="35" text-anchor="middle" font-weight="700" fill="#2563eb" font-size="15">Session</text>
+      <rect x="30" y="50" width="220" height="145" rx="8" fill="#ecfdf5" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="140" y="72" text-anchor="middle" font-weight="600" fill="#16a34a" font-size="13">Trace 1 (Request 1)</text>
+      <rect x="45" y="82" width="88" height="35" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+      <text x="89" y="104" text-anchor="middle" font-size="11" fill="#1e293b">Span 1</text>
+      <rect x="145" y="82" width="88" height="35" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+      <text x="189" y="104" text-anchor="middle" font-size="11" fill="#1e293b">Span 2</text>
+      <rect x="45" y="127" width="88" height="35" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+      <text x="89" y="149" text-anchor="middle" font-size="11" fill="#1e293b">Span 3</text>
+      <rect x="145" y="127" width="88" height="35" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+      <text x="189" y="149" text-anchor="middle" font-size="11" fill="#1e293b">Span 4</text>
+
+      <rect x="270" y="50" width="220" height="145" rx="8" fill="#fef9c3" stroke="#ea580c" stroke-width="1.5"/>
+      <text x="380" y="72" text-anchor="middle" font-weight="600" fill="#ea580c" font-size="13">Trace 2 (Request 2)</text>
+      <rect x="285" y="82" width="88" height="35" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+      <text x="329" y="104" text-anchor="middle" font-size="11" fill="#1e293b">Span 1</text>
+      <rect x="385" y="82" width="88" height="35" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+      <text x="429" y="104" text-anchor="middle" font-size="11" fill="#1e293b">Span 2</text>
+      <rect x="285" y="127" width="88" height="35" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+      <text x="329" y="149" text-anchor="middle" font-size="11" fill="#1e293b">Span 3</text>
+      <rect x="385" y="127" width="88" height="35" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+      <text x="429" y="149" text-anchor="middle" font-size="11" fill="#1e293b">Span 4</text>
+
+      <text x="260" y="195" text-anchor="middle" font-size="11" fill="#64748b">Session &gt; Traces &gt; Spans</text>
+    </svg>
+  </div>
+
+  <table>
+    <tr><th style="width:25%">Level</th><th>Description</th><th style="width:25%">Scope</th></tr>
+    <tr><td><strong>Session</strong></td><td>Groups multiple traces (e.g., all queries in one day)</td><td>Multiple requests</td></tr>
+    <tr><td><strong>Trace</strong></td><td>Records one complete request path through the system</td><td>One request</td></tr>
+    <tr><td><strong>Span</strong></td><td>Records one individual operation within a trace</td><td>One operation</td></tr>
+  </table>
+</section>
+
+<!-- SECTION 6 -->
+<section id="s6">
+  <h2>6. OpenTelemetry &amp; Instrumentation Approaches</h2>
+
+  <div class="card teal">
+    <strong>OpenTelemetry</strong>
+    The open-source industry standard for instrumenting observability. Most frameworks and cloud providers support it.
+  </div>
+
+  <h3>6.1 Three Instrumentation Methods</h3>
+  <table>
+    <tr><th class="teal" style="width:22%">Method</th><th class="teal">How It Works</th><th class="teal" style="width:18%">Pros</th><th class="teal" style="width:18%">Cons</th></tr>
+    <tr>
+      <td><strong>SDK-based (Manual)</strong></td>
+      <td>Manually instrument each function with tracing code</td>
+      <td>Maximum control and granularity</td>
+      <td>Laborious; tight coupling to the framework</td>
+    </tr>
+    <tr>
+      <td><strong>Auto-instrumentation</strong></td>
+      <td>Uses <span class="term">monkey patching</span> &mdash; dynamically wraps functions at runtime, adding trace emission without modifying original code. Just add a decorator.</td>
+      <td>Minimal code changes; most commonly used</td>
+      <td>May conflict with other logging libraries</td>
+    </tr>
+    <tr>
+      <td><strong>Proxy-based</strong></td>
+      <td>Application traffic is routed through a third-party server that extracts and logs data from inputs/outputs</td>
+      <td>No code changes needed</td>
+      <td>Added latency; external dependency</td>
+    </tr>
+  </table>
+
+  <div class="highlight">Auto-instrumentation is the most commonly used approach in practice. It dynamically wraps API calls (e.g., OpenAI chat completion) to emit traces alongside the original functionality.</div>
+</section>
+
+<!-- SECTION 7 -->
+<section id="s7">
+  <h2>7. Trace Data Structure &amp; Code Example</h2>
+
+  <h3>7.1 Span Data Fields</h3>
+  <table>
+    <tr><th style="width:28%">Field</th><th>Description</th></tr>
+    <tr><td><strong>Trace ID</strong></td><td>Unique ID for the entire request path (shared by all spans in a trace)</td></tr>
+    <tr><td><strong>Span ID</strong></td><td>Unique ID for this specific operation</td></tr>
+    <tr><td><strong>Parent Span ID</strong></td><td>Span ID of the calling/parent operation (empty for root span)</td></tr>
+    <tr><td><strong>Status</strong></td><td>Whether the operation was successful</td></tr>
+    <tr><td><strong>Attributes</strong></td><td>Metadata: IP address, port, host, custom key-value pairs</td></tr>
+    <tr><td><strong>Events</strong></td><td>Notable occurrences during the span (e.g., "print was called")</td></tr>
+  </table>
+
+  <h3>7.2 Agent Tracing Example: Fibonacci Agent</h3>
+  <p>An agent is built to write and execute a Python function that calculates the Fibonacci sequence. When asked to compute the 50th Fibonacci number, the trace dashboard reveals the following span sequence:</p>
+
+  <div class="flowchart">
+    <div class="flow-step">Predict (understand query)</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step green">Predict Stream</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step purple">Function Call (define fib function)</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step teal">Execute Function (tool call)</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step orange">Complete Answer</div>
+  </div>
+
+  <p>Each sub-span captures operational details &mdash; just like in the RAG pipeline. The trace shows the full step-by-step execution of the agent on a visualization dashboard.</p>
+
+  <h3>7.3 Code Example: Three-Function Tracing</h3>
+  <p>Consider three functions: <code>say_hello</code> calls <code>format_string</code> and <code>print_hello</code>.</p>
+
+  <div class="diagram">
+    <svg width="480" height="200" viewBox="0 0 480 200">
+      <rect x="140" y="10" width="200" height="44" rx="8" fill="#2563eb" stroke="none"/>
+      <text x="240" y="37" text-anchor="middle" fill="#fff" font-weight="600" font-size="14">say_hello("world")</text>
+      <text x="240" y="52" text-anchor="middle" fill="none" font-size="1">.</text>
+      <!-- Arrows down -->
+      <line x1="180" y1="54" x2="120" y2="100" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <line x1="300" y1="54" x2="360" y2="100" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <!-- Children -->
+      <rect x="20" y="105" width="200" height="44" rx="8" fill="#16a34a" stroke="none"/>
+      <text x="120" y="132" text-anchor="middle" fill="#fff" font-weight="600" font-size="14">format_string</text>
+      <rect x="260" y="105" width="200" height="44" rx="8" fill="#7c3aed" stroke="none"/>
+      <text x="360" y="132" text-anchor="middle" fill="#fff" font-weight="600" font-size="14">print_hello</text>
+      <!-- Labels -->
+      <text x="120" y="172" text-anchor="middle" fill="#64748b" font-size="11">parent = say_hello</text>
+      <text x="360" y="172" text-anchor="middle" fill="#64748b" font-size="11">parent = say_hello</text>
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <h3>7.4 Resulting Spans</h3>
+  <table>
+    <tr><th class="green">Span</th><th class="green">Trace ID</th><th class="green">Span ID</th><th class="green">Parent ID</th><th class="green">Key Attribute</th></tr>
+    <tr><td>say_hello</td><td>T1</td><td>S1</td><td><em>none (root)</em></td><td>name = "world"</td></tr>
+    <tr><td>format_string</td><td>T1</td><td>S2</td><td>S1</td><td>formatted output</td></tr>
+    <tr><td>print_hello</td><td>T1</td><td>S3</td><td>S1</td><td>event: "print called"</td></tr>
+  </table>
+
+  <div class="card orange">
+    <strong>Key Insight</strong>
+    Both <code>format_string</code> and <code>print_hello</code> share the <strong>same parent (S1)</strong> because they are both called by <code>say_hello</code>. <code>print_hello</code> is <em>not</em> a child of <code>format_string</code>.
+  </div>
+</section>
+
+<!-- SECTION 8 -->
+<section id="s8">
+  <h2>8. Observability Frameworks Landscape</h2>
+
+  <table>
+    <tr><th class="teal">Framework</th><th class="teal">OpenTelemetry Support</th><th class="teal">Notes</th></tr>
+    <tr><td><strong>Arize Phoenix</strong></td><td><span class="badge green">Full</span></td><td>Complete OpenTelemetry support, no converters needed</td></tr>
+    <tr><td><strong>RAGAS</strong></td><td><span class="badge green">Full</span></td><td>Complete OpenTelemetry support</td></tr>
+    <tr><td><strong>LangFuse</strong></td><td><span class="badge green">Full</span></td><td>Built on OpenTelemetry; provides tracing libraries</td></tr>
+    <tr><td><strong>LangSmith</strong></td><td><span class="badge orange">Own</span></td><td>LangChain's own tracing framework; ideal for LangGraph agents</td></tr>
+    <tr><td><strong>MLflow</strong></td><td><span class="badge orange">Partial</span></td><td>Not natively OpenTelemetry; third-party converters available</td></tr>
+    <tr><td><strong>Weights &amp; Biases</strong></td><td><span class="badge orange">Own</span></td><td>Own observability framework</td></tr>
+    <tr><td><strong>Databricks</strong></td><td><span class="badge green">Full</span></td><td>Built on OpenTelemetry; easy log export</td></tr>
+    <tr><td><strong>Opik</strong></td><td><span class="badge green">Full</span></td><td>Open source, built on OpenTelemetry</td></tr>
+  </table>
+
+  <div class="highlight">The majority of observability frameworks use the OpenTelemetry standard. Your choice depends on which agent framework and visualization dashboard you use.</div>
+</section>
+
+<!-- SECTION 9 -->
+<section id="s9">
+  <h2>9. Cloud Provider Observability (AWS)</h2>
+
+  <p>AWS, GCP, and Azure all generally support the OpenTelemetry standard. The lecture focuses on AWS, which offers two key services:</p>
+
+  <div class="grid">
+    <div class="card orange">
+      <strong>CloudTrail</strong>
+      Captures <em>user actions</em> on AWS resources: creating, renaming, or setting permissions on agents. Operational audit trail.
+    </div>
+    <div class="card teal">
+      <strong>CloudWatch</strong>
+      Captures what happens <em>inside</em> an agent during execution: trace IDs, spans, internal processing steps of RAG/agent workflows.
+    </div>
+  </div>
+
+  <h3>9.1 Two Ways to Create Agents on AWS</h3>
+  <table>
+    <tr><th style="width:35%">Method</th><th>Instrumentation</th></tr>
+    <tr><td>AWS UI (console)</td><td>Some default metrics captured automatically</td></tr>
+    <tr><td>Framework + Amazon Agent Core (deploy code-built agents)</td><td>Must code instrumentation manually; logs go to CloudWatch/CloudTrail</td></tr>
+  </table>
+
+  <div class="card red">
+    <strong>Important Distinction</strong>
+    Even without instrumentation, CloudTrail captures that an agent was <em>created</em>. But for detailed execution traces with all spans, you <strong>must</strong> instrument your code.
+  </div>
+</section>
+
+<!-- SECTION 10 -->
+<section id="s10">
+  <h2>10. G-Eval Framework</h2>
+  <p><span class="badge purple">Microsoft Research</span> G-Eval extends and standardizes the LLM-as-a-Judge method with two key innovations.</p>
+
+  <h3>10.1 Innovation 1: Auto-Generated Chain-of-Thought Evaluation Steps</h3>
+  <p>Instead of a simple "rate this on 1-5," G-Eval automatically generates structured evaluation steps:</p>
+
+  <div class="flowchart">
+    <div class="flow-step green">Read article &amp; identify main topic + 3 key points</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step purple">Read summary &amp; compare coverage</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step teal">Check clarity &amp; order</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step orange">Assign score (1&ndash;5)</div>
+  </div>
+
+  <h3>10.2 Innovation 2: Token Probability-Weighted Scoring</h3>
+
+  <div class="card purple">
+    <strong>How It Works</strong>
+    When the LLM outputs a score token (e.g., "3"), it also produces probabilities for alternative tokens (1, 2, 4, 5). G-Eval retrieves all token probabilities and computes:
+    <br><br>
+    <strong>Final Score = &Sigma; (score &times; token probability)</strong>
+    <br><br>
+    This weighted average captures the LLM's <em>confidence</em> in its judgment, producing a more robust and continuous score rather than a discrete integer.
+  </div>
+
+  <p><strong>Why this matters:</strong> With temperature &gt; 0, an LLM might give score "1" eight times out of ten, "2" once, and "3" once. The weighted score captures this distribution in a single evaluation pass.</p>
+</section>
+
+<!-- SECTION 11 -->
+<section id="s11">
+  <h2>11. RAGAS Framework</h2>
+  <p><span class="badge teal">RAG-Specific Evaluation</span> RAGAS (from a UK research group) defines three core metrics for evaluating Retrieval-Augmented Generation systems.</p>
+
+  <h3>11.1 The Three RAGAS Metrics</h3>
+
+  <div class="diagram">
+    <svg width="560" height="300" viewBox="0 0 560 300">
+      <!-- Central circle -->
+      <circle cx="280" cy="150" r="55" fill="#2563eb" opacity="0.1" stroke="#2563eb" stroke-width="2"/>
+      <text x="280" y="146" text-anchor="middle" font-weight="700" fill="#2563eb" font-size="15">RAG</text>
+      <text x="280" y="163" text-anchor="middle" font-weight="700" fill="#2563eb" font-size="15">Quality</text>
+
+      <!-- Faithfulness -->
+      <rect x="10" y="15" width="170" height="70" rx="10" fill="#dc2626" opacity="0.12" stroke="#dc2626" stroke-width="1.5"/>
+      <text x="95" y="42" text-anchor="middle" font-weight="700" fill="#dc2626" font-size="13">Faithfulness</text>
+      <text x="95" y="60" text-anchor="middle" fill="#64748b" font-size="11">Answer vs. Context</text>
+      <text x="95" y="75" text-anchor="middle" fill="#64748b" font-size="11">(Hallucination check)</text>
+      <line x1="180" y1="55" x2="230" y2="120" stroke="#dc2626" stroke-width="1.5"/>
+
+      <!-- Answer Relevance -->
+      <rect x="380" y="15" width="170" height="70" rx="10" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="465" y="42" text-anchor="middle" font-weight="700" fill="#16a34a" font-size="13">Answer Relevance</text>
+      <text x="465" y="60" text-anchor="middle" fill="#64748b" font-size="11">Answer vs. Question</text>
+      <text x="465" y="75" text-anchor="middle" fill="#64748b" font-size="11">(Addresses the query?)</text>
+      <line x1="380" y1="55" x2="330" y2="120" stroke="#16a34a" stroke-width="1.5"/>
+
+      <!-- Context Precision -->
+      <rect x="195" y="225" width="170" height="70" rx="10" fill="#7c3aed" opacity="0.12" stroke="#7c3aed" stroke-width="1.5"/>
+      <text x="280" y="252" text-anchor="middle" font-weight="700" fill="#7c3aed" font-size="13">Context Precision</text>
+      <text x="280" y="270" text-anchor="middle" fill="#64748b" font-size="11">Context vs. Question</text>
+      <text x="280" y="285" text-anchor="middle" fill="#64748b" font-size="11">(Retrieval quality)</text>
+      <line x1="280" y1="205" x2="280" y2="225" stroke="#7c3aed" stroke-width="1.5"/>
+    </svg>
+  </div>
+
+  <table>
+    <tr><th class="red" style="width:22%">Metric</th><th class="red">What It Measures</th><th class="red">How It Works</th></tr>
+    <tr>
+      <td><strong>Faithfulness</strong></td>
+      <td>Whether claims in the answer are supported by the retrieved context (hallucination detection)</td>
+      <td>Extract individual statements from the answer; verify each against context. <strong>Score = supported statements / total statements</strong>. Example: 4 of 5 statements verified &rarr; 0.80</td>
+    </tr>
+    <tr>
+      <td><strong>Answer Relevance</strong></td>
+      <td>Whether the answer directly addresses the original question</td>
+      <td>Generate possible questions the answer could respond to. Calculate cosine similarity between generated questions and the original question. <strong>Score = average similarity</strong>.</td>
+    </tr>
+    <tr>
+      <td><strong>Context Precision</strong></td>
+      <td>How relevant the retrieved context is for answering the question</td>
+      <td>Check each sentence in the context for relevance to the answer. Similar to precision in information retrieval.</td>
+    </tr>
+  </table>
+
+  <h3>11.2 Example: Faithfulness Score</h3>
+  <div class="score-bar-container">
+    <div class="score-label">Faithfulness: 4/5 statements supported = 0.80</div>
+    <div class="score-bar">
+      <div class="score-fill" style="width:80%; background: var(--accent-green);">80%</div>
+    </div>
+  </div>
+
+  <h3>11.3 Key Q&amp;A Insights</h3>
+  <div class="card orange">
+    <strong>Q: What if the LLM answers correctly but not from the context?</strong>
+    Faithfulness will be <em>low</em> (answer not grounded in context) even if answer relevance is <em>high</em>. The LLM used its own training knowledge instead of the provided context &mdash; which in RAG scenarios counts as hallucination.
+  </div>
+  <div class="card orange">
+    <strong>Q: Does the order of context matter?</strong>
+    Yes. LLMs give more importance to text at the beginning. But regardless of <em>why</em> hallucination occurs (e.g., relevant info buried in the middle of a long context), faithfulness measures <em>whether</em> it occurs.
+  </div>
+
+  <h3>11.4 Fixing Poor Metrics</h3>
+  <table>
+    <tr><th class="green" style="width:30%">Poor Metric</th><th class="green">Potential Fixes</th></tr>
+    <tr><td>Low Faithfulness</td><td>Improve context quality; reduce context length; re-rank retrieved passages</td></tr>
+    <tr><td>Low Answer Relevance</td><td>Improve prompt template; add answer constraints; fine-tune model</td></tr>
+    <tr><td>Low Context Precision</td><td>Return fewer results; re-vectorize data; improve chunking strategy</td></tr>
+  </table>
+</section>
+
+<!-- SECTION 12 -->
+<section id="s12">
+  <h2>12. DeepEval Library</h2>
+
+  <div class="card green">
+    <strong>What It Is</strong>
+    An <strong>open-source Python library</strong> that packages G-Eval and RAGAS metrics (plus 30+ additional LLM-based metrics) into a plug-and-play framework.
+  </div>
+
+  <h3>12.1 Key Features</h3>
+  <div class="grid">
+    <div class="card">
+      <strong>Pre-built Metrics</strong>
+      RAGAS metrics, G-Eval metrics, BLEU, METEOR, and 30+ additional LLM-based metrics. No need to write your own.
+    </div>
+    <div class="card purple">
+      <strong>Synthetic Data Generation</strong>
+      Generate test data automatically for evaluation purposes.
+    </div>
+    <div class="card red">
+      <strong>Red Teaming</strong>
+      Built-in support for jailbreak detection and security testing of LLM applications.
+    </div>
+  </div>
+
+  <div class="highlight">If you do not have access to commercial LLM APIs, you can use <strong>Ollama</strong> with the <strong>Gemma</strong> model to run DeepEval locally. It will be slower but functional.</div>
+
+  <div class="card red">
+    <strong>Course Project Requirement</strong>
+    The instructor expects <strong>every project</strong> to include some level of LLM evaluation. Prototypes presented without proper evaluation will <strong>not receive full credit</strong>. DeepEval is the recommended framework. Additionally, students are strongly encouraged to <strong>run the two provided notebooks</strong> to build hands-on understanding of evaluation, which will be critical for future GenAI work.
+  </div>
+</section>
+
+<!-- SECTION 13 -->
+<section id="s13">
+  <h2>13. Evaluation Rubrics &amp; Structured Criteria</h2>
+
+  <h3>13.1 Simple Rubric Scoring</h3>
+  <p>Example: Evaluating a chat session summary on key-finding coverage.</p>
+  <table>
+    <tr><th class="purple" style="width:15%">Score</th><th class="purple">Criteria</th></tr>
+    <tr><td><strong>0</strong></td><td>Summary does not contain any key points</td></tr>
+    <tr><td><strong>1</strong></td><td>Summary has some key points but in the wrong order</td></tr>
+    <tr><td><strong>2</strong></td><td>Summary has all key points but in the wrong order</td></tr>
+    <tr><td><strong>3</strong></td><td>Summary has all key points in the correct order</td></tr>
+  </table>
+
+  <h3>13.2 Structured Evaluation with DeepEval</h3>
+  <p>DeepEval allows <strong>conditional, logical evaluation flows</strong> instead of plain-text rubrics:</p>
+
+  <div class="flowchart">
+    <div class="flow-step green">Does the summary extract key findings?</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step purple">Are conclusions accurate?</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step teal">Is the ordering correct?</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step orange">Assign intermediate &amp; final scores</div>
+  </div>
+
+  <h3>13.3 Additional Metric Categories in DeepEval</h3>
+  <div class="grid">
+    <div class="card teal">
+      <strong>RAG-Specific Metrics</strong>
+      Faithfulness, relevance, context precision, and more.
+    </div>
+    <div class="card purple">
+      <strong>Multi-Modal Context Metrics</strong>
+      For LLMs handling images, audio, or mixed-media inputs.
+    </div>
+    <div class="card red">
+      <strong>Safety Metrics</strong>
+      Toxicity detection, bias evaluation, and harmful content identification.
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 14 -->
+<section id="s14">
+  <h2>14. Key Takeaways</h2>
+
+  <div class="grid">
+    <div class="card green">
+      <strong>1. Evaluate Every Component</strong>
+      LLM applications must be evaluated at each pipeline stage, not just the final output. Each component's quality affects the whole.
+    </div>
+    <div class="card teal">
+      <strong>2. Observability Is Essential</strong>
+      Traces and spans capture intermediate data needed for debugging, security analysis, and offline evaluation of LLM applications.
+    </div>
+    <div class="card">
+      <strong>3. OpenTelemetry Is the Standard</strong>
+      Most observability frameworks are built on the OpenTelemetry standard. Auto-instrumentation is the most practical approach.
+    </div>
+    <div class="card purple">
+      <strong>4. G-Eval Enhances LLM-as-a-Judge</strong>
+      Auto-generated CoT evaluation steps and token probability-weighted scoring produce more robust and continuous evaluation scores.
+    </div>
+    <div class="card red">
+      <strong>5. RAGAS: Three RAG Metrics</strong>
+      Faithfulness (hallucination), Answer Relevance (addresses the question), and Context Precision (retrieval quality) cover the core RAG evaluation dimensions.
+    </div>
+    <div class="card orange">
+      <strong>6. DeepEval for Implementation</strong>
+      Use the DeepEval library for plug-and-play evaluation with 30+ metrics, synthetic data generation, and red teaming. Course projects require some level of evaluation.
+    </div>
+  </div>
+</section>
+
+</div>
+</body>
+</html>

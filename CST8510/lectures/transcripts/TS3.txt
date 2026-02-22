@@ -1,0 +1,225 @@
+DEEP LEARNING AND AUTOMATIC FEATURE CREATION
+
+But with deep learning, they have come to creating their own features, in general, as representations. For example, if you take a deep learning model, take different layers of convolution and pooling, things like that, and it learns all of these features, right? Very raw, you know, just edges, corners, at the lower layers. But then if you go farther downstream in the model, then what happens is the model itself is doing internal transformations. You have these features like the edges and corners at the earlier layers, which start up here, and as the various internal transformations — not just one transformation — the model itself creates, in general, higher order abstract features. Hence, these days, particularly for image data, as part of the model training, it internally develops these features. That's one of the big advantages of deep learning.
+
+This is for audio as well, and to some extent, text, right? In text, earlier, people used to create features like bigrams, trigrams, right? And people used to use synonyms to replace, you know, some of the things. So people used to, you know, do feature engineering even in text. But these days, with transformer models and representations like embeddings, right? So it was that numerical representation, right? Once you have the numerical representation, in the later layers, right, the representation for text data, these days, nobody much creates features, because pretty much once you tokenize it and use any kind of embedding type of representation — like if you just use the embedding. For example, if you want to do sentiment analysis, right, you find you have some model with some sentiment analysis examples and just use the embedding, that will do the job.
+
+
+WHY FEATURE ENGINEERING IS STILL NEEDED
+
+But then, why do you need feature engineering? Today I'm going to talk about when you need it. You need to understand that in industry, they don't always use deep learning, because of various reasons. Many industries require you to explain the results. For example, it is mandatory that insurance or financial institutions, when somebody applies for a mortgage loan or credit score, you need to explain why that score or mortgage was rejected. So if you just use a deep learning model, you may not have enough explainability.
+
+Similarly, if you are in cybersecurity, right, if you need to explain to the security analyst at the SOC why this is an attack, this particular user seems to be suspicious, right? So a lot of various industries still don't use deep learning models in various domains.
+
+And also, if you look at typical data like log data, where you get logs, a lot of logs — this kind of automatic feature learning does not work because it's from the software. You have a lot of fields, nested fields, you need to parse them, and there is the schema, and then you know, make some transformations, and you want to do some aggregations because they produce continuous values, right? There will be a lot of them.
+
+So in various domains like that, you know, you deal with log data, if you deal with a lot of data related to finance, healthcare — you really don't use deep learning models for the type of data you deal with. It still requires feature engineering. So it is still important. Just because embedding models are there doesn't mean that you always avoid feature engineering.
+
+
+TRADITIONAL TEXT PREPROCESSING
+
+So just to give examples of what people used to do earlier: the original text is "I have a dog, he is sleeping," right? So you then use some NLP techniques. You remove some of the stop words. The stop words are like "a" — it appears in almost every text, right? So they are not informative. They don't carry any information. If you remove that, you end up with words like "I," "have," "dog," "is," "sleeping."
+
+Now, there is a problem because there could be another text saying "I have a dog, he slept just now," right? So "sleeping," "slept," "sleep" — all these are the same root word. So you do this kind of lemmatization — you remove the inflections, then keep the root of the word.
+
+So you convert the sentence step by step: "I have a dog, he is sleeping" — first, the contractions. Then the key step that most of you know is removing punctuation: "I have a dog he is sleeping." Then you convert uppercase to lowercase. Then you do lemmatization.
+
+So after all this, you can convert this into a bag of words. So from the simple sentence "I have a dog, he is sleeping," you get features like: "I," "have," "dog," "sleep."
+
+Embeddings are superior because they capture more contextual understanding of words and their relationships, whereas traditional bag-of-words features don't capture that context.
+
+But today, people do tokenization — tokenization that is standard. Then you just use a more numerical representation like embeddings, which is more common.
+
+There is a library from Meta called FastText. If you want to do very fast text classification, you can use FastText. It is based on traditional text features and is very fast. Speed-wise, it is about as fast as possible.
+
+
+MISSING VALUE TREATMENT
+
+So now we are talking about something else, which is before you do feature engineering, you might have to do missing value treatment. Because this is, again, a very, very important issue. Missing values arise particularly in various scenarios, right?
+
+For example, if you are looking at analyzing surveys, right, it's possible that people don't fill all the fields, right? Because they don't want to give that information or for various reasons. So you have a lot of missing values.
+
+Then you think of logs — logs from IoT devices, logs from your endpoint agents. So what happens is that these logs are collected locally, and once in a while, when the buffer is full, they push it to the cloud. That's how they work. Now, it's possible that sometimes they sample the logs, they don't send out all the logs, or at the time of sending the logs, especially during outages and other issues, the data does not transfer fully. So you know, a lot of missing rows or missing values, all that can happen. So missing value treatment is a very important aspect, particularly when dealing with customer data and log data.
+
+
+THREE TYPES OF MISSING VALUES
+
+So there are three types of missing values: Missing Completely At Random (MCAR), Missing At Random (MAR), and Missing Not At Random (MNAR). This has to do with whether these missing values are dependent on other variables, other rows, and things like that.
+
+Missing Completely At Random (MCAR): This means the missingness is not related to any other variable — not related to your gender, your income, or anything. It is completely random.
+
+For example, in a survey, respondents accidentally skip a question about their favourite colour due to a printing error on some forms. The printing error has nothing to do with that person's age or anything else. So it's completely at random. That is an example of MCAR.
+
+Missing At Random (MAR): In this case, the probability of a value being missing is related to other observed variables in the dataset, but not to the value of the missing data itself.
+
+For example, it is possible that one particular gender may not want to disclose their age as much. So what is going to happen is that if you are from that gender, you may not disclose your age. So in that case, it is not completely at random — it is Missing At Random. The missingness depends on the observed variable (gender), not on the age value itself. Note that the correlation between the missingness and the observed variable does not need to be perfect — it can be partial. In all those cases, you still classify it as Missing At Random.
+
+Or for example, if I have a certain illness, right, then I may not want to disclose some of my medical status. If they ask me, in a healthcare survey, what's my blood pressure or something — if I have some disease, I'm not going to disclose, right?
+
+In a MAR example, in a medical study, younger participants are more likely to not report their income. The missingness of income depends on age, not on the income value itself. So younger people don't report their income regardless of whether it's low or high.
+
+Missing Not At Random (MNAR): In this case, the probability of being missing is related to the missing value itself.
+
+For example, income: high income people may not want to disclose their income, or low income people may not want to disclose. So it depends upon that missing value itself, not related to any other variable. The dependency is on the value of that variable itself. That is called Missing Not At Random.
+
+In a survey, people with severe depression are less likely to answer questions about their mental status. That is because the value of the mental status variable itself determines the missingness.
+
+So to summarize: if a missing value does not depend on anything, it is Missing Completely At Random. If the missingness depends on another observed variable, it is Missing At Random. If the missingness depends on the value of that variable itself, it is Missing Not At Random.
+
+
+HANDLING MISSING VALUES
+
+So how do you handle missing values? You can do things like column deletion, row deletion — you can delete the entire column or row. For example, you could delete the column for age or mental status, or you could delete some rows like row one, row three, row six, et cetera. That's one option.
+
+But you should do this sparingly. Usually, there will be more rows compared to columns in any good dataset. So if you are missing a few rows, then it's okay to delete them. Otherwise, you know, deleting rows can be problematic. Deleting columns you should almost never do. So that's not a good approach.
+
+Instead, you can impute — you can replace the missing data. If it's numerical data, right, you can replace it with the mean or median. Or if it's ordinal data, you can replace it with the mode, or you can do some kind of interpolation.
+
+But imputation can lead to problems, because one problem is that it can create some bias in the data. For example, let's say in this case, the income column has one value of $50,000 and one of $10,000. If you replace the missing values with the mean or mode or do interpolation, it may bias the data, because those values are high, right? Maybe the missing incomes are actually $5,000. So you can create bias in the data.
+
+But imputation is often used in practice, which is better than deletion. However, it can also cause problems — because when you do something like interpolation, you are creating dependency between the data. Let's say you are doing the imputation using the mean, and the mean is dependent on other values. Now, let's say you use this data for creating a model. You split the data randomly into training and test sets. And it also happens that imputed rows end up in the test data. So now what is happening is that the test data — where you want to produce some labels, whether this person is, let's say, high risk or low risk for credit scoring — this test data is supposed to be unseen by the model. The test data should be completely independent. But during the imputation, some information from the training data leaked into the test data. That can cause the model to overfit.
+
+Q: Should we do imputation separately within training and test sets?
+
+A: Absolutely. That's correct. So you should first do the splitting, then do the imputation within each split separately. That's more accurate. So these are important things to take care of.
+
+
+FEATURE SCALING
+
+Another thing you need to do is feature scaling. Feature scaling is important because, for example, age ranges from roughly 0 to maybe 100 or 200. Whereas income can go from a few thousands to hundreds of thousands, right? So that range is very huge. Whereas the number of children is always going to be single digits, right?
+
+Now, when you fit models — let's say a regression model or a classification model — the model doesn't know or understand that age is something that goes between a small range. It just treats everything as a number, right? It's just a number. So when you estimate the model parameters, it can cause more errors. The errors associated with the estimation of parameters can be problematic. It's ideal to make all the numerical features in the same range.
+
+Min-Max Scaling: This can be done using simple scaling. You subtract the minimum value from each value, then divide by the max minus min. So this transformation will convert all your numerical features into the 0 to 1 range.
+
+And of course, for categorical features, you do one-hot encoding.
+
+Box-Cox Transformation: You can also convert features into a Gaussian distribution using what is called a Box-Cox transformation. Because usually models assume that the variables satisfy some kind of normal distribution. The noise satisfies a normal distribution, particularly in problems like linear regression and logistic regression. So if you see your feature distributions are skewed, then it's better to transform them to be closer to a normal distribution.
+
+Binning: The third approach is converting continuous values into buckets. For example, age — instead of using the raw age value, you create buckets for ages: 0-10, 10-20, and so on. You can have five different bucket sizes depending on your problem.
+
+Because what happens is that when you take age, age is really an integer, and when you look at the distribution, you don't see a smooth distribution. You may see one or two cases for children aged 1, 2, 3, 5. You may see a lot of ages like 30, 31, 40, 50. Again, you don't see many ages above 60, 70. But if you convert into buckets, it helps reduce the noise and make the distribution more smooth.
+
+So it's better for quantities like age to convert them into ranges — discrete quantities by binning — rather than raw continuous values.
+
+
+HIGH CARDINALITY FEATURES AND EMBEDDINGS
+
+Now, there are high cardinality features. For example, there are things like zip codes, IP addresses — IP addresses are like almost infinitely many. So many IP addresses are possible. If you keep them as they are, they are not useful for models. But you can convert them into some kind of embeddings.
+
+The advantage of embeddings is that they preserve semantics, particularly for words. Essentially, what embedding means is you create a numerical vector of a fixed size. So your sentence can be quite long, and a sentence is composed of words. For each word, you create a numerical vector.
+
+For example, let's say there's the word "cat." You create an embedding of, say, size seven. Now, you take a word, and the embedding algorithm will create numerical representations where similar words will be very close. So "cat" and "kitten," for example, are very similar. They will be very close in the embedding space. But if you take something like "house," that will be much different.
+
+So if you think of this as a numerical vector in a space, the words which have similar meanings — they will be close together. The algorithm which creates this embedding is constructed such that the values of the numerical weights for words which are similar in meaning will be closer — mathematically similar.
+
+Similarly, you see "man" and "woman," right? And "king" and "queen." The classic example is that if you take the difference between "man" and "king," you get the same difference as "woman" and "queen." This is because of the structured nature of embeddings.
+
+You can choose the embedding size — whether it's 500 dimensions or 10 dimensions. Typically there are a few hundred dimensions. Then you take a sentence, and you can convert that sentence into one vector by taking the embedding of each of the words in the sentence, then doing some kind of pooling. You can do max pooling or average pooling — basically, average all the word vectors and create one vector for the sentence. Or you can concatenate the word vectors, but then it becomes a very large vector.
+
+So today, embeddings are the most used representation of words as features. The reason is they preserve semantic relationships. If your model is trained and "dog" is in the training data, when at inference time there's the word "kitten," it understands that it is talking about something similar to "cat." And if something is about "house," it's very different.
+
+
+EMBEDDING MODELS: WORD2VEC, GLOVE, BERT
+
+There are various algorithms for creating word embeddings.
+
+Word2Vec: The first major model, which came about 10 years ago, created the first embedding model. What it does is it has a small neural network. You create a task where you have a sentence: this is the current word, this is the previous word, this is the word previous to that, this is the next word, and the word next to that — the words around the current word. You predict this word given the surrounding words. So given the surrounding words, predict the current word. This is called Continuous Bag of Words (CBOW). Or you can do it the other way — given a word, predict the surrounding words. That's called Skip-gram. There are two different models. Both ways you can train the model, and when you train it, that neural network's middle layer — the hidden layer — becomes the embedding. So that's how you create the Word2Vec embedding.
+
+GloVe: Then there's an improvement from Stanford — GloVe (Global Vectors for Word Representation). This was developed at Stanford University.
+
+BERT: But then nowadays, particularly BERT — the Bidirectional Encoder Representations from Transformers — the first transformer model, developed at Google. It's a bidirectional encoding transformer. So it can be used to create embeddings. You train that model on a large corpus and choose some layers. Typically, the last layer will be a logistic-type layer which converts the output into some kind of probability for various classes. So don't take the final layer — but take one layer before the final layer. That layer will be a numerical layer. The last layer converts into probabilities for class types. So if you take one layer from the last, that hidden layer is used as the embedding.
+
+Today, for example, there are a lot of embedding models. If you guys are familiar with Hugging Face, you can download all your models from Hugging Face. There is a separate tab for embedding models. In fact, there is also a leaderboard for embeddings. So you see things like Snowflake, one of the leading embedding models these days, or even from Alibaba. Just like you can download open source LLM models like LLaMA, there are open source embedding models available on Hugging Face. You can download one of the latest embedding models for your tasks.
+
+For example, there is a benchmark called MTEB — Massive Text Embedding Benchmark. You can see the models there. For example, 4096 means that your embedding vector is of dimension 4096, which is very large. You might not need that — you might want something smaller, maybe less than a thousand dimensions. If you use higher dimensional embeddings and your problem does not require it, your computational cost will become higher. And this increases memory usage as well.
+
+
+DATA LEAKAGE
+
+Now I'm talking about data leakage. This is very important. As I said, when you train the model, it is important that you split the data into training, validation, and test sets. And it's important that the validation and test data should not have any information or any data which is part of the training set.
+
+It's possible that sometimes, without knowing, this happens. And you wouldn't know — it's happened to me many times. You did everything right, but at the end of the day, you see the model is doing very well — you don't expect it to do that well — and when you test it in production, the performance goes down. That is partly because there is data leakage.
+
+Data leakage can happen for various reasons:
+
+1. Aggregate Features: A feature which is an aggregate of another feature or another variable. For example, suppose you have a model and in that model you have a feature for monthly salary. When you calculate yearly salary — you aggregate monthly salary to get yearly salary. Then if you use monthly salary as a variable for predicting something, and yearly salary is also used, that can leak some information. So there is a dependency between the features.
+
+2. Duplicate Data: Sometimes there could be duplicate data. Without knowing, when you do the training-test split, some part of the duplicate data — one copy will come into the training dataset and another into the test data.
+
+3. Temporal Dependency: This is similar to the case of interpolation, because when you do the interpolation operation, you create dependency between that value and previous values. For time series data, you know that you should never do random splitting. You should always do splitting based on time. You use data up to some time point for training, then from that time to some later window for validation, then from that point to a later time for testing. You should always do this because time series data does not adhere to the identically and independently distributed (i.i.d.) assumption. There's always dependency between observations up to some autocorrelation lag. So if you split time series data randomly, you can create data leakage because the samples are not independent.
+
+So these are the three or four reasons for data leakage. This is important because if you don't address this, you may see good performance of your model during development, but at the end of the day when you test the model in real life, you see that it is not actually doing well. It was doing well during development because of data leakage, not because of true performance.
+
+
+BEST PRACTICES FOR DATA PREPROCESSING
+
+So this is the process: you should split the data before imputation and scaling. As I said, you should split into training, test, and validation sets, then do the value imputation — not impute before splitting.
+
+First, remove duplicates, then split. Don't do it the other way around.
+
+Similarly, when you do Box-Cox transformation, that again creates dependency. So you should not do Box-Cox transformation and then split into training and test. You should split into training and test first, then do Box-Cox transformation within each set.
+
+For splitting, you can use stratified splitting, random splitting, and other methods.
+
+Also, when you take data, measure the correlation between each feature and the target. If some features are highly correlated with the target, then you need to be suspicious — that could be a sign of data leakage.
+
+For temporal correlation, it is measured using the autocorrelation function. Basically, you take a value at time T and the same variable at time T plus some lag, right? So compute the correlation between X at time T and X at time T plus tau. If you see that there's autocorrelation, then you can identify a time scale within which the correlation exists. That's the autocorrelation function.
+
+
+FEATURE SELECTION
+
+The last topic we are going to cover today is feature selection. So now that you have engineered a lot of features — by creating embeddings, doing standard feature engineering techniques, and other things — generally people say more features are good because more signals are good, right? Machine learning is about combining a lot of signals.
+
+But then the problem is that too many features are also not good, because you need enough data to support them. If you have more features than data points, it can cause overfitting. It comes from simple understanding of linear algebra — when you have a matrix where the number of columns is more than the number of rows, you do not get a good solution. So the number of features compared with the number of observations can lead to overfitting — you don't have enough samples to fit the model.
+
+Also, features need to be stored in memory. So if you use too many features, it may consume more computational resources. And more features also means that when you send one sample for inference, it has to fetch all the features and compute using all the features, which can increase latency. And more features also require more data.
+
+So you want to keep an optimum number of features for your model. Even though you may be able to create a large number of features, you want to keep only the best features for your model. So you use some form of feature selection — you select the best features and discard the rest.
+
+So how do you do feature selection? Two factors you should be concerned with:
+
+1. Is that feature important to the model? When I add that feature to the model, is it increasing its accuracy or whatever performance metric? I build the model without the feature, I build the model with the feature — is the difference substantial? Then I need to keep the feature.
+
+2. Is that feature helping me to generalize better? When I develop this model and then use it in production, it is going to make inference on new, unseen data, right? The distribution of unseen data is going to be different. So you want the model to also generalize well — it should perform well on unseen data. Features may be doing well on your training and validation sets, but when you start using it on the test set or unseen data, it may not do well. So keep this in mind — it's not just enough that it improves the model during development. You need to make sure the features also help generalize.
+
+
+FEATURE SELECTION METHODS
+
+Forward and Backward Selection: You can do a systematic approach. You start with one feature, right? Then from the remaining features, you add one by one and see which one is increasing accuracy. So then you have two features. Then from the remaining features, again, you do that. So you do this recursively. You can either do forward selection — start with one and add features — or backward elimination — start with all the features and remove features one by one.
+
+Interaction Features: Another consideration is interaction features — combinations of features. If you have N features, you have a factorial number of combinations. But from domain experience, you can identify which features are likely to interact and which ones don't contribute. The first-order features when you do interaction tend to be more important than higher-order interactions. Normally, after the second order, interactions don't contribute much. But yes, if there are a lot of features, you would need to try many combinations.
+
+Entropy-Based Methods: You compute the entropy difference between the model with a feature included and the feature not included. Then you rank the features based on this. You can select features using this entropy-based criterion.
+
+
+SHAPLEY VALUES FOR FEATURE SELECTION
+
+But increasingly, people use what is called Shapley values. This is a concept borrowed from game theory. This method was invented by a person named Lloyd Shapley.
+
+The idea is to think of the model as a cooperative game, driven by all the features to make a prediction. Then you find the contribution of each feature to the prediction. So when the model predicts, for a particular record, when it makes an inference — let's say you are predicting whether a particular transaction is fraud — in that prediction, each feature adds some contribution. This method calculates what is the contribution of each feature. Based on that contribution, you can decide which features to keep.
+
+Shapley Values at Two Levels:
+
+1. Global Level (Model Level): When you build a model, you want to see which features are important for that model overall. This is for feature selection during development.
+
+2. Local Level (Individual Prediction): Now you have the model in production. For example, you build a credit scoring model, and you did the Shapley value analysis and identified the best features. That model is in production and you are scoring each customer for a loan application. When you make a decision — whether the credit score is high or low — you can look at the Shapley values for that particular transaction and decide what contributed to the loan rejection. So Shapley values can be used both globally for feature selection and locally for explaining individual predictions.
+
+For example, when you build a model and compute the Shapley values for a classification problem, each feature shows its importance. The color indicates whether the importance is low or high — one color means low importance and another means high importance. And the direction shows whether the feature is contributing toward the positive class or the negative class. So for example, if a feature has very high contribution towards the negative class, it is supporting the negative class prediction. Whereas another feature might be very important for the positive class.
+
+It gives you the numerical value, and you can sort the features based on the Shapley value. You see which is the highest contributing feature for the model. So, for example, in a model, the top feature might contribute most to one class, and the next feature to another class. You can decide to keep only the top features — you sort based on the Shapley values and decide a cutoff. Any features below that cutoff, you can remove from your model.
+
+For individual predictions: let's say I took this model and scored a customer, and for that particular record, I saw the Shapley value for one feature is 4.98 and the Shapley value for another is minus 2. These two features contributed most to the rejection of the loan application. Then I know what caused the rejection. So Shapley values can be useful both at the global level for feature selection and at the local level for individual prediction explainability.
+
+Credit Scoring Example: For example, in a credit scoring model, the most important feature might be the difference between the first payment date and the first due date. That tells you the gap between when your credit card payment was due and when you actually paid. That's the most important feature — so the practical takeaway is that you should pay your credit card bills on time. Then there might be GPS latitude and longitude, account creation date, due day of the week, age, and so on. For each of these features, the Shapley values will tell you whether it's positive or negative and how much it contributes.
+
+
+SUMMARY OF BEST PRACTICES
+
+Split the data before any transformations. Do it randomly if it's not time series data. If it is time series, split by time. Oversample your data after splitting, scale your data after splitting. Use statistics from the training data to scale your features, like for Box-Cox transformation.
+
+Understanding how your data is distributed and processed is important. Keep track of your data lineage — it's very important because sometimes you want to go back and check why the model failed. Data versioning is as important as model versioning.
+
+Use features that perform well. If your features are not used in your model, remove them — because you don't want features that might go out of distribution.
+
+Regarding PCA for feature selection: if you have more or less nonlinear dependencies, then PCA is not ideal. PCA assumes linear relationships and may not capture nonlinear insights. So PCA may work for dimensionality reduction in some cases, but it has its limitations.

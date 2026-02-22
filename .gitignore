@@ -1,0 +1,29 @@
+# Ignore everything
+*
+
+# But not the .gitignore itself
+!.gitignore
+
+# Allow CST directories
+!CST*/
+
+# Ignore everything inside CST directories
+CST*/*
+
+# But allow lectures/ and its contents
+!CST*/lectures/
+!CST*/lectures/**
+
+# Ignore common sensitive/bulky files
+.DS_Store
+.env
+.env.*
+.venv/
+.git/
+node_modules/
+__pycache__/
+*.pyc
+.idea/
+.vscode/
+*.log
+.cache/

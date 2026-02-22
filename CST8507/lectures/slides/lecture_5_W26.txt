@@ -1,0 +1,774 @@
+   CST8507: NATURAL
+LANGUAGE PROCESSING
+
+        WEEK#5
+   INTRODUCTION TO
+   LANGUAGE MODEL
+      DEVELOPED BY
+
+      HALA OWN, PH.D.
+    Lesson Agenda
+• Lab 3
+
+• Text Collection(overview)
+
+• Language Model
+  • N-gram
+
+  • NN Language model
+     • Recurrent Neural Networks RNN
+
+     • LSTMs
+
+                                       Page 2
+NLP Development Life Cycle
+
+ Requirements
+  gathering
+
+
+
+
+         Gather more         Improve the
+         data                model
+
+
+
+
+                                           3
+Data generated in one minute on various social platforms
+
+
+
+
+  Image source: HTTPs://localiq.com/blog/what-happens-in-an-internet-minute/
+                                                                               4
+Text Collection
+
+• Tweet Collecting
+  • X API
+
+
+
+
+                     5
+Create X Developer Account
+
+
+
+
+https://help.rssground.com/articles/233141-how-to-create-x-twitter-
+developer-app
+
+
+                                                                      6
+Web Scraping:Extraction of data from a website
+Python libraries are widely used for parsing HTML:
+   1. Beautiful Soup: A popular library for parsing HTML and XML documents. It
+     simplifies extracting data from web pages and has an active community with
+     detailed documentation.
+
+   2. lxml: Known for its speed, lxml is one of the fastest parsing libraries available. It
+     receives regular updates, with the latest released in July 2023.
+
+   3. html5lib: A pure-Python library designed to conform to the WHATWG
+
+   (Web Hypertext Application Technology Working Group) HTML
+
+   specification, ensuring compatibility with major web browsers.
+
+
+                                                                                              7
+Demo
+
+• Inclass code
+
+
+
+
+                 8
+Reminder
+
+PROBABILITY THEORY
+
+
+                     9
+Basic Probability Theory: Sampling with
+replacement
+        Pick a random shape, then put it back in the bag.
+
+
+
+
+       P( ) = 2/15         P( ) = 1/15       P(   or ) = 2/15
+       P(blue) = 5/15      P(red) = 5/15     P(   |red) = 3/5
+       P(blue | ) = 2/5    P( ) = 5/15
+Sampling with replacement
+
+ Pick a random shape, then put it back in the bag.
+ What sequence of shapes will you draw?
+                             P(                 )
+                             = 1/15 × 1/15 × 1/15 × 2/15
+                             = 2/50625
+                             P(                 )
+                             = 3/15 × 2/15 × 2/15 × 3/15
+                             = 36/50625
+P( ) = 2/15         P( ) = 1/15            P(       or ) = 2/15
+P(blue) = 5/15      P(red) = 5/15          P(       |red) = 3/5
+P(blue | ) = 2/5    P( ) = 5/15
+Conditional Probability                                           P(X, Y )
+                                                    P(X|Y )     =
+                                                                   P(Y )
+The conditional probability of X given Y, Probability that one event occurs
+given that another event has already occurred.
+  Chain Rule of Probability
+
+The chain rule expresses a joint probability as a product of conditional
+probabilities.
+             For a sequence of events 𝑿𝟏 , 𝑿𝟐 , … , 𝑿𝒏
+LANGUAGE MODELING
+
+
+
+
+                    14
+Language Modeling: the task of predicting what word comes next
+                                             books
+
+                                                minds
+  the students opened their-------
+                                                 exams
+
+                                                laptops
+Given a sequence of words
+compute the probability distribution of the next word
+
+
+    Where          can be any word in the vocabulary
+
+  ➢ A system that does this is called a Language Model.
+
+                                                                 15
+Popular Usages
+Goal of Language Modeling
+
+learn patterns in text and predict the
+next word (or sequence of words)
+based on prior context.
+N-gram Language Modeling
+
+
+
+
+IDEA: Collect statistics about how frequent different n-grams are, and use these to
+predict next word.
+
+            Image source: https://devopedia.org/n-gram-model
+                                                                                      18
+    N-gram Language Modeling…
+
+• For example, if we have sequence of tokens         ,    then the probability to see
+  these tokens in this order is:
+
+Using chain Rule
+
+
+
+
+                           This is what our LM provides
+
+
+
+
+                                                                                    19
+      Language Modeling: n gram…
+                          n-1 words
+
+Our assumption
+                                      Recall the definition of conditional
+                                      probabilities
+                                      p(B|A) = P(A,B)/P(A)
+
+                                      P(A,B) = P(A)P(B|A)
+
+
+
+
+                                                                             20
+n-gram Language Models: Example using 4- gram
+
+        as   the proctor   started   the   clock   the   students   opened their
+                       discard
+                                                            fixed window
+
+
+
+
+   For example, suppose that in the corpus:
+• “students opened their” occurred 1000 times
+• “students opened their books” occurred 400 times
+   • ➔ P(books | students opened their) = 0.4
+• “students opened their exams” occurred 100 times
+   • ➔ P(exams | students opened their) = 0.1
+
+                                                                                   21
+N-grams : limitations and challenges
+
+
+• Data Sparsity
+
+• Computational Complexity
+
+• Context Limitations
+
+
+
+
+                                       22
+Neural Network Based Language Models
+
+
+
+
+                                       23
+     A Quick Review Of Neural Nets
+              Hidden Layer              • Input layer is a set of features; each arrow represents a
+                                            weight (float number) that tells us how much each input
+                                            contributes to each following step.
+Input Layer
+                                        • Each node in the hidden layer is some combination of all
+                                            the inputs. The hidden layer acts as the ‘input’ for the
+                                            output layer.
+                             Output Layer
+                                        • Backpropagation allows us to adjust the weights to improve
+                                            accuracy and find the ‘correct’ way to combine the inputs
+                                            and hidden layers to get the best possible results.
+
+                                                                                                        24
+    NN basic element: Perceptron or
+                Neuron
+  bias x0 = +1        w0
+                                                       Activation
+            x1        W1                               function
+                                             v
+Input
+Attribute   x2        w2                               (−)
+                                                                    Output
+values                                                             class
+                               Summing function                       y
+            xm        wm
+                                      m
+                     weights
+                                v=   w x
+                                      j =0
+                                                 j j
+
+
+                                w0 = b
+Language Model: Neural Nets
+
+  as   the proctor   started   the   clock   the   students   opened their   -----?-----
+                 discard                           --
+
+                                                      fixed window
+
+
+
+
+                                                                                           26
+Language Model: Neural Nets …
+                                                                                                  books
+                                                                                                          laptops
+
+               output distribution
+
+                                                                                                  a                 zoo
+
+
+
+                hidden layer
+
+
+
+               concatenated word embeddings
+
+
+
+
+               words / one-hot vectors                                            the          students     opened        their
+
+
+
+  These slides are sourced from Stanford's "Natural Language Processing with Deep Learning" course.
+                                                                                                                                  27
+Feed Forword NN: Limitation...
+
+  as   the proctor   started   the   clock   the   students   opened their   ------------
+                 discard
+                                                      fixed window
+
+
+
+
+                                                                                            28
+Feed Forword NN: Limitation
+
+         “The food was good, not bad at all”
+
+         “The food was bad, not good at all”
+
+
+
+
+                                               29
+Feed Forword NN: Limitation…
+
+ “Just watched the new movie. Loved it!     #entertained”
+
+
+  “The storyline was captivating, the characters were well-
+
+developed, and the cinematography was impressive. Overall,
+
+ a fantastic movie night!       #movienight #recommend”
+
+                                                              30
+Sequence Modeling: Motivations
+
+
+• Handle variable length sequence data
+
+• Track long term dependency
+
+• Maintain information about order
+
+• Share information across the sequence
+
+
+
+
+                                          31
+DNN: Universal Approximation Theorem (UAT)
+
+
+
+
+     proven by George Cybenko in 1989
+
+
+                                             32
+Core idea of Recurrent Neural Networks (RNNs) RNNs
+                Stateful computation
+
+                              yt
+
+
+
+                              ht
+
+                              xt
+
+                 y t , h t = f (x t , h t - 1 )
+Core idea of RNNs …
+                Stateful computation
+
+      yt                             y1   yt
+
+
+
+      ht                h0           h1   ht
+
+
+
+      xt                             x1   xt
+
+           ℎ𝑡 = 𝑊𝑥 𝑥𝑡 + 𝑊ℎ ℎ𝑡−1 +b
+                   = negative log prob
+                      of “students”
+                                                                                                 How we train the
+     Loss                                                                                        model
+Predicted
+prob dists
+
+
+
+                                                                                                     …
+
+
+
+
+                           the          students          opened             their           exams       …
+
+
+         These slides are sourced from Stanford's "Natural Language Processing with Deep Learning"
+         course.                                                                                                    35
+                                                                                                     How we train the
+                                = negative log prob
+                                   of “opened”
+      Loss
+                                                                                                     model
+Predicted
+prob dists
+
+
+
+                                                                                              …
+
+
+
+
+  Corpus                the         students          opened             their           exams           …
+ 36
+
+             These slides are sourced from Stanford's "Natural Language Processing with Deep Learning"
+             course.                                                                                                    36
+                                          = negative log prob
+                                              of “their”
+                                                                                                     How we train the
+      Loss                                                                                           model
+Predicted
+prob dists
+
+
+
+                                                                                        …
+
+
+
+
+  Corpus         the         students          opened             their           exams             …
+ 37
+             These slides are sourced from Stanford's "Natural Language Processing with Deep Learning"
+             course.                                                                                                    37
+                                                                = negative log prob
+                                                                    of “exams”                       How we train the
+      Loss
+                                                                                                     model
+Predicted
+prob dists
+
+
+
+                                                                                             …
+
+
+
+
+  Corpus              the         students          opened             their           exams             …
+ 38
+
+             These slides are sourced from Stanford's "Natural Language Processing with Deep Learning"
+             course.                                                                                                    38
+        Loss             +                +                +               +…        =
+
+Predicted
+probability
+distribution                                                                                               How we train the
+                                                                                                           model
+                                                                                      …
+
+
+
+
+   Corpus      the           students         opened            their           exams             …
+
+
+
+
+               These slides are sourced from Stanford's "Natural Language Processing with Deep Learning"
+               course.                                                                                                        39
+                                                                      output distribution
+Language                                                                                                      books
+                                                                                                                      laptops
+
+
+Model: RNN
+                                                                                                              a                 zoo
+
+
+
+
+  hidden states
+
+      is the initial hidden state
+
+
+
+
+  word embeddings
+
+
+
+
+                                                                               the          students        opened     their
+
+
+                These slides are sourced from Stanford's "Natural Language Processing with Deep Learning"
+                course.                                                                                                               40
+Difference between NN and RNN
+
+
+
+
+    Traditional NN for LM                                RNN for LM
+
+
+       Image source: NLP in Action text book, O'Reilly
+                                                                      41
+Fun With RNN Language Model
+
+• https://medium.com/@samim/obama-rnn-machine-
+  generated-political-speeches-c8abd18a2ea0
+
+
+
+
+                                                 42
+Back Propagation in RNN
+
+
+
+
+         Backpropagation Through Time (BPTT).
+
+
+                                                43
+RNN Vanishing Gradient Intuition
+
+
+
+
+       These slides are sourced from Stanford's "Natural Language Processing with Deep Learning"
+       course.                                                                                     44
+Vanishing gradient intuition
+
+
+
+
+       These slides are sourced from Stanford's "Natural Language Processing with Deep Learning"
+       course.                                                                                     45
+Vanishing gradient intuition
+
+
+
+
+       These slides are sourced from Stanford's "Natural Language Processing with Deep Learning"
+       course.                                                                                     46
+Vanishing gradient intuition
+
+
+
+
+       These slides are sourced from Stanford's "Natural Language Processing with Deep Learning"
+       course.                                                                                     47
+Vanishing gradient intuition
+
+
+
+
+       These slides are sourced from Stanford's "Natural Language Processing with Deep Learning"
+       course.                                                                                     48
+Vanishing gradient intuition
+
+
+
+
+       These slides are sourced from Stanford's "Natural Language Processing with Deep Learning"
+       course.                                                                                     49
+Why Vanishing Gradients is Problem
+Vanishing gradients occur when the values of a gradient are too small
+and the model stops learning or takes way too long as a result
+
+
+
+
+                           Learning Rate
+
+
+
+  Input Layer                                       Output Layer
+Vanishing Gradients Problem…
+
+Example
+When she tried to print her tickets, she found that the printer
+was out of toner. She went to the stationery store to buy more
+toner. It was very overpriced. After installing the toner into the
+printer, she finally printed her-------------------
+
+RNN-LM needs to model the dependency between “tickets” on
+the 7th step and the target word “tickets” at the end
+
+
+                                                                     51
+  Long Short-Term Memory (LSTM)
+
+• Hochreiter & Schmidhuber (1997) solved the problem of getting an
+  RNN to remember things for a long time.
+
+  • At each timestep t, the LSTM maintains two key components:
+
+     • Hidden state – captures short-term dependencies.
+
+     • Cell state – acts as a memory unit, storing long-term information.
+  Long Short-Term Memory (LSTM)
+Key Concepts:
+•Unlike standard RNNs, LSTMs can control the flow of information through
+three specialized gates:
+   • Forget gate – decides which information to erase.
+   • Input gate – determines what new information should be stored.
+   • Output gate – regulates what information is passed to the next timestep.
+•Each gate is represented as a vector of size n and can take values between 0
+(closed) and 1 (open) dynamically, based on the current context.
+
+
+
+                                                                                53
+Long Short -Term Memory (LSTM)
+
+
+
+
+                          LSTM at time stamp T
+    Image source: https://towardsdatascience.com/lstm-networks-a-detailed-
+    explanation-8fae6aefc7f9
+                                                                             54
+Long Short Term Memory (LSTM): step 1
+
+
+
+
+                    ft
+
+             ht
+
+
+        xt
+
+
+
+
+    Forget gate: decide what parts of old state to forget
+
+
+                                                            55
+Long Short Term Memory (LSTM):step2
+
+
+                                              ct
+
+
+
+                                   𝑐ෝ𝑡   it
+             ht
+
+        xt
+
+
+
+
+                  Input gate: decide how to update the cell state
+
+
+                                                                    56
+Long Short Term Memory (LSTM):step3
+
+
+                       ct
+                                                ct
+
+
+                      ot
+           ht
+                                                ht
+      xt
+
+
+
+
+                            Finally, decide what to output as hidden state
+
+
+
+                                                                             57
+Long Short Term Memory (LSTM)
+                              Write some new cell content    Output some cell content
+                                                               to the hidden state
+
+
+
+
+Forget some
+ cell content
+
+
+
+Compute the
+ forget gate
+
+     Compute the
+      input gate
+                                                            Compute the
+                    Compute the                              output gate
+                   new cell content
+
+
+                                                                                        58
+LSTM Great resources
+
+• https://colah.github.io/posts/2015-08-Understanding-
+  LSTMs/
+
+
+
+
+                                                         59
+Keras – Simplifying LSTMs in Python
+Keras is a Python package that makes building and training TensorFlow neural
+networks really simple. We’ll be working with the ”Sequential” model which lets you
+add layers one at a time. As an example, let’s see how to build a 1-layer LSTM
+model with 10 hidden nodes.
+
+from keras.models import Sequential
+from keras.layers import Dense, Activation, LSTM
+
+model = Sequential()
+model.add(LSTM(10, input_shape=(TIMESTEPS, FEATURE_LENGTH)))
+model.add(Dense(NUMBER_OF_OUTPUT_NODES))
+model.add(Activation('softmax'))
+Evaluating Language Models
+• The standard evaluation metric for Language Models is perplexity.
+
+
+                                                                   Normalized by
+                                                                  number of words
+
+     Inverse probability of corpus, according to Language Model
+
+    Low perplexity → the model predicts the text well
+    High perplexity → the text is unexpected for the model
+
+Perplexity (PPL) measures how confused a language model is when predicting the
+next word in a sentence.
+
+
+                                                                                    61
+Summary
+
+• We introduced the concepts of recurrent neural networks
+  and how it can be applied to language problems.
+• RNNs can be trained with a straightforward extension of
+  the backpropagation algorithm.
+• How LSTM used for text generation
+• Applications of LSTM for sequence-to-sequence
+  modeling
+
+
+
+                                                            62
+Q&A
+
+
+
+
+      63
+

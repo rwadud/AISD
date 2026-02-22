@@ -1,0 +1,282 @@
+Holistic Evaluation of RAG Systems
+
+The quality of the final output depends on your retrieval and generation. So the point is, it depends upon your mechanism, how you created that knowledge base, what kind of vector embeddings you used, and how large is your chunk size, what kind of chunking mechanism you used. And in the query, in this case, we're talking about augmented generation, right? So the quality of the final output will depend upon how you created the knowledge base, what kind of retrieval you're doing, and the quality of retrieval. And of course, the quality of generation. How you created the prompt, what model you're using for the generation, what temperature setting you're using. So it depends upon a lot of things. So you need to evaluate the system holistically. And you need to evaluate not just the output.
+
+Particularly what happens is that when you develop some software applications in your lab or in your R&D stage, you are not worried about fairness, not other issues. You're not worried about scalability. You're more worried about accuracy. And you tend to use some standard data, right? But real data can be messy. Real data can have missing data, a lot of those issues. So there's a lot of reasons why you want to evaluate these generative AI applications holistically.
+
+
+Reasons for Evaluating GenAI Applications
+
+So these are those dimensions, the reasons you want to evaluate. So first of all, you want to evaluate, make sure that the output quality is good, what metric you want to measure in terms of some business metric, like your output precision, recall kind of metric. You want to make sure that the quality is high. Then you want to detect any bias and fairness issues associated with your LLMs. Then monitor. So this is in a way also applicable to machine learning systems. Your model might have some drift. Is there any model drift? For example, your data distribution might change, your query distribution might change, input distribution might change. If not, you get scenarios. For example, your customer support agent LLM, people may start asking something about some new product release in the market, and the LLM has no knowledge about it because it's not trained on that dataset, or you have not incorporated that knowledge into the knowledge base. That's like a data distribution change.
+
+You need to worry about some kind of regulatory compliance. For example, people could accidentally put personally identifiable information or other sensitive data into the prompt, and the LLM is not supposed to use that, or the LLM is not supposed to reveal any such information. So there's some strict regulatory compliance requirements.
+
+
+Reverse Engineering and Security Concerns
+
+Student question: Is there a way to reverse engineer? Based on how the prompt is written, someone could be able to reverse engineer it?
+
+Yes, those are concerns. It is possible in general. You do proper safeguards, but different models have different vulnerabilities. Some of the smarter attackers are able to figure out what the differences are and find weaknesses. You cannot eliminate those kinds of things, you can only mitigate to some extent. That's an issue. Reverse engineering the model, reverse engineering the training data is possible. Once someone knows what model you're using, they know how to jailbreak that model. So that's a security issue. That's true.
+
+Beyond regulatory compliance, you want to improve your model. You need to do proper evaluations. Unless you know what your current precision, accuracy, or summarization quality is, you can't improve it.
+
+Then you want to make sure that people trust AI. Seriously, people don't trust AI. When you start directly giving an AI product to customers, they don't trust it. You have to build trust. People started liking ChatGPT because it started giving good answers. So people built trust. They don't trust, they want a trustworthy system. So to build trust, you need to make sure that it's producing good quality.
+
+
+Real-World vs. Lab Performance
+
+As I mentioned, usually when you develop any software or research application in the lab, you test with some standard or benchmark dataset which is curated by your data scientists, created by domain experts. But those are good quality data. On those datasets, the system may perform very well, but if you put that system into the real world, the results could be very different. So you need to measure what is the impact this model has on your real-world data.
+
+Of course, you want to prevent harmful outputs. If the LLM is producing, particularly for customer-facing applications, if it starts giving garbage to customers or starts being rude to customers, they will not like it.
+
+
+Deployment Considerations and Guardrails
+
+Also finally, when it comes to deployment, what kind of infrastructure do you need to use for running this? For example, latency. If a RAG application is taking more than three seconds or five seconds, people are not going to like that. Or a customer support agent taking more than one minute, they're not going to like that.
+
+Student question: For preventing harmful outputs, are we going to use the LLM itself or should we do it with another software layer?
+
+Usually what they do is they put guardrails. They sanitize the input, make sure the input doesn't have any harmful queries. Then in some cases, even if you put guardrails on input, it can pass through. So on the output also, you make sure that you're not producing anything harmful. So there are guardrails in place, but then you need to evaluate whether the guardrails are working. So I'm talking about evaluation. The guardrails are part of the system. Now you want to evaluate, make sure that it's working as it should. You're not just testing the LLM, you're testing the entire system.
+
+So these are the reasons you want to evaluate the application in a holistic way, and not just test the output.
+
+
+Algorithmic Bias and Hallucination
+
+Some of the things you already know, which LLMs suffer from, or ML models in general, is algorithmic bias. The example is that an agent which helps in processing mortgage applications or bank loan applications, by looking at the person's name and zip code, etcetera, may decide this person is from this particular racial profile, so hence there is more chance of defaulting. Those kinds of algorithmic biases may be there.
+
+Then hallucination. It's mathematically proven that you cannot fully eliminate hallucination. Particularly when you have applications such as generating reports, references, or any legal kind of cases, the model should not make up citations or references. Hallucination is another thing you need to look at.
+
+Student comment: It takes a name and puts a fake article. The author is real but the article is made up.
+
+Yeah, usually the articles are made up. I've seen that in the past. But nowadays, if you tell the model not to make things up, it performs better. In the earlier days, it didn't have the search option. But now most commercial LLMs have integrated search. So it does search and picks up from actual sources. Otherwise it would definitely hallucinate.
+
+
+Performance Drift and Emergent Behaviors
+
+Then performance drift. The model probably doesn't know the new trends in the market. So if you ask about new trends or a new cyber attack, it wouldn't know, so it will give outdated information.
+
+These days, people are finding more and more that LLMs themselves are learning to hide things. There was something I heard yesterday. There's a lot of research done by Anthropic in this space. They look at how LLMs internally process things. And they simulate scenarios like "shut down this machine," that kind of scary scenario. And what they show is that LLMs tell you something but think something else. If you look at all the traces of their thinking, even, I was told recently that when you say "explain step by step," for example, multiplication like four times eight equals thirty-two, "explain step by step," it will explain the logical steps, but it doesn't actually compute like that internally. It approximates. So the LLM has its own way of hiding things, or what looks like hiding. So these are some kind of emergent, unintended behaviors which we are more and more discovering. This is another thing we need to worry about.
+
+
+Evaluating RAG System Components
+
+Just to give an example, in the case of retrieval augmented generation, you have to build a knowledge base using a vector store and embeddings. Then when you have a query, you need to retrieve relevant context or documents from this vector store and use that as context. Then you need to send it to an LLM where the LLM will have a prompt template. So you need to evaluate the vector store, you need to evaluate the chunking and embedding, you need to evaluate the prompt engineering, you need to evaluate the generation. So a lot of evaluation needs to be done on the entire system.
+
+
+Challenges in Evaluating Subjective Outputs
+
+As a component of evaluation, the output is subjective in nature. For example, a lot of use cases of LLMs are things like: you want to summarize, that's a use case. You want to generate some story or marketing material. There's no kind of yes/no answer. It's more of a subjective evaluation. How do you evaluate summarization? There's no clear ground truth. It's not a classification problem, true or false, fraud or not fraud, this class, this label, type of animal, whatever. Things like summarization, writing a story, there's no clear ground truth to compare against. And there's bias and fairness to consider as well.
+
+
+Evaluation Paradigms Overview
+
+Now, what are the different evaluation paradigms? Historically, there is first human evaluation, which is considered the gold standard. But I'll come back to that. There's some work recently reported, a paper published stating that human evaluation is not a gold standard. That's an interesting point we'll come back to.
+
+Then there are automatic metrics which you compute using algorithmic methods. Then you do adversarial testing. This is where people try to infer what data was used or what training data was used. You can test by doing adversarial probing to see if the model reveals information it shouldn't. Or if you change the input slightly, for example in an image.
+
+Then you can take user feedback, direct user feedback from real users. Then you can do A/B testing. You can compare two different LLMs in your application, for example GPT-4 versus GPT-3 or Llama 3 versus Qwen 3, whatever, and compare the performance on quality and latency. Finally, you can do benchmarking with standard benchmarks. There are a lot of benchmarks that came after LLMs arrived, and there were benchmarks even before that. There are benchmarks on math problems, language processing benchmarks, software benchmarks, advanced science problems, and so on. You can do evaluation on these when you want.
+
+So these are the high-level evaluation paradigms for GenAI applications.
+
+
+Evaluation Across the Software Development Life Cycle
+
+Now the question you might ask: when you develop software, you test your application. We call these days the SDLC pipeline, in fact the SSDLC pipeline, Secure Software Development Life Cycle pipeline. In this pipeline, where should you do evaluation? Only at the end, or is there a need to do the evaluation at other stages as well? That's the question. In fact, the answer is you need to at least think about the evaluation at various stages. You may not have to do the evaluation at every stage, but you should incorporate evaluation thinking even from the beginning.
+
+For example, when you do requirement analysis, you need to decide what are the metrics on which the final product is to be evaluated. When you give the final working prototype to your customer, they're going to test it. Then they will say they will accept it or not, but based on what? Is it going to be some kind of truthfulness or some kind of measurement? So you need to think about that. You don't do that experiment on day one, but in your requirements, when you do your initial design of your project, you need to mention that. So you need to think about evaluation during the requirement itself. During the functional requirements, you need to write: "this will be my final evaluation criteria."
+
+Then during data collection, you need to make sure that you are collecting the right data. The data is not biased in terms of fairness, etcetera. If input training data has biases, if training data has fairness issues, the model and your software application definitely will suffer. So you need to evaluate the data quality.
+
+Then of course, during development, you need to evaluate using automatic metrics, various kinds of scores, effort scores, or whatever. Then after you develop the model, you do extensive testing on a test dataset which is not seen by the model during training. Then after you deploy, you need to test how it is working on real-world data. Then you need to continuously monitor some metrics continuously, periodically, monthly, to make sure that performance is not degrading. So you need to do evaluation and also improve the model.
+
+So you need to think about evaluation at every stage of your development lifecycle. This is important. It's a kind of mindset. Just as important as your development or your optimization. People optimize the code, just like that, evaluation is important at every stage.
+
+
+Reference-Based Evaluation: ROUGE, BLEU, METEOR, BERTScore
+
+Now ultimately, there are two types of evaluations. One is reference-based evaluation. Reference-based means you have some kind of reference data which is created most likely by humans or by some expert LLM. You take the output from your generative AI application and compare it with that reference data. So here, you can use some standard metrics.
+
+For example, let's stick to LLM evaluations. One of the metrics used is ROUGE. ROUGE stands for Recall-Oriented Understudy for Gisting Evaluation. It's basically a metric used even before LLMs came, for summarization purposes. It basically looks at the original text and the summarized text and looks at n-grams between these two, the original text and the summarized text, and measures the recall. It's recall-oriented because it looks at how many n-grams in the reference summary are captured in the generated summary. So that is the ROUGE score. It's overlap of word sequences, word sequences between the machine-generated summary and the reference summary. So it doesn't compare with the input. The reference is the ground truth. In the reference summary, you have a certain number of n-grams, and of that, how many are there in the generated summary? That fraction is the ROUGE score.
+
+The next is BLEU. BLEU stands for Bilingual Evaluation Understudy. This was originally developed for machine translation, not summarization, translation from one language to another. But it can be used in summarization also. It's more like a precision measure. Of the generated n-grams in the summary, how many are there in the reference summary? So BLEU looks more at precision. ROUGE score is more like recall, BLEU score is more like precision.
+
+Now these scores have a problem: they are looking at exact n-gram matches. The problem with that is when a model generates a summary, it might use a different word than the reference. It may use a synonym, it may use some other word that's similar. So these two measures are not useful in that context. They're not sensitive to semantic similarity between words.
+
+So there is another metric called METEOR, which stands for Metric for Evaluation of Translation with Explicit Ordering. It takes care of synonymy and stemming. Even if the reference summary has a word like "running" and the generated summary uses a slightly different form like "run" or "runs," the first two metrics will not take that into account, but METEOR will. Or if the generated summary uses a similar word, a synonym, METEOR will account for that.
+
+Then you can look at other metrics like precision or coverage, how much of the important content from the source is included in the summary.
+
+Student question: For example, for METEOR, is it a program or is it like a framework?
+
+METEOR is actually a formula. It's an algorithm. You get the results and you can compute them in software. These are deterministic functions. They're just Python functions. You have a function for each of these four metrics. They don't need an LLM to compute. They just take two inputs and it's a Python function. There's a formula for doing that. For things like METEOR that need synonyms, it may call some other database to get synonyms. There's a library called NLTK, Natural Language Toolkit, that has libraries to compute this. You don't need an LLM.
+
+Then you can look at things like coverage and compression ratio. How much of the original text versus the summary? What is the size of the original text versus the size of the summary?
+
+Now, the one which is LLM-based is the BERTScore. BERT is the first language model based on transformers, which was invented by Google. BERT stands for Bidirectional Encoder Representations from Transformers. You can use BERT to create representations of the text, then look at the similarity between those representations. So you can use the BERTScore to compare how semantically similar your generated output is versus the reference summary. So BERTScore uses a model. The first four metrics, you don't need a model.
+
+So these are reference-based evaluations.
+
+Student question: ROUGE converts sentences into n-grams and measures overlap? More n-gram overlap means a higher score?
+
+Yes. And BERTScore covers things like stemming, lemmatization, and semantic similarity beyond just n-gram overlap.
+
+
+Reference-Free Evaluation
+
+Now, reference-free evaluation. A lot of the time, you want to evaluate output where you don't have a reference. For example, a customer-facing customer service chatbot. You want to evaluate things like: how helpful is that agent? How fluent is the language? How relevant are the answers? These kinds of qualities are subjective. You cannot easily create the reference data for these. But you can read it and figure out how helpful it is, how fluent the English is.
+
+In these kinds of cases, you need to evaluate, for example, how coherent it is. It's very difficult to create ground truth for that. You can't use n-gram-based scores for that. What you can do is use the LLM-as-a-Judge method. You use a more powerful LLM, and to that LLM, you give the input and the output and say: measure along these dimensions. And I'll talk about that in detail, how we actually do that. If you just give it a vague instruction, it won't work well. You'll have to give some rubrics, how to score, what kind of scale you want.
+
+
+Human Evaluation is Not Always the Gold Standard
+
+Is human evaluation always the gold standard? We always think that human evaluation is the gold standard, which is true to some extent. But there's a recent paper from the University of Edinburgh saying that human evaluation is not always the gold standard.
+
+The reason they're saying this is that apparently, people found that when LLMs give a very confident, convincing answer, people tend to take it as correct. Usually, when LLMs produce output, sometimes it's very well-worded, very large, long, with a lot of detail. And the language is usually very assertive. In that case, humans tend to perceive that as more accurate. And that is one issue. Human evaluation itself is flawed because humans are getting fooled by the way LLMs speak.
+
+Also, humans have individual preferences and biases. That's another reason. And human evaluation at the enterprise scale is not really cost-effective or scalable.
+
+Because of these reasons, this paper argues that human evaluation isn't always reliable. The paper talks about which areas humans get fooled by LLMs. For example, when the LLM says "this is said by a scientist" or "this is said by somebody," people tend to believe it. You should read this paper. It talks about the areas where humans get fooled.
+
+
+Advantages of LLM as a Judge
+
+One reason for using LLM as a judge is scalability. You want to evaluate, for example, a thousand summaries in a day, which is not possible with humans. You'd have to pay human evaluators maybe $100 per hour, whereas with LLMs, you pay per call, maybe you pay cents or maximum one or two dollars. So it's more scalable. A lot more evaluations can get done in a day, and it's a lot cheaper.
+
+Not only that, if you train human evaluators in one domain, like healthcare, tomorrow you want to evaluate something in finance, it'll be very difficult to retrain them. People become experts over a period of time, and it's difficult to train them to adapt to another domain. Whereas LLMs, you can easily switch, or you can provide them with a RAG kind of knowledge source to do that. So there's a lot of flexibility in using LLM as a judge for domain adaptation.
+
+For very complex scenarios, like healthcare where you need to evaluate a lot of scenarios to come up with a decision, or complex legal matters where you need to read through a lot of knowledge, an LLM judge can sometimes help because it can process those layers and, if prompted correctly, provide useful evaluation. So it may be more useful than a human judge in some cases.
+
+
+Use Cases for LLM as a Judge
+
+For example, evaluating customer service response generation. You design a chatbot for customer service for a company. You want to evaluate the responses generated by the chatbot on things like: is it friendly? Does the response address the customer's underlying concern? Is the tone of the response professional? Or is it talking casually, which people do not like? Does it handle cultural nuances? For example, you develop a chatbot in the US and deploy in the Middle East or in Asia. There are a lot of cultural aspects about how people talk to each other, about politeness and manners. And is it likely to lead to customer satisfaction at the end? These are subjective questions. For these kinds of things, LLM as a judge is a very good option.
+
+
+Three Types of LLM-as-Judge Evaluation
+
+With an LLM-as-a-judge approach, there are three types of evaluation. One is single output scoring with a reference. LLM as a judge can be used even for reference-based evaluation, for single output. For example, is this true or not, or what class is it, classification. Second is single output scoring without a reference. The third is pairwise comparison, where you take two summaries and ask the LLM which one is better.
+
+
+Single Output Scoring Without a Reference
+
+The LLM is tasked with assigning scores based on defined criteria. For example, you have an output from a customer service chatbot for an e-commerce company: "I understand your frustration with the delayed delivery. Our team is working on your order and you'd receive a tracking number within 24 hours." You want to evaluate this. You give criteria to the LLM: if the response is unprofessional or dismissive, give a score of one. If it is professional but provides an incomplete solution, give a score of two. If it is professional, empathetic, and provides clear resolution, give a score of three.
+
+Always give LLMs a discrete scale with a description for each value, just like a rubric. Don't tell LLMs to give a score between zero to one hundred. It doesn't understand that. It doesn't have a way to figure out if it's fifty or seventy-three. Always give a scale and for each value of the scale, you give criteria.
+
+So here, there are three values: one, two, or three. When it should give one, when it should give two, when it should give three, you have to clearly specify in the prompt. This is particularly useful for straightforward evaluation where the quality of the output can be assessed without any reference.
+
+
+Single Output Scoring With a Reference
+
+Now you can have a slightly more detailed evaluation: single output scoring with a reference. You provide the reference also, and ask the LLM to compare with the reference and give a score.
+
+For example, the LLM produces: "The new environmental law requires companies to reduce carbon emissions by 30% by 2030." You're asking what is the new policy update on environmental protection from the federal government. Now, the actual answer, the reference, is slightly different: "The Environmental Protection Act of 2024 mandates a 30% reduction in carbon emissions for companies with over 500 employees by 2030, with annual progress reports required."
+
+Now, if you look, the LLM output is missing the point that it's only required if your number of employees is more than five hundred, and it's missing the annual progress reports. So you give scoring criteria with a rubric: inaccurate information scores one, partially accurate but missing key details scores two, accurate but incomplete scores three, complete and accurate match with reference scores four.
+
+Student discussion: It captures the main point but misses the company size requirement. So maybe depending on the LLM, some may score it as two and some as three.
+
+Student question: I noticed that for companies with 500 employees, since it doesn't have a reference, how does it know? Maybe the LLM knows that the average company is smaller and most companies don't have 500 employees.
+
+Maybe. We don't know exactly why the LLM omitted that detail.
+
+
+Pairwise Comparison
+
+To give an example of pairwise comparison: there are two product descriptions provided by a chatbot. One is "Our wireless headphone offers 20-hour battery life and noise cancellation." The other response is "Experience uninterrupted music with our wireless headphones featuring 20-hour battery life, advanced noise cancellation, and comfortable memory foam ear cups." Obviously, the second one is a much better response. If you ask the LLM to compare, it should say the second one is better because it highlights features and benefits while maintaining clarity and engagement. Pairwise comparison is particularly useful for comparative scenarios.
+
+
+Comparison of the Three Evaluation Types
+
+So here's a summary of the three approaches. For simple, independent tasks, single output scoring without a reference is useful. For complex tasks needing more context for reasoning, you can use single output scoring with the reference. For relative quality assessment, you can use pairwise comparison.
+
+In terms of scalability, single output scoring scales much better, and pairwise scales less because you have to compare many pairs. If you have to compare two sets with a large number of outputs, the number of pairs grows exponentially.
+
+In terms of implementation, single output is easier, pairwise is probably more difficult. Consistency-wise, pairwise will give more consistent results than single output. In terms of explainability, pairwise is also better. In terms of impact of LLM updates, pairwise comparison will be less affected because it's comparing two things. If you change the LLM also, it'll be more consistent. Whereas if you ask the LLM to produce a score directly, that can shift with model updates.
+
+So in terms of these different dimensions, use case, scalability, advantage, explainability, impact of LLM update, you can see which method you want to use.
+
+The best use of LLM as a judge is when the output is primarily subjective, evaluation requires understanding of context or nuances, multiple aspects need to be evaluated together, and traditional metrics cannot capture qualitative aspects. That's when you use LLM as a judge. And if you have ground truth and you want things like accuracy, precision, recall, you might as well use deterministic metrics.
+
+
+Practical Exercise: Computing the ROUGE Score
+
+We'll use a dataset called CNN/DailyMail. This dataset is available from Hugging Face. This data is created by journalists from CNN and the Daily Mail, two media organizations. They looked at news articles for a period of about the last ten years or so. They created a lot of articles with editorial summaries. These are available as a dataset. There are approximately 287,000 articles and their editorial summaries. That's a very large corpus with summaries generated by humans in their actual jobs over a period of time. That's a very good dataset.
+
+So this dataset is available from Hugging Face. I downloaded it and scaled down the data to just a training size of about a hundred samples, validation of a hundred samples, and test data of a hundred samples, so it fits in memory. This is available in the data summarization folder. Each of these has about ten rows.
+
+Now, to run this, you need an OpenAI API key. You need to set your OpenAI API key, which you can do using a magic command or environment variable.
+
+We have a function to get a response: given a prompt and a model name as input, it uses the OpenAI client. From OpenAI, import OpenAI. The OpenAI client is initialized with your API key. Then the client.chat.completions.create takes the model and you give the role as "user" with your content. Then it returns the response: you take choices[0].message.content, and that gives you the actual response.
+
+We use GPT-4.1 Mini for scoring. There's also GPT-4.1 Nano that is cheaper. Whatever is cheaper you can use.
+
+Now, you want to generate a prompt. So we define another function. You want to create a prompt to compute ROUGE. It takes a reference string and a generated string. You compare the ROUGE score between this reference output and generated output. So it creates the prompt.
+
+This function generates the summarization prompt. I give an article and I say the summary length will be about a hundred words. Then I generate a prompt: "Summarize the following article in about a hundred words," and include the article text. This will generate the prompt. Once I generate the prompt, I call the LLM to get my summary, then I use the ROUGE function to calculate the ROUGE score. The ROUGE computation itself is a deterministic function.
+
+Then I load the training data from that folder. There are only ten rows. The "article" field is the text and the "highlights" field is the summary.
+
+I printed the first one. The text is: "A woman in the Northwest Highlands of Scotland tested negative for Ebola, the government said..." and so on. It's a long text. We want to summarize this. And the reference summary from CNN/DailyMail says: "Woman in the Scottish Highlands tests negative, government says. Healthcare worker diagnosed with the virus is moved to a London hospital. She was working as a volunteer nurse. A suspected third Ebola case is being tested in the southwest of England."
+
+Student question about spacing: There are spaces between the sentences in the reference. Are those delimiters?
+
+Those are from how the data is parsed. When you parse strings, string splitting sometimes leaves whitespace. In a standard NLP pipeline, you'd use functions to remove extra spaces. For example, when you split based on space, it removes the extra whitespace. That's part of standard text preprocessing.
+
+Then let's define the prompt. I call the function to generate a summarization prompt. I have the article text and the summary length. At this stage, it just generates a prompt, it doesn't call the LLM yet. Now at this stage, I call the LLM. I use a cheaper model, GPT-4o Mini. I call get_response with the prompt and model. It then prints the generated summary.
+
+Now I can call ROUGE between the reference summary and generated summary. The ROUGE score gives: recall is 68%, precision is 24%, and the harmonic mean (F1) is 36%. So recall is okay, not bad. Now look at why there is a difference. The generated summary mentions specific details like "The Royal Free Hospital in London" which the reference summary does not mention. So we compare these two summaries.
+
+Student question: Is the length of the two summaries impacting the score? Because if one is much bigger...
+
+Yes, because it looks at the overlap of n-grams. When one summary has a lot more n-grams, it affects the overlap proportions. You'll learn later that you need to standardize the output, like making both summaries roughly the same length. That's important. So I just gave you here a basic idea of how to compute the ROUGE score, but when you actually evaluate, you need to make sure that all of those preprocessing steps are taken care of. The longer summary will tend to have higher recall because it captures more content.
+
+
+Practical Exercise: LLM as a Judge for Summarization Evaluation
+
+Similarly, you can find out how to calculate the BLEU score. Those functions are available in NLP libraries or other libraries.
+
+Now, what is the LLM-as-a-Judge methodology? In this methodology, you use another model, a more powerful one, to judge the output generated by the first language model. It's sort of a replacement or supplement for human evaluation, ideal for scalable processes.
+
+The workflow is like this: you already have an AI system-generated output like the summary we saw. Then you employ an LLM judge. You give the LLM judge the input, provide evaluation criteria, and ask what should be the score. It should be based on a scale, like zero to ten, zero to one, or a rubric. And you ask the LLM to reason about why it arrived at that score, and to provide specific feedback.
+
+So I took from a paper published by researchers at a university. They looked at six aspects of summarization evaluation: coherence, completeness, conciseness, consistency, readability, and syntax. They wanted to evaluate summarization along these six dimensions. Typically, you need to do a multi-dimensional evaluation. So what we do is create a prompt for each of these, and the prompt will define what coherence means, what completeness means, etcetera.
+
+For example, this is the prompt for coherence: "You are an expert language model tasked with evaluating the coherence of a summary. Coherence measures how logically and seamlessly the ideas flow in the summary compared to the original text. Please provide a score between zero and ten." The paper uses zero to ten, though ideally you should provide a description for each score level to make it clearer. "Use chain of thought reasoning to explain your evaluation before arriving at the final score. The final output should include a score and a reason."
+
+Similarly, there is a function to generate the prompt for completeness evaluation. What is completeness? Completeness measures how well the summary captures all the important points of the original text.
+
+And what is conciseness? Conciseness measures how effectively the summary conveys the essential information without unnecessary detail.
+
+Then consistency. Consistency measures whether the summary aligns with the facts and details in the original text without introducing contradictions. So it's more like checking for hallucination.
+
+Readability measures how easy it is to read and understand the summary.
+
+Then syntax. Syntax evaluates the grammatical correctness and sentence structure of the summary.
+
+From the paper, I generated the prompts. We use these prompts for the same article whose generated summary we already looked at, where we measured the ROUGE score and the BLEU score. The summarization prompt is the same. But I use a better model, GPT-4.1, for the judging. You can even use an even better model.
+
+So we run the coherence evaluation. It gives a score of 9 out of 10. The reason: "The summary is highly coherent as it logically flows from one main idea to the next, faithfully reflecting the structure and key points of the original text. It begins with the news of testing negative, then moves to information on traced contacts, a suspected case in southwest England, infection and transmission facts, and concludes with overall statistics and political coordination. All major components flow logically."
+
+Why not a perfect 10? "Some finer details such as specific flights, hospital setup nuances, and the name of the volunteer nurse are compressed or omitted, but these do not detract significantly from coherence. The ideas are well-connected and do not jump abruptly, maintaining a logical progression aligned with the original context." A reason like this may be correct. So usually when you're using LLM as a judge for your internal evaluation, this is very useful.
+
+Student question: In this evaluation, are you giving the LLM a reference?
+
+It is looking at both the generated summary and the original article, not the reference summary. It's evaluating the quality of the generated summary against the original text.
+
+Now let's run the completeness evaluation. It gives 85 out of 100. The reason: "The summary captures most of the key points of the text, including the woman in Scotland testing negative for Ebola." Why not a perfect score? "Details like the fact that Cafferkey travelled via Casablanca and London Heathrow before arriving in Glasgow, the military aircraft and isolation unit used to transfer her, these details provide important context about infection control measures and public health responses. Their absence reduces the detail and nuance but does not significantly affect the core factual coverage. The summary is quite complete but not exhaustive."
+
+Now look at conciseness. It gives 85. The reason: "The summary effectively condenses the original article's key points, such as the negative Ebola test for the woman in Scotland, the confirmed Ebola cases, key treatment details. However, some information could enhance clarity and completeness, such as the woman's recent travel to Africa, the involvement of British military ambulance, the existence of a public hotline, and the background of volunteer deployment. Additionally, the summary briefly mentions another suspected case but lacks details on timing and isolation protocol. Overall the summary maintains a good balance between brevity and informativeness but slightly condenses or excludes some relevant specifics that could aid understanding. Therefore, the conciseness reflects that it is efficient but not perfect."
+
+Then consistency gives 98. The summary accurately captures the main facts from the text. However, again, details like Cafferkey's route are missing.
+
+Readability gives 85. And syntax gives 90.
+
+Usually, I've seen that scores tend to cluster in the middle to high range. If you change the model, for example from GPT-4.1 to GPT-4.1 Mini, the scores can change. Same text, same prompt, but different model versions can give slightly different scores. You can play around with changing the LLM model, but always use a better, more powerful model for judgment compared to the LLM being evaluated.
+
+
+Alignment with Business Metrics
+
+The other important thing is alignment with business metrics. A high evaluation score is not always the best, because for business, in some key dimensions you need high quality, but in other dimensions, they want to reduce cost and latency. So you should ask the client: "I have these metrics I'm evaluating, what is your priority?" Some clients may want readability and fluency rather than depth of reasoning. For some customers, factual correctness is more important than fluency. So alignment with business metrics matters. You need to understand what the customer values most and evaluate accordingly.

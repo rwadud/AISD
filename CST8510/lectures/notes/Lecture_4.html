@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Choosing the Right ML Algorithm, Distributed Training &amp; AutoML — Study Notes</title>
+<style>
+  :root {
+    --accent-blue: #2563eb;
+    --accent-green: #16a34a;
+    --accent-orange: #ea580c;
+    --accent-red: #dc2626;
+    --accent-purple: #7c3aed;
+    --accent-teal: #0d9488;
+    --bg: #ffffff;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+    --card-bg: #f8fafc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    padding: 2rem 1rem;
+  }
+
+  .container { max-width: 960px; margin: 0 auto; }
+
+  /* Header */
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 3px solid var(--accent-blue);
+  }
+  header h1 { font-size: 2rem; color: var(--accent-blue); margin-bottom: 0.25rem; }
+  header .subtitle { font-size: 1.15rem; color: var(--text-light); margin-bottom: 0.25rem; }
+  header .course { font-size: 0.95rem; color: var(--accent-purple); font-weight: 600; }
+
+  /* Table of Contents */
+  .toc {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2.5rem;
+  }
+  .toc h2 { font-size: 1.25rem; margin-bottom: 0.75rem; color: var(--accent-blue); }
+  .toc ol { padding-left: 1.25rem; }
+  .toc li { margin-bottom: 0.35rem; }
+  .toc a { color: var(--accent-blue); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+
+  /* Sections */
+  section { margin-bottom: 2.5rem; }
+  h2 {
+    font-size: 1.5rem;
+    color: var(--accent-blue);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 0.4rem;
+    margin-bottom: 1rem;
+  }
+  h3 { font-size: 1.15rem; color: var(--text); margin: 1.25rem 0 0.5rem; }
+  p { margin-bottom: 0.75rem; }
+
+  /* Cards */
+  .card {
+    border-left: 4px solid var(--accent-blue);
+    background: var(--card-bg);
+    padding: 1rem 1.25rem;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 1rem;
+  }
+  .card.green { border-left-color: var(--accent-green); }
+  .card.orange { border-left-color: var(--accent-orange); }
+  .card.red { border-left-color: var(--accent-red); }
+  .card.purple { border-left-color: var(--accent-purple); }
+  .card.teal { border-left-color: var(--accent-teal); }
+  .card strong { display: block; margin-bottom: 0.3rem; }
+
+  /* Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .grid .card { margin-bottom: 0; }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+  }
+  th, td { padding: 0.6rem 0.85rem; text-align: left; border: 1px solid var(--border); }
+  th { background: var(--accent-blue); color: #fff; font-weight: 600; }
+  th.green { background: var(--accent-green); }
+  th.purple { background: var(--accent-purple); }
+  th.teal { background: var(--accent-teal); }
+  th.orange { background: var(--accent-orange); }
+  th.red { background: var(--accent-red); }
+  tr:nth-child(even) { background: var(--card-bg); }
+
+  /* Highlight Box */
+  .highlight {
+    background: #fef9c3;
+    border: 1px solid #facc15;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .highlight::before { content: "Note: "; font-weight: 700; }
+
+  /* Badge */
+  .badge {
+    display: inline-block;
+    padding: 0.15rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #fff;
+    margin-right: 0.35rem;
+    vertical-align: middle;
+  }
+  .badge.blue { background: var(--accent-blue); }
+  .badge.green { background: var(--accent-green); }
+  .badge.orange { background: var(--accent-orange); }
+  .badge.red { background: var(--accent-red); }
+  .badge.purple { background: var(--accent-purple); }
+  .badge.teal { background: var(--accent-teal); }
+
+  /* Term */
+  .term {
+    background: #dbeafe;
+    padding: 0.1rem 0.45rem;
+    border-radius: 4px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* Flowchart */
+  .flowchart {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+    font-size: 0.92rem;
+  }
+  .flow-step {
+    background: var(--accent-blue);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+  }
+  .flow-step.green { background: var(--accent-green); }
+  .flow-step.purple { background: var(--accent-purple); }
+  .flow-step.teal { background: var(--accent-teal); }
+  .flow-step.orange { background: var(--accent-orange); }
+  .flow-step.red { background: var(--accent-red); }
+  .flow-arrow { font-size: 1.3rem; color: var(--text-light); padding: 0 0.15rem; }
+
+  /* Progress bars */
+  .score-bar-container { margin-bottom: 0.75rem; }
+  .score-label { font-size: 0.9rem; margin-bottom: 0.2rem; font-weight: 600; }
+  .score-bar {
+    height: 22px;
+    background: #e2e8f0;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .score-fill {
+    height: 100%;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    padding-left: 0.6rem;
+    font-size: 0.78rem;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* SVG containers */
+  .diagram { text-align: center; margin: 1.25rem 0; }
+  .diagram svg { max-width: 100%; height: auto; }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    header h1 { font-size: 1.5rem; }
+    .grid { grid-template-columns: 1fr; }
+    .flowchart { flex-direction: column; align-items: stretch; text-align: center; }
+    .flow-arrow { transform: rotate(90deg); text-align: center; }
+    table { font-size: 0.82rem; }
+    th, td { padding: 0.4rem 0.5rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<header>
+  <h1>Choosing the Right ML Algorithm, Distributed Training &amp; AutoML</h1>
+  <div class="subtitle">Baselines, Learning Curves, Parallelism Strategies &amp; Neural Architecture Search</div>
+  <div class="course">CST8510 &mdash; Applied Machine Learning</div>
+</header>
+
+<!-- TABLE OF CONTENTS -->
+<nav class="toc">
+  <h2>Table of Contents</h2>
+  <ol>
+    <li><a href="#s1">Do Not Start With the State of the Art</a></li>
+    <li><a href="#s2">The Importance of Baseline Models</a></li>
+    <li><a href="#s3">Learning Curves</a></li>
+    <li><a href="#s4">Evaluation Considerations: FP vs. FN Costs</a></li>
+    <li><a href="#s5">Accuracy vs. Computational Cost vs. Latency</a></li>
+    <li><a href="#s6">Model Assumptions &amp; Algorithm Types</a></li>
+    <li><a href="#s7">Distributed Training &mdash; Overview</a></li>
+    <li><a href="#s8">Gradient Checkpointing</a></li>
+    <li><a href="#s9">Data Parallelism</a></li>
+    <li><a href="#s10">Model Parallelism &amp; Pipeline Parallelism</a></li>
+    <li><a href="#s11">Fully Sharded Data Parallelism (FSDP)</a></li>
+    <li><a href="#s12">AutoML: Soft AutoML &mdash; Hyperparameter Tuning</a></li>
+    <li><a href="#s13">AutoML: Hard AutoML &mdash; Neural Architecture Search (NAS)</a></li>
+    <li><a href="#s14">Key Takeaways</a></li>
+  </ol>
+</nav>
+
+<!-- SECTION 1 -->
+<section id="s1">
+  <h2>1. Do Not Start With the State of the Art</h2>
+
+  <div class="card red">
+    <strong>Common Mistake</strong>
+    Jumping straight to the latest, most complex model (state of the art) is tempting but counterproductive. SOTA models are evaluated on clean benchmark datasets &mdash; your real-world data may behave very differently.
+  </div>
+
+  <h3>1.1 Why Not SOTA First?</h3>
+  <div class="grid">
+    <div class="card orange">
+      <strong>Benchmarks &ne; Real Data</strong>
+      SOTA results come from clean, well-documented datasets. Real data is messy and unpredictable &mdash; performance may not transfer.
+    </div>
+    <div class="card orange">
+      <strong>Computational Cost</strong>
+      Complex models require more resources for both training and inference, leading to higher costs and greater latency.
+    </div>
+    <div class="card orange">
+      <strong>No Baseline Understanding</strong>
+      Without a simple model first, you cannot gauge which features are useful or whether your data even supports the target accuracy.
+    </div>
+  </div>
+
+  <div class="highlight">Start with the simplest model. It is easy to implement, fast to train, and gives you a pipeline to understand your data before investing in complexity.</div>
+</section>
+
+<!-- SECTION 2 -->
+<section id="s2">
+  <h2>2. The Importance of Baseline Models</h2>
+
+  <p>A <span class="term">baseline model</span> is the simplest reasonable model for your problem. It provides a reference point against which all subsequent, more complex models are compared.</p>
+
+  <h3>2.1 What Baselines Reveal</h3>
+  <table>
+    <tr><th class="green" style="width:30%">Baseline Accuracy</th><th class="green">Interpretation</th></tr>
+    <tr>
+      <td><strong>~60%</strong></td>
+      <td>Data quality is likely poor. Even a complex model is unlikely to reach 95%. Go back and collect more/better data.</td>
+    </tr>
+    <tr>
+      <td><strong>~80%</strong></td>
+      <td>Promising. There is hope to improve. Understand which features are useful, then start adding more complex models and measure how much improvement you get.</td>
+    </tr>
+  </table>
+
+  <h3>2.2 Recommended Baseline Models by Problem Type</h3>
+  <div class="grid">
+    <div class="card">
+      <strong>Regression (Continuous Target)</strong>
+      Linear Regression
+    </div>
+    <div class="card green">
+      <strong>Classification</strong>
+      Logistic Regression
+    </div>
+    <div class="card purple">
+      <strong>Computer Vision</strong>
+      A simpler deep learning network (e.g., small CNN)
+    </div>
+    <div class="card teal">
+      <strong>NLP / Language</strong>
+      A simpler transformer model
+    </div>
+  </div>
+
+  <div class="card green">
+    <strong>Key Benefit</strong>
+    Linear models help identify <strong>which features are important</strong> for prediction. They also create a quick, working pipeline that provides invaluable insights before scaling up.
+  </div>
+
+  <div class="flowchart">
+    <div class="flow-step">Choose simple model</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step green">Build pipeline</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step teal">Evaluate baseline accuracy</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step purple">Identify important features</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step orange">Add complexity incrementally</div>
+  </div>
+</section>
+
+<!-- SECTION 3 -->
+<section id="s3">
+  <h2>3. Learning Curves</h2>
+
+  <p>A <span class="term">learning curve</span> plots model performance (e.g., accuracy) against training set size, for both training and validation data. It answers two critical questions: <strong>Do I need more data?</strong> and <strong>Do I need a more complex model?</strong></p>
+
+  <h3>3.1 How to Generate a Learning Curve</h3>
+  <div class="flowchart">
+    <div class="flow-step">Create training sets of different sizes (e.g., 1K, 5K, 10K, 50K, 100K)</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step green">Split each into train/validation</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step purple">Train model &amp; compute metrics on both sets</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step orange">Plot the curves</div>
+  </div>
+
+  <h3>3.2 Understanding the Two Curves</h3>
+
+  <div class="diagram">
+    <svg width="560" height="300" viewBox="0 0 560 300">
+      <!-- Axes -->
+      <line x1="60" y1="250" x2="520" y2="250" stroke="#1e293b" stroke-width="2"/>
+      <line x1="60" y1="250" x2="60" y2="30" stroke="#1e293b" stroke-width="2"/>
+      <text x="290" y="290" text-anchor="middle" fill="#64748b" font-size="13">Training Set Size</text>
+      <text x="20" y="140" text-anchor="middle" fill="#64748b" font-size="13" transform="rotate(-90,20,140)">Accuracy</text>
+
+      <!-- Training curve (red, comes down) -->
+      <path d="M80,50 Q150,55 200,80 Q280,110 350,130 Q420,145 500,155" fill="none" stroke="#dc2626" stroke-width="2.5"/>
+      <text x="505" y="148" fill="#dc2626" font-size="12" font-weight="600">Training</text>
+
+      <!-- Validation curve (green, goes up) -->
+      <path d="M80,230 Q150,210 200,185 Q280,160 350,148 Q420,140 500,138" fill="none" stroke="#16a34a" stroke-width="2.5"/>
+      <text x="505" y="132" fill="#16a34a" font-size="12" font-weight="600">Validation</text>
+
+      <!-- Gap annotation -->
+      <line x1="200" y1="80" x2="200" y2="185" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="215" y="135" fill="#7c3aed" font-size="11" font-weight="600">Gap = Overfitting</text>
+    </svg>
+  </div>
+
+  <table>
+    <tr><th class="purple" style="width:25%">Curve</th><th class="purple">Behavior</th><th class="purple">Reason</th></tr>
+    <tr>
+      <td><strong>Training (red)</strong></td>
+      <td>Starts high, decreases as data size grows</td>
+      <td>With few points, the model easily fits all data. With more points, it can only approximate, so training accuracy drops slightly.</td>
+    </tr>
+    <tr>
+      <td><strong>Validation (green)</strong></td>
+      <td>Starts low, increases as data size grows</td>
+      <td>With little training data, the model cannot generalize to unseen data. More training data improves generalization.</td>
+    </tr>
+    <tr>
+      <td><strong>Gap between curves</strong></td>
+      <td>Indicates degree of overfitting</td>
+      <td>Large gap = overfitting. Adding more data may help close the gap.</td>
+    </tr>
+  </table>
+
+  <h3>3.3 Interpreting Learning Curves &mdash; Two Scenarios</h3>
+  <div class="grid">
+    <div class="card red">
+      <strong>Scenario A: Curves Converge at Low Accuracy (~85%)</strong>
+      The model has low capacity (high bias). Adding more data will not help &mdash; the model cannot learn more. You need a <strong>more complex model</strong>.
+    </div>
+    <div class="card green">
+      <strong>Scenario B: Large Gap, Validation Approaching ~1.0</strong>
+      The model is overfitting (high variance), but validation score is trending upward. Adding <strong>more training data</strong> will likely close the gap and improve performance.
+    </div>
+  </div>
+
+  <div class="card orange">
+    <strong>Noisy Curves</strong>
+    Learning curves can sometimes be noisy or zigzag &mdash; this typically happens when the model gets stuck in a local optimum. Averaging over many runs smooths the curves. It is also possible to get a better score on the test data than the training data when using cross-validation.
+  </div>
+
+  <div class="highlight">Scikit-learn provides a built-in function to plot learning curves. You need about 5 different training sizes. This is an important but often-neglected practice.</div>
+</section>
+
+<!-- SECTION 4 -->
+<section id="s4">
+  <h2>4. Evaluation Considerations: FP vs. FN Costs</h2>
+
+  <p>In real-world scenarios, <span class="term">false positives</span> (FP) and <span class="term">false negatives</span> (FN) carry different costs. Relying on accuracy alone ignores this asymmetry.</p>
+
+  <h3>4.1 Cost Asymmetry Examples</h3>
+  <table>
+    <tr><th class="red" style="width:22%">Domain</th><th class="red">False Positive Cost</th><th class="red">False Negative Cost</th><th class="red" style="width:18%">Higher Risk</th></tr>
+    <tr>
+      <td><strong>Credit Card Fraud</strong></td>
+      <td>Analyst investigates too many legitimate transactions (wasted time)</td>
+      <td>Fraudulent transactions go through &rarr; chargebacks, customer complaints, financial losses</td>
+      <td><span class="badge red">FN</span></td>
+    </tr>
+    <tr>
+      <td><strong>Cancer Diagnosis</strong></td>
+      <td>Patient without cancer is flagged &rarr; additional confirmation tests</td>
+      <td>Patient with cancer is missed &rarr; potentially life-threatening</td>
+      <td><span class="badge red">FN</span></td>
+    </tr>
+  </table>
+
+  <div class="card red">
+    <strong>Key Principle</strong>
+    Accuracy alone is <strong>not sensitive</strong> to the asymmetry between FP and FN costs. You need to look at metrics which are sensitive to this difference.
+  </div>
+</section>
+
+<!-- SECTION 5 -->
+<section id="s5">
+  <h2>5. Accuracy vs. Computational Cost vs. Latency</h2>
+
+  <p>When deploying models in production, three factors must be balanced:</p>
+
+  <div class="grid">
+    <div class="card">
+      <strong>Accuracy Gain</strong>
+      A deep learning model may give 92&ndash;95% accuracy vs. logistic regression's 90%, but at 5&ndash;10&times; the computational cost.
+    </div>
+    <div class="card orange">
+      <strong>Computational Cost</strong>
+      Is a 2&ndash;3% accuracy improvement worth 5&ndash;10&times; more compute? It depends on the business impact.
+    </div>
+    <div class="card red">
+      <strong>Latency</strong>
+      Deeper models take longer to produce responses. In user-facing applications, this degrades user experience.
+    </div>
+  </div>
+
+  <h3>5.1 When Small Gains Matter</h3>
+  <div class="card green">
+    <strong>Ad Click-Through Rate (CTR) Example</strong>
+    Even a <strong>0.1% improvement</strong> in CTR can generate significant revenue because millions of ads are served per day. In such cases, switching to a more expensive model is justified.
+  </div>
+
+  <div class="highlight">Theory courses focus only on accuracy. As an MLOps/ML deployment engineer, you must also consider computational cost and latency &mdash; they directly affect your organization's bottom line and revenue.</div>
+</section>
+
+<!-- SECTION 6 -->
+<section id="s6">
+  <h2>6. Model Assumptions &amp; Algorithm Types</h2>
+
+  <p>Different models carry different assumptions about the data. You must verify that your data satisfies these assumptions.</p>
+
+  <h3>6.1 Algorithm Overview</h3>
+  <table>
+    <tr><th class="teal" style="width:25%">Category</th><th class="teal">Algorithms</th><th class="teal">Key Characteristics</th></tr>
+    <tr>
+      <td><strong>Linear Models</strong></td>
+      <td>Linear Regression, Logistic Regression, Lasso, Ridge</td>
+      <td>Interpretable, fast, good for baselines. Lasso &amp; Ridge add regularization to reduce overfitting.</td>
+    </tr>
+    <tr>
+      <td><strong>Tree-Based Models</strong></td>
+      <td>Decision Trees, Random Forests, XGBoost, Gradient Boosted Trees</td>
+      <td>Handle mixed feature types, noise, correlation. Built-in feature selection. Popular general-purpose choice.</td>
+    </tr>
+    <tr>
+      <td><strong>Clustering</strong></td>
+      <td>K-Means, DBSCAN, etc.</td>
+      <td>Unsupervised learning for grouping similar data points.</td>
+    </tr>
+  </table>
+
+  <h3>6.2 Why Tree-Based Models Are Popular</h3>
+  <div class="grid">
+    <div class="card green">
+      <strong>Handle Mixed Features</strong>
+      Work well with both numerical and categorical data.
+    </div>
+    <div class="card green">
+      <strong>Built-in Feature Selection</strong>
+      Each tree uses a subset of features, so feature selection is inherent. Final prediction uses voting or averaging.
+    </div>
+    <div class="card green">
+      <strong>Robust to Noise</strong>
+      Handle noisy data, correlated variables, and resist overfitting (especially Random Forests).
+    </div>
+  </div>
+
+  <div class="card purple">
+    <strong>Hyperparameter Tuning</strong>
+    Finding optimal values for parameters that cannot be learned from data directly (e.g., learning rate, tree depth). Build models on different hyperparameter values, evaluate on cross-validation, and pick the best.
+  </div>
+
+  <div class="highlight">There is no recipe for choosing the right ML algorithm &mdash; only guidelines. Start with a baseline, use learning curves, and experiment systematically.</div>
+</section>
+
+<!-- SECTION 7 -->
+<section id="s7">
+  <h2>7. Distributed Training &mdash; Overview</h2>
+
+  <p>Classical ML models typically fit on a single CPU/GPU. Deep neural networks with tens or hundreds of layers may not fit in memory, requiring <span class="term">distributed training</span> across multiple machines.</p>
+
+  <h3>7.1 When Is Distributed Training Necessary?</h3>
+  <div class="grid">
+    <div class="card purple">
+      <strong>Large Language Models</strong>
+      Billions of parameters. A 7B-parameter model at 32-bit or 16-bit precision requires ~12 GB just for weights, doubled for gradients during training &mdash; exceeding a 24 GB GPU.
+    </div>
+    <div class="card teal">
+      <strong>Image Generation Models</strong>
+      Huge data volumes and large model architectures.
+    </div>
+    <div class="card">
+      <strong>Sequence Models</strong>
+      Large data and model sizes for sequential data processing.
+    </div>
+  </div>
+
+  <h3>7.2 Memory Calculation Example</h3>
+  <div class="card orange">
+    <strong>7B Parameter Model</strong>
+    7 billion parameters at 32-bit or 16-bit precision &asymp; <strong>~12 GB</strong> for weights. Training requires storing gradients too, roughly <strong>doubling</strong> memory to ~24 GB+. A standard 24 GB GPU is insufficient. Today's standard: <span class="term">H100 GPUs</span> with ~80 GB memory.
+  </div>
+
+  <h3>7.3 Three Main Distributed Training Strategies</h3>
+  <div class="diagram">
+    <svg width="560" height="180" viewBox="0 0 560 180">
+      <rect x="10" y="60" width="160" height="60" rx="10" fill="#2563eb" opacity="0.15" stroke="#2563eb" stroke-width="2"/>
+      <text x="90" y="85" text-anchor="middle" font-weight="700" fill="#2563eb" font-size="14">Data</text>
+      <text x="90" y="105" text-anchor="middle" font-weight="700" fill="#2563eb" font-size="14">Parallelism</text>
+
+      <rect x="200" y="60" width="160" height="60" rx="10" fill="#7c3aed" opacity="0.15" stroke="#7c3aed" stroke-width="2"/>
+      <text x="280" y="85" text-anchor="middle" font-weight="700" fill="#7c3aed" font-size="14">Model</text>
+      <text x="280" y="105" text-anchor="middle" font-weight="700" fill="#7c3aed" font-size="14">Parallelism</text>
+
+      <rect x="390" y="60" width="160" height="60" rx="10" fill="#0d9488" opacity="0.15" stroke="#0d9488" stroke-width="2"/>
+      <text x="470" y="85" text-anchor="middle" font-weight="700" fill="#0d9488" font-size="14">Pipeline</text>
+      <text x="470" y="105" text-anchor="middle" font-weight="700" fill="#0d9488" font-size="14">Parallelism</text>
+
+      <text x="90" y="145" text-anchor="middle" fill="#64748b" font-size="11">Split data,</text>
+      <text x="90" y="160" text-anchor="middle" fill="#64748b" font-size="11">replicate model</text>
+
+      <text x="280" y="145" text-anchor="middle" fill="#64748b" font-size="11">Split model layers</text>
+      <text x="280" y="160" text-anchor="middle" fill="#64748b" font-size="11">across GPUs</text>
+
+      <text x="470" y="145" text-anchor="middle" fill="#64748b" font-size="11">Split both model</text>
+      <text x="470" y="160" text-anchor="middle" fill="#64748b" font-size="11">&amp; data</text>
+
+      <text x="280" y="30" text-anchor="middle" fill="#1e293b" font-weight="700" font-size="15">Distributed Training Strategies</text>
+    </svg>
+  </div>
+</section>
+
+<!-- SECTION 8 -->
+<section id="s8">
+  <h2>8. Gradient Checkpointing</h2>
+
+  <p><span class="term">Gradient checkpointing</span> is a memory-saving technique for neural networks trained via backpropagation.</p>
+
+  <h3>8.1 The Problem</h3>
+  <p>During the forward pass, gradients are computed and <strong>stored in memory</strong> at every layer. During the backward pass, these stored gradients are used to update weights. Storing all gradients consumes enormous memory.</p>
+
+  <h3>8.2 The Solution</h3>
+  <div class="flowchart">
+    <div class="flow-step">Forward pass: store gradients only at selected <strong>checkpoint</strong> nodes</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step green">Backward pass: recompute missing gradients from nearest checkpoint</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step purple">Update weights as usual</div>
+  </div>
+
+  <h3>8.3 Trade-off</h3>
+  <div class="grid">
+    <div class="card green">
+      <strong>Memory Savings</strong>
+      Train models up to <strong>10&times; larger</strong> in the same GPU memory.
+    </div>
+    <div class="card orange">
+      <strong>Computation Overhead</strong>
+      Only ~<strong>20% increase</strong> in computation time due to recomputation.
+    </div>
+  </div>
+
+  <div class="score-bar-container">
+    <div class="score-label">Model Size Increase: up to 10&times; in same memory</div>
+    <div class="score-bar">
+      <div class="score-fill" style="width:100%; background: var(--accent-green);">10&times;</div>
+    </div>
+  </div>
+  <div class="score-bar-container">
+    <div class="score-label">Computation Time Overhead: ~20%</div>
+    <div class="score-bar">
+      <div class="score-fill" style="width:20%; background: var(--accent-orange);">20%</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 9 -->
+<section id="s9">
+  <h2>9. Data Parallelism</h2>
+
+  <p>In <span class="term">data parallelism</span>, the data is split across N GPUs while the <strong>same model is replicated</strong> on each GPU.</p>
+
+  <h3>9.1 How It Works</h3>
+  <div class="flowchart">
+    <div class="flow-step">Split data into N partitions</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step green">Each GPU gets one partition + full model copy</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step purple">Forward &amp; backward pass on each GPU</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step teal">Share gradients via reduction (averaging)</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step orange">Update model with reduced gradients</div>
+  </div>
+
+  <h3>9.2 Disadvantages</h3>
+  <table>
+    <tr><th class="red" style="width:30%">Issue</th><th class="red">Description</th></tr>
+    <tr>
+      <td><strong>Memory Not Saved</strong></td>
+      <td>Full model is replicated on every GPU. If the model doesn't fit on one GPU, data parallelism alone won't help.</td>
+    </tr>
+    <tr>
+      <td><strong>Straggler Problem</strong></td>
+      <td>In synchronous mode, all GPUs must finish before gradient reduction. The slowest GPU bottlenecks the entire process.</td>
+    </tr>
+    <tr>
+      <td><strong>Low GPU Utilization</strong></td>
+      <td>Typically only ~50% of GPU compute capacity is actually used (rest goes to data loading, kernel operations, memory swapping).</td>
+    </tr>
+  </table>
+
+  <h3>9.3 Synchronous vs. Asynchronous Mode</h3>
+  <table>
+    <tr><th class="purple" style="width:25%">Mode</th><th class="purple">Behavior</th><th class="purple">Trade-off</th></tr>
+    <tr>
+      <td><strong>Synchronous</strong></td>
+      <td>Wait for all GPUs to finish before gradient reduction</td>
+      <td>Creates straggler problem; worsens as GPU count increases</td>
+    </tr>
+    <tr>
+      <td><strong>Asynchronous</strong></td>
+      <td>GPUs update independently without waiting</td>
+      <td>Avoids the straggler blocking problem</td>
+    </tr>
+  </table>
+
+  <div class="highlight">Load balancing across GPUs is critical for mitigating the straggler problem. This is an important operational responsibility for ML engineers.</div>
+</section>
+
+<!-- SECTION 10 -->
+<section id="s10">
+  <h2>10. Model Parallelism &amp; Pipeline Parallelism</h2>
+
+  <h3>10.1 Model Parallelism</h3>
+  <div class="card purple">
+    <strong>How It Works</strong>
+    The model is split across machines. Different GPUs work on different layers of the network. This solves the memory problem when a model is too large for a single GPU.
+  </div>
+
+  <h3>10.2 Pipeline Parallelism</h3>
+  <p><span class="term">Pipeline parallelism</span> splits <strong>both the model and the data</strong>. It combines elements of data and model parallelism for better efficiency.</p>
+
+  <div class="flowchart">
+    <div class="flow-step">GPU 1: Layers 1&ndash;5, Batch 1</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step green">GPU 2: Layers 6&ndash;10, receives Batch 1 output</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step purple">GPU 1: Starts Batch 2</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step teal">Eventually all GPUs are active simultaneously</div>
+  </div>
+
+  <h3>10.3 Comparison</h3>
+  <table>
+    <tr><th style="width:25%">Strategy</th><th>Splits</th><th>Advantage</th><th>Disadvantage</th></tr>
+    <tr>
+      <td><strong>Data Parallelism</strong></td>
+      <td>Data only</td>
+      <td>Simple to implement</td>
+      <td>Full model on each GPU; straggler problem</td>
+    </tr>
+    <tr>
+      <td><strong>Model Parallelism</strong></td>
+      <td>Model only</td>
+      <td>Handles large models</td>
+      <td>Sequential dependency between layers</td>
+    </tr>
+    <tr>
+      <td><strong>Pipeline Parallelism</strong></td>
+      <td>Both model &amp; data</td>
+      <td>More optimized; all GPUs active after warm-up</td>
+      <td>Some pipeline slack/bubbles remain</td>
+    </tr>
+  </table>
+</section>
+
+<!-- SECTION 11 -->
+<section id="s11">
+  <h2>11. Fully Sharded Data Parallelism (FSDP)</h2>
+
+  <p><span class="badge purple">Facebook AI Research</span> FSDP is a state-of-the-art distributed training strategy that addresses the memory limitations of standard data parallelism.</p>
+
+  <h3>11.1 Key Difference from Model Parallelism</h3>
+  <div class="grid">
+    <div class="card red">
+      <strong>Model Parallelism</strong>
+      Splits the model <strong>sequentially by layer</strong>: GPU 0 gets layers 1&ndash;10, GPU 1 gets layers 11&ndash;20, etc. This creates forward-pass dependencies.
+    </div>
+    <div class="card green">
+      <strong>FSDP</strong>
+      Samples a <strong>subset of parameters from every layer</strong> and distributes them across GPUs. Every GPU has parameters from all layers, but only a fraction.
+    </div>
+  </div>
+
+  <h3>11.2 How FSDP Works</h3>
+  <div class="diagram">
+    <svg width="560" height="260" viewBox="0 0 560 260">
+      <!-- Layer labels -->
+      <text x="80" y="25" text-anchor="middle" fill="#1e293b" font-weight="700" font-size="13">Model Layers</text>
+      <rect x="30" y="35" width="100" height="30" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="80" y="55" text-anchor="middle" font-size="12" fill="#1e293b">Layer 1</text>
+      <rect x="30" y="70" width="100" height="30" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="80" y="90" text-anchor="middle" font-size="12" fill="#1e293b">Layer 2</text>
+      <rect x="30" y="105" width="100" height="30" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="80" y="125" text-anchor="middle" font-size="12" fill="#1e293b">Layer 3</text>
+
+      <!-- Arrow -->
+      <text x="190" y="85" text-anchor="middle" fill="#64748b" font-size="24">&rarr;</text>
+      <text x="190" y="110" text-anchor="middle" fill="#64748b" font-size="11">Shard</text>
+
+      <!-- GPU columns -->
+      <text x="290" y="25" text-anchor="middle" fill="#16a34a" font-weight="700" font-size="13">GPU 0</text>
+      <rect x="250" y="35" width="80" height="25" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+      <text x="290" y="52" text-anchor="middle" font-size="10" fill="#1e293b">L1 params A</text>
+      <rect x="250" y="65" width="80" height="25" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+      <text x="290" y="82" text-anchor="middle" font-size="10" fill="#1e293b">L2 params A</text>
+      <rect x="250" y="95" width="80" height="25" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+      <text x="290" y="112" text-anchor="middle" font-size="10" fill="#1e293b">L3 params A</text>
+
+      <text x="390" y="25" text-anchor="middle" fill="#7c3aed" font-weight="700" font-size="13">GPU 1</text>
+      <rect x="350" y="35" width="80" height="25" rx="4" fill="#f3e8ff" stroke="#7c3aed" stroke-width="1"/>
+      <text x="390" y="52" text-anchor="middle" font-size="10" fill="#1e293b">L1 params B</text>
+      <rect x="350" y="65" width="80" height="25" rx="4" fill="#f3e8ff" stroke="#7c3aed" stroke-width="1"/>
+      <text x="390" y="82" text-anchor="middle" font-size="10" fill="#1e293b">L2 params B</text>
+      <rect x="350" y="95" width="80" height="25" rx="4" fill="#f3e8ff" stroke="#7c3aed" stroke-width="1"/>
+      <text x="390" y="112" text-anchor="middle" font-size="10" fill="#1e293b">L3 params B</text>
+
+      <text x="490" y="25" text-anchor="middle" fill="#0d9488" font-weight="700" font-size="13">GPU 2</text>
+      <rect x="450" y="35" width="80" height="25" rx="4" fill="#f0fdfa" stroke="#0d9488" stroke-width="1"/>
+      <text x="490" y="52" text-anchor="middle" font-size="10" fill="#1e293b">L1 params C</text>
+      <rect x="450" y="65" width="80" height="25" rx="4" fill="#f0fdfa" stroke="#0d9488" stroke-width="1"/>
+      <text x="490" y="82" text-anchor="middle" font-size="10" fill="#1e293b">L2 params C</text>
+      <rect x="450" y="95" width="80" height="25" rx="4" fill="#f0fdfa" stroke="#0d9488" stroke-width="1"/>
+      <text x="490" y="112" text-anchor="middle" font-size="10" fill="#1e293b">L3 params C</text>
+
+      <!-- Reduce-scatter-gather -->
+      <rect x="180" y="150" width="260" height="50" rx="8" fill="#fef9c3" stroke="#ea580c" stroke-width="1.5"/>
+      <text x="310" y="172" text-anchor="middle" font-weight="600" fill="#ea580c" font-size="12">Reduce-Scatter-Gather</text>
+      <text x="310" y="190" text-anchor="middle" fill="#64748b" font-size="11">Borrow gradients per-layer from other GPUs</text>
+
+      <!-- Result -->
+      <text x="310" y="230" text-anchor="middle" fill="#1e293b" font-size="12">Each GPU ends up with the sum of all gradients from all data points</text>
+      <text x="310" y="250" text-anchor="middle" fill="#16a34a" font-weight="600" font-size="12">Same result as data parallelism, much less memory per GPU</text>
+    </svg>
+  </div>
+
+  <h3>11.3 Advantages</h3>
+  <div class="card green">
+    <strong>Memory Efficiency</strong>
+    Unlike data parallelism (which replicates the entire model on each GPU), FSDP only stores a <strong>fraction of parameters per GPU</strong>. The reduce-scatter-gather operation reconstructs the full gradient information layer by layer.
+  </div>
+
+  <div class="card teal">
+    <strong>Ecosystem</strong>
+    Invented by Facebook AI Research (FAIR). Available in <span class="term">FairScale</span> (open-source) and <span class="term">PyTorch</span>. FSDP is a core strategy behind modern <span class="term">3D parallelism</span> (combining data + model + pipeline parallelism).
+  </div>
+</section>
+
+<!-- SECTION 12 -->
+<section id="s12">
+  <h2>12. AutoML: Soft AutoML &mdash; Hyperparameter Tuning</h2>
+
+  <div class="card orange">
+    <strong>Business Context</strong>
+    Companies like Google and Microsoft push AutoML because it requires heavy computation &mdash; and they sell cloud compute. Be aware that AutoML can be expensive.
+  </div>
+
+  <p><span class="term">Soft AutoML</span> = the model architecture is fixed, but you tune hyperparameters (values that cannot be learned from data via loss minimization).</p>
+
+  <h3>12.1 Three Hyperparameter Tuning Methods</h3>
+  <table>
+    <tr><th class="teal" style="width:22%">Method</th><th class="teal">How It Works</th><th class="teal">Complexity</th><th class="teal" style="width:18%">When to Use</th></tr>
+    <tr>
+      <td><strong>Grid Search</strong></td>
+      <td>Systematically evaluate every point in a grid of all hyperparameter combinations.</td>
+      <td>Exponential (grows with number of hyperparameters)</td>
+      <td><span class="badge orange">1&ndash;2 params only</span></td>
+    </tr>
+    <tr>
+      <td><strong>Random Search</strong></td>
+      <td>Randomly sample points in hyperparameter space. Keep best model found. Can repeat rounds.</td>
+      <td>Linear (fixed samples per round)</td>
+      <td><span class="badge green">3+ params</span></td>
+    </tr>
+    <tr>
+      <td><strong>Bayesian Optimization</strong></td>
+      <td>Build a surrogate model (Gaussian process) that predicts accuracy as a function of hyperparameters. Use exploration-exploitation to select next points.</td>
+      <td>Very efficient (~12 iterations)</td>
+      <td><span class="badge green">Best practice</span></td>
+    </tr>
+  </table>
+
+  <div class="highlight">The moment you have more than two hyperparameters, always prefer random search over grid search.</div>
+
+  <h3>12.2 Bayesian Optimization &mdash; Deep Dive</h3>
+  <div class="flowchart">
+    <div class="flow-step">Randomly sample initial points</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step green">Train &amp; evaluate real model at each point</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step purple">Fit Gaussian process surrogate model</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step teal">Predict accuracy + confidence for new points</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step orange">Select next point via exploration-exploitation</div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <strong>Exploitation</strong>
+      Try hyperparameter regions where <strong>predicted accuracy is high</strong>.
+    </div>
+    <div class="card purple">
+      <strong>Exploration</strong>
+      Try regions where <strong>confidence is low</strong> (unexplored areas that might contain good values).
+    </div>
+  </div>
+
+  <div class="card green">
+    <strong>Why It&rsquo;s Fast</strong>
+    The surrogate model is simple and cheap to evaluate. Good hyperparameter values are typically found within <strong>~12 iterations</strong>. Currently used in practice for SVMs, random forests, and gradient boosted trees.
+  </div>
+</section>
+
+<!-- SECTION 13 -->
+<section id="s13">
+  <h2>13. AutoML: Hard AutoML &mdash; Neural Architecture Search (NAS)</h2>
+
+  <p><span class="term">Hard AutoML</span> = you don't even know the architecture. <span class="term">Neural Architecture Search (NAS)</span> automatically discovers optimal network architectures.</p>
+
+  <h3>13.1 NAS Search Space</h3>
+  <p>The search space consists of all candidate components:</p>
+  <div class="grid">
+    <div class="card">
+      <strong>Structural</strong>
+      Number of layers, neurons per layer, connection types
+    </div>
+    <div class="card teal">
+      <strong>Operations</strong>
+      Convolution types (3&times;3, 5&times;5), activation functions
+    </div>
+    <div class="card purple">
+      <strong>Configuration</strong>
+      Batch normalization, skip connections, loss functions
+    </div>
+  </div>
+
+  <h3>13.2 Three NAS Strategies</h3>
+  <table>
+    <tr><th class="purple" style="width:25%">Strategy</th><th class="purple">Approach</th><th class="purple">Example</th><th class="purple" style="width:20%">Cost</th></tr>
+    <tr>
+      <td><strong>Reinforcement Learning</strong></td>
+      <td>A controller (agent) proposes architectures. Performance is used as reward signal. RL optimization learns to propose better architectures. 80% exploitation / 20% exploration.</td>
+      <td><span class="term">NASNet</span> &mdash; beat human-designed models on image classification</td>
+      <td><span class="badge red">800 GPUs &times; 4 months</span></td>
+    </tr>
+    <tr>
+      <td><strong>Evolutionary</strong></td>
+      <td>Start with random models. Evaluate, kill poor performers, mutate the good ones (change layers, neurons). Repeat selection &amp; mutation.</td>
+      <td><span class="term">AmoebaNet</span></td>
+      <td><span class="badge red">Very expensive</span></td>
+    </tr>
+    <tr>
+      <td><strong>Differentiable / Gradient-Based</strong></td>
+      <td>Create one supermodel combining all candidate operations. Weight each operation with a softmax (differentiable). Use gradient descent to find optimal architecture weights (&alpha;).</td>
+      <td>(Currently popular approach)</td>
+      <td><span class="badge green">A few hours</span></td>
+    </tr>
+  </table>
+
+  <h3>13.3 RL-Based NAS Pipeline</h3>
+  <div class="flowchart">
+    <div class="flow-step">Controller (Agent)</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step green">Proposes architecture</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step purple">Build &amp; train model</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step teal">Measure performance</div>
+    <span class="flow-arrow">&rarr;</span>
+    <div class="flow-step orange">Reward &rarr; update agent via RL</div>
+  </div>
+
+  <h3>13.4 Differentiable NAS &mdash; The Modern Approach</h3>
+  <div class="card green">
+    <strong>Dramatic Efficiency Gain</strong>
+    Instead of training hundreds of separate models (RL/evolutionary), differentiable NAS builds <strong>one supermodel</strong> with weighted candidate operations. The softmax-weighted architecture is differentiable, enabling standard gradient descent. Result: from <strong>800 GPUs &times; 4 months</strong> down to <strong>a few hours</strong>.
+  </div>
+
+  <div class="diagram">
+    <svg width="520" height="160" viewBox="0 0 520 160">
+      <text x="260" y="20" text-anchor="middle" fill="#1e293b" font-weight="700" font-size="14">NAS Cost Comparison</text>
+
+      <!-- RL bar -->
+      <text x="50" y="55" text-anchor="end" fill="#1e293b" font-size="12" font-weight="600">RL-based</text>
+      <rect x="60" y="40" width="440" height="24" rx="12" fill="#e2e8f0"/>
+      <rect x="60" y="40" width="440" height="24" rx="12" fill="#dc2626" opacity="0.8"/>
+      <text x="280" y="57" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">800 GPUs &times; 4 months</text>
+
+      <!-- Evolutionary bar -->
+      <text x="50" y="90" text-anchor="end" fill="#1e293b" font-size="12" font-weight="600">Evolutionary</text>
+      <rect x="60" y="75" width="440" height="24" rx="12" fill="#e2e8f0"/>
+      <rect x="60" y="75" width="380" height="24" rx="12" fill="#ea580c" opacity="0.8"/>
+      <text x="250" y="92" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">Very expensive (comparable)</text>
+
+      <!-- Differentiable bar -->
+      <text x="50" y="125" text-anchor="end" fill="#1e293b" font-size="12" font-weight="600">Gradient</text>
+      <rect x="60" y="110" width="440" height="24" rx="12" fill="#e2e8f0"/>
+      <rect x="60" y="110" width="20" height="24" rx="12" fill="#16a34a" opacity="0.8"/>
+      <text x="95" y="127" fill="#16a34a" font-size="11" font-weight="600">A few hours</text>
+
+      <text x="260" y="155" text-anchor="middle" fill="#64748b" font-size="11">Differentiable NAS is the currently popular approach</text>
+    </svg>
+  </div>
+</section>
+
+<!-- SECTION 14 -->
+<section id="s14">
+  <h2>14. Key Takeaways</h2>
+
+  <div class="grid">
+    <div class="card red">
+      <strong>1. Don't Start With SOTA</strong>
+      Always begin with a simple baseline model. It helps you understand your data, identify useful features, and set a performance floor before adding complexity.
+    </div>
+    <div class="card green">
+      <strong>2. Use Learning Curves</strong>
+      Plot training vs. validation accuracy at different data sizes. This reveals whether you need more data (high variance) or a more complex model (high bias).
+    </div>
+    <div class="card orange">
+      <strong>3. Consider All Costs</strong>
+      Evaluate models not just on accuracy but also on FP/FN costs, computational expense, and inference latency. These operational factors directly impact business outcomes.
+    </div>
+    <div class="card teal">
+      <strong>4. Tree-Based Models Are Versatile</strong>
+      Random forests and gradient boosted trees handle mixed features, noise, and inherent feature selection. They are a strong default for many problems.
+    </div>
+    <div class="card purple">
+      <strong>5. Distributed Training Strategies</strong>
+      Data parallelism, model parallelism, pipeline parallelism, and FSDP each address different bottlenecks. FSDP (from FAIR) is the modern standard for large-model training.
+    </div>
+    <div class="card">
+      <strong>6. Gradient Checkpointing Saves Memory</strong>
+      Store gradients at only selected nodes; recompute the rest. Train 10&times; larger models with only ~20% more computation time.
+    </div>
+    <div class="card green">
+      <strong>7. Bayesian Optimization for Tuning</strong>
+      Use Bayesian optimization (Gaussian process surrogate) for hyperparameter tuning &mdash; it finds good values in ~12 iterations via exploration-exploitation.
+    </div>
+    <div class="card purple">
+      <strong>8. Differentiable NAS Is the Future</strong>
+      Gradient-based neural architecture search reduces the cost of architecture discovery from months on hundreds of GPUs to just a few hours.
+    </div>
+  </div>
+</section>
+
+</div>
+</body>
+</html>

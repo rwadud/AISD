@@ -1,0 +1,211 @@
+CHOOSING THE RIGHT ML ALGORITHM
+
+Do Not Start With the State of the Art
+
+In ML, usually we try the latest and the greatest models, the state of the art. For every problem we want to apply the best architecture, and we want to get some experience in that. That is natural for everybody to think about. But often that is not the proper way of doing it. The recommendation is: do not just start with the state of the art, the greatest and the best one.
+
+The reason why you should not start with the state of the art is that they often come as publications which are trained or evaluated on standard benchmark datasets, which are often clean and well documented. Whereas with real data, you do not know how well they will perform. So you need to evaluate that yourself. You have to start with some simpler models first and create some kind of baseline, through which you can understand your data and understand what the variables or features are which are giving good signals for your dataset. That is the first reason.
+
+The second reason is that these are more complex models, and they often require more computational resources to train and also for inference. So from that point of view, they will not be optimal, not just from the accuracy or performance point of view, but they could also cause more latency.
+
+Because of all these reasons, you should not just start with the state of the art model. You need to find out which is the best model for your dataset, which is the least complex and most efficient model for your dataset, through experiments. So you start with the simplest model. The simplest models are easy to implement, easy to try out, and you can create a pipeline to see how good it is working.
+
+If you have a simple model, let us say you are working on a classification problem. If the simple model is only giving 60% accuracy, then it is very unlikely that even if you build a complex model, it will give the kind of accuracy you are targeting, say 95%. Your data does not look good at all. So you might as well go back and try to get more data at that point.
+
+Even if the simple model gives around 80% accuracy, then there is hope to improve. You need to understand what the features are which are useful, which are indicating good predictions. Simple models like linear models — linear regression in the case of a continuous variable, logistic regression in the case of a classification problem — will help you understand those things, specifically which are the important features. They also create a good baseline, above which you can start adding more complex models and see how much improvement you get.
+
+Creating a baseline, creating a quick model, creating a pipeline using a simple model is very important. It will not take much time, but it will give you valuable insights. So do create that baseline model first. What baseline model you choose depends on your problem and your data. If it is a computer vision problem, your baseline model could still be a deep learning model, but a simpler deep learning network. These days, if it is a language model, it could be a simpler transformer model. But have a simpler model and create that baseline model pipeline, which is invaluable.
+
+
+LEARNING CURVES
+
+Then evaluate the performance. You do not know whether you have sufficient data or whether your model needs to improve in terms of complexity, or whether you need more features. You need to figure that out. How do you figure that out? There is this concept of a learning curve.
+
+A learning curve works as follows: suppose you have, say, 1 million records. You create training datasets of different sizes. You create one training set at 1,000 records, another at 5,000, then 10,000, 50,000, 100,000 records, and so on. For each of these sizes, you split the data into training and validation sets. Then you train a model, compute whatever evaluation metrics you want — let us say accuracy for classification. You compute that accuracy score on that size of data, both on the training data as well as on the validation data. You do this for all the different sizes and plot the results.
+
+What happens is that typically the curve will look like this: there is a red curve coming down and a green curve going up, which is interesting.
+
+The reason that as the training data size increases, the training accuracy score comes down is this: imagine if you only have a few data points. A model can always fit through a few data points. It always finds some optimal point which can fit through all the data points. So your training accuracy — the accuracy evaluated on the training data itself — will be very high if your dataset is small. Whereas when you increase the data size, the model cannot fit through all the points. It sort of approximates around the data points. So you start getting tiny accuracy drops. That is the reason the training accuracy curve typically comes down.
+
+Now, why does the cross-validation accuracy curve go up? Because if you start with a small data size, the cross-validation data that is not seen by the model is diverse. It could be anywhere in the input space. With smaller training data, the model may not generalize well to these unseen points. But if you increase the training data size, the model is able to generalize well, because it has seen better representation of the data space. Some validation points will be near the training data distribution, and some will be further away. So your cross-validation score will go up.
+
+If you look at the curve on the right-hand side, what is happening is that the training error is not coming down, because you still need to increase the data size. The model is overfitting. It is still fitting on the training data, even with larger sizes. So probably if you take sizes of 10,000 or 100,000, you would see that gap come down.
+
+The difference between the red curve and the green curve is also interesting. It tells you how much the model is overfitting. If there is too much gap between the training score and the cross-validation score — say at around 500 samples you see a big gap — that indicates that you need to increase your training data. Whereas a smaller gap indicates that there is not much leverage to gain from further increasing the data.
+
+For example, in the case of the left curve, which represents a simpler model, even if you increase training data beyond 400, it is not going to learn more. But is the model itself useful? It is not very useful, because even though the gap between training and validation curves converges, the accuracy is actually very low, only about 85%. So if you train the model with 400 samples or increase samples, eventually you are going to get only a model which is 85% accurate. That is not very useful.
+
+Whereas if you take the other model, the cross-validation score is reaching close to 1.0. Yes, it is overfitting, because the red curve is still on the top. But there is hope that if you increase the training data more, then the overfitting will reduce, and your cross-validation accuracy will improve.
+
+So given these two models, you can decide which model to choose, and whether you need more training data, by plotting these learning curves. You can do it very easily in scikit-learn. There is a library function to plot the curves; you do not need to write much code.
+
+This is a very important concept and people do not often do this. You need to train, for example, five different trainings with different sizes of your training data. This is a very important concept to understand — the concept of training versus validation curves.
+
+Note that the curves can sometimes be noisy or zigzag. That typically happens if the model gets stuck in some local optimum. But if you average over many runs, it smooths out. Sometimes it is possible to get a better score for the test data than the training data — that is possible with cross-validation.
+
+
+EVALUATION CONSIDERATIONS: FALSE POSITIVES VS. FALSE NEGATIVES
+
+You typically have two types of errors: false positives and false negatives. In a typical real scenario, the costs are not the same. The cost of having a false positive is not the same as having a false negative.
+
+For example, take credit card fraud detection. If you have too many false positives, what happens is that you are flagging too many transactions as suspicious. Your analyst who is investigating will have a lot to investigate. That is not a good thing. But think about if you miss a fraud. If you have too many false negatives — you say a transaction is fine when it is actually a bad transaction — what will happen? Too many fraudulent transactions go through, eventually a lot of customers will complain, there will be chargebacks, and you lose a lot of money.
+
+Similarly, if you take any diagnostic problem, say detecting cancer. A false positive means somebody does not have cancer, but you diagnose them as having cancer. What is going to happen? You are going to have to do another confirmation test. But if you miss it — a false negative — that person could lose their life.
+
+So typically the costs of the two types of errors are not similar. You need to look at metrics which are sensitive to this difference. You should not rely on accuracy alone as your metric. Accuracy is not sensitive to this asymmetry in costs.
+
+
+ACCURACY VS. COMPUTATIONAL COST VS. LATENCY
+
+Another thing you should look at when deciding on a model in an organizational scenario is accuracy versus computational cost. For example, a logistic regression model gives 90% accuracy, whereas a deep learning model gives 92 to 95% accuracy, but it is probably five to ten times more computationally expensive. So is it worth it — just for 2-3% of classification accuracy improvement, spending five to ten times more in computational cost?
+
+Whereas if you take a problem like advertisement click-through rate (CTR), which is the probability that a user clicks on a shown ad, that is different. Even a 0.1% improvement in CTR can make a lot of difference in revenue, because you are going to show millions of ads per day. In that case, it probably makes sense to switch to a more expensive model for even a small improvement.
+
+The third factor is latency. Deeper models are more accurate, but if they take more time to produce a response, then the user experience suffers.
+
+So these three factors — the cost of false positives versus false negatives, accuracy versus computational cost, and latency — you need to keep in mind. These things are not taught in theory courses, because theory courses only focus on accuracy. They are not concerned about operational factors. But as an MLOps engineer or ML deployment engineer, you need to keep these things in mind because they are going to affect your organization's bottom line and revenue.
+
+
+MODEL ASSUMPTIONS AND ALGORITHM TYPES
+
+The next thing to keep in mind is that different models have different assumptions. What are these assumptions? And are those assumptions valid for your data? That is another thing you should consider.
+
+There is a cheat sheet that tells you the different types of algorithms: linear models (linear regression, logistic regression, Lasso, Ridge), tree-based models (decision trees, random forests, XGBoost, gradient boosted trees), clustering methods, and other classical ML models. It describes what each of them does, what kind of scenarios they are used in, and what their advantages and disadvantages are. This is not to be used as a recipe, but as a guide to keep in mind.
+
+Typically these days, tree-based models like random forests are the popular workforce models, especially when you have a mixture of numerical and categorical features, because they take care of a lot of things like noise in the data, correlation between different variables, and overfitting or underfitting. But not necessarily everywhere — that is not always the best model.
+
+Lasso and Ridge regularization are useful because they add a bit of regularization to linear models and reduce overfitting. They are still linear models, but they will reduce the overfitting and control some regularization. Random forests are suitable these days because they handle feature selection inherently. Usually when you have a large number of features, you need to reduce the number of features through feature selection. The way random forests and gradient boosted models work is that each model is using a subset of the features. So they are already incorporating feature selection. Then at the end, there is some kind of voting or averaging.
+
+So to summarize, for choosing the right ML algorithm, there is no recipe, only guidelines. You need to figure out for your dataset what is the best model using the process described: start with a baseline model, use the training and validation curves, and then experiment. There is also the idea of hyperparameter tuning, which involves finding optimal values for parameters you cannot learn from data directly, by building models on different values of the parameter, evaluating on the cross-validation set, and finding which one performs the best.
+
+
+DISTRIBUTED TRAINING
+
+Once you decide what algorithm you are going to use, the next step is training. In many cases, classical machine learning models are not very memory intensive, so they will typically fit on a single CPU or GPU. But if you are training deep neural networks with tens or hundreds of layers, they require very large memory. They do not fit into the memory of a single GPU. So it becomes necessary to have distributed training, where you distribute the training process across multiple machines.
+
+When do you necessarily use distributed training? Large language models, for example. A few billion parameters means a few gigabytes of memory. For example, if you take something like a 7 billion parameter model, and if each parameter is stored at 32-bit or 16-bit precision, you can work out that it comes to around 12 or so gigabytes of memory. But that is not enough. When you train a model, it keeps a copy of the entire set of parameters plus the gradients — so it essentially doubles the memory requirement. A 24 GB GPU will not be sufficient to train a 7 billion parameter model. So you need larger hardware. Today, the standard is H100 GPUs, which have around 80 GB of memory.
+
+Larger models require many large GPU machines. Image generation models and sequence models also deal with huge data and large model sizes.
+
+
+Gradient Checkpointing
+
+There is a simple technique called gradient checkpointing. This is typically applicable to neural network models. Usually, all neural network models are trained using backpropagation. When you do the forward pass, you compute gradients at each layer, and you store all the gradients in memory. Then when you are doing the backward pass, you have to use these gradients — you take the error, multiply by a learning rate parameter, and add to the original weights. That is how you update the parameters. You store all the gradients, and that is why you are using a lot of memory.
+
+Instead of doing that, the proposal is that you only store gradients for a small number of nodes — not everything. You still need the values, so during the backward pass, you actually recompute them by doing a partial forward pass. You do not have to start from the very beginning; you can start from the nearest checkpoint node.
+
+In your neural network, each layer has a number of neurons. You pick a subset of nodes and only store their gradient values during the forward pass. During the backward pass, for any node where you need a value, you recompute that gradient starting from the nearest stored checkpoint — not from the beginning, but from the nearest checkpoint node that has the stored value.
+
+What has been shown is that using gradient checkpointing, you can train models which are almost 10 times bigger in the same memory. But there is a trade-off: you are recomputing values. However, that trade-off is not much — only about a 20% increase in computation time. So if you are willing to increase the computation time by 20%, in the same hardware, you can train models 10 times larger. That is the advantage, and it is very important.
+
+
+Data Parallelism
+
+If you want to truly distribute the training across multiple machines, there are conceptually three main ways: data parallelism, model parallelism, and pipeline parallelism.
+
+In data parallelism, you split the data across multiple GPUs and keep the same model on all GPUs. Suppose you have N GPUs. You take the data, split it into N partitions. Each partition goes to one GPU. You keep the same model on all GPUs. Then you do the forward pass and backward pass, accumulate the gradients. Then you share the gradients across machines — you take the gradients from all the machines and do a reduction operation (like averaging). Then that reduced value is used to update the model.
+
+The disadvantage of data parallelism is that you are keeping the same copy of the model on each machine. The data is split, but the model is not. So it does not save you much in terms of memory if your model is too big to fit on a single GPU. Also, you need to wait until each machine finishes its training before you can do the reduction operation. The slower machines will slow down the whole process — this is called the straggler problem.
+
+There are two ways of doing data parallelism: synchronous mode or asynchronous mode. If you use the synchronous mode, it creates the straggler problem, because synchronous mode will wait until all the machines finish. If the number of machines is more, the problem becomes worse because there are more chances of some machine being slower.
+
+Typically, only 50% of the computation capacity of each machine is actually used. Does running a model use all of the GPU's computing power? No, because it is distributing across a lot of other operations — the kernel, a lot of data loading and swapping in and out. So the effective efficiency is only about 50% of the theoretical computation. Sometimes some machines will slow down — maybe they are swapping data between memory and disk, or receiving data from another node using the network. Because of these reasons, the synchronous mode can be wasteful. To some extent, this can be mitigated using proper load balancing. As an ML engineer, load balancing is something you need to be aware of as part of your job.
+
+
+Model Parallelism
+
+In model parallelism, you split the model across machines. Different machines work on different parts (layers) of the model.
+
+
+Pipeline Parallelism
+
+In pipeline parallelism, you split both the model and the data. The first machine works on the first set of layers with the first part of the data. The second machine works on the next set of layers. As the first machine finishes with the first batch, it passes results to the second machine and starts working on the second part of the data. Initially there will be some slack, but after some time, every machine is working on some part of the data. This is more optimized than doing either pure data parallelism or pure model parallelism.
+
+Even pipeline parallelism has some slack, because each stage has to wait for the previous stage to finish. There is a sequential dependency, though it is much smaller than in pure model parallelism. Unlike in data parallelism, each machine is only working on a portion of the data at a time, so the sequential overhead is smaller — but there is still some small slack.
+
+
+Fully Sharded Data Parallelism (FSDP)
+
+There is another approach called Fully Sharded Data Parallelism (FSDP), which addresses the remaining inefficiencies.
+
+In model parallelism, you are splitting the model sequentially — the first GPU gets layers 1 to 10, the next GPU gets layers 11 to 20, layers 21 to 30, and so on. You split sequentially, and that is why during the forward pass there is a dependency: one GPU has to compute before passing to the next.
+
+In FSDP, instead of doing it that way, from every layer you sample a subset of parameters and distribute them. You take layer one, sample some parameters and give them to GPU 0, another subset to GPU 1, a third subset to GPU 2, and so on. So every GPU has some parameters from every layer. It is not a sequential split. The distribution of the model is spread across all GPUs.
+
+The difference is: in model parallelism, you are slicing the model layer by layer. In FSDP, you sample some parameters from each layer and distribute them. So every GPU has a set of parameters from every layer.
+
+When doing the computation, each GPU has only a subset of parameters. It calculates the gradient on a micro-batch of data. Then for the update step, it borrows the gradients from other GPUs — but only for that particular layer. For example, for layer one, you have some parameters on this GPU, but the remaining parameters are distributed across different machines. To completely update that layer, you need all the parameters for that layer. So the necessary parameters are acquired from other machines through a reduce-scatter-gather operation.
+
+Once it does this, it takes all the parameters required for one layer, does the computation, then moves to the next layer. After this, it distributes all the updated values back.
+
+The main advantage is that in data parallelism, you had the entire model on each GPU plus splitting the data. If the model does not fit in memory, that is a problem. But in FSDP, you are only taking part of the parameters for each layer. Each GPU has parameters from all layers, but only a subset of parameters. So the memory requirement per GPU is much smaller. After doing the reduce-scatter-gather operation, you get the same information — every GPU ends up with the sum of all the gradients from all the data points. It is just a reordering of the way you compute this sum. It is a very clever way of doing it.
+
+This was invented by Facebook AI Research (FAIR). There is a nice open-source library called FairScale that does this. There is also a PyTorch implementation available. There is a blog post from Facebook that explains this well, which you can go through.
+
+Today, the state of the art for distributed training uses what is called 3D parallelism, which combines these approaches. FSDP is one of the core strategies of distributed training today.
+
+
+AUTOML
+
+A lot of companies like Google and Microsoft push AutoML because to do it, you need to spend a lot of computation. They sell cloud compute, so they make money from it. AutoML is a term that comes in two varieties: soft AutoML and hard AutoML.
+
+Soft AutoML: Hyperparameter Tuning
+
+In soft AutoML, the model architecture and algorithm are finalized, but there are some parameters which cannot be learned from data directly — they are not learned by minimizing a loss function. Those are called hyperparameters. Hyperparameter tuning is the final step of your model development. You do this through an automatic process.
+
+Grid Search
+
+The simplest way is grid search. If you have two or three hyperparameters, for each hyperparameter you create a grid. For example, one hyperparameter ranges from 0.1 to 1.0 with steps of 0.1, the other hyperparameter has its own range, and you create a grid of all combinations. Then you systematically evaluate every point in this grid. That is grid search. But it is extremely expensive because as the number of hyperparameters increases, the search space grows exponentially.
+
+Grid search is not recommended unless you have only one or two hyperparameters.
+
+Random Search
+
+Instead of going through the hyperparameter space systematically, you randomly pick some points and do evaluations. You randomly pick a point, train a model, and check the performance on the validation dataset. If that performance is better than the best model found so far, you replace it. You keep randomly sampling points. It is possible that after going through all these randomly sampled points, you find a good model. Then you can do another round of random sampling.
+
+The advantage is that this is linear in complexity. You can keep doing it as long as you want, and each time you are only evaluating a fixed number of samples, rather than systematically going through an exponential space.
+
+The moment you have more than two hyperparameters, always go for random search over grid search.
+
+Bayesian Optimization
+
+There is an even better method called Bayesian optimization. In Bayesian optimization, you build a surrogate model on top of the hyperparameter optimization itself. You build a model which will predict what is the best value of the hyperparameters.
+
+In a simple sense, you are modelling the accuracy of the model as a function of the hyperparameter values. It gives you not just the predicted accuracy, but also the confidence interval — how much uncertainty there is in the prediction. You create this surrogate model using a Gaussian process.
+
+Here is how it works: You start with a hyperparameter space. You randomly sample some initial points. For each of those points, you actually train and evaluate your model, computing the actual accuracy. Then you use these results as training data for the Gaussian process model.
+
+This Gaussian process model will then predict, for any hyperparameter combination, both the expected model accuracy and the confidence of that prediction. Then you do exploration-exploitation: you use different values of your hyperparameters, put them into this surrogate model, and see what the predicted accuracy is.
+
+You look at regions where the predicted accuracy is high (exploitation), but also regions where the confidence is low (exploration) — because those are areas that have not been explored and might contain good values. Then you take those promising points, actually run experiments in the real model, get the actual accuracy value, and use that to update the Gaussian process model. You keep doing this iteratively.
+
+This is surprisingly very fast. It will give you good hyperparameter values within about 12 iterations. Because the surrogate model is simple, you are doing a kind of meta-model optimization. This is what is currently used in practice for hyperparameter tuning of SVMs, random forests, gradient boosted trees, and similar models.
+
+
+Hard AutoML: Neural Architecture Search (NAS)
+
+The hard version of AutoML is when you do not even know the architecture of the model. You probably know it is a neural network, but you do not know how many layers, how many neurons in each layer, and if it is a convolutional neural network, what should be the size of the convolution operator, what kind of loss function to use, what kind of activation function to use. That is where the real AutoML comes in. It is called Neural Architecture Search (NAS).
+
+The essential idea is that you first create a search space. The search space consists of the components of the neural network: the number of layers, the types of convolutions (e.g., 3x3, 5x5), all possible kinds of connection types, all possible activation functions. You are going to build different architectures by taking different combinations of these components.
+
+Then you need a search strategy — how do you explore this search space? There are different strategies. You also need a performance estimation strategy. Typically you do some kind of cross-validation to evaluate each candidate architecture.
+
+Reinforcement Learning Based NAS
+
+A simple strategy uses exploration and exploitation. For example, 80% of the time you exploit — you take an architecture known to work well for the problem. For instance, in object detection, you know convolutional architectures work well, so 80% of the time you take convolutional architectures but experiment with different internal configurations: batch normalization, skip connections, or the size of the convolution. 20% of the time you do exploration — you try completely different kinds of networks.
+
+In the reinforcement learning based approach, you have a controller model that acts as an agent. That agent proposes a model architecture description. The proposed model is actually implemented and its performance is measured. The performance value (e.g., accuracy) is given as a reward back to the agent, using reinforcement learning. You keep doing this. Through reinforcement learning optimization, the agent eventually learns to propose better and better architectures.
+
+There is an example called NASNet, which is a neural architecture search for an image classification problem, where it was shown that they beat human-designed models on standard datasets. The only thing is that they had to run about 800 GPUs for four months. It is possible, but expensive.
+
+Evolutionary NAS
+
+The second approach is evolutionary. You start with random models. For each model, you evaluate its performance and kill all the models with poor performance. Then you mutate the good models — mutate means you change the number of layers, or the number of neurons in each layer. You repeat this selection and mutation process. This way you apply natural selection and mutation, and eventually you get good architectures.
+
+There is an example of this approach as well, such as AmoebaNet. But again, this is computationally expensive because every iteration you have to build and train these models.
+
+Differentiable / Gradient-Based NAS
+
+The third approach is called differentiable or gradient-based methods. Here, instead of building separate models, they create one supermodel that combines all candidate operations. Each candidate operation in the search space (different convolution types, different activation functions, etc.) is treated as a candidate. You weight each candidate using a softmax function. This softmax function is differentiable, so you can do gradient descent on these weights and find the values of alpha (the architecture weights) which best fit the objective.
+
+There is a resource that explains very well how this differentiable approach works, including with code examples, which you should go through. This is the currently popular way of doing neural architecture search. The advantage is dramatic: instead of running 800 GPUs for four months, you can do it in a few hours.

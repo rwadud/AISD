@@ -1,0 +1,637 @@
+CST8507: NATURAL
+   LANGUAGE
+  PROCESSING
+
+    LECTURE#3
+      TEXT
+VECTORIZATION &
+   SIMILARITY
+    DEVELOPED BY
+   HALA OWN, PH.D.
+Lesson Agenda
+❑Assignment 1 & Lab 2
+
+❑Introduction to Feature representation
+
+❑Text representation techniques
+  ❑ One-Hot Encoding
+  ❑ Bag of Words model
+  ❑ Bag of N-Grams model
+❑ TF-IDF model
+❑ Word similarity
+                                          Page 2
+NLP Development Life Cycle
+
+ Requirements
+  gathering
+
+
+
+
+         Gather more         Improve the
+         data                model
+
+
+
+
+                                           3
+Feature Representation
+
+                               speech feature representation
+Image feature representation
+
+
+
+
+                                                               4
+Text Representation Techniques
+
+
+
+
+      Image source: An automated approach to aspect-based sentiment analysis of apps reviews
+      using machine and deep learning September 2023Automated Software Engineering , then      5
+      modified using ChatGPT
+Vector space Model
+• Mathematical and algebraic model transforming and representing
+  text document in numeric vector.
+
+• Each word = vector
+
+• Similar words are "nearby in semantic space"
+
+
+
+
+                                                                   6
+Vectors : An introduction
+
+• A vector is an object that has both a magnitude and a
+  direction.
+
+
+
+
+                                                          7
+  Vectors : An introduction…
+x = (x1, x2, x3, ..., xn) is a vector in an n-dimensional vector space
+Length of x is given by (extension of Pythagoras's theorem)
+        |x|2 = x12 + x22 + x32 + ... + xn2
+       |x| = ( x12 + x22 + x32 + ... + xn2 ) (L2 Norm)
+If x1 and x2 are vectors:
+Inner product (or dot product) is given by
+       x1.x2 = x11x21 + x12x22 + x13x23 + ... + x1nx2n
+
+
+                                                                         8
+Text Vectorizing
+
+• Vectorizing
+  • Process of encoding text as integers to create feature vectors.
+
+
+• Feature Vector
+  • n-dimensional vector of numerical features that represent a text
+    object.
+
+
+
+
+                                                                       9
+ Text Representation :One-Hot Encoding
+
+Each unique word in a text converts into a binary vector.
+Only one element is "hot" (set to 1) and all others are "cold" (set to 0),
+indicating the presence of that word.
+
+                                 “This is an example”
+   Split Text Into Words                                Numerically Encode Words
+  [‘This’,’is’,’an’,’example’]
+                                                          This             [1,0,0,0]
+                                                          is                [0,1,0,0]
+                                                          an                 [0,0,1,0]
+                                                          example
+                                                                            [0,0,0,1]
+
+               Tokenization                                         One-Hot Encoding
+
+
+                                                                                         10
+One-Hot Encoding for Documents
+
+
+
+
+                                 11
+One-Hot Encoding…
+
+
+
+Discussion
+
+
+
+
+                    12
+Bag of Words(BOW)
+
+
+
+
+Document is represented as an unordered collection of its tokens,
+disregarding word order, and syntax etc.., while keeping track of
+word presence or frequency
+
+       Image source: https://sep.com/blog/a-bag-of-words-levels-of-language/
+                                                                               13
+BOW Technique: Count Vectorization
+
+
+
+
+                                     14
+    Count Vectorization for Documents…
+      Input:
+      import pandas as pd
+      from sklearn.feature_extraction.text import CountVectorizer
+
+      corpus = ['This is the first document.',
+              'This is the second document.',
+              'And the third one. One is fun.’]
+      cv = CountVectorizer()
+      X = cv.fit_transform(corpus)
+      pd.DataFrame(X.toarray(),columns=cv.get_feature_names())
+      Output:
+                            terms
+
+
+                                                                    Document-Term Matrix
+document
+
+
+
+
+                                                                                           15
+Bag of Words(BOW)…
+
+  John is quicker than Mary.            Mary
+                               is
+                               John       quicker
+                                       than
+
+
+
+
+                                       is      quicker
+  Mary is quicker than John.          Mary
+                                              than
+                                       John
+
+
+
+                                                         16
+Bag of Words(BOW)…
+
+
+
+
+                     17
+Bag of Words(BOW)…
+           Advantages                                Disadvantages
+
+ • Simplicity and Interpretability      • Ignores context and word order
+
+ • Works well for text classification   • High-dimensional feature space
+
+  and information retrieval.            • Sparsity
+
+ • Computational Efficiency             • Lack of semantic information
+                                        • Out Of Vocabulary(OOV )
+ • Language Agnostic
+
+
+
+
+                                                                           18
+Bag of N-Grams(BON)
+
+
+
+
+                      19
+Bag of N-Grams(BON)…
+Unigrams are the unique words present in the sentence.
+Bigram is the combination of 2 words.
+Trigram is 3 words.
+
+                  I am learning NLP
+
+Unigrams: “am”, “ learning”, “NLP”
+Bigrams:    “am learning”, “learning NLP”
+Trigrams:    “am learning NLP”
+
+                                                         20
+Bag of N-Grams(BON)
+           Advantages                                Disadvantages
+
+ • It captures some context and word-   • Sparsity
+  order information                     • Computationally expensive
+ • Simple and efficient method for      • Ignores the overall structure and
+  representing text data                  meaning of a text.
+                                        • Choice of N
+                                        • Out Of Vocabulary(OOV )
+
+
+
+
+                                                                              21
+Term Frequency-Inverse Document Frequency
+TF-IDF Intuition:
+
+ •   TF-IDF assigns more weight to rare words and less weight to
+     commonly occurring words.
+
+ • Tells us how frequent a word is in a document relative to its
+
+     frequency in the entire corpus.
+
+ •   Tells us that two documents are similar when they have more
+     rare words in common.
+
+
+                                                                   22
+Term Frequency-Inverse Document Frequency…
+
+
+
+     TF-IDF score = TF * IDF
+
+
+
+
+                                             23
+Term Frequency-Inverse Document Frequency
+Term Frequency
+ •   So far, we’ve been recording the term (word) count
+
+     “This is an example”               This      is        an      example
+                                         1        1          1         1
+
+
+ •   A better way to compare them is by a normalized term frequency, which is (term
+     count)/ (total terms).
+
+
+                                            𝑡𝑒𝑟𝑚 𝑓𝑟𝑒𝑞𝑢𝑒𝑛𝑐𝑦
+                             𝑇𝐹(𝑡𝑒𝑟𝑚) =
+                                        𝑡𝑜𝑡𝑎𝑙 𝑤𝑜𝑟𝑑𝑠 𝑖𝑛 𝑑𝑜𝑐𝑢𝑚𝑒𝑛𝑡
+
+
+
+                                                                                      24
+Term Frequency-Inverse Document Frequency…
+
+ •   Besides term frequency, another thing to consider is how common a
+
+     word is among all the documents
+
+ •   Rare words should get additional weight
+
+ •   Measures the importance of the term across a corpus.
+
+
+
+
+                                                                         25
+Term Frequency-Inverse Document Frequency…
+
+Inverse Document Frequency
+ It aims to quantify the importance of a given word. Words that
+appear in many documents get a low IDF score, while words that
+appear in only a few documents get a high IDF score
+
+
+                                           𝑡𝑜𝑡𝑎𝑙 𝑛𝑢𝑚𝑏𝑒𝑟 𝑜𝑓 𝑑𝑜𝑐𝑢𝑚𝑒𝑛𝑡𝑠
+                     𝐼𝐷𝐹(𝑡𝑒𝑟𝑚) = 𝑙𝑜𝑔10 (                               )
+                                         𝑛𝑢𝑚𝑏𝑒𝑟 𝑜𝑓 𝑑𝑜𝑐𝑢𝑚𝑒𝑛𝑡𝑠 𝑤𝑖𝑡ℎ 𝑡𝑒𝑟𝑚
+
+
+
+
+                                                                           26
+Term Frequency-Inverse Document Frequency…
+
+
+
+     TF-IDF score = TF * IDF
+
+
+
+
+                                             27
+    TF-IDF :Example
+•   The sky is blue.
+•   The sun is bright today.
+•   The sun in the sky is bright.
+•   We can see the shining sun, the bright sun
+
+
+
+
+                                                 28
+TF-IDF :Example…
+
+
+
+
+                   29
+Group Work: Compute TF-IDF
+
+ D1 Dog bites man.
+ D2 Man bites dog.
+ D3 Dog eats meat.
+ D4 Man eats food.
+
+
+
+
+                             30
+Count Vectorizer vs TF-IDF Vectorizer
+import pandas as pd
+corpus = ['This is the first document.', 'This is the second
+       document.', 'And the third one. One is fun.’]
+
+# original Count Vectorizer
+from sklearn.feature_extraction.text import CountVectorizer
+cv = CountVectorizer()
+X = cv.fit_transform(corpus).toarray()
+pd.DataFrame(X, columns=cv.get_feature_names())
+
+# new TF-IDF Vectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
+cv_tfidf = TfidfVectorizer()
+X_tfidf = cv_tfidf.fit_transform(corpus).toarray()
+
+pd.DataFrame(X_tfidf, columns=cv_tfidf.get_feature_names())
+
+
+
+
+                                                               31
+Count Vectorizer vs TF-IDF Vectorizer…
+Count Vectorizer Output:
+
+
+
+
+   TF-IDF Vectorizer Output:
+
+
+
+
+                                         32
+Why we need log()
+
+
+
+
+                    33
+TF-IDF Limitation
+• Miss information about the relationships between words
+
+• Sparsity
+
+• Lack of semantic understanding
+
+• Not well suited for small corpora
+
+• Out Of Vocabulary OOV words.
+
+
+
+
+                                                           34
+  Text Similarity Measure (lexical similarity)
+Computational measure of the degree to which two or more documents
+are semantically or lexically alike.
+
+
+
+
+ ➢ Applications:
+    Speech Recognition                     Machine Translation
+    Plagiarism Detection                   Information Retrieval
+    Text Classification                    Search engine
+
+              Image generated by ChatGPT
+Text Similarity Measures…
+
+
+❑Jaccard Similarity
+
+❑Cosine Similarity
+
+❑Euclidean Distance
+
+❑Hamming Distance
+
+❑Levenshtein Distance
+
+
+                            36
+Text Similarity : Levenshtein distance
+
+Levenshtein distance: Minimum number of operations to get from
+one word to another.
+ Levenshtein operations are:
+ ▪Deletions: Delete a character
+
+ ▪Insertions: Insert a character
+
+ ▪Mutations: Change a character
+
+  ▪ Example: kitten —> sitting
+
+     ▪ kitten —> sitten (1 letter change)       Levenshtein distance = 3
+
+     ▪ sitten —> sittin (1 letter change)
+
+     ▪ sittin —> sitting (1 letter insertion)
+
+
+
+                                                                           37
+Text Similarity :Euclidean Distance
+
+
+
+
+      Photo Credit: http://dataaspirant.com/2015/04/11/five-most-popular-similarity-measures-
+      implementation-in-python/                                                                 38
+Text Similarity :Cosine
+Measures how similar two vectors are by comparing the angle
+between them
+
+          cos(θ) = (A · B) / (||A|| ||B||)
+
+
+
+
+              39
+
+                                                              39
+Cosine Similarity: Example
+ Cosine Similarity calculation steps:
+     •   Step 1: Put each document in vector format
+     •   Step 2: Find the cosine of the angle between the documents
+
+
+
+
+                                   i               love   you   nlp
+
+                        Doc 1      1                1     1     0
+         “I love NLP”
+                        Doc 2      1                1     0     1
+         “I love you”
+                                                                      = 0.667
+                                a = [1, 1, 1, 0]
+                                b = [1, 1, 0, 1]
+
+
+
+                                                                                40
+Your turn
+                                                           pie   data computer
+                              åi=1 vi wi
+                              N
+      v ·w v w                                cherry     442   8    2
+cos(v, w) =   =  ·  =
+            v w v w                             digital    5     1683 1670
+                            åi=1 i åi=1 i
+                             N 2        N   2
+                                v         w
+                                                information 5    3982 3325
+
+
+
+                                      ?
+
+                                      ?
+
+
+
+                                                                                 41
+ Your turn
+Consider you have the following documents
+ document        text
+ d1            ant ant bee
+ d2            dog bee dog hog dog ant dog
+ d3            cat gnu dog eel fox
+
+Use cosine measure to compute the pairwise similarity between d1, d2
+and d3 using Count Vectorizer, BOW and TF-IDF
+                  d1           d2            d3
+     d1
+     d2
+     d3
+
+
+                                                                       42
+Document Similarity: Example
+Here are five documents. Which ones seem most similar?
+
+
+
+“The weather is hot under the sun”
+“I make my hot chocolate with milk”                 With Count Vectorizer,
+“One hot encoding”                                  these two documents
+                                                    were the most similar
+“I will have a chai latte with milk”
+“There is a hot sale today”
+
+
+
+
+                                                                             43
+Document Similarity: Example…
+Output:
+[(0.40824829, ('The weather is hot under the sun', 'One hot encoding')),
+ (0.40824829, ('One hot encoding', 'There is a hot sale today')),
+ (0.35355339, ('I make my hot chocolate with milk', 'One hot encoding')),
+ (0.33333333, ('The weather is hot under the sun', 'There is a hot sale today')),
+ (0.28867513, ('The weather is hot under the sun', 'I make my hot chocolate with milk')),
+ (0.28867513, ('I make my hot chocolate with milk', 'There is a hot sale today')),
+ (0.28867513, ('I make my hot chocolate with milk', 'I will have a chai latte with milk')),
+ (0.0, ('The weather is hot under the sun', 'I will have a chai latte with milk')),
+ (0.0, ('One hot encoding', 'I will have a chai latte with milk')),
+ (0.0, ('I will have a chai latte with milk', 'There is a hot sale today'))]
+
+
+
+                                             ▪ These two documents are most similar, but it’s just
+                                                because the term “hot” is a popular word
+                                             ▪ “Milk” seems to be a better differentiator, so how we
+                                                can mathematically highlight that?
+
+
+
+
+                                                                                                       44
+ Document Similarity: Example with TF-IDF
+
+
+[(0.23204485, (‘I make my hot chocolate with milk', 'I will have a chai latte with milk’))
+
+
+(0.18165505, ('The weather is hot under the sun', 'One hot encoding')),
+(0.18165505, ('One hot encoding', 'There is a hot sale today')),
+(0.16050660, ('I make my hot chocolate with milk', 'One hot encoding')),
+(0.13696380, ('The weather is hot under the sun', 'There is a hot sale today')),
+(0.12101835, ('The weather is hot under the sun', 'I make my hot chocolate with milk')),
+(0.12101835, ('I make my hot chocolate with milk', 'There is a hot sale today')),
+(0.0, (‘The weather is hot under the sun', 'I will have a chai latte with milk')),
+(0.0, ('One hot encoding', 'I will have a chai latte with milk')),
+(0.0, ('I will have a chai latte with milk', 'There is a hot sale today'))]
+
+
+
+
+ By weighting “milk” (rare) > “hot” (popular), we get a smarter similarity score
+
+                                                                                             45
+Discussion
+
+What are the ethical concerns
+related to frequency-based text
+presentation?
+
+
+
+
+       PowerPoint Presentation Title
+       Date                            46
+Summary
+
+  Today we discussed :
+  ➢ Traditional methods for text representation.
+       ❑ One-hot encoding
+       ❑ Bag of words
+       ❑ Bag of N-grams
+       ❑ TF-IDF
+  ➢ Similarity measures
+       ❑ Lexical Similarity – Levenshtein
+       ❑ Lexical Similarity – Cosine
+       ❑ Lexical Similarity – Euclides distance
+
+
+
+
+                                                   47
+Q&A
+
+
+
+
+      48
+

@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reinforcement Learning — Lecture Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf9f6;
+    --text: #1a1a1a;
+    --muted: #5c5c5c;
+    --accent: #2d5a9e;
+    --accent-light: #e8f0fc;
+    --border: #d4d0c8;
+    --card-bg: #ffffff;
+    --highlight: #fff3cd;
+    --green: #2e7d4f;
+    --red: #b83a3a;
+    --orange: #c27a20;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    font-size: 17px;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+    color: var(--text);
+  }
+
+  .subtitle {
+    font-family: 'Source Sans 3', sans-serif;
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  h2 {
+    font-size: 1.45rem;
+    font-weight: 700;
+    margin-top: 48px;
+    margin-bottom: 16px;
+    color: var(--accent);
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 28px;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+
+  p { margin-bottom: 14px; }
+
+  strong { font-weight: 600; }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88em;
+    background: var(--accent-light);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  .callout {
+    background: var(--highlight);
+    border-left: 4px solid var(--orange);
+    padding: 14px 18px;
+    margin: 20px 0;
+    border-radius: 0 6px 6px 0;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .callout strong { color: var(--orange); }
+
+  .definition {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 14px 18px;
+    margin: 20px 0;
+    border-radius: 0 6px 6px 0;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.95rem;
+  }
+
+  .example {
+    background: #f0faf4;
+    border-left: 4px solid var(--green);
+    padding: 16px 18px;
+    margin: 20px 0;
+    border-radius: 0 6px 6px 0;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .example strong { color: var(--green); }
+
+  .example .ex-title {
+    font-weight: 700;
+    color: var(--green);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .example table {
+    margin: 10px 0 6px;
+    font-size: 0.9rem;
+  }
+
+  .example th {
+    background: #2e7d4f;
+    font-size: 0.85rem;
+    padding: 6px 10px;
+  }
+
+  .example td {
+    padding: 6px 10px;
+    font-size: 0.88rem;
+  }
+
+  .diagram-container {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin: 24px 0;
+    text-align: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+
+  .diagram-container svg { max-width: 100%; height: auto; }
+
+  .diagram-caption {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 10px;
+    font-style: italic;
+  }
+
+  .math {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.92em;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 2px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  .math-block {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1em;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 12px 20px;
+    border-radius: 6px;
+    margin: 16px 0;
+    text-align: center;
+    display: block;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.93rem;
+  }
+
+  th {
+    background: var(--accent);
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  tr:nth-child(even) td { background: #f7f6f3; }
+
+  ul, ol {
+    margin: 10px 0 14px 24px;
+  }
+
+  li { margin-bottom: 6px; }
+
+  .ref {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-style: italic;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 36px 0;
+  }
+</style>
+</head>
+<body>
+
+<h1>Reinforcement Learning</h1>
+<div class="subtitle">Lecture Notes — Core Concepts &amp; Foundations</div>
+
+<!-- ================================================================ -->
+<h2>1. The Agent–Environment Interface</h2>
+
+<p>Reinforcement learning is built on a fundamental distinction between two entities: the <strong>agent</strong> (the learner and decision-maker) and the <strong>environment</strong> (everything external to the agent that it interacts with). The agent is not part of the environment — they are always modeled as separate.</p>
+
+<div class="diagram-container">
+  <img src="data:image/png;base64,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0kWAhKx09z6wK+/bty8yLuv8JLq8OfPMM628/ZMzC8COjRo1yiKZ6LJly3Q2t99+uxG9JvVjAdibUp4CdWSlvPsBXbvEaowgcSUCDC9evNgMGzbMjB492nTt2tU2adJEsyqzFBaBRYsWGUkUGiNGvOSSS0yPHj3MRRddVNjJcDQiEEYE8pmPbGM23zDCUvRznjNnjm3YsCHzwhUoL5w8UGlhXbFiRXvzzTfbf//9l1xySH+FxZaPjKLFkD6IpTDt+vXrR2bMmGGQp6xx48b0VfJ502GEI8k0zeeff468cREnnY3P0+LwRMBQtMiHINAIVKhQwdW/iF7GwgBk/fr1gZ5zMU4O/n3IswZLUnxYiECQECAhC9JucC5JERALORoVJEWIN4lAaSJA0WJp7jtXTQSIABEoGgRIyIpmK7kQIkAEiEBpIkBCVpr7zlUTASJABIoGARKyotlKLoQIEAEiUJoIkJCV5r5z1USACBCBokGAhKxotpILIQJEgAiUJgIkZEW67wjsOn/+fEZeKNL95bKIABH4HwL0IyvSp+H88883u+22W5GujssiAkSACPwPAXJkfBqIABEgAkQg1AiQkKW5fRs2bLD//PNPjKgO1yRcksXfNLtJWS3dPjGX6KCt+D/Xc0k5WVYgAkSACAQAARKyJJvwwgsv2GOOOcZOnTrVQkzXtGlTrQ2CccUVV1gEUZVI4KZ69ermmmuucQkd8mdJaguXuP3+++92//33t507d3avrVmzxh588MH20Ucf1Wu//PKL7dChg61SpYr2ueWWW5pTTjnF/vHHH26bY4891j7//PNW0mfYSpUqmVdffVXnM3z4cFuvXj1tt80225jbbrstZ4RVB2AhAkSACOQQAbyIxzMG2XRPHVkS9P7880/zySefILGjOfHEE83RRx9tjjvuOM1ajFTvN910k9lnn32MEDpz6623mpUrV2pvtWrVMg8//LDBRiHo7QcffKARw7/55huzatUqW7lyZb326aefmvvvv1/bdOrUyXz33XeaSHK77bYzko8LEcbNDTfc4M4Q1+644w4TiUTM3XffbQ455BAzduxY+5///Me0bdvW3HvvvWbFihWmf//+5tdff6WOzEWO/xABIuAnAuvWrbPIIygfjZfarl07fVkvqeJXPjIhRuBs7FNPPeVyOAsWLLCSvsIKwYnhesAFIU/T0qVL7YcffqjtPvroI62D3D/Czem18ePH6zUhNlYiirtvJciL9vrrr8f0CQ4NHKGz2bVr17a77LKLBTF0rh1xxBHK7YFLdK5hXCF2MRygc49/iQARIAKFzke27bbb2mhJ0Y033mjvvPPOmPMum11JS7R47rnn2gkTJmQ06OzZsy0y+kqG34zaZbOYfLQVomU6duzodj1x4kRjrdX8WD/88IN1PgceeKCmF5k5c6Y59NBDlasSbknbgfs644wzzN57723QHkXwNEKkjJOmRMSEkRNOOCECIoXsyK+88opFX/Glffv2Bhwdrq9evdpOmzYNmZMhVnQjw8vcIrRYjEeO34kAEQgKAtdff33kqquuylk2i7QIGcRoEItlUkTnY4YMGWKWL1+eSbPA1QUhi04fAtEdCFmjRo2McIru5/jjjzebbbYZRIfKPrdu3dq8//77BhzaZ599Zpo0aWJw7b333oP4z0KsCKLklBEjRlghhlbGUl2cvK14JpKEDswpGEtYdrPzzjsn4OZ1LaESLxABIkAEUiDw2muvqWRov/3204ztYGwkL2AMg4Js7vKyrnXkRVoziONFG4zMOeecY6F2kZdzc/nll2s7UY3YBx980O0DRm4PPfSQPeyww7QPUZUkME+i0rFyplqhKyrhQj3YI/z0009WdWQwKBg9erSRxIVqLCAiLT28ceB+8cUX5vDDD1f9jeh5IMZSKioEyr799tvmt99+0wMXXIjobPTezz//DI4C/xoc4hDHiVhM76HPt956y4gBhBF2U3VOW221Vc4osw6axwJihfWCoMn/CfOG7BcFOiv4co0bN85UrVrVgGMTXMxjjz1m3nnnHSMbp4QNBc7L++67r+nevbsRggbdVuTjjz+GXg5ixDJXAxkzDDygD4sv0O+RK4tHhd+JABHIBAFIhkTtoTTh9NNPVxohqhYDSZBTIJUSwzV9oYauH2cPbAbkXFNbAbzwQz+2MTmrNsMZGK0jE+M47VeIntl99931PmwShC6BqOk5K8Z3KvES2wOth7mIuNJI4Adj5MAEF6AfOfjs5ptvbnfddVcrh6OFeBDXpA8rojKlkuhw7ty5ViatdXEf91Dnyiuv1PvQLdWoUUOvQafjyELRDnoesbjTdkII7E477QSOJYa6o4/o4qeOTER/MXMTIHVdY8aMibk+bNgw5ajkzUOv4+VANs8edNBB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" alt="Agent-Environment interaction loop with time-step boundary" style="max-width:460px; width:100%;"/>
+  <div class="diagram-caption">Figure 1 — The Agent–Environment interaction loop. The dashed line marks the time-step boundary: above it, the agent observes Sₜ and Rₜ and selects Aₜ; below it, the environment returns Rₜ₊₁ and Sₜ₊₁ for the next step.</div>
+</div>
+
+
+<h3>The RL Cycle, Step by Step</h3>
+<p>At each discrete time step <em>t</em>:</p>
+<ol>
+  <li>The agent observes state <strong>Sₜ</strong> and receives reward <strong>Rₜ</strong> (which resulted from the <em>previous</em> action).</li>
+  <li>Based on that information, the agent selects an <strong>action Aₜ</strong>.</li>
+  <li>The action is performed on the environment.</li>
+  <li>The environment transitions to a new state <strong>Sₜ₊₁</strong> and produces a new reward <strong>Rₜ₊₁</strong>.</li>
+  <li>The cycle repeats — the agent now observes Sₜ₊₁ and Rₜ₊₁, and the process continues.</li>
+</ol>
+
+<p>This loop continues for the duration of an <strong>episode</strong> (not "epoch" — that term belongs to supervised learning). Some episodes terminate (e.g., reaching a goal), while others run indefinitely (e.g., a thermostat regulating temperature forever). Non-terminating episodes are perfectly valid and motivate the need for a <strong>discount factor</strong> (covered later).</p>
+
+<div class="example">
+  <span class="ex-title">🤖 Example — Robot Vacuum as an RL Agent</span>
+  Imagine a Roomba-style robot vacuum cleaning your apartment:
+  <table>
+    <tr><th>RL Term</th><th>Robot Vacuum Version</th></tr>
+    <tr><td><strong>Agent</strong></td><td>The robot vacuum</td></tr>
+    <tr><td><strong>Environment</strong></td><td>Your apartment — furniture, walls, carpets, dirt</td></tr>
+    <tr><td><strong>State</strong></td><td>Robot's current position + sensor readings (obstacle ahead? dirt detected?)</td></tr>
+    <tr><td><strong>Actions</strong></td><td>Move forward, turn left, turn right, activate brush</td></tr>
+    <tr><td><strong>Reward</strong></td><td>+1 for cleaning a dirty spot, −1 for bumping into furniture, 0 otherwise</td></tr>
+    <tr><td><strong>Episode</strong></td><td>One full cleaning cycle (start → return to dock)</td></tr>
+  </table>
+  The robot doesn't know the apartment layout in advance. It takes an action, observes where it ends up and what reward it gets, and gradually learns which routes clean the most floor with the fewest collisions.
+</div>
+
+<div class="example">
+  <span class="ex-title">🌡️ Example — Thermostat (Non-Terminating Episode)</span>
+  A thermostat set to 21°C is one of the simplest RL scenarios. The <strong>agent</strong> is the thermostat controller. The <strong>state</strong> is the current temperature. The <strong>actions</strong> are "turn heat on" or "turn heat off." The <strong>reward</strong> could be 0 when at the target temperature and negative when deviating from it.<br><br>
+  Crucially, this episode <em>never terminates</em> — the thermostat runs forever (or until you demolish the building). This is perfectly valid in RL and is one reason we need a <strong>discount factor</strong> to keep the total reward from being infinite.
+</div>
+
+<div class="callout">
+  <strong>Key point:</strong> The reward is always a <strong>scalar</strong> value, not a vector. Even in complex real-world trade-off situations, the reward must be distilled into a single number.
+</div>
+
+<hr>
+
+<!-- ================================================================ -->
+<h2>2. Reward</h2>
+
+<p>The reward <span class="math">Rₜ</span> is a scalar signal received by the agent at each time step indicating how well the agent is doing.</p>
+
+<ul>
+  <li><strong>Scalar, not a vector</strong> — all multi-dimensional trade-offs are compressed into one number.</li>
+  <li><strong>Can be negative</strong> — penalties encourage shorter paths or faster solutions.</li>
+  <li><strong>Received at every time step</strong> — each action produces a reward from the environment.</li>
+</ul>
+
+<div class="example">
+  <span class="ex-title">🍽️ Example — Why Scalar, Not a Vector?</span>
+  Suppose you're deciding: <em>go out for dinner with your spouse</em> or <em>stay home and study</em>. You might think of this as two separate scores — relationship happiness and academic progress. But in RL, the reward must be a <strong>single number</strong>. All those competing considerations get distilled into one scalar, like your overall feeling of well-being. Think of it like the dopamine signal in your brain — it's one feeling, not a spreadsheet of feelings.
+</div>
+
+<div class="example">
+  <span class="ex-title">📍 Example — Negative Rewards for GPS Navigation</span>
+  Suppose an RL agent is learning to navigate from point A to point B. If we give a reward of <strong>−1 for every step taken</strong>, the agent accumulates penalty the longer it wanders. The only way to minimize total penalty is to find the <strong>shortest path</strong>. Without negative rewards, the agent would have no reason to hurry — it could wander aimlessly and still get 0 reward.
+</div>
+
+<h3>The Reward Hypothesis</h3>
+
+<div class="definition">
+  <strong>Reward Hypothesis:</strong> All goals can be described by the maximization of expected cumulative reward.
+</div>
+
+<p>This is a <strong>hypothesis</strong>, not a proven theorem. It is central to RL — all RL algorithms are designed around maximizing cumulative reward. A notable practical issue is <strong>reward hacking</strong>, where an agent discovers ways to increase reward without genuinely advancing toward the intended goal, usually indicating a poorly designed reward function.</p>
+
+<div class="example">
+  <span class="ex-title">♟️ Example — Doesn't "maximize reward" break down sometimes?</span>
+  What about letting a child win at chess? That seems like <em>not</em> maximizing your score. But it's not a contradiction — your <strong>goal</strong> is to make the child happy, not to win. So the reward function should give you a high reward for the child winning. The reward doesn't have to equal the game score — it equals whatever your actual goal is.
+</div>
+
+<div class="example">
+  <span class="ex-title">🎮 Example — Reward Hacking in Video Games</span>
+  An RL agent trained to play a boat-racing game discovered it could earn more points by <em>spinning in circles and collecting bonus items</em> instead of actually finishing the race. The reward function gave points for items but didn't sufficiently reward race completion. The agent "hacked" the reward — maximizing it without doing what the designers intended. This is a classic case of a poorly designed reward, not a flaw in RL itself.
+</div>
+
+<h3>Reward vs. Value</h3>
+
+<div class="diagram-container">
+  <svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;">
+    <!-- Reward box -->
+    <rect x="30" y="30" width="250" height="140" rx="10" fill="#fff3cd" stroke="#c27a20" stroke-width="2"/>
+    <text x="155" y="65" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="17" font-weight="700" fill="#c27a20">Reward (Rₜ)</text>
+    <text x="155" y="95" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13.5" fill="#555">Immediate scalar payoff</text>
+    <text x="155" y="115" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13.5" fill="#555">from a single action</text>
+    <text x="155" y="148" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#c27a20">"What I just got"</text>
+
+    <!-- Value box -->
+    <rect x="360" y="30" width="250" height="140" rx="10" fill="#e8f0fc" stroke="#2d5a9e" stroke-width="2"/>
+    <text x="485" y="65" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="17" font-weight="700" fill="#2d5a9e">Value (V or Q)</text>
+    <text x="485" y="95" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13.5" fill="#555">Expected total future reward</text>
+    <text x="485" y="115" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13.5" fill="#555">from current state onward</text>
+    <text x="485" y="148" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#2d5a9e">"What I expect to get total"</text>
+
+    <!-- vs -->
+    <text x="325" y="107" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="16" font-weight="700" fill="#999">vs</text>
+  </svg>
+  <div class="diagram-caption">Figure 2 — Reward is a single-step signal; Value is the expected cumulative total from the current state forward.</div>
+</div>
+
+<p><strong>Investing analogy:</strong> Investing money gives an immediate negative reward (you lose money). But the expected cumulative future reward is positive (you gain more money back over time). A state can have high value even if the next immediate reward is negative.</p>
+
+<div class="example">
+  <span class="ex-title">💰 Example — Reward vs. Value, Step by Step</span>
+  Imagine an agent navigating a simple 4-cell path. The rewards along the way are:
+  <table>
+    <tr><th>Step</th><th>Action</th><th>Immediate Reward</th><th>Value (total future reward)</th></tr>
+    <tr><td>Cell A</td><td>Move right →</td><td>−2 (pay a toll)</td><td>+8 (because −2 + 0 + 10 = 8)</td></tr>
+    <tr><td>Cell B</td><td>Move right →</td><td>0</td><td>+10 (because 0 + 10 = 10)</td></tr>
+    <tr><td>Cell C</td><td>Move right →</td><td>+10 (treasure!)</td><td>+10 (final reward)</td></tr>
+  </table>
+  Notice: Cell A has a <em>negative</em> immediate reward (−2), but a <em>positive</em> value (+8) because the total future reward is still good. Cell B actually has a <em>higher value</em> than Cell A because it's closer to the treasure with no toll to pay. The value function captures the big picture; the reward is just one moment.
+</div>
+
+<hr>
+
+<!-- ================================================================ -->
+<h2>3. Policy (π)</h2>
+
+<p>A <strong>policy</strong> is the agent's strategy — a function that maps states to actions. It determines how the agent behaves.</p>
+
+<h3>Deterministic Policy</h3>
+<div class="math-block">π(s) = a</div>
+<p>Given a state <em>s</em>, the policy deterministically outputs a single action <em>a</em>.</p>
+
+<h3>Stochastic Policy (General Case)</h3>
+<div class="math-block">π(a | s) = P(Aₜ = a | Sₜ = s)</div>
+<p>The policy outputs a probability distribution over actions. For example: take action <em>a₁</em> with 20% probability and <em>a₂</em> with 80%. Probabilities must sum to 1.</p>
+
+<div class="diagram-container">
+  <svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" style="max-width:600px;">
+    <defs><marker id="arrow3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto-start-reverse"><polygon points="0 0, 10 3.5, 0 7" fill="#1a1a1a"/></marker></defs>
+    <!-- State circle -->
+    <circle cx="100" cy="120" r="50" fill="#e6f4ea" stroke="#2e7d4f" stroke-width="2.5"/>
+    <text x="100" y="115" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="15" font-weight="600" fill="#2e7d4f">State</text>
+    <text x="100" y="135" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#2e7d4f">s</text>
+
+    <!-- Policy box -->
+    <rect x="220" y="80" width="140" height="80" rx="10" fill="#e8f0fc" stroke="#2d5a9e" stroke-width="2.5"/>
+    <text x="290" y="115" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="15" font-weight="600" fill="#2d5a9e">Policy</text>
+    <text x="290" y="137" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="16" fill="#2d5a9e">π(s)</text>
+
+    <!-- Arrow state -> policy -->
+    <line x1="150" y1="120" x2="215" y2="120" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arrow3)"/>
+
+    <!-- Action outputs -->
+    <line x1="360" y1="95" x2="450" y2="55" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arrow3)"/>
+    <line x1="360" y1="120" x2="450" y2="120" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arrow3)"/>
+    <line x1="360" y1="145" x2="450" y2="185" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arrow3)"/>
+
+    <!-- Action labels -->
+    <rect x="458" y="35" width="170" height="36" rx="6" fill="#fff3cd" stroke="#c27a20" stroke-width="1.5"/>
+    <text x="543" y="58" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="14" fill="#1a1a1a">⬆ Move Forward</text>
+
+    <rect x="458" y="102" width="170" height="36" rx="6" fill="#fff3cd" stroke="#c27a20" stroke-width="1.5"/>
+    <text x="543" y="125" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="14" fill="#1a1a1a">⬅ Turn Left</text>
+
+    <rect x="458" y="167" width="170" height="36" rx="6" fill="#fff3cd" stroke="#c27a20" stroke-width="1.5"/>
+    <text x="543" y="190" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="14" fill="#1a1a1a">➡ Turn Right</text>
+  </svg>
+  <div class="diagram-caption">Figure 3 — A policy maps a state to an action (deterministic) or to a distribution over possible actions.</div>
+</div>
+
+<p><strong>Example:</strong> In a grid world where the agent can move forward, turn left, or turn right, a simple policy might be "always step forward." This agent walks in a straight line until hitting a wall, then keeps trying to move forward forever — a valid but clearly suboptimal policy.</p>
+
+<div class="example">
+  <span class="ex-title">🗺️ Example — Comparing Two Policies in a Grid World</span>
+  Imagine a 3×3 grid. The agent starts at the bottom-left corner and must reach the top-right corner (goal). The agent can move ↑ ↓ ← →.
+  <br><br>
+  <strong>Policy A (bad):</strong> "Always move right, no matter what."<br>
+  → The agent moves right until it hits the right wall, then keeps bumping into the wall forever. It never reaches the goal at the top-right because it never moves up. Episode goes on forever with accumulating penalties.
+  <br><br>
+  <strong>Policy B (better):</strong> "Move right until you can't, then move up."<br>
+  → The agent moves right twice (reaching the bottom-right), then moves up twice (reaching the goal). Episode ends successfully in 4 steps.
+  <br><br>
+  Both are valid policies — a policy is just <em>any</em> mapping from states to actions. But Policy B is clearly superior. The goal of RL is to <strong>learn</strong> the best policy (the optimal policy) through experience.
+</div>
+
+<div class="callout"><strong>In this course:</strong> The focus is primarily on the <strong>deterministic case</strong> for simplicity.</div>
+
+<hr>
+
+<!-- ================================================================ -->
+<h2>4. Value Functions</h2>
+
+<p>A value function estimates <strong>how good</strong> it is for the agent to be in a given state (or to take a given action in a state), measured in terms of expected cumulative future reward.</p>
+
+<h3>State Value Function — V(s)</h3>
+<div class="math-block">V(s) = Expected total reward from state s to the end of the episode</div>
+<p>This asks: "Given that I'm in state <em>s</em> and follow my current policy, what total reward can I expect to accumulate?" If you're in a <strong>high-value state</strong>, that's a good position overall, even if the next immediate reward might be negative. Value can <strong>oscillate</strong> — it rises when something good is about to happen, then drops after that reward is collected.</p>
+
+<h3>Action Value Function — Q(s, a)</h3>
+<div class="math-block">Q(s, a) = Expected total reward from state s, taking action a, then following the policy</div>
+<p>Unlike <em>V(s)</em>, the Q-function specifies both the <strong>state</strong> and the <strong>action</strong> being taken. <strong>Q-learning</strong> is the process of learning the optimal Q-function.</p>
+
+<div class="example">
+  <span class="ex-title">🧭 Example — V(s) vs. Q(s, a) at a Crossroads</span>
+  You're standing at a fork in a maze (State = "fork"):
+  <br><br>
+  <strong>V(fork) = 5</strong> → "On average, being at this fork is worth 5 reward points."
+  <br><br>
+  But the Q-function breaks it down by action:
+  <table>
+    <tr><th>State</th><th>Action</th><th>Q-value</th><th>Interpretation</th></tr>
+    <tr><td>Fork</td><td>Go left</td><td>Q(fork, left) = <strong>8</strong></td><td>Left path leads to treasure</td></tr>
+    <tr><td>Fork</td><td>Go right</td><td>Q(fork, right) = <strong>2</strong></td><td>Right path leads to a dead end</td></tr>
+  </table>
+  The <strong>V(s)</strong> tells you the fork is a decent place to be. The <strong>Q(s, a)</strong> tells you <em>which specific action</em> makes it decent. With Q-values, the optimal policy is easy: at any state, just pick the action with the highest Q-value. Here, always go left.
+</div>
+
+<div class="diagram-container">
+  <svg viewBox="0 0 680 270" xmlns="http://www.w3.org/2000/svg" style="max-width:620px;">
+    <defs><marker id="arrow4" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto-start-reverse"><polygon points="0 0, 10 3.5, 0 7" fill="#1a1a1a"/></marker></defs>
+    <!-- V(s) side -->
+    <rect x="20" y="20" width="290" height="230" rx="10" fill="#f7f6f3" stroke="#d4d0c8" stroke-width="1.5"/>
+    <text x="165" y="52" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="16" font-weight="700" fill="#2d5a9e">V(s) — State Value</text>
+
+    <circle cx="85" cy="130" r="32" fill="#e8f0fc" stroke="#2d5a9e" stroke-width="2"/>
+    <text x="85" y="128" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#2d5a9e">s</text>
+    <text x="85" y="146" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="#5c5c5c">state</text>
+
+    <line x1="117" y1="130" x2="175" y2="130" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arrow4)"/>
+
+    <rect x="180" y="105" width="110" height="50" rx="8" fill="#e8f0fc" stroke="#2d5a9e" stroke-width="2"/>
+    <text x="235" y="135" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="15" fill="#2d5a9e">V(s)</text>
+
+    <text x="165" y="210" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12.5" fill="#5c5c5c">"How good is it to be</text>
+    <text x="165" y="228" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12.5" fill="#5c5c5c">in this state?"</text>
+
+    <!-- Q(s,a) side -->
+    <rect x="370" y="20" width="290" height="230" rx="10" fill="#f7f6f3" stroke="#d4d0c8" stroke-width="1.5"/>
+    <text x="515" y="52" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="16" font-weight="700" fill="#2e7d4f">Q(s, a) — Action Value</text>
+
+    <circle cx="420" cy="115" r="26" fill="#e8f0fc" stroke="#2d5a9e" stroke-width="2"/>
+    <text x="420" y="120" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#2d5a9e">s</text>
+
+    <circle cx="420" cy="175" r="26" fill="#fff3cd" stroke="#c27a20" stroke-width="2"/>
+    <text x="420" y="180" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#c27a20">a</text>
+
+    <line x1="446" y1="115" x2="502" y2="130" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arrow4)"/>
+    <line x1="446" y1="170" x2="502" y2="148" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arrow4)"/>
+
+    <rect x="507" y="113" width="120" height="50" rx="8" fill="#e6f4ea" stroke="#2e7d4f" stroke-width="2"/>
+    <text x="567" y="143" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="15" fill="#2e7d4f">Q(s, a)</text>
+
+    <text x="515" y="210" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12.5" fill="#5c5c5c">"How good is it to take</text>
+    <text x="515" y="228" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12.5" fill="#5c5c5c">action a in this state?"</text>
+  </svg>
+  <div class="diagram-caption">Figure 4 — Two value functions: V(s) depends only on the state; Q(s, a) depends on both the state and a specific action.</div>
+</div>
+
+<h3>Optimal Value Functions</h3>
+<p>The <strong>optimal</strong> value function, denoted with a star (e.g., <span class="math">Q*</span>), corresponds to the best possible policy. If the agent has the optimal policy, the value function is as good as it can get. The Q-function depends on which policy the agent follows — change the policy, and the Q-values change.</p>
+
+<hr>
+
+<!-- ================================================================ -->
+<h2>5. Model</h2>
+
+<p>A <strong>model</strong> is the agent's internal representation of the environment. It allows the agent to predict what will happen next (state transitions and rewards) without actually performing actions in the real environment.</p>
+
+<ul>
+  <li>With a model, the agent can do <strong>planning</strong> — reasoning ahead about consequences.</li>
+  <li><strong>Not all RL agents have models.</strong> In model-free RL (e.g., Q-learning), the agent must learn through direct interaction.</li>
+</ul>
+
+<p><strong>Example:</strong> A Blocks World defined in Prolog can serve as both the environment and a model. If the agent has access to the model, it can plan which actions will achieve the goal without trial and error.</p>
+
+<div class="example">
+  <span class="ex-title">🗺️ Example — Navigating With vs. Without a Map</span>
+  <strong>Model-based (you have a map):</strong> You're visiting a new city, but you have Google Maps. Before leaving the hotel, you <em>plan</em> a route — you can mentally simulate "if I turn left here, I'll reach the museum in 10 minutes." You don't need to actually walk down every street to learn where it goes. That's what a model gives an RL agent: the ability to plan ahead.
+  <br><br>
+  <strong>Model-free (no map):</strong> Now imagine you're in the same city with no phone, no map, and no one to ask. You have to <em>actually walk around</em>, discover dead ends, and remember which streets led somewhere useful. Over many visits, you build up knowledge of which actions (turns) in which states (intersections) lead to good outcomes. That's model-free RL — like Q-learning.
+</div>
+
+<hr>
+
+<!-- ================================================================ -->
+<h2>6. Markov Decision Processes (MDPs)</h2>
+
+<p>All RL problems in this course are formulated as <strong>Markov Decision Processes</strong>. MDPs build up in layers:</p>
+
+<div class="diagram-container">
+  <svg viewBox="0 0 600 190" xmlns="http://www.w3.org/2000/svg" style="max-width:540px;">
+    <!-- Layer 1: Markov Chain -->
+    <rect x="30" y="20" width="540" height="150" rx="12" fill="#f0e6f6" stroke="#8b5fbf" stroke-width="2" opacity="0.35"/>
+    <rect x="50" y="40" width="500" height="110" rx="10" fill="#e8f0fc" stroke="#2d5a9e" stroke-width="2" opacity="0.45"/>
+    <rect x="70" y="60" width="460" height="70" rx="8" fill="#e6f4ea" stroke="#2e7d4f" stroke-width="2"/>
+
+    <text x="300" y="100" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="16" font-weight="600" fill="#2e7d4f">Markov Chain</text>
+    <text x="300" y="118" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="#2e7d4f">States with transitions</text>
+
+    <text x="300" y="140" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="14" font-weight="600" fill="#2d5a9e">+ Rewards → Markov Reward Process</text>
+
+    <text x="300" y="162" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="14" font-weight="600" fill="#8b5fbf">+ Actions (Decisions) → Markov Decision Process (MDP)</text>
+  </svg>
+  <div class="diagram-caption">Figure 5 — MDPs are built by adding rewards and then actions to Markov Chains.</div>
+</div>
+
+<h3>The Markov Property</h3>
+
+<div class="definition">
+  <strong>Markov Property:</strong> The probability of each possible next state and reward depends <strong>only on the immediately preceding state and action</strong>, not on the full history. The future depends only on the present, not the past.
+</div>
+
+<h3>Example: Constant-Velocity Particle</h3>
+
+<div class="diagram-container">
+  <svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" style="max-width:620px;">
+    <defs>
+      <marker id="arrow6" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto-start-reverse"><polygon points="0 0, 10 3.5, 0 7" fill="#1a1a1a"/></marker>
+      <marker id="arrow6g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto-start-reverse"><polygon points="0 0, 10 3.5, 0 7" fill="#2e7d4f"/></marker>
+    </defs>
+    <!-- Not Markov -->
+    <rect x="15" y="15" width="310" height="230" rx="10" fill="#fdecea" stroke="#b83a3a" stroke-width="2"/>
+    <text x="170" y="48" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="16" font-weight="700" fill="#b83a3a">✗ NOT Markov</text>
+    <text x="170" y="70" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13" fill="#5c5c5c">State = position only</text>
+
+    <!-- Particle positions -->
+    <circle cx="70" cy="140" r="12" fill="#b83a3a" opacity="0.3"/>
+    <circle cx="150" cy="140" r="12" fill="#b83a3a" opacity="0.6"/>
+    <circle cx="230" cy="140" r="12" fill="#b83a3a"/>
+    <text x="70" y="145" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="white">t-2</text>
+    <text x="150" y="145" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="white">t-1</text>
+    <text x="230" y="145" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="white">t</text>
+
+    <text x="280" y="145" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="22" fill="#b83a3a">?</text>
+
+    <text x="170" y="190" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="#5c5c5c">Position alone can't predict</text>
+    <text x="170" y="207" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="#5c5c5c">the next position — need to</text>
+    <text x="170" y="224" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="#5c5c5c">look back at past states</text>
+
+    <!-- Markov -->
+    <rect x="355" y="15" width="310" height="230" rx="10" fill="#e6f4ea" stroke="#2e7d4f" stroke-width="2"/>
+    <text x="510" y="48" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="16" font-weight="700" fill="#2e7d4f">✓ Markov</text>
+    <text x="510" y="70" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13" fill="#5c5c5c">State = position + velocity</text>
+
+    <circle cx="440" cy="140" r="12" fill="#2e7d4f"/>
+    <text x="440" y="145" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="white">t</text>
+    <!-- velocity arrow -->
+    <line x1="455" y1="140" x2="510" y2="140" stroke="#2e7d4f" stroke-width="2.5" marker-end="url(#arrow6g)"/>
+    <text x="483" y="132" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#2e7d4f">v</text>
+
+    <!-- next state -->
+    <circle cx="570" cy="140" r="12" fill="#2e7d4f" opacity="0.5"/>
+    <text x="570" y="145" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="white">t+1</text>
+    <text x="605" y="145" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="20" fill="#2e7d4f">✓</text>
+
+    <text x="510" y="190" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="#5c5c5c">Position + velocity at time t</text>
+    <text x="510" y="207" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="#5c5c5c">fully determines position</text>
+    <text x="510" y="224" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="#5c5c5c">at time t+1</text>
+  </svg>
+  <div class="diagram-caption">Figure 6 — Choosing the right state representation to satisfy the Markov property.</div>
+</div>
+
+<div class="example">
+  <span class="ex-title">♟️ vs. 🃏 Example — When Is the Present Enough?</span>
+  <strong>Chess is Markov:</strong> If someone shows you a photo of a chess board mid-game, you have <em>all the information you need</em> to decide the best next move. It doesn't matter how the pieces got to those positions — only where they are <em>right now</em>. The current board position is a Markov state.
+  <br><br>
+  <strong>Poker is NOT Markov (with visible cards only):</strong> If your "state" is just the cards currently on the table, you can't predict what happens next — because the key information (cards already played, other players' hands) is hidden. You'd need to include the history of cards played to make better predictions. A richer state representation (e.g., including remembered cards) can restore the Markov property.
+  <br><br>
+  <strong>The lesson:</strong> Whether something is Markov depends on <em>what you define as the state</em>. You can always make it Markov by including more information — the trick is finding the smallest state that still works.
+</div>
+
+<h3>Atari Games: State = Last 4 Frames</h3>
+
+<div class="diagram-container">
+  <svg viewBox="0 0 620 180" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;">
+    <defs>
+      <marker id="arrow7" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto-start-reverse"><polygon points="0 0, 10 3.5, 0 7" fill="#1a1a1a"/></marker>
+      <marker id="arrow7g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto-start-reverse"><polygon points="0 0, 10 3.5, 0 7" fill="#2e7d4f"/></marker>
+    </defs>
+    <!-- Frames -->
+    <rect x="40" y="30" width="85" height="100" rx="4" fill="#ddd" stroke="#999" stroke-width="1.5"/>
+    <text x="82" y="85" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13" fill="#666">Frame</text>
+    <text x="82" y="102" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#666">t-3</text>
+
+    <rect x="155" y="30" width="85" height="100" rx="4" fill="#ccc" stroke="#999" stroke-width="1.5"/>
+    <text x="197" y="85" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13" fill="#666">Frame</text>
+    <text x="197" y="102" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#666">t-2</text>
+
+    <rect x="270" y="30" width="85" height="100" rx="4" fill="#bbb" stroke="#999" stroke-width="1.5"/>
+    <text x="312" y="85" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13" fill="#666">Frame</text>
+    <text x="312" y="102" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#666">t-1</text>
+
+    <rect x="385" y="30" width="85" height="100" rx="4" fill="#aaa" stroke="#555" stroke-width="2"/>
+    <text x="427" y="85" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13" fill="#333">Frame</text>
+    <text x="427" y="102" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#333">t</text>
+
+    <!-- Bracket -->
+    <line x1="40" y1="145" x2="470" y2="145" stroke="#2d5a9e" stroke-width="2"/>
+    <line x1="40" y1="138" x2="40" y2="145" stroke="#2d5a9e" stroke-width="2"/>
+    <line x1="470" y1="138" x2="470" y2="145" stroke="#2d5a9e" stroke-width="2"/>
+
+    <text x="255" y="168" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="15" font-weight="700" fill="#2d5a9e">State Sₜ = last 4 frames</text>
+
+    <!-- Arrow to Markov label -->
+    <text x="540" y="85" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="14" font-weight="600" fill="#2e7d4f">Markov ✓</text>
+    <text x="540" y="105" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#5c5c5c">captures motion</text>
+
+    <line x1="475" y1="80" x2="502" y2="80" stroke="#2e7d4f" stroke-width="1.5" marker-end="url(#arrow7g)"/>
+  </svg>
+  <div class="diagram-caption">Figure 7 — DeepMind's Atari agent uses the last 4 video frames as its state, providing enough motion information to be Markov. At 60 fps, this yields ~15 decisions per second.</div>
+</div>
+
+<p><strong>Worst case:</strong> The entire history is always Markov (it contains everything), but this is impractical. The RL practitioner's goal is to find the <strong>minimal sufficient state representation</strong>.</p>
+
+<hr>
+
+<!-- ================================================================ -->
+<h2>7. History and State</h2>
+
+<p>The <strong>history</strong> at time <em>t</em> is the full sequence of observations, actions, and rewards up to that point:</p>
+
+<div class="math-block">Hₜ = R₁, O₁, A₁, R₂, O₂, A₂, …, Rₜ, Oₜ, Aₜ</div>
+
+<p>The <strong>state</strong> is a function of the history: <span class="math">Sₜ = f(Hₜ)</span>. If we let <em>f</em> be the identity function (state = entire history), the state is always Markov — but unwieldy. We want a more compact state that still satisfies the Markov property.</p>
+
+<p>There is also a distinction between the <strong>environment state</strong> (full internal state of the environment, which may include hidden information) and the <strong>agent state / observation</strong> (only the portion the agent can see). In many problems, these are treated as the same.</p>
+
+<div class="example">
+  <span class="ex-title">🐀 Example — The Rat and the State Definition</span>
+  A rat encounters a sequence of stimuli: lights 💡, bells 🔔, and levers 🔲. Sometimes the sequence ends with cheese 🧀, sometimes with an electric shock ⚡.
+  <br><br>
+  <strong>History 1:</strong> 💡 → 💡 → 🔲 → 🔔 → <strong>⚡ shock!</strong><br>
+  <strong>History 2:</strong> 🔔 → 💡 → 🔲 → 🔲 → <strong>🧀 cheese!</strong><br>
+  <strong>History 3:</strong> 💡 → 🔲 → 💡 → 🔲 → <strong>???</strong>
+  <br><br>
+  What comes next for History 3? It depends entirely on <strong>what you define as the state</strong>:
+  <br>
+  — If state = just the last stimulus (🔲), then the rat might expect cheese (History 2 ended with 🔲 → 🧀) <em>or</em> shock (History 1 also had 🔲 before the end).<br>
+  — If state = last two stimuli (💡 → 🔲), the prediction changes.<br>
+  — If state = the entire history, each sequence is unique and distinguishable.
+  <br><br>
+  <strong>The lesson:</strong> The state is a <em>design choice</em> made by the RL practitioner. Different state definitions lead to different predictions and different agent behavior.
+</div>
+
+<hr>
+
+<!-- ================================================================ -->
+<h2>8. Categorizing RL Agents</h2>
+
+<div class="diagram-container">
+  <svg viewBox="0 0 660 310" xmlns="http://www.w3.org/2000/svg" style="max-width:600px;">
+    <!-- Headers -->
+    <text x="330" y="30" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="17" font-weight="700" fill="#1a1a1a">Agent Taxonomy</text>
+
+    <!-- Value-based -->
+    <rect x="30" y="55" width="140" height="110" rx="10" fill="#e8f0fc" stroke="#2d5a9e" stroke-width="2"/>
+    <text x="100" y="82" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="14" font-weight="700" fill="#2d5a9e">Value-Based</text>
+    <text x="100" y="106" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="#555">✓ Value Function</text>
+    <text x="100" y="124" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="#999">✗ Explicit Policy</text>
+    <text x="100" y="150" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#5c5c5c">(implicit policy from V/Q)</text>
+
+    <!-- Policy-based -->
+    <rect x="195" y="55" width="140" height="110" rx="10" fill="#fff3cd" stroke="#c27a20" stroke-width="2"/>
+    <text x="265" y="82" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="14" font-weight="700" fill="#c27a20">Policy-Based</text>
+    <text x="265" y="106" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="#555">✓ Policy</text>
+    <text x="265" y="124" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="#999">✗ Value Function</text>
+    <text x="265" y="150" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#5c5c5c">(actions directly from π)</text>
+
+    <!-- Actor-Critic -->
+    <rect x="360" y="55" width="140" height="110" rx="10" fill="#f0e6f6" stroke="#8b5fbf" stroke-width="2"/>
+    <text x="430" y="82" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="14" font-weight="700" fill="#8b5fbf">Actor-Critic</text>
+    <text x="430" y="106" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="#555">✓ Policy (actor)</text>
+    <text x="430" y="124" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="#555">✓ Value Fn (critic)</text>
+    <text x="430" y="150" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#5c5c5c">(π picks, V evaluates)</text>
+
+    <!-- Model-based -->
+    <rect x="525" y="55" width="115" height="110" rx="10" fill="#e6f4ea" stroke="#2e7d4f" stroke-width="2"/>
+    <text x="582" y="82" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="14" font-weight="700" fill="#2e7d4f">Model-Based</text>
+    <text x="582" y="106" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="#555">✓ Model</text>
+    <text x="582" y="124" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="#555">± Policy / V</text>
+    <text x="582" y="150" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#5c5c5c">(can plan ahead)</text>
+
+    <!-- Model-free bracket -->
+    <line x1="30" y1="185" x2="500" y2="185" stroke="#b83a3a" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <line x1="30" y1="178" x2="30" y2="185" stroke="#b83a3a" stroke-width="1.5"/>
+    <line x1="500" y1="178" x2="500" y2="185" stroke="#b83a3a" stroke-width="1.5"/>
+    <text x="265" y="203" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13" font-weight="600" fill="#b83a3a">Model-Free</text>
+
+    <!-- Q-learning callout -->
+    <rect x="160" y="230" width="340" height="55" rx="8" fill="#f7f6f3" stroke="#d4d0c8" stroke-width="1.5"/>
+    <text x="330" y="255" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13" fill="#555">Q-learning is a <tspan font-weight="700" fill="#2d5a9e">model-free, value-based</tspan> method</text>
+    <text x="330" y="274" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13" fill="#555">that learns the optimal Q(s, a) function</text>
+    <line x1="100" y1="165" x2="250" y2="230" stroke="#d4d0c8" stroke-width="1" stroke-dasharray="4,3"/>
+  </svg>
+  <div class="diagram-caption">Figure 8 — RL agents classified by which components they maintain. The first three categories are model-free.</div>
+</div>
+
+<hr>
+
+<!-- ================================================================ -->
+<h2>9. Learning vs. Planning</h2>
+
+<ul>
+  <li><strong>Planning:</strong> The agent has a model and can reason about action consequences internally, without direct interaction. No trial-and-error learning needed.</li>
+  <li><strong>Learning:</strong> The agent does <em>not</em> have a complete model. It must interact with the environment, observe rewards and transitions, and improve its policy from experience.</li>
+</ul>
+
+<p><strong>Dynamic programming</strong> is a family of algorithms for policy improvement that requires full knowledge of the environment (all transition probabilities and rewards). In general RL, this information is unknown and must be learned.</p>
+
+<hr>
+
+<!-- ================================================================ -->
+<h2>10. Exploration vs. Exploitation</h2>
+
+<div class="diagram-container">
+  <svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg" style="max-width:540px;">
+    <rect x="20" y="20" width="250" height="110" rx="10" fill="#e8f0fc" stroke="#2d5a9e" stroke-width="2"/>
+    <text x="145" y="52" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="16" font-weight="700" fill="#2d5a9e">Exploitation</text>
+    <text x="145" y="78" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13" fill="#555">Choose the best-known action</text>
+    <text x="145" y="110" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="#999" font-style="italic">🍽️ Always go to your</text>
+    <text x="145" y="125" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="#999" font-style="italic">favourite restaurant</text>
+
+    <text x="305" y="80" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="22" font-weight="700" fill="#999">vs</text>
+
+    <rect x="330" y="20" width="250" height="110" rx="10" fill="#fff3cd" stroke="#c27a20" stroke-width="2"/>
+    <text x="455" y="52" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="16" font-weight="700" fill="#c27a20">Exploration</text>
+    <text x="455" y="78" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13" fill="#555">Try something new</text>
+    <text x="455" y="110" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="#999" font-style="italic">🎲 Try a random restaurant —</text>
+    <text x="455" y="125" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="#999" font-style="italic">might be better or worse</text>
+  </svg>
+  <div class="diagram-caption">Figure 9 — Balancing exploitation (using what you know) with exploration (trying new things) is fundamental to RL.</div>
+</div>
+
+<div class="example">
+  <span class="ex-title">🎮 Example — Exploration vs. Exploitation in a Dungeon Game</span>
+  An agent is playing a dungeon crawler. It has found a room that gives +5 reward every time (a minor treasure chest). Should it:
+  <br><br>
+  <strong>Exploit?</strong> Keep returning to that +5 room forever. Guaranteed steady reward.<br>
+  <strong>Explore?</strong> Try opening an unfamiliar door. It <em>might</em> lead to a +100 dragon hoard… or to a −20 trap.
+  <br><br>
+  If the agent only exploits, it will never discover the +100 room. If it only explores, it wastes time in traps. The best RL algorithms balance both — mostly exploit what works, but occasionally explore to find something better. This trade-off is one of the deepest challenges in RL.
+</div>
+
+<hr>
+
+<!-- ================================================================ -->
+<h2>11. Q-Learning Preview</h2>
+
+<p><strong>Q-learning</strong> is a specific RL algorithm that learns the optimal action value function <span class="math">Q*</span>.</p>
+
+<div class="diagram-container">
+  <svg viewBox="0 0 620 310" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;">
+    <text x="310" y="28" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="16" font-weight="700" fill="#1a1a1a">Q-Table for a 4×5 Grid World</text>
+
+    <!-- Grid world -->
+    <text x="130" y="60" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13" font-weight="600" fill="#5c5c5c">Grid World (states)</text>
+    <g transform="translate(40, 70)">
+      <rect x="0" y="0" width="180" height="120" fill="none" stroke="#999" stroke-width="1.5"/>
+      <!-- Grid lines -->
+      <line x1="36" y1="0" x2="36" y2="120" stroke="#ccc" stroke-width="1"/>
+      <line x1="72" y1="0" x2="72" y2="120" stroke="#ccc" stroke-width="1"/>
+      <line x1="108" y1="0" x2="108" y2="120" stroke="#ccc" stroke-width="1"/>
+      <line x1="144" y1="0" x2="144" y2="120" stroke="#ccc" stroke-width="1"/>
+      <line x1="0" y1="30" x2="180" y2="30" stroke="#ccc" stroke-width="1"/>
+      <line x1="0" y1="60" x2="180" y2="60" stroke="#ccc" stroke-width="1"/>
+      <line x1="0" y1="90" x2="180" y2="90" stroke="#ccc" stroke-width="1"/>
+      <!-- Agent -->
+      <circle cx="18" cy="105" r="10" fill="#2d5a9e"/>
+      <text x="18" y="109" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="9" fill="white" font-weight="700">A</text>
+      <!-- Goal -->
+      <rect x="148" y="4" width="28" height="22" rx="3" fill="#2e7d4f" opacity="0.8"/>
+      <text x="162" y="19" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="9" fill="white" font-weight="700">G</text>
+    </g>
+
+    <!-- Arrow -->
+    <text x="305" y="140" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="28" fill="#999">→</text>
+
+    <!-- Q-table -->
+    <text x="470" y="60" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13" font-weight="600" fill="#5c5c5c">Q-Table (3D array)</text>
+    <g transform="translate(360, 70)">
+      <!-- Back layer -->
+      <rect x="30" y="-10" width="180" height="120" rx="3" fill="#e8f0fc" stroke="#2d5a9e" stroke-width="1" opacity="0.5"/>
+      <!-- Mid layer -->
+      <rect x="15" y="0" width="180" height="120" rx="3" fill="#d0e2f7" stroke="#2d5a9e" stroke-width="1" opacity="0.7"/>
+      <!-- Front layer -->
+      <rect x="0" y="10" width="180" height="120" rx="3" fill="#e8f0fc" stroke="#2d5a9e" stroke-width="1.5"/>
+
+      <!-- Labels on front layer -->
+      <text x="90" y="50" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#2d5a9e">Each cell stores Q-values</text>
+      <text x="90" y="68" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#2d5a9e">for 4 actions:</text>
+      <text x="90" y="90" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#2d5a9e">↑  ↓  ←  →</text>
+      <text x="90" y="115" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="#999">rows × cols × 4 actions</text>
+    </g>
+
+    <!-- Bellman equation -->
+    <rect x="60" y="225" width="500" height="65" rx="8" fill="#f7f6f3" stroke="#d4d0c8" stroke-width="1.5"/>
+    <text x="310" y="250" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13" fill="#555">Updated via the <tspan font-weight="700" fill="#2d5a9e">Bellman Equation</tspan> — at each step, the agent</text>
+    <text x="310" y="270" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13" fill="#555">explores, receives rewards, and refines Q-values toward Q*</text>
+  </svg>
+  <div class="diagram-caption">Figure 10 — In tabular Q-learning, the Q-table mirrors the grid world structure with an extra dimension for actions.</div>
+</div>
+
+<p>Once learned, the optimal Q-function directly implies the optimal policy: in any state, choose the action with the highest Q-value.</p>
+
+<div class="example">
+  <span class="ex-title">🎯 Example — How Q-Learning Works, Intuitively</span>
+  Imagine a 2×2 grid. The agent starts at cell (1,1) and the goal is cell (2,2). Reward: −1 per step, +10 for reaching the goal.
+  <br><br>
+  <strong>Step 1 — Start with ignorance:</strong> The Q-table starts with all zeros. The agent doesn't know anything about the environment.
+  <table>
+    <tr><th>State</th><th>Q(→)</th><th>Q(↓)</th><th>Q(←)</th><th>Q(↑)</th></tr>
+    <tr><td>(1,1)</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>(1,2)</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>(2,1)</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+  </table>
+  <strong>Step 2 — Explore:</strong> The agent tries random actions (exploration). It moves right from (1,1) to (1,2), gets reward −1. It moves down from (1,2) to (2,2), gets reward +10. Now it updates the Q-table using the <strong>Bellman equation</strong> — the entry for Q((1,2), ↓) goes up because that action led to high reward.
+  <br><br>
+  <strong>Step 3 — Repeat many times:</strong> Over hundreds of episodes, the Q-values gradually converge. Eventually, Q((1,1), →) and Q((1,2), ↓) will have the highest values in their respective rows, encoding the shortest path.
+  <br><br>
+  <strong>Step 4 — Use the policy:</strong> Once the Q-table is learned, the optimal policy is trivial: at each state, pick the action with the highest Q-value. No more random exploration needed.
+</div>
+
+<hr>
+
+<!-- ================================================================ -->
+<h2>12. RL as the Third Paradigm of Machine Learning</h2>
+
+<p>Reinforcement learning is the <strong>third major type of machine learning</strong>, alongside supervised and unsupervised learning. It differs fundamentally: there are no labeled data, only a scalar reward signal and a sequence of observations. The agent uses RL algorithms to learn how to achieve its goals efficiently.</p>
+
+<p>RL is remarkably broad, appearing across many disciplines:</p>
+
+<div class="diagram-container">
+  <svg viewBox="0 0 580 260" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;">
+    <!-- Center -->
+    <circle cx="290" cy="130" r="55" fill="#2d5a9e" opacity="0.9"/>
+    <text x="290" y="124" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13" font-weight="700" fill="white">Reinforcement</text>
+    <text x="290" y="142" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13" font-weight="700" fill="white">Learning</text>
+
+    <!-- Spokes -->
+    <line x1="247" y1="95" x2="145" y2="40" stroke="#ccc" stroke-width="1.5"/>
+    <text x="120" y="36" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" font-weight="600" fill="#555">Engineering</text>
+    <text x="120" y="52" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="#999">"Optimal Control"</text>
+
+    <line x1="333" y1="95" x2="440" y2="40" stroke="#ccc" stroke-width="1.5"/>
+    <text x="468" y="36" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" font-weight="600" fill="#555">Computer Science</text>
+    <text x="468" y="52" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="#999">"Machine Learning"</text>
+
+    <line x1="240" y1="148" x2="100" y2="160" stroke="#ccc" stroke-width="1.5"/>
+    <text x="68" y="155" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" font-weight="600" fill="#555">Neuroscience</text>
+    <text x="68" y="171" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="#999">"Reward Systems"</text>
+
+    <line x1="340" y1="148" x2="480" y2="160" stroke="#ccc" stroke-width="1.5"/>
+    <text x="510" y="155" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" font-weight="600" fill="#555">Psychology</text>
+    <text x="510" y="171" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="#999">"Conditioning"</text>
+
+    <line x1="260" y1="178" x2="175" y2="230" stroke="#ccc" stroke-width="1.5"/>
+    <text x="145" y="230" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" font-weight="600" fill="#555">Economics</text>
+    <text x="145" y="246" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="#999">"Bounded Rationality"</text>
+
+    <line x1="320" y1="178" x2="410" y2="230" stroke="#ccc" stroke-width="1.5"/>
+    <text x="440" y="230" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" font-weight="600" fill="#555">Mathematics</text>
+    <text x="440" y="246" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="#999">"Operations Research"</text>
+  </svg>
+  <div class="diagram-caption">Figure 11 — RL concepts appear across many disciplines under different names (based on David Silver's Venn diagram).</div>
+</div>
+
+<div class="example">
+  <span class="ex-title">🌍 Real-World RL Success Stories</span>
+  <strong>AlphaGo (DeepMind):</strong> Trained with RL to play the board game Go — a 19×19 grid game far more complex than chess. AlphaGo defeated the world champion Lee Sedol in a historic 2016 match. The documentary "AlphaGo" (free on YouTube) shows David Silver and Demis Hassabis on this journey.
+  <br><br>
+  <strong>Helicopter Acrobatics (Stanford):</strong> A radio-controlled helicopter was trained using RL (first in a simulator, then transferred to real hardware) to perform flips, inverted flight, and other maneuvers no human pilot could match. The model used for simulation included wind speed, gravity, and helicopter momentum.
+  <br><br>
+  <strong>Atari Games (DeepMind):</strong> An RL agent learned to play dozens of Atari video games (Breakout, Pong, Space Invaders) at superhuman levels using only raw screen pixels as input — the same input a human player would see. This was DeepMind's breakthrough into public awareness.
+  <br><br>
+  <strong>Protein Folding:</strong> RL techniques have been applied to predict how proteins fold into 3D shapes — a problem critical to drug design and biology.
+</div>
+
+<hr>
+
+<!-- ================================================================ -->
+<h2>13. Key Terminology Summary</h2>
+
+<table>
+  <tr><th>Term</th><th>Definition</th></tr>
+  <tr><td><strong>Agent</strong></td><td>The learner / decision-maker</td></tr>
+  <tr><td><strong>Environment</strong></td><td>Everything external to the agent</td></tr>
+  <tr><td><strong>State (s)</strong></td><td>Summary of the current situation (designed to be Markov)</td></tr>
+  <tr><td><strong>Action (a)</strong></td><td>What the agent does to the environment</td></tr>
+  <tr><td><strong>Reward (r)</strong></td><td>Scalar feedback signal at each time step</td></tr>
+  <tr><td><strong>Episode</strong></td><td>One complete run of the agent–environment interaction</td></tr>
+  <tr><td><strong>Policy (π)</strong></td><td>Function mapping states to actions</td></tr>
+  <tr><td><strong>V(s)</strong></td><td>Expected cumulative reward from state <em>s</em></td></tr>
+  <tr><td><strong>Q(s, a)</strong></td><td>Expected cumulative reward from state <em>s</em> taking action <em>a</em></td></tr>
+  <tr><td><strong>Model</strong></td><td>Agent's internal representation of the environment</td></tr>
+  <tr><td><strong>Markov Property</strong></td><td>Next state depends only on current state and action</td></tr>
+  <tr><td><strong>Bellman Equation</strong></td><td>Recursive relationship for computing / updating value functions</td></tr>
+  <tr><td><strong>Discount Factor</strong></td><td>Reduces weight of future rewards (needed for infinite episodes)</td></tr>
+  <tr><td><strong>Reward Hacking</strong></td><td>Agent exploits poorly designed rewards without real progress</td></tr>
+</table>
+
+<hr>
+
+<div class="ref">
+  Reference: Sutton &amp; Barto, <em>Reinforcement Learning: An Introduction</em> (standard textbook); David Silver's RL Lecture Series (freely available on YouTube).
+</div>
+
+</body>
+</html>

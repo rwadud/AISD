@@ -1,0 +1,1835 @@
+I just want to make clear that there is some joke here or something like that.
+
+I don't know if it's related to our program or not, but I saw a lot of people.
+
+Okay, so today I will discuss or it will be considered as a starting point for large language learning.
+
+Okay, so starting from this lecture and then we will start to develop our knowledge of how the idea of large language learning comes.
+
+Okay, we will start with the early techniques that use a large language model, and then step by step we will see how we improve the idea to come up with a last step which is large language learning.
+
+Which is everyone will talk about it now.
+
+Right, so lab 3 now it is up.
+
+You can check the practice space.
+
+I know that you will demo lab 2 this week, but okay you can still start to work on lab 3.
+
+You have all the information that you need to work on lab 3.
+
+So we covered everything in related to lab 3.
+
+I will talk a lot of data about text collection which is not a part of our course, but I can see that it is good to know how the people collect the data.
+
+Okay, and then I will talk about large language modeling, go through some different techniques and we will discuss what is the advantage and disadvantage of each technique.
+
+So back again to our development life cycle.
+
+Now I will try to talk a little bit about data collection.
+
+So especially for NMDP, there are many sources of data and the main source of data actually is the social media.
+
+Okay, so this is a huge source of data where many NMDP rely on this data.
+
+As you see there are many platforms and you can see here there is a huge number of data that we can extract from this social media.
+
+And each of these platforms has its developer portal that allows the people to access this data.
+
+I will talk about the most famous one, which is X. Okay, it was before Twitter, where it's a very important source of data.
+
+The people collected the tweets and based on these tweets, many applications can build on top of this.
+
+One of these like sentiment analysis, usually during the election, that we can find how the people think about a specific candidate.
+
+Okay, so I had an experience in collecting the data using Twitter.
+
+At that time, they gave us a permission that a free account with a limited number of tweets per day.
+
+So, at that time, we can collect about 11,500 tweets per day.
+
+And there is a limit, and we have to apply for a long-term, which is a purpose of collection, and then we will be approved to allow us to access this data.
+
+But now, actually, I didn't try with X platform, but I think now they don't have a free account.
+
+This is what I did.
+
+There is no free account in X. But still, you have to go to the worker portal, and then fill the application, what is the purpose of your research, and help with your organization, a lot of questions, and then you can be allowed to access the data, and then collect some information from this data.
+
+And this is one of the main source of a lot of applications in NLV.
+
+One of these applications that I worked before in my previous company, New Energy, and at that time, we tried to find the ethical concern related to one of the research papers published by the research group in the Royal Academy.
+
+It's something related to the mental health.
+
+The researcher at that time, he collected with his group about three million different kids over three years, and the objective was to predict the people who are in risk for suicide at any time.
+
+So it's something related to the mental health.
+
+And they provide very interesting results, and he presented his application for many, many events, and yeah, at that time, three, 13 million different tweets, it's even harder to upload in our devices, and to try to find the ethical concern about this.
+
+But this is how you can build an application.
+
+Usually, it depends on a huge amount of data to get some useful insights.
+
+And the second source of data, usually through that web screen.
+
+So we have a lot of websites.
+
+We can scrap this data and convert it to something that may be useful for us in any application.
+
+So we have three main libraries, BeautifulSource and the latest one, HTML5, because it's based on the latest version of HTML, which is HTML5.
+
+So using BeautifulSource, it contains a parser where it can parse your HTML and extract what's the data you want from this HTML5.
+
+I included a very simple example.
+
+I will try to make a simple test for scraping.
+
+I request to scrape a localcollege.com website.
+
+So this is a URL that I try to scrape the data from it.
+
+And using a BeautifulSource and HTML parser, I try to extract some data.
+
+So here you can, if you have some knowledge about HTML, we have many tags and you can find all the tags using HTML parser.
+
+So here I try to find all headers, h1, h2, h3.
+
+Then it returns to me this whole header related to this website.
+
+And then I try to count it.
+
+It's 20.
+
+And then I try to extract all the paragraphs.
+
+So here it extracts all the paragraphs.
+
+So the idea of the BeautifulSource is that you can extract this data.
+
+And then it's converted to a data structure that you can be able to use it later on.
+
+As you can see here, I extracted the data, then performed tokenization, and we can save this data to any file.
+
+Then you can use this data in your application.
+
+So this is two main sources of data collection in NLP, even from the social media and then from the other websites.
+
+Another important source, actually, is the PDF files, papers or books, and it's easy to extract it.
+
+We have a library that can read any PDF file and convert it to a data structure that you can use it.
+
+There's many functions in NLTK, even CAN, you can read the PDF files.
+
+And this is what we're going to talk about in the collection of data.
+
+Right, so before we start with the language model, I want to just give you some reminder about what is a probability theory.
+
+It's a very simple overview, not going into details, but just to make sure that we understand the definition of the probability theory.
+
+Does anyone have an idea about probability statistics?
+
+Okay, so it's a very simple introduction.
+
+Now, how we compute the probability of picking some pole from a bag of a different pole.
+
+So, what is the probability of the placement?
+
+If you want to compute the probability of having a blue rectangle or a blue square, we simply compute how many squares divided by the total number of elements, okay?
+
+And we can at the same time make a joint probability like this, so we can compute the group of probabilities.
+
+So, probability of having a sequence like this, it's a multiplication of the probability of each one.
+
+So, it's a product of the probability of each element, okay?
+
+And then we have the conditional probability.
+
+So, what is a conditional probability?
+
+So, we compute the probability of a specific element based on another element.
+
+So, probability of X given Y, it's simply probability of X, Y, joint probability of X and Y, divided by probability of Y, okay?
+
+And this is how we can compute the conditional probability.
+
+Now, in probability, we have the chain rule.
+
+So, in a chain rule that we express the probability as a product of a joint conditional probability.
+
+So, if you have a sequence of events, X1 to Xn.
+
+So, probability of this sequence, it's a product of a conditional probability of PX, multiplied by probability of X2 given X1, multiplied by probability of X3 given X1 and X2, and so on.
+
+So, this is what we mean by rule of chain in probability theory, okay?
+
+So, given this information, now we will start to talk about the language rule.
+
+What is the language rule?
+
+Now, consider this statement.
+
+The students all been there.
+
+What do you expect the next word?
+
+Book.
+
+Books.
+
+Bags.
+
+Bags.
+
+Example.
+
+A different words, yes?
+
+What you are trying to do now is the language rule.
+
+You try to predict which word comes next.
+
+And this is what the language rule do now.
+
+They take your question and they build on your question.
+
+In a high level techniques, but very simply now, we try to predict what is the next word will come.
+
+And this is maybe books, mind, exams, or laptops.
+
+And this is the mathematical formula for the language rule.
+
+So we give a sequence of words.
+
+And we try to predict what is the next word given the whole previous sequence.
+
+So given the previous sequence of words, we try to find the probability of the next word.
+
+So based on your training data, based on your corpus, how long it's corpus, we try to find which one comes by computing the probability of appearance of each word.
+
+The word with high probability, this is the predicted word.
+
+So we try to build the model.
+
+And our model is a probability model.
+
+We compute or try to predict what is the next word based on the probability distribution over the word in our program.
+
+So this is formally how the model is.
+
+So x t plus one is one of our program.
+
+So the model should be able to see this word during the training.
+
+Okay, and this is what we call the language model.
+
+Now, we use a language model in our daily life.
+
+When you write any text message in a WhatsApp, text compilation, it's the use, the same, the language model.
+
+Not exactly the same language model, but this is type of the language model usage.
+
+When you search in a Google, text compilation, it's one of, even in the, in your email.
+
+When you start to write email, automatically you can find that the expected, automatically give you some suggestions.
+
+So, most probably, it will work with us, okay?
+
+But at the beginning, it will not put this high performance like you see now.
+
+Before, it is, you know, it is simple, but the idea come long time ago, okay?
+
+So, the goal of the language model is to learn from the pattern of the text, huge number of text, how to predict the next story.
+
+Given the previous world inside the context, okay?
+
+So, this is the objective of any language model, try to predict what is the next story.
+
+Right, so the first one, as usual, build on the statistical techniques.
+
+So, the language model, first language model, they try to find what is the next word to come, build on the statistical technique.
+
+And statistical technique means frequency, so based on counting, okay?
+
+So, the first language model is Enneagram.
+
+So, in a huge number of texts, define the N, and using the previous words for each Enneagram.
+
+So, you have a sliding window, go through all your texts, and then divide it in specific Enneagram.
+
+So, it's based on your decision, try gram, four gram, it's up to you.
+
+And then for each Enneagram, try to use the previous N minus one gram to predict what is the next word.
+
+So, for example, if you have X1, this is your four gram.
+
+Okay, so we divide, we find all the four grams in our curves.
+
+And then we use N minus one gram to predict the Enneagram, the last sentence.
+
+And this is based on counting how many times these words come to the screen.
+
+So, they convert the probability for our model as a ratio between two probabilities.
+
+Probability of Enneagram divided by probability of N minus one gram.
+
+As you can see here, this is our assumption.
+
+So, if you have a sequence of tokens, X1, XT, then the probability to see the next token using the chain rule is...
+
+So, E probability of X1 to XT.
+
+So, it's a probability of X1 multiplied by XT, then X1, and so on.
+
+Okay?
+
+And this, the product, is our probability model.
+
+Okay?
+
+So, our model now is a probability model, and we try to find its parameters.
+
+Okay?
+
+So, how to compute this?
+
+Every model has some assumptions, and our assumption is n plus 1, or n work depends on n minus 1 work.
+
+This is our assumption.
+
+So, predicting the last work, which is k, is dependent on all the previous work X, Y, and Z. And this is our assumption.
+
+We want to be able to use a conditional probability.
+
+And it is logical.
+
+So, when you read a sentence, the work is a context.
+
+So, we try to, based on this context, we try to find what is the next work.
+
+Okay?
+
+So, they convert it to a computational technique, which depends on counting.
+
+And very simply, it is just the counting process.
+
+And to interpret this equation for a specific enneagram, we compute the probability of each work.
+
+It is just probability of enneagram, divided by probability of n minus 1.
+
+Yeah.
+
+So, probability of k, x1 to x2, k, it's probability of this pattern, how do you find it?
+
+This pattern for k, it's not this, divided by probability of this three words come from your study.
+
+Accountable.
+
+How many times do you see all this pattern?
+
+And then divided by how many times do you see this pattern in your text.
+
+Yes.
+
+So, these probabilities come from the text collected from the web?
+
+Yes.
+
+So, you gather your data and then you divide all, or decide your n, what is your n, and then find all the probability.
+
+I will show you here an example.
+
+So, here in Enneagram, I create a text.
+
+I have a purpose, it's a simple text.
+
+I put the TXT, it's one of the Shakespeare stories.
+
+Then I try to cognize, computing the trigram frequency, and here we compute the probability.
+
+So, trigram probability.
+
+So, bags for logs come with this specific probability, this series come with this specific probability, and so on.
+
+And this is what the model does in the training.
+
+So, during the training, sliding window goes through all your text, divide it to a fixed window based on what is in Enneagram, and then compute the probability, the whole probability of that different text.
+
+Okay?
+
+And then...
+
+So, for example, if we have this sentence...
+
+Okay?
+
+This is a complete sentence.
+
+As the problem starts, the students open there and try to predict what is the next word.
+
+Okay?
+
+Based on our Enneagram model, we have to specify what is the fixed window we use to predict the next word.
+
+Okay?
+
+So, here, if we use Enneagram 4, then we discard all the previous words and just focus on these three words to predict what is coming next.
+
+Okay?
+
+And then, this is based on the fixed window.
+
+So, how to compute it?
+
+We count how many number of times in your whole corpus students open there any w.
+
+So, search for how many, this sequence comes with a word, and this is any word, divided by how many times students open there come in your corpus.
+
+And this is the probability.
+
+So, they compute this probability for each possible word in your test.
+
+Okay?
+
+So, how many times there come after this?
+
+One more to come after z.
+
+So, how many times books come?
+
+How many times exams come?
+
+How many times minds come?
+
+And then, using this ratio, they assign a probability for each word there.
+
+And based on this probability, they compute which word will win.
+
+Okay?
+
+So, for example, in your corpus, students open there occurred 1,000 times.
+
+So, this count as 1,000 times in your corpus.
+
+Okay?
+
+And then, students open their books occurred 400 times.
+
+Using this calculation, the probability of word open is 0.4.
+
+So, book open 0.4.
+
+Another example here is, suppose that the students open their exam occurred 100 times in your corpus.
+
+So, based on the ratio, the probability is 0.4.
+
+So, which word is winning?
+
+Book.
+
+Based on your corpus.
+
+Okay?
+
+And this is how the Enneagram works.
+
+Okay?
+
+Any questions?
+
+Yes?
+
+Concern for the specific order?
+
+Yes.
+
+Yeah.
+
+The order here is very, very important.
+
+Okay?
+
+Right.
+
+So, because, okay, an Enneagram, you chop your text into specific Enneagrams.
+
+So, you slide it from the beginning to the end.
+
+Going from left to right.
+
+So, the order is the same.
+
+So, what is the problem in this model?
+
+Memory.
+
+Okay?
+
+I think we don't know which end is the best.
+
+Which end is the best?
+
+Yes.
+
+Choosing the end is a challenge.
+
+Increasing the end.
+
+Think about increasing the end to compute more, to capture more context.
+
+What will happen in this case?
+
+Probability goes down.
+
+Computations.
+
+It's very, very hard.
+
+Anneagram is a computation.
+
+Complexity is very hard.
+
+Okay?
+
+And then, so, think about if this sentence never appeared in your course.
+
+So, open, the student open their books, or the student open their...
+
+This is never okay in your course.
+
+What will happen?
+
+Zero.
+
+Zero?
+
+Zero.
+
+Yes, the probability will be zero.
+
+Yes?
+
+And what if this will not happen?
+
+Student open their, not having at all.
+
+So, even a numerator or denominator will never happen in your course.
+
+So, what is the value?
+
+Zero.
+
+Zero.
+
+So, probability will be zero.
+
+And this will produce disparities in your data.
+
+A lot of zeros.
+
+Okay, we can, they use some techniques to roll back.
+
+So, if they didn't find a 4-gram, they reduce to go back to the 3-gram.
+
+If they didn't find the 3-gram, go back to 2-gram.
+
+This is a time to overcome this problem.
+
+But still, we have a disparity in this, using this technique.
+
+Another challenge is computation complexity.
+
+Enneagram is heavy in computation.
+
+Okay?
+
+If you try it with a small data set and try to compute all the enneagrams in this data, see how much your computation is.
+
+And the last one, which is the most important one, is context limitation.
+
+What do you mean by context limitation?
+
+Look at this example.
+
+To compute, the student opens there.
+
+We discard the previous part of our sentence.
+
+While if you notice that this word can indicate what is the next word we can read.
+
+Okay?
+
+So this is one of the challenges or limitations of using large enneagram language model.
+
+But still, we can use it to generate a sequence of tokens, give and receive, and then it can generate based on the probability distribution.
+
+But it may be not coherent.
+
+So, for example, I try to do this here.
+
+Enneagram model.
+
+After I create this enneagram model, I feed the model with a seed.
+
+Maybe random or we give it any seed.
+
+Then I give the seed its physics need.
+
+And then based on computing the probability distribution, they try to generate a sequence.
+
+So, starting from this seed, compute over all the words which were to come with a higher probability.
+
+Then add this word and then repeat the process again.
+
+Okay?
+
+This is how they can generate a text using a larger language model.
+
+And this is one of the earliest techniques which rely on frequency base for counting, as usual.
+
+And this is a main limitation, actually, for using Enneagram as a language model.
+
+Okay?
+
+Now, they started to think about a new technique.
+
+You remember when we talked about word embedding or text presentation.
+
+The earlier models based on statistical technique.
+
+Okay?
+
+Frequency, back of words, TF-ITF.
+
+And then we started to work with neural network.
+
+And this is a logical transition.
+
+So, they tried with, I think neural network started to appear in 1940 or something like that.
+
+So, they tried to think how we can build a language model using the neural network.
+
+So, we learn, rather than count.
+
+Let the model learn what is the word to come next using a neural network instead of just like counting using an n-gram.
+
+Okay?
+
+So, a very overview about neural network.
+
+You covered neural network.
+
+Yes?
+
+Yeah.
+
+In detail.
+
+So, we understand how the neurons work, how the weights are updated.
+
+Okay?
+
+Because I will tell you more about this.
+
+So, this is a quick overview of neural network.
+
+You have input layer, you have a hidden layer, and you also have an output layer.
+
+And during the learning, the weights, which is the hidden layer, try to update it based on minimize the difference between the true and false or loose function.
+
+Try to minimize the loose function.
+
+Okay?
+
+And this is the overview about the neural network.
+
+As a closer view, we have a template, which is a set of attributes based on your data.
+
+And you always have the bias.
+
+And the bias is a value added to total weights of the attribute when it's sum using the signal function.
+
+Okay?
+
+Before it goes to activation function, we always add the bias.
+
+Okay?
+
+And then compute using activation function, compute the difference between the total output, the input and output.
+
+And then during the back propagation, we try to update the weight to minimize the difference.
+
+And this is how the neural network works.
+
+Now, if we use a neural network to create a model to predict what is over the context, okay?
+
+We still need to use a fixed-winding.
+
+Why?
+
+Are we able to use a neural network to have non-fixed-winding?
+
+Usually, in machine learning, you have a table, yes?
+
+And this table has a fixed number of attributes.
+
+So, each sample has a fixed size.
+
+The input size should be the same.
+
+So, we need to have a fixed-winding, even if we try to work with a neural network.
+
+And then we discard the previous part based on your window size and input size.
+
+And then we can use the previous word to predict what is in this table.
+
+Okay, so, this is an example of a neural network.
+
+So, we feed our text.
+
+This corpus is very small.
+
+So, we feed your text.
+
+And for each token, we can get the embedding vector for this token with any embedding technique.
+
+And then we have to concatenate or average the sum of the weights and then try to predict which word has higher probability to be the next.
+
+So, probability here, it's like probability distribution over all the words.
+
+So, the word with a high probability will be the ground truth.
+
+And this is happening during the training.
+
+Again, like a word embedding.
+
+Sliding window, go to your text, and then each time feed the data, create an embedding layer, and to try to minimize the difference.
+
+Okay?
+
+And then build your parameters for this one.
+
+And based on these parameters, in your test case, you can feed the model and expect that the model will learn how to predict the next word.
+
+Okay?
+
+And this is how the neural network works.
+
+Yes?
+
+I have a question.
+
+So, we had a discussion before about the two points to vectors.
+
+Yes.
+
+Yes.
+
+This is what I mean by embedding.
+
+This is a token, then you represent each token as an embedding feature.
+
+Okay?
+
+Okay?
+
+So, this is an embedding delay.
+
+Okay?
+
+And at the end, we have some numbers and then we can change it to...
+
+Yes.
+
+Yes.
+
+Okay.
+
+This is one more encoder for each word.
+
+If you remember, it is the same.
+
+So, for each word, using a look-up table in your embedding, we can look up for the embedding vector-related position.
+
+And we do the same for the grounded function.
+
+And the activation function tries to find out the difference.
+
+Which one has the lowest difference.
+
+Okay?
+
+So, this is the embedding delay.
+
+Okay?
+
+And at the end, we have some numbers and then we can change it to...
+
+Yes.
+
+Yes.
+
+Okay.
+
+This is one more encoder for each word.
+
+If you remember, it is the same.
+
+As you can see here, the word is represented as one more encoder and here we create an embedding vector for each word, here we can concatenate or average all this embedding to have one vector represent the whole context and then we can use the softmax to predict which word will come next.
+
+Okay?
+
+Any questions?
+
+That clear?
+
+Perfect.
+
+Right.
+
+So, still we have a limitation.
+
+One of the main limitations is, we still use a fixed window, okay, because this is the nature of neural network.
+
+We should have a fixed number of input for each state, so we still need a fixed window.
+
+We discard all the previous word which is important in your context, okay?
+
+This is one of the same kind of limitations.
+
+Another limitation is, look at this example.
+
+The food was good, not bad at all.
+
+The food was bad, not good at all.
+
+What is the difference between those?
+
+Imagine that you divide each sentence into topics.
+
+Same.
+
+Get the embedding of each topic and then to represent this whole sentence, what we can do?
+
+Get the average of all the topics.
+
+Now, is there any difference between two sentences in calculation as a whole embedding?
+
+No.
+
+But in the meaning, there is a huge difference, okay?
+
+This is one of the limitations of the language model in this, to present it or to use neural network to represent the averaging, the idea of averaging all the word in the sentence.
+
+It's not reflect the meaning of the whole context, okay?
+
+And this is a clear example, okay?
+
+Now look at this example.
+
+I have two sentiment related to, take like a movie or whatever, the first one, just watch the movie, love it, and the second one, give you two more information.
+
+How do we deal with this situation?
+
+What is the problem here?
+
+It's a variable-dense sentence, how do we deal with a variable-dense sentence?
+
+And this is a challenge, using New York people, so what based on all this, we need a model that has a variable-dense sentence, okay?
+
+I don't want to have a text-dense, but because the problem here, actually, what the people are doing is, they are using a variable-dense sentence, and they are using a variable-dense, and they are using a variable-dense, and they are using a variable-dense, and they are using a variable-dense, and they are using a variable-dense, and they are using a variable-dense, and they are using a variable-dense.
+
+So, they are using a variable-dense, and they are using a variable-dense, and they are using a variable-dense, and they are using a variable-dense, and they are using a variable-dense.
+
+And, we are using a variable-dense, and we are using a variable-dense, and we are using a variable-dense.
+
+And, we are using a variable-dense, and we are using a variable-dense, and we are using as an independent, it is not according to the behavior of any natural language.
+
+We need to represent this natural language as a sequence of words.
+
+Where the order is very important.
+
+So this is what we need.
+
+We need to maintain the order, and this order is very, very important in your sequence.
+
+And the last one, we need to share information, or share weights, during the training.
+
+So, in this model, in neural networks, each input has its own weight.
+
+Do they share the weights?
+
+No.
+
+There is no sharing of the weights.
+
+So we can build our knowledge.
+
+This is what we mean by sharing.
+
+When we share the knowledge, the weights, from the first word to the second word, this is building our knowledge about the sentence.
+
+So we have to deal with language like this.
+
+It is not independent.
+
+We need to share the learning, and we need to deal with it as a sequence, not as individual tokens.
+
+And this is our requirement that we try to find there.
+
+Then we have universal approximation theory.
+
+What is it?
+
+It is actually a neural network when it comes in 1940 and I guess they proved that it satisfies the universal approximation theory.
+
+What do you mean by universal?
+
+What is a classification?
+
+If you have a data, so we can sample this data like a point.
+
+A point is a space.
+
+And what we try to do during the classification?
+
+Classification also.
+
+So we try to put the instances with similar features in the same.
+
+So we try to find the boundary.
+
+In your data, that classify.
+
+So we try to find this boundary.
+
+And this is what a classification problem is.
+
+Try to find this boundary.
+
+Using a neural network, you can find even a very complex boundary like this.
+
+Look at this boundary.
+
+It's a very complex.
+
+Neural networks can do that.
+
+This boundary.
+
+It's a very complex boundary.
+
+Neural networks can find this boundary.
+
+And deep neural networks can do that in a more efficient way.
+
+So that's why the idea of deep neural network came in 2006 by, do you remember the team leader of Toronto University?
+
+Who's name?
+
+Geoffrey?
+
+Yes.
+
+Okay.
+
+Then he started to introduce the idea of deep neural network.
+
+Actually, I remember at that time, starting from 1980 to early of 2000, no one at that time used a neural network.
+
+At the beginning, everyone used it.
+
+But during this time, no one used it.
+
+And other techniques like machine learning technique, like random forest and support the vector machine, come at this time and they have a good performance more than the neural network.
+
+So for complexity and the training time, many people stopped using neural network.
+
+But after 2016, when they started to have a deep neural network, now it's a base for many, many architecture now, as you would see.
+
+The advantage actually of deep neural network over a neural network is it can utilize the big data.
+
+So in your machine learning task, even without a neural network, you have a limitation of the number of data.
+
+After that, the model will not learn if you increase the data.
+
+And this is the nature of a normal machine learning model.
+
+They are not able to deal with a big data.
+
+So deep neural network can deal with a huge number of data, and it can utilize it.
+
+So it still can get benefits of this huge number of data.
+
+And to try this, in your machine learning course, try to have a specific number of data, and then try to increase it to the sub-limit.
+
+In some limit, your model will not utilize this data.
+
+The performance will not increase.
+
+This is the advantage of machine learning, okay?
+
+But using a neural network, it comes with the era of the big data.
+
+Deep neural network can deal with a huge number of data.
+
+And this is the advantage of a neural network.
+
+Now in the deep neural network.
+
+You covered deep neural network in your course.
+
+You have many types of DNN, which deep neural network you learn in your machine.
+
+Convolutional neural network.
+
+Sorry?
+
+Convolutional neural network.
+
+CNN.
+
+And RNN.
+
+And RNN?
+
+And that's it?
+
+Yeah.
+
+CNN is related to machine vision, of course.
+
+CNN is related to machine vision.
+
+And RNN, how do you use RNN in advanced machine learning course?
+
+It has a specific use.
+
+It's known as time series data.
+
+Time series data, definitely.
+
+And it's all connected with the time series data.
+
+Why?
+
+Time series data has a specific functionality.
+
+Each instance is based on that previous one.
+
+What about our sentence?
+
+It has the same functionality.
+
+So that's why they say to use recurrent neural network to build the language model because it's got ways dealing with the sequence of data, and it has overcome all the problems related to neural network.
+
+Okay?
+
+So, I highlight, you cover it in details.
+
+As you see here, we always call neural network as a stateful computation because each time we compute a new input, it's a combination between the timestamp input at this time, t, and the previous hidden state.
+
+Okay?
+
+And this is, if you follow this, so each time, at timestamp t1, we compute y, or predict y based on the current state and the previous state.
+
+So, we can now have some information come from our previous list.
+
+And it works very well at that time.
+
+Okay?
+
+So, each time at ht, and ht is a combination between the weight matrix of the input and the weight matrix of the previous hidden state.
+
+Okay?
+
+And this is how the recurrent neural network works.
+
+Right?
+
+Okay.
+
+So, how to train our model using recurrent neural network?
+
+Starting from left.
+
+Okay.
+
+We feed our tokens one by one.
+
+And at each step, again, one-hot encoding, embedding the layer.
+
+And then we have, we can compute a hidden layer for each one.
+
+And then compute the difference, the loss.
+
+And then when we start at the end, when we go to the end, see, at each time we compute the loss, the loss function.
+
+And the total loss is the submission of all losses.
+
+Okay?
+
+This is how we can train our NN.
+
+Right?
+
+For each sentence, we can do the same.
+
+We feed the sentence step by step.
+
+We can find the hidden state and compute the loss for each step.
+
+And then we can compute the total loss at the end.
+
+Right?
+
+And then the back propagation comes back to update the hidden state.
+
+This happens during the training.
+
+Okay?
+
+When we have a self-supervised test.
+
+So we know when we feed that, we know the next word is student.
+
+So we compute the loss based on this.
+
+And the model trained from this.
+
+Okay?
+
+Okay.
+
+And then we use, during the testing, for using the language model, RNN as a language model.
+
+We can do the same.
+
+We feed our text.
+
+And based on the learning, the weights, we can compute the probability and what word can come first.
+
+Because this is the model layer during the learning process.
+
+Okay?
+
+It utilizes its parameter to predict what is the next word.
+
+Okay?
+
+Right.
+
+And this is the difference between NN and RNN.
+
+So in NN, you feed all the words, and then you have one hidden layer, and then we can find out what is on one hidden layer.
+
+But in RNN, each step, we have a hidden layer.
+
+In each step.
+
+So we code our information from step 1 to step T, the end of your sentence.
+
+So we always propagate all the information, because the end of each step depends on the hidden state of the previous step.
+
+Okay?
+
+Now, I like this website.
+
+You can check it in your time.
+
+At that time, they filled the neural network model with a huge number of speech of coherence.
+
+And then they gave the model pure, and then the model generated a speech from coherence.
+
+Again, the result was not very accurate.
+
+We generated tickets, but it's not a coherent ticket, but it's a good result.
+
+You can play with this.
+
+You can find this is a very interesting speech, where the model can predict unrealized world or hallucination, what we call it in engineering.
+
+When the model cannot find the correct data, then he can put hallucination.
+
+Right.
+
+So, this is happening during direct propagation.
+
+So, during reading H-words, the header state will not update.
+
+When the header state is updated, after that, end of the sentence, and we compute the total probability, and then we, the backpropagation, get back from step 4, or step t-1, t-2, until step 1, which is model 1.
+
+This is how the backpropagation goes.
+
+In a sequence, like we read in a sequence, the backpropagation also computes in a factoid.
+
+Okay?
+
+Right.
+
+So, neural network, or recurrent neural network, uses what we call a propagation through time stamps, because it's time dependent.
+
+So, for each time stamp, they compute the propagation here, where the gradient of this stamp depends on the gradient of this stamp.
+
+What is a gradient, by the way, in neural network?
+
+What do you mean by gradient?
+
+A derivative?
+
+A derivative of what?
+
+A derivative of the error function?
+
+Related to?
+
+Related to the input?
+
+Related to the weights.
+
+The function called the parameters.
+
+In neural network, it's the weights.
+
+Okay?
+
+This is a parameter of your model.
+
+Okay?
+
+So, all right, so, as your colleague said that the gradient is a derivative.
+
+So, derivative by the meaning is rate of change.
+
+Okay?
+
+So, we compute the rate of change.
+
+This is the semantic meaning of the gradient.
+
+Differential.
+
+Okay?
+
+So, this is the rate of change.
+
+What is the rate of change of the loss function related to a parameter, which is weight at each step.
+
+Okay?
+
+And, at the end, how we can compute how the model, how we update the weights.
+
+So, new weights.
+
+Equal.
+
+Weights minus.
+
+Weights.
+
+Perfect.
+
+Minus alpha.
+
+Minus.
+
+Alpha.
+
+What we call it?
+
+Learning rate?
+
+Yeah.
+
+Okay.
+
+Learning rate multiplied by?
+
+Grad.
+
+Grad.
+
+This is correct?
+
+And, this is how we update the weight each time.
+
+Okay?
+
+And, the learning rate, it's something that the neural network learns.
+
+Do you understand?
+
+Perfect.
+
+Now, consider that we have this recurrent neural network, where we have one, two, three, four steps.
+
+Sentence adjustable words.
+
+Sequence.
+
+Okay?
+
+Now, at the end, we compute the loss function.
+
+Okay?
+
+And, then we try to propagate this loss in a back propagation to the rest of the tokens here.
+
+Oops, sorry.
+
+Okay.
+
+So, and this is, as I mentioned, this propagated to H1.
+
+Now, if we try to compute what is the rate of the change of loss function related to the hidden state 1, H1.
+
+So, we compute the rate of the loss function related to this hidden state.
+
+Okay.
+
+How we can compute it?
+
+We compute it based on chain rule.
+
+The rate of change of H2 related to H1 multiplied by the rate of change of G1, the loss function related to H2.
+
+Is that correct?
+
+So, based on the chain rule in that way.
+
+Okay.
+
+Now, how I can, this is okay.
+
+Now, how I can compute this?
+
+Ruling chain again.
+
+Okay.
+
+So, I replace this with derivative of H3, H3, rate of change of H3 related to H2 multiplied by the loss, the related to H3.
+
+Now, we want to compute this using the same chain.
+
+Okay.
+
+So, it's 4, 3, 4 divided by H.
+
+And this is how we can compute the rate of change of the loss function in step 1.
+
+Okay.
+
+This is okay?
+
+Right.
+
+Now, imagine if these numbers are small.
+
+What will happen?
+
+Gradient will become small, small, small.
+
+Usually, in any learning process, it means that the model will not learn.
+
+So, we stop the process.
+
+Yes?
+
+So, if these values become very, very small, then it means that there is no dependence between T1 and XT, if the gradient is small.
+
+There is no updating weight.
+
+Okay?
+
+So, it means there is no dependence between these two.
+
+And this is one of the drawbacks of the RNN backpropagation.
+
+What we call vanishing gradient.
+
+Vanishing gradient because every time to compute the gradient of this step, it's a combination of all the derivatives of the previous step.
+
+So, the tokens near to the end learn more than the tokens come to at the beginning.
+
+Because the gradient started to slow.
+
+Did you get the idea?
+
+Okay?
+
+This is the nature of RNN.
+
+And this is one of the drawbacks of using RNN as a language model.
+
+We cannot find the previous or utilize the far information to predict the next word.
+
+If the sentence is wrong.
+
+Okay?
+
+As you can see here, the learning rate will decrease as we go from step 4 to step 1.
+
+Right.
+
+So, look at this example.
+
+And we have, when she tried to print her ticket.
+
+When she tried to print her ticket, she found that the printer was out of tuner.
+
+She went to a stationery store to buy more tuner.
+
+It was very overpriced.
+
+After returning the tuner to the printer, she finally printed her what they expected, what?
+
+Ticket.
+
+Ticket.
+
+So, if the model is able to remember the ticket here, then it can predict the ticket here.
+
+But, due to the branching problem, the model will lose the information found so far.
+
+And this is one of the drawbacks of using R and N as a language operator.
+
+Okay?
+
+Any questions?
+
+Is that clear?
+
+Right.
+
+Okay, so the dependency here between ticket, which is a second step, and the target ticket, we cannot find this dependency.
+
+Or, the model cannot find this dependency.
+
+Alright, so, this is a problem in R and N.
+
+So, we cannot remember the first step of the model there.
+
+Or, the model update, correcting the new step there, the first step.
+
+Then, they start to put it in another architecture that overcomes this problem.
+
+Okay?
+
+And, this architecture is MSTM.
+
+Long Short Term Memory.
+
+Alright?
+
+So, you covered this.
+
+Alright.
+
+So, what is the weakness?
+
+In R and N and MSTM.
+
+There's like a sigmoid and a function that they could allow the environment to be able to save the state of the cell or be able to drop it.
+
+Okay.
+
+Save at the state.
+
+Based on what?
+
+Who can control?
+
+Save those?
+
+What is going on or just use it?
+
+When did I cover?
+
+This one?
+
+Did you need to study this?
+
+Yes.
+
+No, no.
+
+Yes, it's me.
+
+No.
+
+Alright.
+
+So, last week.
+
+So, you just finished.
+
+What about our course?
+
+You forgot everything?
+
+You went to it or you studied it?
+
+No, the lab makes it us to go through again.
+
+Okay, another thing is that, that's why I make the weekly quiz to keep you up to date.
+
+So, please, don't rely on chat GBT to solve this question.
+
+So, if just to give you some time to review the lectures.
+
+And because, okay, so now we understand.
+
+And this is one of the, one was a special to me and one of my students in the previous semester.
+
+That he told me during the lecture, I understand everything.
+
+Okay, and I'm very happy with this.
+
+And after that, during the exam, I forgot everything.
+
+So, this is, this is a natural, okay.
+
+If you didn't review, you will lose all the information you gained during the lecture.
+
+So, you have to take notes.
+
+This is the first step during the lecture.
+
+Because I had this experience before.
+
+When I'm taking notes during the lecture, when I read my notes, I remember everything related to the lecture.
+
+I remember how the professor mentioned that during the lecture.
+
+So, taking notes is very, very important.
+
+The second thing is to have to be up to date with the lecture, okay.
+
+Right, so try to be up to date.
+
+Alright, so LSTM.
+
+So, if you are, who taught you LSTM at best?
+
+Okay, so he gave you the picture or just?
+
+Yes, and explain the equations.
+
+Alright, because yeah, it is very complicated to understand.
+
+He gave me the equation.
+
+It is not easy, but at least you should be able to understand what is the difference between RNN and LSTM.
+
+What is the impulse that LSTM will produce to RNN?
+
+RNN and LSTM both deal a work with the sequencing.
+
+Time series data, okay, where the cycle is very important.
+
+The order of this data is important.
+
+Stock market, for example, one of the time series data.
+
+I remember that I worked in one of my research projects with one of my colleagues on the sun spot.
+
+You know the sun spot, it's like a time series data.
+
+Every year, the number of sun spots change.
+
+And based on this number, everything related to the weather and the environment will be changed.
+
+So forecasting the number of sun spots year by year is very important.
+
+And I worked on this project for two million years.
+
+Right, so long-short-term memory tries to overcome the problem with RNN, so we are not able to remember the dependency in the policy steps.
+
+So they do that by, they invited in 1997, and then they do that by introducing three gates, or stakes.
+
+They have created a forget gate, using a forget gate they can decide which data I want to forget from the previous states because it is not important to expecting or predicting what is going to happen.
+
+And then we have input gate to update this state or memory state every time.
+
+So LSTM comes with a new extra token, or new extra neuron, which is the state one.
+
+So in the current neural network, we have the input, so at any step we have the input and we have the hidden, the previous hidden state.
+
+Now LSTM introduces another input gate, which is the current state, or what is the current state.
+
+Okay, then this is a forget gate, and we have an input gate to update the new information at every step, and then we have the output gate to produce sound.
+
+So the input for each state is the current input, the previous hidden state, and the current memory state.
+
+And the output is the output plus what is the hidden state and the current memory state.
+
+So each time, with each step, this memory state will be updated based on the data.
+
+Okay?
+
+And it's a gate.
+
+So what do you mean by gate?
+
+It means on or off.
+
+So on means allow the data to go.
+
+Off means we do not allow the data to go.
+
+Okay?
+
+And this is a basic concept of the LSTM.
+
+And this is the architecture.
+
+Did you saw this architecture before?
+
+Right.
+
+So I will try as much as I can to simplify this architecture.
+
+So I divide it to specific steps.
+
+Okay?
+
+So this part.
+
+We focus on this part at the beginning.
+
+So at time t, we compute at the beginning that 4 gate gates.
+
+So the input at this time step comes input as xt, plus the previous hidden state, plus the previous cell state which is a memory state.
+
+Okay?
+
+So this is the three inputs.
+
+Then, using the previous hidden state and the input state, we can use the sigmoid function to calculate the 4 gate gates.
+
+So based on the current input and the previous hidden state, we can have a sigmoid function which the value of the sigmoid function between 0 and 1.
+
+So the higher value near to 1 means this is important, and the 0s means this is not important.
+
+Okay?
+
+That's why we use here a sigmoid function.
+
+Okay?
+
+To compute the 4 gate gate.
+
+How much data we need to forget from the previous, and how much data we need to keep.
+
+And this is the rule of the 4 gate gate.
+
+And this will be multiplied by the previous cell state.
+
+So multiplication means we add the information.
+
+So if you have 2 vectors and you multiply 2 vectors, that means you add the information in the 2 vectors.
+
+And this is what we add.
+
+So multiplying by the previous state, we can now decide which information from previous state we need to keep it, and which information we need to discard.
+
+Because the output is between 0 and 1.
+
+So higher value near to 1, we keep it.
+
+Lower value will be discarded.
+
+That's why we call it, this is a gate.
+
+And this is what happens in this how-to-compute-a-forget-gate.
+
+Now, the other part is, we try to compute or update the state, the memory state, say.
+
+How we, using, again, the previous hidden state and the input state, we can use or update the input gate as a sigmoid function between the weights of the current state and the weights of the previous hidden state.
+
+So current state, each input has its weight.
+
+And this is how we can compute the current input gate, based on the previous hidden state and the data at this time stamp.
+
+So this is how we can compute them, use a sigmoid to create or update the input gate.
+
+So input gate, we decide by this vector what is the data that we need to edit to the current state and what is the data that we do not need to edit, based on the current input plus the previous hidden state.
+
+And we can use this data to calculate or find the candidate state.
+
+Based on our current state, what is the candidate state?
+
+The notation is c hat.
+
+So c hat is the tanh of h2, the weights of the previous hidden state and the current input state.
+
+Candidate hash.
+
+And we use tanh, what is the output of tanh?
+
+Usually from minus 1 to 1.
+
+So that's why we use tanh.
+
+So we can create a candidate new state based on the current input and the previous state.
+
+And then we can use how much data we can add to the previous state using ct.
+
+So the ct is ft, the forget gate, multiplied by ct minus 1, which comes from the previous, plus m2t multiplied by c hat.
+
+And then now we have a new memory state.
+
+So the new memory state, at the first step, we use a forget gate to decide which information is not important, we need to forget, and which information is important, we need to keep.
+
+And then, based on the input and the previous hidden state, we can get a candidate state.
+
+And then we add this information to that state.
+
+And we have st, new st, related to the current input, at t and xt.
+
+So each time, we repeat this process.
+
+Now, once we compute xt, now we want to write the output.
+
+What is the output?
+
+The output, as usual, is a previous state plus a hidden of the previous state.
+
+This is what we need to feed to the next xt.
+
+This is done using the output gate.
+
+In the output gate, it decides which information we want to add as a new hidden state.
+
+So, using again all the previous state and the input state and the current ct, we can update the new hidden state.
+
+Is that clear?
+
+I hope so.
+
+It's very complicated.
+
+But this is the internal structure of an LSTM neuron.
+
+This is related to one state.
+
+What happens to each type.
+
+We have a target key to decide how much information we deleted, and then the input cell or input part or input gate that decides how we can update the ct, the new state, based on current situation.
+
+And then output gate that decides which information will be sent as an output to the next state.
+
+Okay?
+
+Right.
+
+So, again, to try to simplify, so this is for the key to compute the faulted gate using this as a point function.
+
+And this is to compute the input gate, and this is to compute the new cell content, and this is to update the previous state with the new content.
+
+And this is to compute the output gate, and this is to design what is the content of the heavy state.
+
+Okay?
+
+This is a very good resource for LSTM.
+
+I recommend that you go to these resources and try to read more about LSTM.
+
+But, again, this is the idea of LSTM.
+
+It is not a perfect way.
+
+In the next lecture, we will talk about the shortcoming or the limitation of LSTM in creating a language model.
+
+So, what it is?
+
+Actually, LSTM, and there is a more advanced version of LSTM called, do you remember what is the next version?
+
+Gated or guarded?
+
+I don't remember, but there is a lot of limitation using LSTM.
+
+That's why they started to find another architecture.
+
+And then, the idea evolved step by step, as you will see in the next lecture, to come to the transformer.
+
+The transformer architecture as a language model, trying to overcome all the problems related to deep neural network as a language model.
+
+So, this is the steps.
+
+In Keras, you can use LSTM, SMPL, and GASY.
+
+What you have to do is, I think this is the same like machine learning, your model is sequential, and it should be sequential.
+
+And then you add an LSTM, what is it called?
+
+Gated Recurrent Neural Network.
+
+Yes, Gated Recurrent Neural Network, which involves a version of LSTM.
+
+Okay, so you specify that.
+
+You add the second layer here, which RNN or LSTM, with a specific number.
+
+And then we have to add a dense layer, and then the activation function.
+
+Again, the code is there, just use the function, but you have to understand how to do it yourself.
+
+Okay, this is what we mean by creating a language model using LSTM.
+
+Okay, so in each class code, I included some code relating how to create a model, a large-dimensional language model using LSTM.
+
+We can use it for classification.
+
+There are many examples here, so I created a small course and tokenized it for all the steps, and then tried to feed this model or train this model using LSTM.
+
+So, here I created a sequential model with a softmax function, and I tried to predict, I think the output was not so good, maybe because, okay.
+
+So, I gave it a C as a deep, and I asked the model to create 10 words after this word, which is seed.
+
+So, and this was a deep learning, and as you see, it's not coherent text, maybe because the number of the purpose is very small.
+
+While the new departments play an important role to improve the next generation, okay.
+
+I will publish this on the pride space to see all these examples, and how to use LSTM with a glove, how to extract the embedding.
+
+I think LSTM is a good glove.
+
+I try to play with this.
+
+Okay, so to get the embedding layer from glove, and this is considered as an embedding layer before sequential model.
+
+So here is the model, I created the model.
+
+So the sequential model, where I put the embedding layer on the glove.
+
+So, and then pre-trained model, then I trained the model.
+
+Of course, the performance is different, based on the embedding model has more semantic meaning, but also the same text generated.
+
+I feel it has been, and why it's just a 6 bold font.
+
+A little bit more coherent than the others.
+
+This is not a perfect language model, the larger language model now didn't use the RNN or LSTM.
+
+But the idea of transformer, as you will see in the next lecture, is based on this model.
+
+So they take the RNN and LSTM, and they try to build another architecture based on them.
+
+So this is how the idea is evolved.
+
+No one just started from scratch.
+
+It started always by understanding what's happened before, and then building on top of this.
+
+And the idea of large language model comes from this.
+
+Any questions?
+
+Is that clear?
+
+Okay.
+
+So we can start our quiz.

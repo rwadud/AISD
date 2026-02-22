@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RL Lecture Notes — Markov Decision Processes & Q-Learning</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf9f6;
+    --text: #2c2c2c;
+    --text-muted: #6b6b6b;
+    --accent: #c0392b;
+    --accent2: #2471a3;
+    --accent3: #1e8449;
+    --border: #e0ddd8;
+    --code-bg: #f0eee9;
+    --diagram-bg: #ffffff;
+    --highlight: #fdf2e9;
+    --shadow: rgba(0,0,0,0.06);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Crimson Pro', Georgia, serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 19px;
+    line-height: 1.7;
+    padding: 0;
+  }
+
+  .page-container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 60px 40px 100px;
+  }
+
+  /* Header */
+  .doc-header {
+    border-bottom: 3px solid var(--text);
+    padding-bottom: 24px;
+    margin-bottom: 50px;
+  }
+  .doc-header h1 {
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 700;
+    font-size: 2.4em;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+  .doc-header .subtitle {
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 300;
+    font-size: 1.1em;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+
+  /* Sections */
+  h2 {
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 700;
+    font-size: 1.55em;
+    color: var(--text);
+    margin-top: 56px;
+    margin-bottom: 18px;
+    padding-bottom: 6px;
+    border-bottom: 1.5px solid var(--border);
+  }
+  h2 .num {
+    color: var(--accent);
+    margin-right: 6px;
+  }
+
+  h3 {
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    font-size: 1.15em;
+    color: var(--text);
+    margin-top: 36px;
+    margin-bottom: 10px;
+  }
+
+  p { margin-bottom: 14px; }
+
+  strong { font-weight: 600; }
+
+  /* Callout boxes */
+  .callout {
+    background: var(--highlight);
+    border-left: 4px solid var(--accent);
+    padding: 16px 20px;
+    margin: 20px 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.95em;
+  }
+  .callout.blue {
+    border-left-color: var(--accent2);
+    background: #eaf2f8;
+  }
+  .callout.green {
+    border-left-color: var(--accent3);
+    background: #eafaf1;
+  }
+  .callout.plain {
+    border-left-color: #e67e22;
+    background: #fef9e7;
+    position: relative;
+  }
+  .callout.plain::before {
+    content: '💡';
+    position: absolute;
+    left: -16px;
+    top: 14px;
+    font-size: 1.1em;
+  }
+  .callout strong {
+    font-family: 'Source Sans 3', sans-serif;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.92em;
+  }
+  th, td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    background: var(--code-bg);
+    font-size: 0.95em;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+  }
+  td:first-child { font-weight: 600; }
+
+  /* Math */
+  .math {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 0.85em;
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+  .math-block {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 0.85em;
+    background: var(--code-bg);
+    padding: 16px 24px;
+    border-radius: 6px;
+    margin: 18px 0;
+    overflow-x: auto;
+    text-align: center;
+    line-height: 2;
+  }
+
+  /* Diagrams */
+  .diagram-container {
+    background: var(--diagram-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 30px 20px;
+    margin: 24px 0;
+    box-shadow: 0 2px 8px var(--shadow);
+    overflow-x: auto;
+  }
+  .diagram-container svg {
+    display: block;
+    margin: 0 auto;
+  }
+  .diagram-caption {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.82em;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 12px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  /* Lists */
+  ul, ol {
+    margin: 12px 0 14px 24px;
+  }
+  li { margin-bottom: 6px; }
+
+  /* Divider */
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 44px 0;
+  }
+
+  @media (max-width: 600px) {
+    .page-container { padding: 30px 18px 60px; }
+    body { font-size: 17px; }
+    .doc-header h1 { font-size: 1.7em; }
+    .diagram-container { padding: 16px 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="page-container">
+
+<!-- HEADER -->
+<div class="doc-header">
+  <h1>Markov Decision Processes &amp; Q-Learning</h1>
+  <div class="subtitle">Reinforcement Learning Lecture Notes — From Markov Chains to Temporal Difference Control</div>
+</div>
+
+<!-- SECTION 1 -->
+<h2><span class="num">1.</span> From Markov Chains to MDPs — A Layered Framework</h2>
+
+<p>Reinforcement learning builds on a hierarchy of increasingly complex mathematical objects. Each layer adds a new component:</p>
+
+<div class="diagram-container">
+<svg viewBox="0 0 720 160" width="100%" style="max-width:720px;">
+  <!-- Markov Chain box -->
+  <rect x="10" y="40" width="180" height="80" rx="10" fill="#fdf2e9" stroke="#c0392b" stroke-width="2"/>
+  <text x="100" y="72" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="15" fill="#2c2c2c">Markov Chain</text>
+  <text x="100" y="96" text-anchor="middle" font-family="Crimson Pro, serif" font-size="13" fill="#6b6b6b">States + Transitions</text>
+
+  <!-- Arrow 1 -->
+  <line x1="195" y1="80" x2="250" y2="80" stroke="#c0392b" stroke-width="2" marker-end="url(#arrowR)"/>
+  <text x="222" y="68" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#c0392b" font-weight="600">+ Rewards</text>
+
+  <!-- MRP box -->
+  <rect x="255" y="40" width="180" height="80" rx="10" fill="#eaf2f8" stroke="#2471a3" stroke-width="2"/>
+  <text x="345" y="72" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="15" fill="#2c2c2c">Markov Reward</text>
+  <text x="345" y="90" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="15" fill="#2c2c2c">Process</text>
+  <text x="345" y="108" text-anchor="middle" font-family="Crimson Pro, serif" font-size="13" fill="#6b6b6b">+ Reward fn R, Discount γ</text>
+
+  <!-- Arrow 2 -->
+  <line x1="440" y1="80" x2="495" y2="80" stroke="#2471a3" stroke-width="2" marker-end="url(#arrowB)"/>
+  <text x="467" y="68" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#2471a3" font-weight="600">+ Actions</text>
+
+  <!-- MDP box -->
+  <rect x="500" y="40" width="200" height="80" rx="10" fill="#eafaf1" stroke="#1e8449" stroke-width="2"/>
+  <text x="600" y="72" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="15" fill="#2c2c2c">Markov Decision</text>
+  <text x="600" y="90" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="15" fill="#2c2c2c">Process</text>
+  <text x="600" y="108" text-anchor="middle" font-family="Crimson Pro, serif" font-size="13" fill="#6b6b6b">+ Action space A</text>
+
+  <defs>
+    <marker id="arrowR" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#c0392b"/></marker>
+    <marker id="arrowB" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2471a3"/></marker>
+  </defs>
+</svg>
+<div class="diagram-caption">Figure 1 — The layered framework: each object adds one new component</div>
+</div>
+
+<table>
+  <tr><th>Object</th><th>States</th><th>Transitions</th><th>Rewards</th><th>Actions</th></tr>
+  <tr><td>Markov Chain</td><td>✓</td><td>✓</td><td>✗</td><td>✗</td></tr>
+  <tr><td>Markov Reward Process</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td></tr>
+  <tr><td>Markov Decision Process</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+</table>
+
+<div class="callout plain">
+<strong>Think of it like a board game:</strong> A <strong>Markov Chain</strong> is like watching a board game where dice rolls move the piece automatically — nobody is choosing anything; pieces just move randomly between squares. A <strong>Markov Reward Process</strong> is the same game, but now some squares give you coins (+reward) and some squares take coins away (−reward). A <strong>Markov Decision Process</strong> is when <em>you</em> finally get to play — you choose which direction to move, trying to land on the squares that give the most coins.
+</div>
+
+<hr>
+
+<!-- SECTION 2 -->
+<h2><span class="num">2.</span> Markov Chains (Markov Processes)</h2>
+
+<p>A <strong>Markov Chain</strong> is simply a sequence of states with probabilistic transitions between them. There are no rewards and no actions — just states and the probabilities of moving from one to another.</p>
+
+<h3>Example: Two-State Chain</h3>
+
+<div class="diagram-container">
+<svg viewBox="0 0 480 180" width="100%" style="max-width:480px;">
+  <!-- State A -->
+  <circle cx="140" cy="90" r="42" fill="#fdf2e9" stroke="#c0392b" stroke-width="2.5"/>
+  <text x="140" y="96" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="28" fill="#c0392b">A</text>
+
+  <!-- State E -->
+  <circle cx="340" cy="90" r="42" fill="#eaf2f8" stroke="#2471a3" stroke-width="2.5"/>
+  <text x="340" y="96" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="28" fill="#2471a3">E</text>
+
+  <!-- A -> E -->
+  <path d="M185,72 Q240,30 295,72" fill="none" stroke="#555" stroke-width="2" marker-end="url(#arrowG)"/>
+  <text x="240" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#555" font-weight="500">0.4</text>
+
+  <!-- E -> A -->
+  <path d="M295,108 Q240,150 185,108" fill="none" stroke="#555" stroke-width="2" marker-end="url(#arrowG)"/>
+  <text x="240" y="158" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#555" font-weight="500">0.7</text>
+
+  <!-- A self loop -->
+  <path d="M118,52 C100,5 160,5 162,52" fill="none" stroke="#999" stroke-width="1.8" marker-end="url(#arrowL)"/>
+  <text x="140" y="16" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#999">0.6</text>
+
+  <!-- E self loop -->
+  <path d="M318,52 C300,5 360,5 362,52" fill="none" stroke="#999" stroke-width="1.8" marker-end="url(#arrowL)"/>
+  <text x="340" y="16" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#999">0.3</text>
+
+  <defs>
+    <marker id="arrowG" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#555"/></marker>
+    <marker id="arrowL" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#999"/></marker>
+  </defs>
+</svg>
+<div class="diagram-caption">Figure 2 — Two-state Markov chain with transition probabilities</div>
+</div>
+
+<p>A <strong>sample</strong> from this chain might look like: A → A → E → E → E → A → A → E …</p>
+
+<p>Over a large number of transitions, observed frequencies converge to the defined probabilities (law of large numbers).</p>
+
+<div class="callout plain">
+<strong>In plain English:</strong> Imagine flipping a weighted coin every day. Heads = sunny (state A), tails = rainy (state E). But the coin changes depending on today's weather. If it's sunny today, tomorrow's coin is 60% sunny / 40% rainy. If it's rainy today, tomorrow's coin is 70% sunny / 30% rainy. That's it — that's a Markov chain. You just keep flipping the appropriate coin each day, and a sequence of weather unfolds. Nobody is <em>choosing</em> anything.
+</div>
+
+<h3>The Student Example (David Silver)</h3>
+
+<div class="diagram-container">
+<svg viewBox="0 0 700 340" width="100%" style="max-width:700px;">
+  <!-- Class 1 -->
+  <circle cx="100" cy="100" r="36" fill="#eaf2f8" stroke="#2471a3" stroke-width="2"/>
+  <text x="100" y="96" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="12" fill="#2c2c2c">Class 1</text>
+
+  <!-- Class 2 -->
+  <circle cx="260" cy="100" r="36" fill="#eaf2f8" stroke="#2471a3" stroke-width="2"/>
+  <text x="260" y="96" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="12" fill="#2c2c2c">Class 2</text>
+
+  <!-- Class 3 -->
+  <circle cx="420" cy="100" r="36" fill="#eaf2f8" stroke="#2471a3" stroke-width="2"/>
+  <text x="420" y="96" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="12" fill="#2c2c2c">Class 3</text>
+
+  <!-- Pass -->
+  <circle cx="570" cy="100" r="36" fill="#eafaf1" stroke="#1e8449" stroke-width="2"/>
+  <text x="570" y="96" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="12" fill="#2c2c2c">Pass</text>
+
+  <!-- Sleep (terminal) -->
+  <rect x="534" y="220" width="72" height="44" rx="4" fill="#f5f5f5" stroke="#555" stroke-width="2.5"/>
+  <text x="570" y="246" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="12" fill="#555">Sleep</text>
+  <text x="570" y="282" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="#999">(terminal)</text>
+
+  <!-- Facebook -->
+  <circle cx="100" cy="260" r="36" fill="#fdf2e9" stroke="#c0392b" stroke-width="2"/>
+  <text x="100" y="256" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="11" fill="#2c2c2c">Facebook</text>
+
+  <!-- Pub -->
+  <circle cx="420" cy="260" r="36" fill="#fdf2e9" stroke="#c0392b" stroke-width="2"/>
+  <text x="420" y="256" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="12" fill="#2c2c2c">Pub</text>
+
+  <!-- Transitions -->
+  <!-- C1 -> C2 -->
+  <line x1="138" y1="92" x2="222" y2="92" stroke="#555" stroke-width="1.8" marker-end="url(#arrowG)"/>
+  <text x="180" y="84" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#555">0.5</text>
+
+  <!-- C2 -> C3 -->
+  <line x1="298" y1="92" x2="382" y2="92" stroke="#555" stroke-width="1.8" marker-end="url(#arrowG)"/>
+  <text x="340" y="84" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#555">0.8</text>
+
+  <!-- C2 -> Sleep -->
+  <line x1="280" y1="134" x2="544" y2="224" stroke="#999" stroke-width="1.5" marker-end="url(#arrowL)"/>
+  <text x="420" y="195" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#999">0.2</text>
+
+  <!-- C3 -> Pass -->
+  <line x1="458" y1="92" x2="532" y2="92" stroke="#555" stroke-width="1.8" marker-end="url(#arrowG)"/>
+  <text x="495" y="84" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#555">0.6</text>
+
+  <!-- Pass -> Sleep -->
+  <line x1="570" y1="138" x2="570" y2="218" stroke="#555" stroke-width="1.8" marker-end="url(#arrowG)"/>
+  <text x="588" y="182" font-family="JetBrains Mono, monospace" font-size="11" fill="#555">1.0</text>
+
+  <!-- C1 -> Facebook -->
+  <line x1="100" y1="138" x2="100" y2="222" stroke="#c0392b" stroke-width="1.8" marker-end="url(#arrowFB)"/>
+  <text x="86" y="182" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#c0392b">0.5</text>
+
+  <!-- Facebook self-loop -->
+  <path d="M68,240 C30,210 30,310 68,280" fill="none" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrowFB)"/>
+  <text x="26" y="264" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#c0392b">0.9</text>
+
+  <!-- Facebook -> C1 -->
+  <path d="M130,232 Q150,180 130,140" fill="none" stroke="#999" stroke-width="1.5" marker-end="url(#arrowL)"/>
+  <text x="152" y="185" font-family="JetBrains Mono, monospace" font-size="11" fill="#999">0.1</text>
+
+  <!-- C3 -> Pub -->
+  <line x1="420" y1="138" x2="420" y2="222" stroke="#c0392b" stroke-width="1.8" marker-end="url(#arrowFB)"/>
+  <text x="406" y="182" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#c0392b">0.4</text>
+
+  <!-- Pub -> C1 -->
+  <path d="M384,264 Q240,310 112,290" fill="none" stroke="#999" stroke-width="1.5" marker-end="url(#arrowL)"/>
+  <text x="240" y="304" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#999">0.2</text>
+
+  <defs>
+    <marker id="arrowFB" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#c0392b"/></marker>
+    <marker id="arrowG" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#555"/></marker>
+    <marker id="arrowL" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#999"/></marker>
+  </defs>
+</svg>
+<div class="diagram-caption">Figure 3 — Student Markov chain (David Silver). Sleep is the absorbing terminal state.</div>
+</div>
+
+<p>Sample trajectories: Class 1 → Class 2 → Class 3 → Pass → Sleep, or Class 1 → Facebook → Facebook → Facebook → Class 1 → … There is no formal "start state" — the chain can begin in any state.</p>
+
+<hr>
+
+<!-- SECTION 3 -->
+<h2><span class="num">3.</span> The Markov Property</h2>
+
+<p>The <strong>Markov property</strong> states that the future depends only on the present state, not on the history of how we arrived there.</p>
+
+<div class="callout">
+<strong>Definition:</strong> The probability distribution over the next state depends only on the current state, not on any prior states. The present determines the future — we don't have to look back.
+</div>
+
+<div class="callout plain">
+<strong>In plain English:</strong> Think of GPS navigation. When your GPS recalculates your route, it only cares about where you are <em>right now</em>. It doesn't matter whether you got here by taking the highway, a side street, or a wrong turn 20 minutes ago. Your current location is all that matters for deciding what to do next. That's the Markov property — <strong>where you are now tells you everything you need to know</strong>.
+</div>
+
+<h3>Grid World Intuition</h3>
+
+<div class="diagram-container">
+<svg viewBox="0 0 440 340" width="100%" style="max-width:440px;">
+  <!-- Grid -->
+  <g stroke="#ccc" stroke-width="1" fill="none">
+    <rect x="40" y="20" width="360" height="300" stroke="#999" stroke-width="2" rx="4"/>
+    <!-- Rows -->
+    <line x1="40" y1="80" x2="400" y2="80"/>
+    <line x1="40" y1="140" x2="400" y2="140"/>
+    <line x1="40" y1="200" x2="400" y2="200"/>
+    <line x1="40" y1="260" x2="400" y2="260"/>
+    <!-- Cols -->
+    <line x1="112" y1="20" x2="112" y2="320"/>
+    <line x1="184" y1="20" x2="184" y2="320"/>
+    <line x1="256" y1="20" x2="256" y2="320"/>
+    <line x1="328" y1="20" x2="328" y2="320"/>
+  </g>
+
+  <!-- Agent at (3,3) which is col 3, row 3 -> x=256+36, y=140+30 -->
+  <rect x="260" y="144" width="64" height="52" rx="6" fill="#c0392b" opacity="0.15"/>
+  <circle cx="292" cy="170" r="16" fill="#c0392b"/>
+  <text x="292" y="176" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="14" fill="white">A</text>
+
+  <!-- Arrows from agent -->
+  <!-- Up -->
+  <line x1="292" y1="148" x2="292" y2="105" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arrowAg)"/>
+  <text x="306" y="124" font-family="Source Sans 3, sans-serif" font-size="12" fill="#c0392b" font-weight="600">Up</text>
+  <!-- Down -->
+  <line x1="292" y1="192" x2="292" y2="235" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arrowAg)"/>
+  <text x="306" y="222" font-family="Source Sans 3, sans-serif" font-size="12" fill="#c0392b" font-weight="600">Down</text>
+  <!-- Left -->
+  <line x1="264" y1="170" x2="210" y2="170" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arrowAg)"/>
+  <text x="230" y="162" font-family="Source Sans 3, sans-serif" font-size="12" fill="#c0392b" font-weight="600">Left</text>
+  <!-- Right -->
+  <line x1="320" y1="170" x2="355" y2="170" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arrowAg)"/>
+  <text x="330" y="162" font-family="Source Sans 3, sans-serif" font-size="12" fill="#c0392b" font-weight="600">Right</text>
+
+  <!-- Possible previous states highlighted -->
+  <g opacity="0.3">
+    <circle cx="220" cy="170" r="5" fill="#2471a3"/>
+    <circle cx="292" cy="110" r="5" fill="#2471a3"/>
+    <circle cx="364" cy="170" r="5" fill="#2471a3"/>
+    <circle cx="292" cy="230" r="5" fill="#2471a3"/>
+    <circle cx="292" cy="50" r="5" fill="#2471a3"/>
+    <circle cx="220" cy="110" r="5" fill="#2471a3"/>
+    <circle cx="364" cy="110" r="5" fill="#2471a3"/>
+    <circle cx="220" cy="230" r="5" fill="#2471a3"/>
+    <circle cx="364" cy="230" r="5" fill="#2471a3"/>
+  </g>
+
+  <text x="220" y="310" text-anchor="middle" font-family="Crimson Pro, serif" font-style="italic" font-size="13" fill="#6b6b6b">Possible prior states (don't matter — Markov!)</text>
+
+  <defs>
+    <marker id="arrowAg" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#c0392b"/></marker>
+  </defs>
+</svg>
+<div class="diagram-caption">Figure 4 — Grid world: the agent's future depends only on its current cell, not how it got there</div>
+</div>
+
+<h3>When a Single Observation Isn't Markov</h3>
+
+<p>Sometimes one observation isn't enough. <strong>DeepMind's Atari solution:</strong> use the last 4 frames as the state (captures velocity and direction). In the worst case, include the entire history — always Markov by definition, but impractical. The choice of how much history to include is a design decision, often found through trial and error.</p>
+
+<div class="callout plain">
+<strong>Why 4 frames?</strong> Imagine a screenshot of a ball in Pong. From one screenshot alone, you can see <em>where</em> the ball is, but not <em>which direction</em> it's moving. Stack 4 screenshots together like a flipbook, and now you can see it's moving down-left. That's enough context to decide what to do. You don't need all 10,000 previous frames — just the last 4 captures enough "history" to make a good decision.
+</div>
+
+<hr>
+
+<!-- SECTION 4 -->
+<h2><span class="num">4.</span> The Agent–Environment Loop</h2>
+
+<div class="diagram-container">
+<svg viewBox="0 0 560 220" width="100%" style="max-width:560px;">
+  <!-- Agent box -->
+  <rect x="40" y="40" width="160" height="80" rx="12" fill="#eaf2f8" stroke="#2471a3" stroke-width="2.5"/>
+  <text x="120" y="75" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="18" fill="#2471a3">Agent</text>
+  <text x="120" y="98" text-anchor="middle" font-family="Crimson Pro, serif" font-size="13" fill="#6b6b6b">learns &amp; decides</text>
+
+  <!-- Environment box -->
+  <rect x="360" y="40" width="160" height="80" rx="12" fill="#eafaf1" stroke="#1e8449" stroke-width="2.5"/>
+  <text x="440" y="75" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="18" fill="#1e8449">Environment</text>
+  <text x="440" y="98" text-anchor="middle" font-family="Crimson Pro, serif" font-size="13" fill="#6b6b6b">responds</text>
+
+  <!-- Action arrow (top) -->
+  <path d="M200,60 Q280,15 360,60" fill="none" stroke="#c0392b" stroke-width="2.2" marker-end="url(#arrowAct)"/>
+  <text x="280" y="28" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="14" fill="#c0392b">Action Aₜ</text>
+
+  <!-- Reward + State arrow (bottom) -->
+  <path d="M360,100 Q280,155 200,100" fill="none" stroke="#1e8449" stroke-width="2.2" marker-end="url(#arrowEnv)"/>
+  <text x="280" y="150" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="14" fill="#1e8449">Reward Rₜ₊₁ , State Sₜ₊₁</text>
+
+  <!-- Update arrow -->
+  <path d="M120,120 L120,180" fill="none" stroke="#2471a3" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arrowUp)"/>
+  <text x="120" y="200" text-anchor="middle" font-family="Crimson Pro, serif" font-style="italic" font-size="12" fill="#2471a3">update Q-table</text>
+
+  <defs>
+    <marker id="arrowAct" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#c0392b"/></marker>
+    <marker id="arrowEnv" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#1e8449"/></marker>
+    <marker id="arrowUp" markerWidth="8" markerHeight="8" refX="4" refY="7" orient="auto"><path d="M0,0 L4,8 L8,0 Z" fill="#2471a3"/></marker>
+  </defs>
+</svg>
+<div class="diagram-caption">Figure 5 — The reinforcement learning loop: agent acts, environment responds, agent learns</div>
+</div>
+
+<p>At each step: the agent selects an action → the environment responds with a reward and new state → the agent uses this to update its value estimates (e.g., Q-table).</p>
+
+<div class="callout plain">
+<strong>In plain English:</strong> Think of training a dog. The dog (agent) does something — sits, barks, rolls over (action). You (the environment) respond with a treat or a "no" (reward), and the dog sees the new situation it's in (new state). Over time, the dog learns which actions lead to treats. The dog doesn't know your rules in advance — it learns purely from the feedback loop of trying things and seeing what happens.
+</div>
+
+<hr>
+
+<!-- SECTION 5 -->
+<h2><span class="num">5.</span> Markov Reward Process (MRP)</h2>
+
+<p>An MRP extends a Markov chain by adding a <strong>reward function R</strong> and a <strong>discount factor γ</strong>. There are still no actions — the process unfolds according to fixed transition probabilities, but now value judgments are attached to transitions.</p>
+
+<div class="diagram-container">
+<svg viewBox="0 0 700 340" width="100%" style="max-width:700px;">
+  <!-- Class 1 -->
+  <circle cx="100" cy="100" r="36" fill="#eaf2f8" stroke="#2471a3" stroke-width="2"/>
+  <text x="100" y="96" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="12" fill="#2c2c2c">Class 1</text>
+  <text x="100" y="112" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#c0392b" font-weight="500">R = −2</text>
+
+  <!-- Class 2 -->
+  <circle cx="260" cy="100" r="36" fill="#eaf2f8" stroke="#2471a3" stroke-width="2"/>
+  <text x="260" y="96" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="12" fill="#2c2c2c">Class 2</text>
+  <text x="260" y="112" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#c0392b" font-weight="500">R = −2</text>
+
+  <!-- Class 3 -->
+  <circle cx="420" cy="100" r="36" fill="#eaf2f8" stroke="#2471a3" stroke-width="2"/>
+  <text x="420" y="96" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="12" fill="#2c2c2c">Class 3</text>
+  <text x="420" y="112" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#c0392b" font-weight="500">R = −2</text>
+
+  <!-- Pass -->
+  <circle cx="570" cy="100" r="36" fill="#eafaf1" stroke="#1e8449" stroke-width="2.5"/>
+  <text x="570" y="96" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="12" fill="#1e8449">Pass</text>
+  <text x="570" y="112" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#1e8449" font-weight="500">R = +10</text>
+
+  <!-- Sleep -->
+  <rect x="534" y="220" width="72" height="44" rx="4" fill="#f5f5f5" stroke="#555" stroke-width="2.5"/>
+  <text x="570" y="246" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="12" fill="#555">Sleep</text>
+
+  <!-- Facebook -->
+  <circle cx="100" cy="260" r="36" fill="#fdf2e9" stroke="#c0392b" stroke-width="2"/>
+  <text x="100" y="254" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="11" fill="#2c2c2c">Facebook</text>
+  <text x="100" y="272" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#c0392b" font-weight="500">R = −1</text>
+
+  <!-- Pub -->
+  <circle cx="420" cy="260" r="36" fill="#fdf2e9" stroke="#c0392b" stroke-width="2"/>
+  <text x="420" y="254" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="12" fill="#2c2c2c">Pub</text>
+  <text x="420" y="272" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#c0392b" font-weight="500">R = +1</text>
+
+  <!-- Transitions (same layout as before, with probability labels) -->
+  <line x1="138" y1="92" x2="222" y2="92" stroke="#555" stroke-width="1.5" marker-end="url(#arrowG)"/>
+  <text x="180" y="84" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#555">0.5</text>
+
+  <line x1="298" y1="92" x2="382" y2="92" stroke="#555" stroke-width="1.5" marker-end="url(#arrowG)"/>
+  <text x="340" y="84" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#555">0.8</text>
+
+  <line x1="458" y1="92" x2="532" y2="92" stroke="#555" stroke-width="1.5" marker-end="url(#arrowG)"/>
+  <text x="495" y="84" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#555">0.6</text>
+
+  <line x1="570" y1="138" x2="570" y2="218" stroke="#555" stroke-width="1.5" marker-end="url(#arrowG)"/>
+  <text x="588" y="182" font-family="JetBrains Mono, monospace" font-size="11" fill="#555">1.0</text>
+
+  <line x1="100" y1="138" x2="100" y2="222" stroke="#999" stroke-width="1.5" marker-end="url(#arrowL)"/>
+  <text x="86" y="182" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#999">0.5</text>
+
+  <path d="M68,240 C30,210 30,310 68,280" fill="none" stroke="#999" stroke-width="1.5" marker-end="url(#arrowL)"/>
+  <text x="26" y="264" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#999">0.9</text>
+
+  <path d="M130,232 Q150,180 130,140" fill="none" stroke="#999" stroke-width="1.5" marker-end="url(#arrowL)"/>
+  <text x="152" y="185" font-family="JetBrains Mono, monospace" font-size="11" fill="#999">0.1</text>
+
+  <line x1="420" y1="138" x2="420" y2="222" stroke="#999" stroke-width="1.5" marker-end="url(#arrowL)"/>
+  <text x="406" y="182" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#999">0.4</text>
+
+  <path d="M384,264 Q240,310 112,290" fill="none" stroke="#999" stroke-width="1.5" marker-end="url(#arrowL)"/>
+  <text x="240" y="304" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#999">0.2</text>
+
+  <line x1="280" y1="134" x2="544" y2="224" stroke="#999" stroke-width="1.2" marker-end="url(#arrowL)"/>
+  <text x="420" y="195" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#999">0.2</text>
+
+  <defs>
+    <marker id="arrowG" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#555"/></marker>
+    <marker id="arrowL" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#999"/></marker>
+  </defs>
+</svg>
+<div class="diagram-caption">Figure 6 — Student Markov Reward Process: transitions with reward values attached</div>
+</div>
+
+<h3>The Return and Discounting</h3>
+
+<div class="math-block">
+G<sub>t</sub> = R<sub>t+1</sub> + γ R<sub>t+2</sub> + γ² R<sub>t+3</sub> + ⋯ = Σ<sub>k=0</sub><sup>∞</sup> γ<sup>k</sup> R<sub>t+k+1</sub>
+</div>
+
+<p>Where <span class="math">γ ∈ [0, 1]</span> is the discount factor. Discounting prevents returns from going to infinity in non-terminating processes and reflects a preference for immediate over delayed rewards.</p>
+
+<div class="callout plain">
+<strong>What does this formula actually say?</strong> Imagine someone offers you money over time. You get some today, some tomorrow, some next week. But money later is worth less to you than money now (you'd rather have $100 today than $100 next year). The discount factor γ (gamma) captures this — it's a number between 0 and 1 that shrinks future rewards. If γ = 0.9, then a reward of $10 tomorrow is only worth 0.9 × $10 = $9 to you now. A reward two days from now is worth 0.9 × 0.9 × $10 = $8.10 to you now. The further away the reward, the more it shrinks. <strong>The "return" G is just the total of all rewards, after this shrinking is applied.</strong>
+</div>
+
+<h3>Bellman Equation for MRPs</h3>
+
+<div class="callout blue">
+<strong>Key Insight:</strong> The value of a state = immediate reward + discounted value of the next state.
+</div>
+
+<div class="math-block">
+V(s) = R<sub>s</sub> + γ Σ<sub>s'</sub> P<sub>ss'</sub> V(s')
+</div>
+
+<p>This recursive decomposition is deeply intuitive: what a state is worth is what I get now plus what I'll get going forward.</p>
+
+<div class="callout plain">
+<strong>The Bellman equation in one sentence:</strong> "How good is it to be here?" = "What do I get right now?" + "How good is where I'm going next?" <br><br>
+Imagine you're deciding how good a particular hotel room is for a vacation. The value of the room = how nice the room itself is (immediate reward) + how great the nearby attractions are that you'll visit from there (future value, slightly discounted because you haven't experienced them yet). That's all the Bellman equation says. And it's <strong>recursive</strong> — you can break down "how great are the nearby attractions" in the same way, all the way to the end of your trip.
+</div>
+
+<h3>A Note on Expectation</h3>
+
+<p>Expectation appeals to the <strong>law of large numbers</strong>. The expected value of a fair six-sided die is 3.5 — you can never roll 3.5, but the average over many rolls converges to it. Similarly, value functions represent the expected return averaged over many possible trajectories.</p>
+
+<div class="callout plain">
+<strong>Why 3.5 when you can't roll 3.5?</strong> Expected value = what happens <em>on average</em> over a huge number of tries. Roll a die 6,000 times: you'll get roughly 1,000 ones, 1,000 twos, …, 1,000 sixes. The average of all 6,000 rolls? About 3.5. It's not a prediction for any single roll — it's the long-run average. In RL, value functions work the same way: the "value" of a state is the average total reward you'd get if you started there and played a huge number of episodes.
+</div>
+
+<hr>
+
+<!-- SECTION 6 -->
+<h2><span class="num">6.</span> Markov Decision Process (MDP)</h2>
+
+<p>An MDP adds <strong>actions</strong> to the MRP. Now an agent makes decisions that influence transitions. This is the core formalism of RL, defined by the tuple <span class="math">(S, A, P, R, γ)</span>.</p>
+
+<h3>Deterministic vs. Stochastic Transitions</h3>
+
+<div class="diagram-container">
+<svg viewBox="0 0 600 200" width="100%" style="max-width:600px;">
+  <!-- Deterministic -->
+  <text x="150" y="20" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="14" fill="#1e8449">Deterministic (Grid World)</text>
+  <rect x="90" y="50" width="50" height="50" rx="4" fill="#eafaf1" stroke="#1e8449" stroke-width="2"/>
+  <text x="115" y="80" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13" fill="#2c2c2c">(3,3)</text>
+  <rect x="90" y="120" width="50" height="50" rx="4" fill="#eafaf1" stroke="#1e8449" stroke-width="2"/>
+  <text x="115" y="150" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="13" fill="#2c2c2c">(3,4)</text>
+  <line x1="115" y1="102" x2="115" y2="118" stroke="#1e8449" stroke-width="2.5" marker-end="url(#arrowDet)"/>
+  <text x="150" y="114" font-family="Source Sans 3, sans-serif" font-size="12" fill="#1e8449" font-weight="600">↓ 100%</text>
+
+  <!-- Stochastic -->
+  <text x="430" y="20" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="14" fill="#c0392b">Stochastic (Pub Action)</text>
+  <circle cx="360" cy="100" r="30" fill="#fdf2e9" stroke="#c0392b" stroke-width="2"/>
+  <text x="360" y="105" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="#2c2c2c">Pub</text>
+
+  <circle cx="460" cy="45" r="22" fill="#f5f5f5" stroke="#999" stroke-width="1.5"/>
+  <text x="460" y="50" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="#2c2c2c">S₁</text>
+  <line x1="386" y1="82" x2="440" y2="58" stroke="#c0392b" stroke-width="1.8" marker-end="url(#arrowFB)"/>
+  <text x="426" y="62" font-family="JetBrains Mono, monospace" font-size="11" fill="#c0392b">0.4</text>
+
+  <circle cx="460" cy="105" r="22" fill="#f5f5f5" stroke="#999" stroke-width="1.5"/>
+  <text x="460" y="110" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="#2c2c2c">S₂</text>
+  <line x1="392" y1="100" x2="436" y2="103" stroke="#c0392b" stroke-width="1.8" marker-end="url(#arrowFB)"/>
+  <text x="420" y="94" font-family="JetBrains Mono, monospace" font-size="11" fill="#c0392b">0.4</text>
+
+  <circle cx="460" cy="165" r="22" fill="#f5f5f5" stroke="#999" stroke-width="1.5"/>
+  <text x="460" y="170" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="#2c2c2c">S₃</text>
+  <line x1="386" y1="120" x2="442" y2="152" stroke="#c0392b" stroke-width="1.8" marker-end="url(#arrowFB)"/>
+  <text x="426" y="146" font-family="JetBrains Mono, monospace" font-size="11" fill="#c0392b">0.2</text>
+
+  <defs>
+    <marker id="arrowDet" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#1e8449"/></marker>
+    <marker id="arrowFB" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#c0392b"/></marker>
+  </defs>
+</svg>
+<div class="diagram-caption">Figure 7 — Deterministic transitions (grid world) vs. stochastic transitions (pub action)</div>
+</div>
+
+<h3>Policies</h3>
+
+<p>A <strong>policy</strong> π maps states to actions. It can be <strong>stochastic</strong> (probability distribution over actions) or <strong>deterministic</strong> (always selects one action). In grid world exercises, policies are treated as deterministic.</p>
+
+<div class="callout plain">
+<strong>What's a policy?</strong> A policy is just a <strong>rulebook</strong> that says "when you're in this situation, do this." A <em>deterministic</em> policy is a simple rulebook: "in square 5, always go right." A <em>stochastic</em> policy is a more nuanced rulebook: "in square 5, go right 80% of the time, and go up 20% of the time." The whole point of reinforcement learning is to find the best possible rulebook — the one that gets the most reward.
+</div>
+
+<h3>The Q-Function (Action-Value Function)</h3>
+
+<div class="math-block">
+Q<sup>π</sup>(s, a) = 𝔼<sub>π</sub>[ G<sub>t</sub> | S<sub>t</sub> = s, A<sub>t</sub> = a ]
+</div>
+
+<p>The expected return from taking action <span class="math">a</span> in state <span class="math">s</span> and then following policy π. This is the function we learn in Q-learning.</p>
+
+<div class="callout plain">
+<strong>What is Q?</strong> Think of Q as a giant cheat sheet. For every possible situation (state) and every possible move (action), Q tells you: "if you make this move from this situation, here's how well things will go for you on average." In a grid world with 48 squares and 4 directions, Q is a table with 48 × 4 = 192 entries. The whole goal of Q-learning is to <strong>fill in this cheat sheet with the right numbers</strong> by exploring and learning from experience.
+</div>
+
+<h3>Optimal Policy &amp; Bellman Optimality Equation</h3>
+
+<div class="callout green">
+<strong>Key result:</strong> There always exists at least one optimal policy. There may be many (all yielding the same value).
+</div>
+
+<div class="math-block">
+Q*(s, a) = R(s, a) + γ Σ<sub>s'</sub> P(s'|s,a) max<sub>a'</sub> Q*(s', a')
+</div>
+
+<p>The optimal Q-value = immediate reward + discounted maximum Q-value achievable from the next state.</p>
+
+<div class="callout plain">
+<strong>Reading the formula like a sentence:</strong> "The best possible score from doing action A in state S" = "the reward I get right now for doing A" + "a slightly reduced version of the best score I can get from wherever I land next." The word <em>max</em> is doing the heavy lifting — it means we always assume we'll play <em>perfectly</em> from the next state onwards. That's what makes it "optimal."
+</div>
+
+<p><strong>Multi-agent environments:</strong> In games like Go, the opponent is part of the environment. The agent only computes values on its own turns. For large state spaces (Go, continuous control), exact Q-tables are impossible — <strong>value function approximation</strong> (neural networks) is used instead.</p>
+
+<hr>
+
+<!-- SECTION 7 -->
+<h2><span class="num">7.</span> Q-Learning: Temporal Difference Control</h2>
+
+<h3>TD Learning vs. Monte Carlo</h3>
+
+<div class="diagram-container">
+<svg viewBox="0 0 680 200" width="100%" style="max-width:680px;">
+  <!-- Timeline -->
+  <line x1="40" y1="70" x2="640" y2="70" stroke="#ccc" stroke-width="2"/>
+  <!-- Steps -->
+  <circle cx="80" cy="70" r="8" fill="#2471a3"/><text x="80" y="55" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#555">S₀</text>
+  <circle cx="160" cy="70" r="8" fill="#2471a3"/><text x="160" y="55" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#555">S₁</text>
+  <circle cx="240" cy="70" r="8" fill="#2471a3"/><text x="240" y="55" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#555">S₂</text>
+  <circle cx="320" cy="70" r="8" fill="#2471a3"/><text x="320" y="55" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#555">S₃</text>
+  <circle cx="400" cy="70" r="8" fill="#2471a3"/><text x="400" y="55" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#555">S₄</text>
+  <text x="480" y="74" font-family="Crimson Pro, serif" font-size="14" fill="#999">⋯</text>
+  <rect x="540" y="58" width="60" height="24" rx="4" fill="#1e8449" opacity="0.15" stroke="#1e8449" stroke-width="1.5"/>
+  <text x="570" y="75" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="11" fill="#1e8449">Terminal</text>
+
+  <!-- TD(0) bracket -->
+  <path d="M80,90 L80,105 L160,105 L160,90" fill="none" stroke="#c0392b" stroke-width="2"/>
+  <text x="120" y="122" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="12" fill="#c0392b">TD(0)</text>
+  <text x="120" y="138" text-anchor="middle" font-family="Crimson Pro, serif" font-size="11" fill="#c0392b">1 step → learn</text>
+
+  <!-- TD(λ) bracket -->
+  <path d="M80,148 L80,163 L320,163 L320,148" fill="none" stroke="#2471a3" stroke-width="2"/>
+  <text x="200" y="180" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="12" fill="#2471a3">TD(λ)</text>
+  <text x="200" y="196" text-anchor="middle" font-family="Crimson Pro, serif" font-size="11" fill="#2471a3">n steps → learn</text>
+
+  <!-- Monte Carlo bracket (full episode, above timeline) -->
+  <path d="M80,58 L80,45 L600,45 L600,58" fill="none" stroke="#1e8449" stroke-width="2"/>
+  <text x="340" y="38" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="12" fill="#1e8449">Monte Carlo — wait until episode ends, then update all</text>
+</svg>
+<div class="diagram-caption">Figure 8 — TD(0) learns after 1 step; TD(λ) after n steps; Monte Carlo waits for the full episode</div>
+</div>
+
+<div class="callout plain">
+<strong>TD vs. Monte Carlo — the exam analogy:</strong> Imagine studying for an exam. <strong>Monte Carlo</strong> is like waiting until after you've taken the entire exam, then reviewing every question to see what you got right/wrong. You learn a lot, but you had to wait until the very end. <strong>TD(0)</strong> is like checking each answer right after you write it — you get immediate feedback and can adjust your approach on the very next question. TD learns faster because it doesn't have to wait, but its feedback is based on estimates (since the episode isn't over yet).
+</div>
+
+<h3>The Q-Learning Update Rule</h3>
+
+<div class="math-block">
+Q(S, A) ← Q(S, A) + α [ R + γ max<sub>a'</sub> Q(S', a') − Q(S, A) ]
+</div>
+
+<div class="callout">
+<strong>Step size α:</strong> If α = 1, the old value is completely replaced. If α &lt; 1, a blend of old and new is retained, creating smoother learning. The term <span class="math">R + γ max Q(S', a')</span> is the <strong>TD target</strong> — the Bellman equation applied with current estimates.
+</div>
+
+<div class="callout plain">
+<strong>Walking through one Q-learning update:</strong> Say the agent is in square 5 and moves right to square 6, getting a reward of −1. Here's exactly what happens:<br><br>
+<strong>1.</strong> Look up the old value: Q(square 5, right) = −3.2 (our current cheat sheet entry)<br>
+<strong>2.</strong> Compute the "ideal" new estimate: reward + γ × best Q from square 6 = −1 + 0.9 × (−2.0) = −2.8<br>
+<strong>3.</strong> Blend old and new: If α = 0.1, the new value is −3.2 + 0.1 × (−2.8 − (−3.2)) = −3.2 + 0.1 × 0.4 = <strong>−3.16</strong><br><br>
+The value nudged slightly from −3.2 toward −2.8. After hundreds of these nudges, it converges to the true value. <strong>α controls how big each nudge is</strong> — small α = cautious, small nudges; large α = aggressive, big jumps.
+</div>
+
+<h3>ε-Greedy Action Selection</h3>
+
+<p>With probability <span class="math">(1 − ε)</span>: choose the action with the highest Q-value (<strong>exploit</strong>). With probability <span class="math">ε</span>: choose a random action (<strong>explore</strong>). Typically ε decays over time.</p>
+
+<div class="callout plain">
+<strong>ε-greedy in plain English:</strong> Say ε = 0.1 (10%). Every time the agent needs to pick a move, it essentially flips a coin: 90% of the time, it picks the move it <em>thinks</em> is best (exploit). 10% of the time, it picks a completely random move (explore) — just to see what happens. As it learns more, ε shrinks (say to 0.01), so it explores less and trusts its cheat sheet more. Early on, it explores a lot. Later, it mostly follows the plan.
+</div>
+
+<hr>
+
+<!-- SECTION 8 -->
+<h2><span class="num">8.</span> On-Policy vs. Off-Policy Learning</h2>
+
+<p><strong>Q-Learning (off-policy)</strong> updates using <span class="math">max<sub>a'</sub> Q(S', a')</span> — the best possible next action — regardless of what the agent actually does. It learns the optimal policy while following ε-greedy.</p>
+
+<p><strong>SARSA (on-policy)</strong> updates using the Q-value of the action <em>actually chosen</em> by the policy: <span class="math">Q(S', A')</span>. This accounts for the risk of random exploration actions.</p>
+
+<div class="callout plain">
+<strong>On-policy vs. off-policy in one analogy:</strong> Imagine learning to drive.<br><br>
+<strong>Q-Learning (off-policy)</strong> is like studying the textbook route on a map: "the shortest path is along the cliff road." It plans as if it will always drive perfectly, ignoring the fact that sometimes it accidentally swerves.<br><br>
+<strong>SARSA (on-policy)</strong> is like learning from your <em>actual</em> driving. It knows that sometimes you accidentally swerve, so it thinks: "the cliff road is <em>theoretically</em> fastest, but given that I sometimes swerve, the inland road is <em>actually</em> safer for me." It learns a policy that accounts for its own imperfections.
+</div>
+
+<h3>Cliff Walking: The Classic Illustration</h3>
+
+<div class="diagram-container">
+<svg viewBox="0 0 640 300" width="100%" style="max-width:640px;">
+  <!-- Grid -->
+  <g>
+    <!-- Row 0 -->
+    <rect x="40" y="30" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="90" y="30" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="140" y="30" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="190" y="30" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="240" y="30" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="290" y="30" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="340" y="30" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="390" y="30" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="440" y="30" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="490" y="30" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="540" y="30" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="590" y="30" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <!-- Row 1 -->
+    <rect x="40" y="80" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="90" y="80" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="140" y="80" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="190" y="80" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="240" y="80" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="290" y="80" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="340" y="80" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="390" y="80" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="440" y="80" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="490" y="80" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="540" y="80" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="590" y="80" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <!-- Row 2 -->
+    <rect x="40" y="130" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="90" y="130" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="140" y="130" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="190" y="130" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="240" y="130" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="290" y="130" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="340" y="130" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="390" y="130" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="440" y="130" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="490" y="130" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="540" y="130" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <rect x="590" y="130" width="50" height="50" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+    <!-- Row 3 (bottom) -->
+    <rect x="40" y="180" width="50" height="50" fill="#eafaf1" stroke="#1e8449" stroke-width="2"/>
+    <text x="65" y="208" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="10" fill="#1e8449">START</text>
+
+    <!-- Cliff cells -->
+    <rect x="90" y="180" width="50" height="50" fill="#5d1a1a" stroke="#5d1a1a" stroke-width="1"/>
+    <rect x="140" y="180" width="50" height="50" fill="#5d1a1a" stroke="#5d1a1a" stroke-width="1"/>
+    <rect x="190" y="180" width="50" height="50" fill="#5d1a1a" stroke="#5d1a1a" stroke-width="1"/>
+    <rect x="240" y="180" width="50" height="50" fill="#5d1a1a" stroke="#5d1a1a" stroke-width="1"/>
+    <rect x="290" y="180" width="50" height="50" fill="#5d1a1a" stroke="#5d1a1a" stroke-width="1"/>
+    <rect x="340" y="180" width="50" height="50" fill="#5d1a1a" stroke="#5d1a1a" stroke-width="1"/>
+    <rect x="390" y="180" width="50" height="50" fill="#5d1a1a" stroke="#5d1a1a" stroke-width="1"/>
+    <rect x="440" y="180" width="50" height="50" fill="#5d1a1a" stroke="#5d1a1a" stroke-width="1"/>
+    <rect x="490" y="180" width="50" height="50" fill="#5d1a1a" stroke="#5d1a1a" stroke-width="1"/>
+    <rect x="540" y="180" width="50" height="50" fill="#5d1a1a" stroke="#5d1a1a" stroke-width="1"/>
+    <text x="340" y="210" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="14" fill="#e8a0a0">T H E &nbsp; C L I F F</text>
+    <text x="340" y="225" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#e8a0a0">R = −100</text>
+
+    <rect x="590" y="180" width="50" height="50" fill="#eafaf1" stroke="#1e8449" stroke-width="2"/>
+    <text x="615" y="208" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="10" fill="#1e8449">GOAL</text>
+  </g>
+
+  <!-- SARSA path (blue, safe) -->
+  <polyline points="65,180 65,55 115,55 165,55 215,55 265,55 315,55 365,55 415,55 465,55 515,55 565,55 615,55 615,180"
+    fill="none" stroke="#2471a3" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+  <circle cx="65" cy="180" r="5" fill="#2471a3"/>
+  <circle cx="615" cy="180" r="5" fill="#2471a3"/>
+
+  <!-- Q-learning path (red, optimal) -->
+  <polyline points="65,180 65,155 115,155 165,155 215,155 265,155 315,155 365,155 415,155 465,155 515,155 565,155 615,155 615,180"
+    fill="none" stroke="#c0392b" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+  <circle cx="65" cy="180" r="5" fill="#c0392b"/>
+  <circle cx="615" cy="180" r="5" fill="#c0392b"/>
+
+  <!-- Legend -->
+  <line x1="100" y1="262" x2="140" y2="262" stroke="#c0392b" stroke-width="3"/>
+  <text x="148" y="267" font-family="Source Sans 3, sans-serif" font-size="13" fill="#2c2c2c"><tspan font-weight="600">Q-Learning</tspan> — optimal path (−13), hugs the cliff</text>
+
+  <line x1="100" y1="285" x2="140" y2="285" stroke="#2471a3" stroke-width="3"/>
+  <text x="148" y="290" font-family="Source Sans 3, sans-serif" font-size="13" fill="#2c2c2c"><tspan font-weight="600">SARSA</tspan> — safe path, avoids cliff (accounts for ε-exploration risk)</text>
+</svg>
+<div class="diagram-caption">Figure 9 — Cliff Walking: Q-learning finds the optimal but risky path; SARSA finds the safe path</div>
+</div>
+
+<p>SARSA's policy is more conservative because it learns the value of states <em>under the policy it's actually following</em>, including the risk of random ε-greedy exploration near the cliff edge.</p>
+
+<hr>
+
+<!-- SECTION 9 -->
+<h2><span class="num">9.</span> Exploitation vs. Exploration</h2>
+
+<p>The <strong>exploration-exploitation tradeoff</strong> is fundamental to RL. <strong>Exploitation:</strong> use current knowledge to take the best known action. <strong>Exploration:</strong> try new actions to discover potentially better rewards.</p>
+
+<p><strong>The multi-armed bandit</strong> is the simplest illustration — a single-state MDP with multiple actions (levers). If one lever pays $1 consistently, you keep pulling it. But without exploring, you'll never discover the $100 lever — or the $1,000,000 lever.</p>
+
+<p><strong>Restaurant analogy:</strong> You always go to the same restaurant because it's good (exploitation). But occasionally trying a new one (exploration) might reveal something even better. ε-greedy balances this by exploiting most of the time while reserving a small fraction for random exploration.</p>
+
+<hr>
+
+<!-- SECTION 10 -->
+<h2><span class="num">10.</span> Visualizing the Q-Table</h2>
+
+<p>For a grid world with 48 states and 4 actions per state, each grid cell is divided into four regions showing Q-values for each direction:</p>
+
+<div class="diagram-container">
+<svg viewBox="0 0 500 260" width="100%" style="max-width:500px;">
+  <!-- Big cell -->
+  <rect x="130" y="20" width="160" height="160" rx="4" fill="#fafafa" stroke="#999" stroke-width="2"/>
+  <!-- Diagonals -->
+  <line x1="130" y1="20" x2="290" y2="180" stroke="#ddd" stroke-width="1"/>
+  <line x1="290" y1="20" x2="130" y2="180" stroke="#ddd" stroke-width="1"/>
+
+  <!-- Up value -->
+  <text x="210" y="58" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#2471a3" font-weight="500">−1.010</text>
+  <text x="210" y="44" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="#999">UP</text>
+
+  <!-- Down value -->
+  <text x="210" y="160" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#c0392b" font-weight="500">−100.0</text>
+  <text x="210" y="174" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="#999">DOWN</text>
+
+  <!-- Left value -->
+  <text x="158" y="106" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#555" font-weight="500">−1.011</text>
+  <text x="158" y="118" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="#999">LEFT</text>
+
+  <!-- Right value (highest) -->
+  <rect x="222" y="86" width="60" height="26" rx="3" fill="#1e8449" opacity="0.12"/>
+  <text x="262" y="106" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#1e8449" font-weight="500">−1.000</text>
+  <text x="262" y="118" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="#1e8449" font-weight="600">RIGHT ★</text>
+
+  <!-- Arrow showing flow -->
+  <line x1="295" y1="100" x2="340" y2="100" stroke="#1e8449" stroke-width="2.5" marker-end="url(#arrowFlow)"/>
+
+  <!-- Next cell preview -->
+  <rect x="345" y="60" width="80" height="80" rx="4" fill="#fafafa" stroke="#999" stroke-width="1.5"/>
+  <line x1="345" y1="60" x2="425" y2="140" stroke="#ddd" stroke-width="1"/>
+  <line x1="425" y1="60" x2="345" y2="140" stroke="#ddd" stroke-width="1"/>
+  <text x="385" y="104" text-anchor="middle" font-family="Crimson Pro, serif" font-size="11" fill="#6b6b6b">next</text>
+  <text x="385" y="118" text-anchor="middle" font-family="Crimson Pro, serif" font-size="11" fill="#6b6b6b">state</text>
+
+  <!-- Caption below -->
+  <text x="250" y="220" text-anchor="middle" font-family="Crimson Pro, serif" font-size="14" fill="#2c2c2c">Agent picks the action with the <tspan font-weight="600" fill="#1e8449">highest Q-value</tspan></text>
+  <text x="250" y="242" text-anchor="middle" font-family="Crimson Pro, serif" font-size="13" fill="#6b6b6b">(differences can be tiny — e.g., −1.000 vs −1.011)</text>
+
+  <defs>
+    <marker id="arrowFlow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#1e8449"/></marker>
+  </defs>
+</svg>
+<div class="diagram-caption">Figure 10 — Q-table cell visualization: four action values per state, agent picks the max</div>
+</div>
+
+<div class="callout plain">
+<strong>But what actually IS a Q-table?</strong> It's literally just a spreadsheet. The rows are states (squares on the grid), the columns are actions (up/down/left/right), and each cell contains a number that answers: "how good is it to do this action from this state?" At the start, all the numbers are basically guesses. As the agent explores, it updates them. After enough exploring, the numbers become accurate, and the agent can just look up the best move in any situation.
+</div>
+
+<h3>Worked Example: Building a Q-Table from Scratch</h3>
+
+<p>Let's trace through a tiny 3-square world to see <em>exactly</em> how a Q-table gets filled in. Our world has just 3 squares in a row. The agent starts on the left and the goal is on the right. Each step gives a reward of −1, and reaching the goal gives 0. We'll use γ = 0.9 and α = 1 (for simplicity — replace old values entirely).</p>
+
+<div class="diagram-container">
+<svg viewBox="0 0 520 100" width="100%" style="max-width:520px;">
+  <!-- Square 0 -->
+  <rect x="40" y="20" width="80" height="60" rx="6" fill="#eaf2f8" stroke="#2471a3" stroke-width="2"/>
+  <text x="80" y="46" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="14" fill="#2471a3">Square 0</text>
+  <text x="80" y="64" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#6b6b6b">START</text>
+
+  <!-- Square 1 -->
+  <rect x="200" y="20" width="80" height="60" rx="6" fill="#fafafa" stroke="#999" stroke-width="2"/>
+  <text x="240" y="46" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="14" fill="#555">Square 1</text>
+  <text x="240" y="64" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#6b6b6b">middle</text>
+
+  <!-- Square 2 -->
+  <rect x="360" y="20" width="80" height="60" rx="6" fill="#eafaf1" stroke="#1e8449" stroke-width="2.5"/>
+  <text x="400" y="46" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="14" fill="#1e8449">Square 2</text>
+  <text x="400" y="64" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#1e8449">GOAL</text>
+
+  <!-- Arrows -->
+  <line x1="122" y1="42" x2="196" y2="42" stroke="#555" stroke-width="2" marker-end="url(#arwR)"/>
+  <text x="160" y="36" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#555">right →</text>
+  <line x1="196" y1="58" x2="122" y2="58" stroke="#999" stroke-width="1.5" marker-end="url(#arwL2)"/>
+  <text x="160" y="72" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#999">← left</text>
+
+  <line x1="282" y1="42" x2="356" y2="42" stroke="#555" stroke-width="2" marker-end="url(#arwR)"/>
+  <text x="320" y="36" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#555">right →</text>
+  <line x1="356" y1="58" x2="282" y2="58" stroke="#999" stroke-width="1.5" marker-end="url(#arwL2)"/>
+  <text x="320" y="72" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#999">← left</text>
+
+  <!-- Rewards -->
+  <text x="160" y="96" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#c0392b">R = −1</text>
+  <text x="320" y="96" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#c0392b">R = −1</text>
+
+  <defs>
+    <marker id="arwR" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#555"/></marker>
+    <marker id="arwL2" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#999"/></marker>
+  </defs>
+</svg>
+<div class="diagram-caption">Figure 10b — A tiny 3-square world. The agent can only go left or right.</div>
+</div>
+
+<p><strong>Step 0 — The empty Q-table.</strong> Before the agent has done anything, all Q-values start at 0. The agent knows nothing.</p>
+
+<div class="diagram-container">
+<svg viewBox="0 0 400 165" width="100%" style="max-width:400px;">
+  <!-- Header -->
+  <rect x="130" y="10" width="110" height="28" rx="4" fill="#f0eee9"/>
+  <text x="185" y="29" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="12" fill="#6b6b6b">← LEFT</text>
+  <rect x="250" y="10" width="110" height="28" rx="4" fill="#f0eee9"/>
+  <text x="305" y="29" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="12" fill="#6b6b6b">RIGHT →</text>
+
+  <!-- Row 0 -->
+  <rect x="10" y="44" width="110" height="28" rx="4" fill="#eaf2f8"/>
+  <text x="65" y="63" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="12" fill="#2471a3">Square 0</text>
+  <rect x="130" y="44" width="110" height="28" rx="4" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+  <text x="185" y="63" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#999">0</text>
+  <rect x="250" y="44" width="110" height="28" rx="4" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+  <text x="305" y="63" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#999">0</text>
+
+  <!-- Row 1 -->
+  <rect x="10" y="78" width="110" height="28" rx="4" fill="#fafafa"/>
+  <text x="65" y="97" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="12" fill="#555">Square 1</text>
+  <rect x="130" y="78" width="110" height="28" rx="4" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+  <text x="185" y="97" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#999">0</text>
+  <rect x="250" y="78" width="110" height="28" rx="4" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+  <text x="305" y="97" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#999">0</text>
+
+  <!-- Row 2 -->
+  <rect x="10" y="112" width="110" height="28" rx="4" fill="#eafaf1"/>
+  <text x="65" y="131" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="12" fill="#1e8449">Square 2 (goal)</text>
+  <rect x="130" y="112" width="110" height="28" rx="4" fill="#eafaf1" stroke="#1e8449" stroke-width="1"/>
+  <text x="185" y="131" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#1e8449">0</text>
+  <rect x="250" y="112" width="110" height="28" rx="4" fill="#eafaf1" stroke="#1e8449" stroke-width="1"/>
+  <text x="305" y="131" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#1e8449">0</text>
+
+  <text x="200" y="156" text-anchor="middle" font-family="Crimson Pro, serif" font-style="italic" font-size="12" fill="#999">Goal row stays at 0 forever (terminal state)</text>
+</svg>
+<div class="diagram-caption">The Q-table before any learning — everything is 0</div>
+</div>
+
+<p><strong>Step 1 — The agent is in Square 1 and goes right to the goal.</strong> It gets reward −1 and arrives at Square 2 (goal). Now we update:</p>
+
+<div class="math-block">
+Q(Square 1, right) ← R + γ × max Q(Square 2) = −1 + 0.9 × 0 = <strong>−1</strong>
+</div>
+
+<div class="callout plain">
+<strong>Reading that update:</strong> "The value of going right from Square 1" is now set to: "the reward I just got (−1)" plus "0.9 times the best thing I can do from where I landed (the goal, which is 0)." So it's just −1. We've learned one thing: going right from Square 1 costs us 1 step.
+</div>
+
+<div class="diagram-container">
+<svg viewBox="0 0 400 112" width="100%" style="max-width:400px;">
+  <rect x="130" y="6" width="110" height="24" rx="4" fill="#f0eee9"/>
+  <text x="185" y="22" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="11" fill="#6b6b6b">← LEFT</text>
+  <rect x="250" y="6" width="110" height="24" rx="4" fill="#f0eee9"/>
+  <text x="305" y="22" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="11" fill="#6b6b6b">RIGHT →</text>
+
+  <rect x="10" y="36" width="110" height="26" rx="4" fill="#eaf2f8"/>
+  <text x="65" y="53" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="11" fill="#2471a3">Square 0</text>
+  <rect x="130" y="36" width="110" height="26" rx="4" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+  <text x="185" y="53" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#999">0</text>
+  <rect x="250" y="36" width="110" height="26" rx="4" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+  <text x="305" y="53" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#999">0</text>
+
+  <rect x="10" y="68" width="110" height="26" rx="4" fill="#fafafa"/>
+  <text x="65" y="85" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="11" fill="#555">Square 1</text>
+  <rect x="130" y="68" width="110" height="26" rx="4" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+  <text x="185" y="85" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#999">0</text>
+  <rect x="250" y="68" width="110" height="26" rx="4" fill="#e8f8e0" stroke="#1e8449" stroke-width="2"/>
+  <text x="305" y="85" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#1e8449" font-weight="500">−1</text>
+
+  <rect x="10" y="100" width="110" height="26" rx="4" fill="#eafaf1"/>
+  <text x="65" y="117" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="11" fill="#1e8449">Square 2 (goal)</text>
+  <rect x="130" y="100" width="110" height="26" rx="4" fill="#eafaf1" stroke="#ccc" stroke-width="1"/>
+  <text x="185" y="117" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#1e8449">0</text>
+  <rect x="250" y="100" width="110" height="26" rx="4" fill="#eafaf1" stroke="#ccc" stroke-width="1"/>
+  <text x="305" y="117" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#1e8449">0</text>
+</svg>
+<div class="diagram-caption">After Step 1 — one cell updated (highlighted in green)</div>
+</div>
+
+<p><strong>Step 2 — Now say the agent is in Square 0 and goes right to Square 1.</strong> It gets reward −1. Now we update:</p>
+
+<div class="math-block">
+Q(Square 0, right) ← R + γ × max Q(Square 1) = −1 + 0.9 × max(0, −1) = −1 + 0.9 × 0 = <strong>−1</strong>
+</div>
+
+<div class="callout plain">
+<strong>Wait, why is max Q(Square 1) = 0 and not −1?</strong> Because the agent checks <em>all</em> actions from Square 1: left has Q = 0, right has Q = −1. The max of (0, −1) is 0. The agent hasn't tried going left from Square 1 yet, so that value is still 0 (the initial guess). This is a bit misleading early on — but it self-corrects over time as the agent explores more.
+</div>
+
+<p><strong>Step 3 — The agent explores more.</strong> Eventually it tries going left from Square 1 (back to Square 0, reward −1) and that cell gets updated too. After many episodes, every cell gets updated many times. Here's what the table looks like once converged:</p>
+
+<div class="diagram-container">
+<svg viewBox="0 0 400 112" width="100%" style="max-width:400px;">
+  <rect x="130" y="6" width="110" height="24" rx="4" fill="#f0eee9"/>
+  <text x="185" y="22" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="11" fill="#6b6b6b">← LEFT</text>
+  <rect x="250" y="6" width="110" height="24" rx="4" fill="#f0eee9"/>
+  <text x="305" y="22" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="11" fill="#6b6b6b">RIGHT →</text>
+
+  <rect x="10" y="36" width="110" height="26" rx="4" fill="#eaf2f8"/>
+  <text x="65" y="53" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="11" fill="#2471a3">Square 0</text>
+  <rect x="130" y="36" width="110" height="26" rx="4" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+  <text x="185" y="53" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#999">−2.71</text>
+  <rect x="250" y="36" width="110" height="26" rx="4" fill="#e8f8e0" stroke="#1e8449" stroke-width="2"/>
+  <text x="305" y="53" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#1e8449" font-weight="500">−1.90 ★</text>
+
+  <rect x="10" y="68" width="110" height="26" rx="4" fill="#fafafa"/>
+  <text x="65" y="85" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="11" fill="#555">Square 1</text>
+  <rect x="130" y="68" width="110" height="26" rx="4" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+  <text x="185" y="85" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#999">−2.71</text>
+  <rect x="250" y="68" width="110" height="26" rx="4" fill="#e8f8e0" stroke="#1e8449" stroke-width="2"/>
+  <text x="305" y="85" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#1e8449" font-weight="500">−1.00 ★</text>
+
+  <rect x="10" y="100" width="110" height="26" rx="4" fill="#eafaf1"/>
+  <text x="65" y="117" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="600" font-size="11" fill="#1e8449">Square 2 (goal)</text>
+  <rect x="130" y="100" width="110" height="26" rx="4" fill="#eafaf1" stroke="#ccc" stroke-width="1"/>
+  <text x="185" y="117" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#1e8449">0</text>
+  <rect x="250" y="100" width="110" height="26" rx="4" fill="#eafaf1" stroke="#ccc" stroke-width="1"/>
+  <text x="305" y="117" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#1e8449">0</text>
+</svg>
+<div class="diagram-caption">Converged Q-table — ★ marks the best action in each row</div>
+</div>
+
+<div class="callout plain">
+<strong>Now read the converged table like a cheat sheet:</strong><br><br>
+<strong>"I'm in Square 0. What should I do?"</strong> → Look at the row. Left = −2.71, Right = −1.90. Right is bigger (less negative). <strong>Go right.</strong><br><br>
+<strong>"I'm in Square 1. What should I do?"</strong> → Left = −2.71, Right = −1.00. Right is bigger. <strong>Go right.</strong><br><br>
+The agent has learned the optimal policy: always go right → right → goal! And notice the numbers make sense: going right from Square 1 costs 1 step (−1.00), going right from Square 0 costs about 2 steps (−1.90 ≈ −1 + 0.9 × −1). The discount factor γ = 0.9 is why it's −1.90 instead of exactly −2.
+</div>
+
+<h3>How the Agent Actually Uses the Q-Table (Decision Time)</h3>
+
+<div class="diagram-container">
+<svg viewBox="0 0 560 280" width="100%" style="max-width:560px;">
+  <!-- Step 1: Look up -->
+  <rect x="20" y="10" width="160" height="60" rx="8" fill="#eaf2f8" stroke="#2471a3" stroke-width="2"/>
+  <text x="100" y="34" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="13" fill="#2471a3">Step 1</text>
+  <text x="100" y="54" text-anchor="middle" font-family="Crimson Pro, serif" font-size="13" fill="#2c2c2c">Where am I? Square 1.</text>
+
+  <line x1="182" y1="40" x2="218" y2="40" stroke="#555" stroke-width="2" marker-end="url(#arwR)"/>
+
+  <!-- Step 2: Check all actions -->
+  <rect x="220" y="10" width="160" height="60" rx="8" fill="#fdf2e9" stroke="#c0392b" stroke-width="2"/>
+  <text x="300" y="34" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="13" fill="#c0392b">Step 2</text>
+  <text x="300" y="54" text-anchor="middle" font-family="Crimson Pro, serif" font-size="13" fill="#2c2c2c">Look up Q-values for Sq 1</text>
+
+  <!-- Q-value comparison -->
+  <rect x="230" y="80" width="140" height="70" rx="6" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+  <text x="260" y="102" font-family="Source Sans 3, sans-serif" font-size="12" fill="#999">← left:</text>
+  <text x="340" y="102" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="13" fill="#c0392b">−2.71</text>
+  <text x="260" y="126" font-family="Source Sans 3, sans-serif" font-size="12" fill="#999">right →:</text>
+  <text x="340" y="126" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="13" fill="#1e8449" font-weight="500">−1.00 ★</text>
+  <rect x="318" y="114" width="30" height="16" rx="3" fill="#1e8449" opacity="0.1"/>
+
+  <line x1="382" y1="40" x2="418" y2="40" stroke="#555" stroke-width="2" marker-end="url(#arwR)"/>
+
+  <!-- Step 3: Pick max -->
+  <rect x="420" y="10" width="130" height="60" rx="8" fill="#eafaf1" stroke="#1e8449" stroke-width="2"/>
+  <text x="485" y="34" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="13" fill="#1e8449">Step 3</text>
+  <text x="485" y="54" text-anchor="middle" font-family="Crimson Pro, serif" font-size="13" fill="#2c2c2c">Pick the max → right!</text>
+
+  <!-- Epsilon note -->
+  <rect x="20" y="170" width="530" height="90" rx="8" fill="#fef9e7" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="40" y="195" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="13" fill="#e67e22">...but wait! The ε-greedy twist:</text>
+  <text x="40" y="218" font-family="Crimson Pro, serif" font-size="14" fill="#2c2c2c">Before picking the max, the agent generates a random number (say 0.07).</text>
+  <text x="40" y="240" font-family="Crimson Pro, serif" font-size="14" fill="#2c2c2c">If the random number &lt; ε (say 0.1), it <tspan font-weight="600" fill="#c0392b">ignores the table</tspan> and picks randomly. 🎲</text>
+  <text x="40" y="258" font-family="Crimson Pro, serif" font-size="14" fill="#2c2c2c">If the random number ≥ ε, it <tspan font-weight="600" fill="#1e8449">follows the table</tspan> and picks the max. ★</text>
+
+  <defs>
+    <marker id="arwR" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#555"/></marker>
+  </defs>
+</svg>
+<div class="diagram-caption">Figure 10c — The agent's decision process at each step: look up → compare → pick (with occasional randomness)</div>
+</div>
+
+<h3>Summary: The Q-Table Lifecycle</h3>
+
+<div class="diagram-container">
+<svg viewBox="0 0 620 140" width="100%" style="max-width:620px;">
+  <!-- Phase 1 -->
+  <rect x="10" y="20" width="130" height="90" rx="8" fill="#fdf2e9" stroke="#c0392b" stroke-width="2"/>
+  <text x="75" y="46" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="13" fill="#c0392b">Early</text>
+  <text x="75" y="66" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#2c2c2c">All values ≈ 0</text>
+  <text x="75" y="82" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#2c2c2c">Agent stumbles</text>
+  <text x="75" y="98" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#2c2c2c">around randomly</text>
+
+  <line x1="145" y1="65" x2="175" y2="65" stroke="#555" stroke-width="2" marker-end="url(#arwR)"/>
+
+  <!-- Phase 2 -->
+  <rect x="180" y="20" width="140" height="90" rx="8" fill="#fef9e7" stroke="#e67e22" stroke-width="2"/>
+  <text x="250" y="46" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="13" fill="#e67e22">Learning</text>
+  <text x="250" y="66" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#2c2c2c">Values get updated</text>
+  <text x="250" y="82" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#2c2c2c">after each step</text>
+  <text x="250" y="98" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#2c2c2c">Numbers → accurate</text>
+
+  <line x1="325" y1="65" x2="355" y2="65" stroke="#555" stroke-width="2" marker-end="url(#arwR)"/>
+
+  <!-- Phase 3 -->
+  <rect x="360" y="20" width="130" height="90" rx="8" fill="#eaf2f8" stroke="#2471a3" stroke-width="2"/>
+  <text x="425" y="46" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="13" fill="#2471a3">Converged</text>
+  <text x="425" y="66" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#2c2c2c">Values stabilize</text>
+  <text x="425" y="82" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#2c2c2c">Optimal path is just</text>
+  <text x="425" y="98" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#2c2c2c">"follow the max"</text>
+
+  <line x1="495" y1="65" x2="525" y2="65" stroke="#555" stroke-width="2" marker-end="url(#arwR)"/>
+
+  <!-- Phase 4 -->
+  <rect x="530" y="20" width="80" height="90" rx="8" fill="#eafaf1" stroke="#1e8449" stroke-width="2.5"/>
+  <text x="570" y="52" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="24" fill="#1e8449">✓</text>
+  <text x="570" y="78" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="13" fill="#1e8449">Done!</text>
+  <text x="570" y="98" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#2c2c2c">Policy found</text>
+
+  <defs>
+    <marker id="arwR" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#555"/></marker>
+  </defs>
+</svg>
+<div class="diagram-caption">Figure 10d — The Q-table lifecycle: from blank spreadsheet to optimal cheat sheet</div>
+</div>
+
+<div class="callout plain">
+<strong>The key takeaway:</strong> A Q-table is just a spreadsheet that starts full of wrong numbers and slowly corrects itself through trial and error. Each time the agent takes a step, one cell in the spreadsheet gets a slightly better number. After enough steps, every cell is accurate, and the agent can just look up the best move in any situation — like having a perfect cheat sheet for the game.
+</div>
+
+<h3>Observations During Training</h3>
+
+<p><strong>Early episodes:</strong> The agent falls off the cliff repeatedly, learning that cliff-adjacent "down" actions have Q-values around −100. <strong>By ~episode 30:</strong> Most Q-values settle near −1 (the per-step reward). The terminal state has value 0 — higher than any other — creating a <strong>gradient</strong> that pulls the agent toward the goal.</p>
+
+<div class="callout green">
+<strong>The Gradient Intuition:</strong> The terminal state's value of 0 "filters back" along the optimal path, becoming slightly more negative at each step away. Simultaneously, a strong negative gradient near the cliff (−100) repels the agent. These two gradients together define the optimal path. Cliff cells themselves are never updated — the agent never occupies them.
+</div>
+
+<div class="callout plain">
+<strong>Think of it like water flowing downhill.</strong> The goal square has value 0 (the highest point). Every other square has a negative value (lower ground). The agent is like a ball that always rolls toward higher ground. Near the goal, values might be −1.00, −1.01, −1.02 — a very gentle uphill slope toward the goal. Near the cliff, values plunge to −100 — a steep cliff the ball avoids. So the agent naturally "rolls" along the path of least-negative values, guided toward the goal and away from the cliff. These tiny differences in Q-values (−1.000 vs. −1.011) are all it takes.
+</div>
+
+<hr>
+
+<!-- SECTION 11 -->
+<h2><span class="num">11.</span> Roadmap of Key Topics</h2>
+
+<div class="diagram-container">
+<svg viewBox="0 0 660 300" width="100%" style="max-width:660px;">
+  <!-- Dynamic Programming -->
+  <rect x="20" y="20" width="180" height="90" rx="8" fill="#fdf2e9" stroke="#c0392b" stroke-width="2"/>
+  <text x="110" y="48" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="14" fill="#c0392b">Dynamic Programming</text>
+  <text x="110" y="68" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#6b6b6b">Policy evaluation</text>
+  <text x="110" y="84" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#6b6b6b">Policy / value iteration</text>
+  <text x="110" y="100" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#6b6b6b">Requires full model</text>
+
+  <!-- Monte Carlo -->
+  <rect x="240" y="20" width="180" height="90" rx="8" fill="#eaf2f8" stroke="#2471a3" stroke-width="2"/>
+  <text x="330" y="48" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="14" fill="#2471a3">Monte Carlo</text>
+  <text x="330" y="68" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#6b6b6b">Learn from complete episodes</text>
+  <text x="330" y="84" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#6b6b6b">Update after episode ends</text>
+  <text x="330" y="100" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#6b6b6b">Model-free</text>
+
+  <!-- TD Learning -->
+  <rect x="460" y="20" width="180" height="90" rx="8" fill="#eafaf1" stroke="#1e8449" stroke-width="2.5"/>
+  <text x="550" y="48" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="14" fill="#1e8449">TD Learning</text>
+  <text x="550" y="68" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#6b6b6b">Learn after every step</text>
+  <text x="550" y="84" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#6b6b6b">Q-Learning (off-policy)</text>
+  <text x="550" y="100" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#6b6b6b">SARSA (on-policy)</text>
+
+  <!-- Arrows -->
+  <line x1="200" y1="65" x2="238" y2="65" stroke="#999" stroke-width="1.5" marker-end="url(#arrowL)"/>
+  <line x1="420" y1="65" x2="458" y2="65" stroke="#999" stroke-width="1.5" marker-end="url(#arrowL)"/>
+
+  <!-- "We are here" pointer -->
+  <path d="M550,115 L550,135" stroke="#1e8449" stroke-width="2.5" marker-end="url(#arrowDet)"/>
+  <rect x="495" y="140" width="110" height="28" rx="14" fill="#1e8449"/>
+  <text x="550" y="159" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="12" fill="white">WE ARE HERE</text>
+
+  <!-- Value Function Approx -->
+  <rect x="170" y="200" width="320" height="80" rx="8" fill="#f5f0ff" stroke="#7d3c98" stroke-width="2"/>
+  <text x="330" y="228" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="14" fill="#7d3c98">Value Function Approximation</text>
+  <text x="330" y="250" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#6b6b6b">Neural networks approximate Q for large / continuous spaces</text>
+  <text x="330" y="268" text-anchor="middle" font-family="Crimson Pro, serif" font-size="12" fill="#6b6b6b">Required for Go, Atari, robotics, etc.</text>
+
+  <text x="330" y="196" text-anchor="middle" font-family="Crimson Pro, serif" font-style="italic" font-size="12" fill="#999">↑ Coming later in the course ↑</text>
+
+  <defs>
+    <marker id="arrowL" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#999"/></marker>
+    <marker id="arrowDet" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#1e8449"/></marker>
+  </defs>
+</svg>
+<div class="diagram-caption">Figure 11 — Course roadmap: from exact methods to function approximation</div>
+</div>
+
+<h3>Policy Iteration Intuition</h3>
+
+<p>The value function and policy are interlinked and can be improved iteratively: <strong>evaluate</strong> the current policy → get value estimates → <strong>improve</strong> the policy using those estimates → repeat → both converge to optimal. If multiple policies yield the same optimal value, they are all optimal — you can pick any one.</p>
+
+</div>
+</body>
+</html>
