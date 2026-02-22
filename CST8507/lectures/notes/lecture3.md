@@ -550,8 +550,8 @@ $$\text{cosine similarity}(\vec{A}, \vec{B}) = \frac{\vec{A} \cdot \vec{B}}{\|\v
 #### Worked Example *(added)*
 
 Given two document vectors:
-- $\vec{A} = [1, 2, 1]$
-- $\vec{B} = [2, 1, 1]$
+$$\vec{A} = [1, 2, 1]$$
+$$\vec{B} = [2, 1, 1]$$
 
 $$\vec{A} \cdot \vec{B} = (1)(2) + (2)(1) + (1)(1) = 5$$
 
@@ -572,7 +572,7 @@ The slides provide this concrete example: *(from slides)*
 | Doc 1: "I love NLP" | 1 | 1 | 0 | 1 |
 | Doc 2: "I love you" | 1 | 1 | 1 | 0 |
 
-$\vec{a} = [1, 1, 1, 0]$, $\vec{b} = [1, 1, 0, 1]$
+$$\vec{a} = [1, 1, 1, 0], \quad \vec{b} = [1, 1, 0, 1]$$
 
 $$\text{cosine similarity} = \frac{(1)(1)+(1)(1)+(1)(0)+(0)(1)}{\sqrt{1+1+1+0} \times \sqrt{1+1+0+1}} = \frac{2}{\sqrt{3} \times \sqrt{3}} = \frac{2}{3} \approx 0.667$$
 
