@@ -550,7 +550,9 @@ $$\text{cosine similarity}(\vec{A}, \vec{B}) = \frac{\vec{A} \cdot \vec{B}}{\|\v
 #### Worked Example *(added)*
 
 Given two document vectors:
+
 $$\vec{A} = [1, 2, 1]$$
+
 $$\vec{B} = [2, 1, 1]$$
 
 $$\vec{A} \cdot \vec{B} = (1)(2) + (2)(1) + (1)(1) = 5$$
