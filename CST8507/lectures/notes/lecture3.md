@@ -35,8 +35,8 @@ Text representation techniques can be classified into three categories, from ear
 
 ```mermaid
 graph LR
-    A["1. Frequency Based\n(Statistical)"] --> B["2. Word Embedding\n(Neural Network)"]
-    B --> C["3. Transformer Based\n(LLMs)"]
+    A["1. Frequency Based<br>(Statistical)"] --> B["2. Word Embedding<br>(Neural Network)"]
+    B --> C["3. Transformer Based<br>(LLMs)"]
 ```
 *(added)*
 
@@ -532,7 +532,7 @@ According to the lecturer, Euclidean distance does not take into account the **d
 
 **Cosine Similarity**: measures the **angle** between two vectors in a multi-dimensional space. It is the most widely used similarity metric in NLP. The difference from Euclidean distance is that cosine similarity considers both the **magnitude and the direction** of the vectors.
 
-$$\text{cosine\_similarity}(\vec{A}, \vec{B}) = \frac{\vec{A} \cdot \vec{B}}{\|\vec{A}\| \times \|\vec{B}\|}$$
+$$\text{cosine similarity}(\vec{A}, \vec{B}) = \frac{\vec{A} \cdot \vec{B}}{\|\vec{A}\| \times \|\vec{B}\|}$$
 
 #### How It Works
 
@@ -559,7 +559,7 @@ $$\|\vec{A}\| = \sqrt{1^2 + 2^2 + 1^2} = \sqrt{6}$$
 
 $$\|\vec{B}\| = \sqrt{2^2 + 1^2 + 1^2} = \sqrt{6}$$
 
-$$\text{cosine\_similarity} = \frac{5}{\sqrt{6} \times \sqrt{6}} = \frac{5}{6} \approx 0.833$$
+$$\text{cosine similarity} = \frac{5}{\sqrt{6} \times \sqrt{6}} = \frac{5}{6} \approx 0.833$$
 
 A score of 0.833 is considered **high**, indicating strong similarity.
 
@@ -574,7 +574,7 @@ The slides provide this concrete example: *(from slides)*
 
 $\vec{a} = [1, 1, 1, 0]$, $\vec{b} = [1, 1, 0, 1]$
 
-$$\text{cosine\_similarity} = \frac{(1)(1)+(1)(1)+(1)(0)+(0)(1)}{\sqrt{1+1+1+0} \times \sqrt{1+1+0+1}} = \frac{2}{\sqrt{3} \times \sqrt{3}} = \frac{2}{3} \approx 0.667$$
+$$\text{cosine similarity} = \frac{(1)(1)+(1)(1)+(1)(0)+(0)(1)}{\sqrt{1+1+1+0} \times \sqrt{1+1+0+1}} = \frac{2}{\sqrt{3} \times \sqrt{3}} = \frac{2}{3} \approx 0.667$$
 
 A score of 0.667 is considered **high**. The documents are not identical, but there is meaningful similarity. How accurate the similarity measure is depends on how good the vector representation is, which is precisely why cosine similarity serves as a benchmark.
 
