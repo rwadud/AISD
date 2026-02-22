@@ -1,0 +1,121 @@
+For each of classification and regression, there are lots of algorithms. The one that is required here is one of the basic traditional classification algorithms. So, what is the Naive Bayes classifier? First of all, it is a probabilistic framework for solving classification problems. It is based on conditional probabilities. So what is conditional probability? The probability of something occurring if you already know some other thing happened before. It is conditioned on something.
+
+So, it occurs to P of Y given X, or joint probability of X and Y. The only formula is P of X given Y equals P of X and Y divided by P of Y. And also, we can write P of X and Y, or joint probability, in terms of the intersection, it equals to P of X intersection Y. So based on this formula, we can arrive at something like this: P of Y given X equals P of X given Y times P of Y divided by P of X. Simply, you can replace this term P of X and Y with P of Y times P of X given Y.
+
+Now, let's use this ingredient in our classification task. Let's consider each attribute in the data set as a random variable. So each of these attributes or features, you consider them as a kind of random variable that can take any value, discrete or continuous. So then given a record with attributes X1 up to XD, that is our dimension, feature dimension, the goal is to predict Y. So we want to know, for this instance, what would be the class? We are specifically looking for the value of Y that maximizes this probability, given the features. But the question is, can we just estimate these probabilities directly?
+
+So, P of Y given X1, X2, dot dot dot, XD, we cannot directly compute this one just by looking at the data. We need to find a solution. Because for some samples, for data, you might know P of X1, but you need to find the probability of X1 and X2 and all of them at the same time. P of X1 by itself is easy to find, and P of Y given X1 as well. But the combination is harder.
+
+So now the approach. We compute the posterior probability P of Y given X1, X2, dot dot dot, XD using Bayes' theorem. So based on that, we can rewrite this probability in this way: P of Y given X1, X2, dot dot dot, XD equals P of X1, X2, dot dot dot, XD given Y times P of Y divided by P of X1, X2, dot dot dot, XD.
+
+Now, maximum a posteriori. So we want to choose Y that maximizes this probability. This is equivalent to choosing the Y that maximizes the numerator. So if you have a maximum value for the numerator, you should have a maximum value for this. And now, how can we estimate this probability? If you have, let's say, three possible values for Y like C1, C2, C3, three classes, so we have to first find P of C1 given X, P of C2 given X, P of C3 given X1 to XD. Then we should check which one is maximum. The probability of which class is the maximum.
+
+So here, this probability can be estimated. Now, the question is how to estimate this? For example, let's say we have this data set. It is a labeled data set. We have refund, marital status, taxable income, and class label. So now we have this test record. The refund is no, the marital status is divorced, and income is 120K. So we need to estimate first P of class equals yes given X, and also P of class equals no given X. For the simplicity, from now on, we just replace the class equals yes with just yes and class equals no with just no. So we should find these probabilities in Bayesian classification algorithms.
+
+So now, how to estimate these probabilities? We need Bayes' theorem. P of yes given X and P of no given X would be converted to these two: P of X given yes times P of yes divided by P of X, and similarly, P of X given no times P of no divided by P of X.
+
+Now the question. Here, is P of X important or not? So, we want to compare at the end these two probabilities, P of yes given X and P of no given X. The denominator for these two is the same P of X. So we can just ignore it.
+
+Is it clear why we don't need to worry about P of X? So before we move to how to estimate these two, let me define a concept: conditional independence. You say two random variables or two events X and Y are conditionally independent given Z if P of X given Y and Z equals P of X given Z.
+
+For example, consider arm length and reading skill. Say, a young child has shorter arms and may need help with reading compared to others. So we have arm length and reading skill here. If we neglect the age parameter, if we do not consider it, is there any relation between arm length and reading skill? No, there is no relation. But if we consider age, there is some kind of relation; they can be related to each other. That is conditional independence. So you say arm length and reading skill are conditionally independent given age.
+
+Now, back to our question, how to estimate P of X given yes and P of X given no. This is the naive version of the Bayesian classification. Why do we say it is naive? Because we assume independence between the features, different features in our feature set. We assume that there is no relation between X1 and X2, there is no relation between X2 and X3, there is no relation between X1 and XD. So all the features are assumed independent of other features.
+
+Then, in that case, we can write these probabilities as follows. P of X1, X2, dot dot dot, XD given class YJ would be equal to P of X1 given YJ times P of X2 given YJ times P of X3 given YJ, dot dot dot, P of XD given YJ. But now each one of these probabilities can be found just by looking at our training data set.
+
+So, for example, if you want to find P of refund equals no given class equals yes, how would you find it? Since it is given class equals yes, you first filter the data to only look at samples where class equals yes. How many? One, two, three. We have three. And among those three samples, for how many of them is refund equal to no? Three out of three. So the probability is three divided by three.
+
+Similarly, you can find for P of refund equals yes given class equals yes. How many samples do we have where class equals yes? Three. And for one of them, the refund was yes. So it is one out of three.
+
+So this is the assumption that we made, and because of this assumption, we call it Naive Bayes classifier. But in reality, I would say it is almost not possible to find cases where the features are completely independent of each other. So in fact, we are making a wrong assumption in general. But interestingly, it works despite that wrong assumption.
+
+Now, the new point is classified to class YJ if P of X1, X2, dot dot dot, XD given YJ times P of YJ is maximum. For which class value is this maximum? For all possible classes, if you have two classes, you check class one and class two. If you have three classes, you check class one, class two, and class three. If you have ten classes, you check all ten.
+
+So, now, for the previous example, to classify this record where refund equals no, marital status equals divorced, and income equals 120K, we need to find two probabilities: P of X given yes and P of X given no. Using the Naive Bayes classifier, we assume that there is no relation between refund, marital status, and taxable income, so they are completely independent. So we can write it as P of refund equals no given yes times P of marital status equals divorced given yes times P of income equals 120K given yes. And similarly for the no class.
+
+After finding these, the only thing that we need is P of yes and P of no. How we can find P of yes and P of no? How many samples do we have? Ten total. How many of them are yes? Three out of ten. So P of yes is 0.3, and P of no is 0.7. So then you multiply P of yes by the first product and P of no by the second product, and compare the results.
+
+One of the issues with the Bayesian classification, the traditional version, is that if one of these probabilities equals zero, the overall probability would be zero. We have to deal with that.
+
+Now, here we have two types of features. One type is categorical, like marital status, which can be single, married, or divorced, or refund, which can be yes or no. These are limited values. But for the taxable income, it is continuous, unlimited. So you cannot just count how many times we have exactly 95K or exactly 220K. We have to handle these two types differently.
+
+For the categorical features, it is very simple. P of XI equals C given Y equals YJ is calculated as NFC divided by N. NFC is the number of instances where XI equals C belonging to class YJ. So, for example, P of marital status equals married given class no: how many no samples do we have? Seven. Among these seven no class samples, how many of them have marital status equal to married? That gives us the probability.
+
+For the numerical features, or continuous features, we assume that the probability follows a normal distribution. And we use this formula: P of XI given class YJ equals one over the square root of 2 pi times the standard deviation, times e to the power of minus (XI minus the mean) squared divided by two times the variance. So for example, if you have to find P of income equals 120K given class no, what should you do? You need to find the mean and the standard deviation of the income for the samples where the class is no. Then you plug in 120K as XI, compute the mean and standard deviation only for the no class samples, and use the formula.
+
+Similarly, you can do this for class yes, and then see which probability is higher.
+
+Another way to handle numerical features is through discretization. Convert numerical values into categories, similarly to what we have done for the categorical features.
+
+Let's have a look at this example. We have a test record: refund equals no, marital status equals divorced, and income equals 120K. So we want to classify this record using Naive Bayes classifier. We have to find P of X given yes and P of X given no. Given training data, we can find these. For refund equals no given no, we find the value. For marital status equals divorced given no as well, and similarly for the others. Then for taxable income, again, you have to find P of income equals 120K given no and also P of income equals 120K given yes. Then P of X given yes would be P of refund equals no given yes times P of marital status equals divorced given yes times P of income equals 120K given yes. And you have to do the similar computation for class no. After we are done with these two, we compare. But we also need to find P of no and P of yes. Then multiply them by their corresponding probabilities and compare.
+
+If you have many classes, like 100 classes, then you have to compute 100 times. For each class, you check. Then you pick the highest probability.
+
+A student asked about outliers: if you have an outlier, for example one sample with a very high or unusual value, would that be a big issue? Not really, since we are working with probabilities. It does not take heavy account of single values. From each sample, it just takes the overall probability. So it can be considered a kind of robustness of this algorithm to noise.
+
+Can we use Naive Bayes for image classification? Yes, you can apply it. But in image classification, the features, like pixel values, are not independent. For example, neighboring pixel values are dependent on each other. Also, if you have, say, 28 by 28 images, you have 784 features, and the computation would be very intensive. So it does not make sense to apply Naive Bayes classifier for images, but technically you can. You can apply it on any kind of classification task where features can be defined.
+
+One of the interesting properties of the Naive Bayes classifier is that we can even classify with partial information. It is not necessary to have access to all the values of the features. For example, if we have only one feature or two features, we can still classify. It means that we can use this classifier in cases where we have a very large amount of missing values.
+
+But the question is, with partial information, would the overall performance be the same as with full information using all features? Definitely no. We can classify using one feature and get something, but with two features, three features, more features, the results would be much more reliable. In the absence of some information about any attributes, we can use prior probabilities of the classes.
+
+For example, if you have only marital status, then P of yes given divorced would be P of divorced given yes times P of yes. And P of no given divorced would be P of divorced given no times P of no. Or if you only have two features, refund and marital status, you just use those.
+
+A student asked about why certain features like name are ignored. For some tasks, some features are not important, but for some other tasks, the same features can be important. For example, in this task the name is not important, but if you have another task like predicting gender, the name would be related. This is the most important part in machine learning, more specifically in traditional machine learning: feature engineering, working with the features.
+
+Now the question: what happens in the case of a tie, where both probabilities are the same? In the case of a tie, for most classifiers, you choose one of them randomly.
+
+Now, the issue about the zero probability problem. If you have, let's say, 1000 or 100,000 features, so we have to compute P of X1 given Y times P of X2 given Y, up to P of X 100,000 given Y. But if one of those probabilities takes the value of zero, everything would be zero, which does not make sense. Why does it not make sense? Because we should not get the overall zero probability when only one of the features has probability zero. It can be for any reason, it can be a mistake for that feature to get that value.
+
+For example, if we want to classify a record where we only have marital status and the value is divorced. If in our training data, there are no samples with marital status equals divorced in the yes class, then P of marital status equals divorced given yes would be zero. That zero gets multiplied through and makes the entire probability zero. And maybe for both classes, yes and no, one of the probabilities would be zero. Then it means the classifier cannot classify this sample at all.
+
+This is one of the issues with the Naive Bayes classifier for classification. Having probability zero is different from having very small probability. Zero means that that single feature has decided the whole classification, which is a wrong assumption because that value could be there for any reason, by mistake or otherwise.
+
+So, the solution. If one of the conditional probabilities is zero, it corrupts all the other estimates of conditional probability. In the original formula, P of XI equals C given Y is the number of times XI takes the value C when the class is Y, divided by N. If this count is zero, the probability would be zero.
+
+So, we use Laplace smoothing. Instead of having zero, we add one to the numerator and add the number of possible values that X can take to the denominator. For example, if P of refund equals yes given yes was zero out of three, with Laplace smoothing it becomes zero plus one over three plus two, where two is the number of possible values that refund can take (yes or no). So instead of having zero here, it would be a small value.
+
+Also, we have another way: P of XI equals C given Y equals (NFC plus epsilon times P) divided by (N plus epsilon), where NFC is the number of times XI takes value C when the class label is Y, N is the total number of cases where the class label equals Y, P is the initial estimate, and epsilon is a hyperparameter.
+
+What is the difference between parameters and hyperparameters in machine learning and deep learning? The model learns the values for the parameters by itself. For example, all the weights in neural networks are parameters. During training, the model learns the proper values for the weights. Similarly, all the biases are parameters. But the hyperparameters are the values that you, the designer, give to the model.
+
+For example, in neural networks, some hyperparameters include: the number of epochs, the learning rate, the activation function, the size of filters, the number of filters, the dropout probability, the loss function type, the early stopping criteria, the batch size, the validation split, the number of layers, the number of neurons in each layer. These are all hyperparameters. You have to decide about them.
+
+Metrics cannot be considered as hyperparameters because for a specific task, you have to use some specific metrics.
+
+Now, as a summary, Naive Bayes algorithm is robust to noise. It handles missing values well because we can estimate using partial information. Also, it is robust to redundant and correlated features because of the independence assumption. But if we have already correlated features in our training set, it will affect the model's probability estimates.
+
+Also, regarding the conditional independence assumption: we said we assume that all features are independent. But what if we have problems where the features are explicitly dependent on each other? If the problem is something like that, we cannot just use the Naive Bayes classifier effectively. You could still assume independence and apply it, but the results would not be as good. For those cases, we use the Bayesian Belief Network.
+
+But before diving into the Bayesian Belief Network, one question: how does Naive Bayes perform on a problem where features are clearly dependent? If you have a data set with two classes, say red and blue samples, and you want to apply Naive Bayes classifier, you can see there is a correlation between the features for different samples. For example, all red samples are in one region with certain value ranges for X1 and X2, and all blue samples are in another region. So the features are clearly not independent. A student asked how you would classify new points in this case. You could use prior probability, or the ratio of samples. You could also use other algorithms like SVM, decision trees, and so on. But since you can explicitly see here that there is dependency between the features, you cannot apply the Naive Bayes classification algorithm well here. If you insist to apply, you can apply, but the results would not be good.
+
+Now, let's move into the Bayesian Belief Network. The Bayesian Belief Network, or BBN, provides a graphical representation of probabilistic relationships among a set of random variables. If we have a set of random variables like A, B, C, D, we represent the relationships between them. It consists of a directed acyclic graph. So there must be connections between nodes, and they are directed connections. The direction must be clearly expressed. Each node corresponds to a variable. Each arc corresponds to the dependency relationship between a pair of variables. Then, probability tables capture those dependencies as well.
+
+So for example, let's say D is a parent of C, A is a child of C, and A is a descendant of D. In a Bayesian network, a node is conditionally independent of all its non-descendants given its parents.
+
+Now, here, for the Naive Bayes assumption, we have the situation where all features are independent. There is no dependency between any of them, X1 through XD. No node has any parent. The table contains prior probability P of X. For nodes with no parents, we have P of X and it has only one entry. If X has parents, like Y1, Y2, Y3, the table contains conditional probability P of X given Y1, Y2, Y3.
+
+So now, consider heart disease as an example. The probability of having heart disease depends on diet and exercise. Also, chest pain and blood pressure are affected by heart disease. If you have heart disease, most probably you would have chest pain, and your blood pressure would be high. This is not a tree structure; it is a directed acyclic graph.
+
+So in our case, this is our graph. It shows us the relationship or dependency between different random variables. Our variables are exercise, diet, heart disease, chest pain, and blood pressure. In this graph, you see that diet and exercise can affect heart disease, and heart disease can affect chest pain and blood pressure.
+
+Exercise and diet do not have parents, so we have prior probabilities P of exercise and P of diet. For example, exercise: yes is 0.7, no is 0.3 based on the data. Similarly for diet: healthy is 25% and unhealthy is 75%.
+
+Now for the heart disease node, it should be conditional on both diet and exercise. If we have heart disease given diet is healthy and exercise is yes, the probability is low. If diet is healthy and exercise is no, the probability increases. If the diet is unhealthy and exercise is yes, 55%. Unhealthy and no exercise, 75%.
+
+Similarly for chest pain, P of chest pain given heart disease: if you have heart disease, the probability of having chest pain would be 80%. If you do not have heart disease, the probability of having chest pain would be very low. And the same for blood pressure.
+
+So the child's probability table is predicted based on the parents.
+
+The table comes from the data set, considering these relationships. The relationships themselves are given as part of the problem. You are given the problem, and the relationships between different features are specified. A student asked whether we can construct any graph structure. No, we cannot just construct any graph. The structure is given as part of the problem. You know the relationships between different features based on domain knowledge. However, in some cases, if you have two variables, you can test, for example using covariance, to find the relationship between them. But usually, the structure is given based on domain expertise.
+
+We already know how to find these kinds of probabilities from training, similar to what we have done previously. Now, let's say given this test record: exercise equals no, diet equals healthy, chest pain equals yes, blood pressure equals high. We want to find the probability of heart disease considering the dependencies between the variables.
+
+We know P of heart disease given exercise and diet. P of heart disease equals yes when exercise is no and diet is healthy: this is 0.45. Then P of chest pain equals yes given heart disease equals yes: this is 0.80. P of blood pressure equals high given heart disease equals yes: this is 0.85. We also have P of exercise equals no which is 0.3, and P of diet equals healthy which is 0.25. Now, we multiply all of these together.
+
+Similarly, we have to do the same for heart disease equals no. Then we compare these two numbers. The result for heart disease equals yes was much higher than the result for heart disease equals no.
+
+So this sample would be classified as having heart disease.
+
+That is all about the Bayesian classifiers.
