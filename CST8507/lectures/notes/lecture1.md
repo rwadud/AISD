@@ -201,10 +201,10 @@ Some applications use only NLU, some only NLG, and many combine both.
 | Category | Examples |
 |----------|----------|
 | **NLU only** | Sentiment analysis, text classification (spam detection, language detection, document/topic classification) |
-| **NLG only** | Text-to-speech, automatic report generation (e.g., medical reports from patient data) |
+| **NLG only** | Speech-to-text, automatic report generation (e.g., medical reports from patient data) |
 | **NLU + NLG** | Translation, summarization, question answering, chatbots |
 
-**Text-to-speech pipeline**: the system processes signals, converts them to words, then combines the words to generate text. There is no deep semantic understanding involved, making it a primarily generative task.
+**Speech-to-text pipeline**: the system processes signals, converts them to words, then combines the words to generate text. There is no deep semantic understanding involved, making it a primarily generative task.
 
 **Automatic report generation**: for example, an automatic medical report takes patient features, measurements, and analysis, then automatically generates a report based on this information. Any automatic report generation from data is natural language generation.
 
