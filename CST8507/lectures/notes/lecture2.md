@@ -221,11 +221,11 @@ NLP development follows a methodology similar to the software engineering develo
 
 ```mermaid
 graph TD
-    A["1. Understand the Problem\n& Gather Requirements"]
+    A["1. Understand the Problem<br>& Gather Requirements"]
     B["2. Data Collection"]
     C["3. Text Cleaning"]
-    D["4. Preprocessing\n(Tokenization, Noise Removal,\nNormalization)"]
-    E["5. Feature Extraction /\nFeature Engineering"]
+    D["4. Preprocessing<br>(Tokenization, Noise Removal,<br>Normalization)"]
+    E["5. Feature Extraction /<br>Feature Engineering"]
     F["6. Modeling"]
     G["7. Evaluation"]
     H["8. Deployment"]

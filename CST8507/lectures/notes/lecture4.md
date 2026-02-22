@@ -133,9 +133,9 @@ WordNet can improve NLP systems through **query expansion**. In a document retri
 graph LR
     A["User Query: 'car'"] --> B["Extract Keywords"]
     B --> C["WordNet Synonym Lookup"]
-    C --> D["Expanded Query:\n'car', 'motor',\n'automobile', 'vehicle'"]
+    C --> D["Expanded Query:<br>'car', 'motor',<br>'automobile', 'vehicle'"]
     D --> E["Search Database"]
-    E --> F["Broader, More\nRelevant Results"]
+    E --> F["Broader, More<br>Relevant Results"]
 ```
 *(added)*
 
@@ -245,10 +245,10 @@ For the sentence: *"The cat sat on the mat"* with window size 5 ($K = 2$): *(add
 
 ```mermaid
 graph LR
-    A["Context Words\n(one-hot encoded)"] --> B["Hidden Layer\n(V × D weight matrix)"]
-    B --> C["Average of\nContext Vectors"]
+    A["Context Words<br>(one-hot encoded)"] --> B["Hidden Layer<br>(V × D weight matrix)"]
+    B --> C["Average of<br>Context Vectors"]
     C --> D["Softmax Layer"]
-    D --> E["Predicted\nTarget Word"]
+    D --> E["Predicted<br>Target Word"]
 ```
 *(added)*
 
@@ -279,9 +279,9 @@ Skip-gram is the opposite of CBOW:
 
 ```mermaid
 graph LR
-    A["Target Word\n(one-hot encoded)"] --> B["Hidden Layer\n(V × D weight matrix)"]
+    A["Target Word<br>(one-hot encoded)"] --> B["Hidden Layer<br>(V × D weight matrix)"]
     B --> C["Output Layer"]
-    C --> D["Predicted\nContext Words"]
+    C --> D["Predicted<br>Context Words"]
 ```
 *(added)*
 

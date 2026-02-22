@@ -198,11 +198,11 @@ Using a **4-gram model** (n=4), we only look at the last 3 words: "students open
 
 ```mermaid
 graph LR
-    A["Corpus"] --> B["Sliding Window\n(size = n)"]
+    A["Corpus"] --> B["Sliding Window<br>(size = n)"]
     B --> C["Extract all n-grams"]
     C --> D["Count frequencies"]
-    D --> E["Compute probabilities\nfor each n-gram"]
-    E --> F["Probability Table\n(the trained model)"]
+    D --> E["Compute probabilities<br>for each n-gram"]
+    E --> F["Probability Table<br>(the trained model)"]
 ```
 *(added)*
 
@@ -268,10 +268,10 @@ The earlier text representation and language models were based on statistical te
 
 ```mermaid
 graph LR
-    A["Input Layer\n(features)"] --> B["Hidden Layer\n(weights)"]
-    B --> C["Output Layer\n(prediction)"]
-    C --> D["Loss Function\n(compare with true output)"]
-    D --> E["Backpropagation\n(update weights)"]
+    A["Input Layer<br>(features)"] --> B["Hidden Layer<br>(weights)"]
+    B --> C["Output Layer<br>(prediction)"]
+    C --> D["Loss Function<br>(compare with true output)"]
+    D --> E["Backpropagation<br>(update weights)"]
     E --> B
 ```
 *(added)*
@@ -293,12 +293,12 @@ Even with a neural network, we **still need a fixed window**. Why? In machine le
 
 ```mermaid
 graph LR
-    A["Input words\n(fixed window)"] --> B["One-hot encoding"]
-    B --> C["Embedding layer\n(look up vectors)"]
-    C --> D["Concatenate or\naverage embeddings"]
+    A["Input words<br>(fixed window)"] --> B["One-hot encoding"]
+    B --> C["Embedding layer<br>(look up vectors)"]
+    C --> D["Concatenate or<br>average embeddings"]
     D --> E["Hidden layer"]
-    E --> F["Softmax output\n(probability over vocabulary)"]
-    F --> G["Predicted word\n(highest probability)"]
+    E --> F["Softmax output<br>(probability over vocabulary)"]
+    F --> G["Predicted word<br>(highest probability)"]
 ```
 *(added)*
 
@@ -716,10 +716,10 @@ LSTM can also be applied to **sequence-to-sequence modeling** tasks. *(from slid
 
 ```mermaid
 graph LR
-    A["N-gram\n(statistical, counting)"] -->|"Fixed window,\nsparsity"| B["Neural Network LM\n(learned embeddings)"]
-    B -->|"Fixed window,\naveraging problem"| C["RNN\n(sequential, variable length)"]
-    C -->|"Vanishing gradient,\nlong-range dependency"| D["LSTM / GRU\n(gating mechanism)"]
-    D -->|"Still has limitations"| E["Transformer\n(next lecture)"]
+    A["N-gram<br>(statistical, counting)"] -->|"Fixed window,<br>sparsity"| B["Neural Network LM<br>(learned embeddings)"]
+    B -->|"Fixed window,<br>averaging problem"| C["RNN<br>(sequential, variable length)"]
+    C -->|"Vanishing gradient,<br>long-range dependency"| D["LSTM / GRU<br>(gating mechanism)"]
+    D -->|"Still has limitations"| E["Transformer<br>(next lecture)"]
 ```
 *(added)*
 

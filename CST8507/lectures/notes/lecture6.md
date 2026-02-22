@@ -629,12 +629,12 @@ Modern large language models do **not** use RNN or LSTM. However, the idea of th
 
 ```mermaid
 graph LR
-    A["N-gram Models\n(Statistical)"] --> B["Neural Network\nLanguage Models"]
+    A["N-gram Models<br>(Statistical)"] --> B["Neural Network<br>Language Models"]
     B --> C["RNN"]
     C --> D["LSTM / GRU"]
-    D --> E["Seq2Seq +\nAttention"]
+    D --> E["Seq2Seq +<br>Attention"]
     E --> F["Transformer"]
-    F --> G["Large Language\nModels"]
+    F --> G["Large Language<br>Models"]
 ```
 *(added)*
 
