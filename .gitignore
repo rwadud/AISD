@@ -26,4 +26,7 @@ __pycache__/
 .idea/
 .vscode/
 *.log
+*.aux
+*.out
+*.tex
 .cache/
