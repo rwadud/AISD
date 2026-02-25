@@ -7,6 +7,8 @@ Clustering is an unsupervised learning technique that organizes data into groups
 - Data objects can be partitioned into clusters with **no overlap** between them.
 - Multiple smaller clusters can be **merged** into larger ones (e.g., P1 and P2 form one cluster, P3 and P4 form another, and those two clusters combine into an even bigger cluster).
 - In **hierarchical clustering**, at the lowest level, each sample is its own cluster.
+  - **Traditional hierarchical clustering**: every object belongs to exactly one cluster at each level — strict nesting.
+  - **Non-traditional hierarchical clustering**: objects may belong to overlapping clusters at different levels.
 
 ### Finding Similarity Between a Point and a Cluster
 
@@ -14,6 +16,26 @@ When comparing a single point to an entire cluster (e.g., "Is P4 similar to the 
 - The **mean** of all objects inside the cluster
 - The **maximum** (largest) point inside the cluster
 - The **median** of the objects
+
+### Applications of Cluster Analysis
+
+- **Understanding**: group related documents for browsing, group genes and proteins that have similar functionality, or group stocks with similar price fluctuations.
+
+| Cluster | Discovered Clusters | Industry Group |
+|---------|-------------------|----------------|
+| **1** | Applied-Matl-DOWN, Bay-Network-Down, 3-COM-DOWN, Cabletron-Sys-DOWN, CISCO-DOWN, HP-DOWN, DSC-Comm-DOWN, INTEL-DOWN, LSI-Logic-DOWN, Micron-Tech-DOWN, Texas-Inst-Down, Tellabs-Inc-Down, Natl-Semiconduct-DOWN, Oracl-DOWN, SGI-DOWN, Sun-DOWN | Technology1-DOWN |
+| **2** | Apple-Comp-DOWN, Autodesk-DOWN, DEC-DOWN, ADV-Micro-Device-DOWN, Andrew-Corp-DOWN, Computer-Assoc-DOWN, Circuit-City-DOWN, Compaq-DOWN, EMC-Corp-DOWN, Gen-Inst-DOWN, Motorola-DOWN, Microsoft-DOWN, Scientific-Atl-DOWN | Technology2-DOWN |
+| **3** | Fannie-Mae-DOWN, Fed-Home-Loan-DOWN, MBNA-Corp-DOWN, Morgan-Stanley-DOWN | Financial-DOWN |
+| **4** | Baker-Hughes-UP, Dresser-Inds-UP, Halliburton-HLD-UP, Louisiana-Land-UP, Phillips-Petro-UP, Unocal-UP, Schlumberger-UP | Oil-UP |
+
+- **Summarization**: reduce the size of large data sets by representing groups of similar objects with a single representative.
+
+### Notion of a Cluster can be Ambiguous
+
+The same set of data points can be interpreted as having different numbers of clusters depending on perspective:
+- **Two Clusters** — grouping at a high level
+- **Four Clusters** — moderate granularity
+- **Six Clusters** — fine-grained grouping
 
 ### Clustering Algorithm Taxonomy
 
@@ -152,6 +174,7 @@ K-Means is not the most efficient algorithm for all scenarios, but it provides a
 | Centroid definition | Mean of the points in the cluster |
 | Convergence | Guaranteed for common distance measures (given enough iterations) |
 | Convergence speed | Most convergence happens in the **first few iterations** |
+| Stopping condition | Often changed to "until relatively few points change clusters" instead of waiting for full convergence |
 | Complexity | $O(n \cdot K \cdot I \cdot d)$ |
 
 Where:
@@ -276,6 +299,26 @@ When two clusters are merged, we need to recalculate distances between the new c
 
 > Different distance methods produce **different clustering results**, even on the same data.
 
+### Group Average Example
+
+Points {1, 2, 3, 4, 5, 6} are clustered using group average linkage. The dendrogram shows merge order:
+
+1. Points 3 and 6 merge first (~0.04)
+2. Points 2 and 5 merge (~0.1)
+3. Point 4 joins {3, 6} (~0.13)
+4. Point 1 joins {3, 6, 4} (~0.15)
+5. {1, 3, 4, 6} merges with {2, 5} (~0.25)
+
+### Linkage Method Comparison
+
+Different linkage methods produce different cluster structures for the same data:
+
+| Method | Merge Order | Characteristics |
+|--------|------------|-----------------|
+| **MIN** (Single Linkage) | {3,6} → {2,5} → {2,3,5,6} → {2,3,4,5,6} → all | Tends to create elongated, chain-like clusters |
+| **MAX** (Complete Linkage) | {3,6} → {2,5} → {3,4,6} → {1,2,5} → all | Tends to create compact, spherical clusters |
+| **Group Average** | {3,6} → {2,5} → {3,4,6} → {1,3,4,6} → all | Compromise between MIN and MAX |
+
 ### Agglomerative vs. Divisive
 
 If you use the **same distance matrix** and the **same data points**, the agglomerative (bottom-up) and divisive (top-down) approaches will most probably give the **same results**.
@@ -300,7 +343,7 @@ DBSCAN is a **density-based** clustering algorithm. Clusters are regions of **hi
 
 | Type | Definition |
 |------|------------|
-| **Core point** | Has at least **min_points** neighbours within its $\varepsilon$ radius. Located at the **interior** of a cluster. |
+| **Core point** | Has at least **min_points** neighbours within its $\varepsilon$ radius (counts the point itself). Located at the **interior** of a cluster. |
 | **Border point** | Not a core point, but lies in the $\varepsilon$ neighbourhood of a core point. |
 | **Noise point** | Neither a core point nor a border point. |
 
@@ -446,6 +489,22 @@ $$\mu_j^{\text{new}} = \frac{\sum_{i=1}^{N} w_{ij} \cdot x_i}{\sum_{i=1}^{N} w_{
 
 - **New standard deviation**: weighted standard deviation using the new mean
 
+### Detailed EM Formulas
+
+**E-step** — Compute the likelihood of point $x_i$ under distribution $b$:
+
+$$P(x_i | b) = \frac{1}{\sqrt{2\pi} \; \sigma_b} \; e^{-\frac{(x_i - \mu_b)^2}{2\sigma_b^2}}$$
+
+Then compute the posterior probability (weight) using Bayes' rule:
+
+$$b_i = P(b | x_i) = \frac{P(x_i | b) \, P(b)}{P(x_i | b) \, P(b) + P(x_i | a) \, P(a)}$$
+
+**M-step** — Update the mean and variance using the computed weights:
+
+$$\mu_b = \frac{b_1 x_1 + b_2 x_2 + \ldots + b_n x_n}{b_1 + b_2 + \ldots + b_n}$$
+
+$$\sigma_b^2 = \frac{b_1(x_1 - \mu_b)^2 + b_2(x_2 - \mu_b)^2 + \ldots + b_n(x_n - \mu_b)^2}{b_1 + b_2 + \ldots + b_n}$$
+
 ### Summary of EM
 
 | Step | Action |
@@ -581,3 +640,14 @@ Interpretation:
 - $s(i) \approx 1$: the point is well placed in its cluster
 - $s(i) \approx 0$: the point is on the boundary between two clusters
 - $s(i) \approx -1$: the point is likely in the wrong cluster
+
+---
+
+## Summary
+
+| Algorithm Family | Algorithm | Key Properties |
+|-----------------|-----------|----------------|
+| **Partition-based** | K-Means | Requires K, uses centroids, minimizes SSE |
+| **Density-based** | DBSCAN | Uses Eps & MinPts, finds arbitrary shapes, handles noise |
+| **Distribution-based** | EM | Gaussian mixture, soft clustering, E-step & M-step |
+| **Hierarchical** | Agglomerative | Bottom-up merging, dendrogram, MIN/MAX/Avg linkage |

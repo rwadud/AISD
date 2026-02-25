@@ -221,7 +221,8 @@ Training requires **pairs of images with corresponding captions**. Both images a
 | Single to Single | One input (set of features) | One output | House price prediction | Feed Forward |
 | Single to Multiple | One input (image) | Sequence of outputs | Image captioning | RNN |
 | Multiple to Single | Sequence of inputs | One output | Text classification, Sentiment analysis | RNN |
-| Multiple to Multiple | Sequence of inputs | Sequence of outputs | Machine translation, Video captioning | RNN |
+| Multiple to Multiple | Sequence of inputs | Sequence of outputs | Machine translation | RNN |
+| Synced Multiple to Multiple | Synchronized input-output at each step | Synchronized output at each step | Video captioning | RNN |
 
 > **Video captioning** is multiple to multiple because a video is a sequence of images (multiple input) and the caption is a sequence of words (multiple output).
 
@@ -259,10 +260,13 @@ Used when predicting **continuous real values**.
 |---|---|---|---|
 | **Mean Squared Error (MSE)** | L2 Loss | $\text{MSE} = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2$ | Average of the sum of **squared** differences between actual and predicted values |
 | **Mean Absolute Error (MAE)** | L1 Loss, Lasso | $\text{MAE} = \frac{1}{n}\sum_{i=1}^{n}|y_i - \hat{y}_i|$ | Average of the sum of **absolute** differences between actual and predicted values |
+| **Mean Bias Error** | | $\text{MBE} = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)$ | Average of the sum of the differences (not absolute, not squared) between actual and predicted values. Positive and negative values may cancel out, making it less accurate in practice. Useful for detecting whether a model has positive or negative bias |
 
 #### 2. Probabilistic Losses
 
 Used when the model's output is a **probability distribution**.
+
+**Cross Entropy** (also known as log loss): A measure of the difference between two probability distributions (predicted vs actual).
 
 | Loss Function | Use Case | Label Format |
 |---|---|---|
@@ -281,7 +285,7 @@ Primarily used for **traditional machine learning models** like SVMs.
 | **Hinge Loss** | Binary classification (SVM) | $-1$ and $+1$ |
 | **Categorical Hinge** | Multi class classification | Categorical |
 
-Hinge loss can also be used with neural networks, but cross entropy is more common in practice.
+Hinge loss helps maximize the **margin** between different classes. Loss is 0 when the correct class is confidently predicted, but penalizes predictions that are too close to the decision boundary. Hinge loss can also be used with neural networks, but cross entropy is more common in practice.
 
 ---
 
@@ -506,3 +510,21 @@ graph LR
 ```
 
 > The cell state update formula is the core of the LSTM. It selectively forgets old information and adds new information, solving the vanishing gradient problem by maintaining a direct path for gradients to flow through the cell state.
+
+### Step 4: The Output Gate
+
+The **output gate** decides what to output based on the cell state.
+
+$$o_t = \sigma(W_o \cdot [h_{t-1}, x_t] + b_o)$$
+
+$$h_t = o_t \odot \tanh(C_t)$$
+
+Where:
+- $[h_{t-1}, x_t]$ is the concatenation of the previous hidden state and the current input
+- $W_o$ is the weight matrix for the output gate
+- $b_o$ is the bias
+- $\sigma$ is the sigmoid function, deciding which parts of the cell state to output
+- $\tanh(C_t)$ squashes the cell state values to be between $-1$ and $1$
+- The element wise multiplication filters the cell state to produce the final hidden state $h_t$
+
+**Example**: If the text says "I grew up in France... I speak fluent ___", the output gate would focus on the information relevant to predicting a language. Since "France" was stored in the cell state, the output would be filtered to produce "French".

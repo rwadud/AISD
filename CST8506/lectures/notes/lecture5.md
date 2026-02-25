@@ -24,6 +24,24 @@ $$P(Y \mid X) = \frac{P(X \mid Y) \cdot P(Y)}{P(X)}$$
 
 > **Key insight**: You can rewrite $P(X, Y)$ as $P(Y) \cdot P(X \mid Y)$ and substitute into the conditional probability formula to arrive at Bayes' theorem.
 
+### Example: Conditional Probability with Dice
+
+When rolling 2 dice, find $P(A \mid B)$ for the following events:
+
+- **A**: the sum of the two dice is 8
+- **B**: first die shows a 5
+- $n(S) = 36$ (total outcomes)
+
+**Possible outcomes for A**: $\{(2,6), (3,5), (4,4), (5,3), (6,2)\}$
+
+**Possible outcomes for B**: $\{(5,1), (5,2), (5,3), (5,4), (5,5), (5,6)\}$
+
+- $P(A) = \frac{5}{36}$, $P(B) = \frac{6}{36}$, $P(A \cap B) = \frac{1}{36}$
+
+Given that the first die shows 5, out of 6 possible cases only one gives a sum of 8: $(5,3)$.
+
+$$P(A \mid B) = \frac{P(A \cap B)}{P(B)} = \frac{1/36}{6/36} = \frac{1}{6}$$
+
 ---
 
 ## Naive Bayes Classifier
@@ -112,6 +130,21 @@ The training data has the following features and a binary class label (Evade: Ye
 | Taxable Income | Numerical (continuous) |
 | **Class (Evade)** | **Yes / No** |
 
+### Training Data
+
+| Tid | Refund | Marital Status | Taxable Income | Evade |
+|-----|--------|---------------|----------------|-------|
+| 1   | Yes    | Single        | 125K           | No    |
+| 2   | No     | Married       | 100K           | No    |
+| 3   | No     | Single        | 70K            | No    |
+| 4   | Yes    | Married       | 120K           | No    |
+| 5   | No     | Divorced      | 95K            | Yes   |
+| 6   | No     | Married       | 60K            | No    |
+| 7   | Yes    | Divorced      | 220K           | No    |
+| 8   | No     | Single        | 85K            | Yes   |
+| 9   | No     | Married       | 75K            | No    |
+| 10  | No     | Single        | 90K            | Yes   |
+
 ### Test Record
 
 | Refund | Marital Status | Taxable Income |
@@ -133,6 +166,25 @@ Using the Naive Bayes independence assumption, decompose the likelihood into ind
 - To find $P(\text{Refund}=\text{Yes} \mid \text{yes})$: Same 3 "yes" class samples. For 1 of them, Refund = Yes. So: $P(\text{Refund}=\text{Yes} \mid \text{yes}) = \frac{1}{3}$
 - Repeat for each feature and each class.
 
+### Complete Conditional Probability Table
+
+| Probability | Value |
+|---|---|
+| $P(\text{Refund}=\text{Yes} \mid \text{No})$ | 3/7 |
+| $P(\text{Refund}=\text{No} \mid \text{No})$ | 4/7 |
+| $P(\text{Refund}=\text{Yes} \mid \text{Yes})$ | 0 |
+| $P(\text{Refund}=\text{No} \mid \text{Yes})$ | 1 |
+| $P(\text{Status}=\text{Single} \mid \text{No})$ | 2/7 |
+| $P(\text{Status}=\text{Divorced} \mid \text{No})$ | 1/7 |
+| $P(\text{Status}=\text{Married} \mid \text{No})$ | 4/7 |
+| $P(\text{Status}=\text{Single} \mid \text{Yes})$ | 2/3 |
+| $P(\text{Status}=\text{Divorced} \mid \text{Yes})$ | 1/3 |
+| $P(\text{Status}=\text{Married} \mid \text{Yes})$ | 0 |
+
+**Taxable Income (Gaussian parameters):**
+- Class = No: sample mean = 110, sample variance = 2975
+- Class = Yes: sample mean = 90, sample variance = 25
+
 ### Step 3: Combine Likelihoods
 
 $$P(X \mid \text{yes}) = P(\text{Refund}=\text{No} \mid \text{yes}) \times P(\text{Status}=\text{Divorced} \mid \text{yes}) \times P(\text{Income}=120K \mid \text{yes})$$
@@ -145,6 +197,14 @@ $$\text{Score}_{\text{yes}} = P(X \mid \text{yes}) \cdot P(\text{yes})$$
 $$\text{Score}_{\text{no}} = P(X \mid \text{no}) \cdot P(\text{no})$$
 
 Classify as whichever score is higher.
+
+### Numerical Result
+
+$$P(X \mid \text{No}) = \frac{4}{7} \times \frac{1}{7} \times 0.0072 = 0.0006$$
+
+$$P(X \mid \text{Yes}) = 1 \times \frac{1}{3} \times 1.2 \times 10^{-9} = 4 \times 10^{-10}$$
+
+Since $P(X \mid \text{No}) \cdot P(\text{No}) > P(X \mid \text{Yes}) \cdot P(\text{Yes})$, the test record is classified as **No** (does not evade).
 
 > If you have $K$ classes (even 100 classes), you must compute the score for **each class** and pick the one with the highest probability.
 
@@ -253,6 +313,43 @@ If **even one** of these probabilities is zero, the **entire product becomes zer
 
 **Example**: If no training samples in the "yes" class have marital status = divorced, then $P(\text{divorced} \mid \text{yes}) = 0$. This zero propagates through the entire product and makes $P(X \mid \text{yes}) = 0$. If both classes get a zero for different reasons, the classifier **cannot classify the sample at all**.
 
+### Concrete Failure Example
+
+Consider the training data with Tid = 7 **deleted** (9 records remain):
+
+| Tid | Refund | Marital Status | Taxable Income | Evade |
+|-----|--------|---------------|----------------|-------|
+| 1   | Yes    | Single        | 125K           | No    |
+| 2   | No     | Married       | 100K           | No    |
+| 3   | No     | Single        | 70K            | No    |
+| 4   | Yes    | Married       | 120K           | No    |
+| 5   | No     | Divorced      | 95K            | Yes   |
+| 6   | No     | Married       | 60K            | No    |
+| 8   | No     | Single        | 85K            | Yes   |
+| 9   | No     | Married       | 75K            | No    |
+| 10  | No     | Single        | 90K            | Yes   |
+
+Updated conditional probabilities (note the zeros):
+
+| Probability | Value |
+|---|---|
+| $P(\text{Refund}=\text{Yes} \mid \text{No})$ | 2/6 |
+| $P(\text{Refund}=\text{No} \mid \text{No})$ | 4/6 |
+| $P(\text{Refund}=\text{Yes} \mid \text{Yes})$ | **0** |
+| $P(\text{Refund}=\text{No} \mid \text{Yes})$ | 1 |
+| $P(\text{Status}=\text{Divorced} \mid \text{No})$ | **0** |
+| $P(\text{Status}=\text{Divorced} \mid \text{Yes})$ | 1/3 |
+
+**Taxable Income**: Class = No: mean = 91, variance = 685; Class = Yes: mean = 90, variance = 25
+
+Given $X = (\text{Refund}=\text{Yes}, \text{Divorced}, 120K)$:
+
+$$P(X \mid \text{No}) = \frac{2}{6} \times 0 \times 0.0083 = 0$$
+
+$$P(X \mid \text{Yes}) = 0 \times \frac{1}{3} \times 1.2 \times 10^{-9} = 0$$
+
+Both posteriors are zero — **Naive Bayes cannot classify this record as Yes or No**.
+
 ### Solution 1: Laplace Smoothing
 
 Instead of the original formula:
@@ -280,6 +377,55 @@ Where:
 - $N$ = total samples in class $Y$
 - $p$ = initial (prior) estimate of the probability
 - $\varepsilon$ = hyperparameter controlling the strength of smoothing
+
+---
+
+## Worked Example: Animal Classification
+
+### Training Data
+
+| Name | Give Birth | Can Fly | Live in Water | Have Legs | Class |
+|------|-----------|---------|--------------|-----------|-------|
+| human | yes | no | no | yes | mammals |
+| python | no | no | no | no | non-mammals |
+| salmon | no | no | yes | no | non-mammals |
+| whale | yes | no | yes | no | mammals |
+| frog | no | no | sometimes | yes | non-mammals |
+| komodo | no | no | no | yes | non-mammals |
+| bat | yes | yes | no | yes | mammals |
+| pigeon | no | yes | no | yes | non-mammals |
+| cat | yes | no | no | yes | mammals |
+| leopard shark | yes | no | yes | no | non-mammals |
+| turtle | no | no | sometimes | yes | non-mammals |
+| penguin | no | no | sometimes | yes | non-mammals |
+| porcupine | yes | no | no | yes | mammals |
+| eel | no | no | yes | no | non-mammals |
+| salamander | no | no | sometimes | yes | non-mammals |
+| gila monster | no | no | no | yes | non-mammals |
+| platypus | no | no | no | yes | mammals |
+| owl | no | yes | no | yes | non-mammals |
+| dolphin | yes | no | yes | no | mammals |
+| eagle | no | yes | no | yes | non-mammals |
+
+### Test Record
+
+| Give Birth | Can Fly | Live in Water | Have Legs | Class |
+|-----------|---------|--------------|-----------|-------|
+| yes | no | yes | no | ? |
+
+### Classification
+
+Let **A** = attributes of the test record, **M** = mammals (7 samples), **N** = non-mammals (13 samples).
+
+$$P(A \mid M) = \frac{6}{7} \times \frac{6}{7} \times \frac{2}{7} \times \frac{2}{7} = 0.06$$
+
+$$P(A \mid N) = \frac{1}{13} \times \frac{10}{13} \times \frac{3}{13} \times \frac{4}{13} = 0.0042$$
+
+$$P(A \mid M) \cdot P(M) = 0.06 \times \frac{7}{20} = 0.021$$
+
+$$P(A \mid N) \cdot P(N) = 0.0042 \times \frac{13}{20} = 0.0027$$
+
+Since $P(A \mid M) \cdot P(M) > P(A \mid N) \cdot P(N)$, the test record is classified as **Mammals**.
 
 ---
 
@@ -397,24 +543,24 @@ graph TD
 
 ### Conditional Probability: Heart Disease given Diet and Exercise
 
-| Diet | Exercise | P(Heart Disease = Yes) |
-|---|---|---|
-| Healthy | Yes | Low |
-| Healthy | No | Higher (0.45) |
-| Unhealthy | Yes | 0.55 |
-| Unhealthy | No | 0.75 |
+| Diet | Exercise | P(Heart Disease = Yes) | P(Heart Disease = No) |
+|---|---|---|---|
+| Healthy | Yes | 0.25 | 0.75 |
+| Healthy | No | 0.45 | 0.55 |
+| Unhealthy | Yes | 0.55 | 0.45 |
+| Unhealthy | No | 0.75 | 0.25 |
 
 ### Conditional Probabilities: Chest Pain and Blood Pressure
 
-| Heart Disease | P(Chest Pain = Yes) |
-|---|---|
-| Yes | 0.80 |
-| No | Very low |
+| Heart Disease | P(Chest Pain = Yes) | P(Chest Pain = No) |
+|---|---|---|
+| Yes | 0.80 | 0.20 |
+| No | 0.01 | 0.99 |
 
-| Heart Disease | P(Blood Pressure = High) |
-|---|---|
-| Yes | 0.85 |
-| No | Low |
+| Heart Disease | P(Blood Pressure = High) | P(Blood Pressure = Low) |
+|---|---|---|
+| Yes | 0.85 | 0.15 |
+| No | 0.20 | 0.80 |
 
 > The child node's probability table is determined based on its parent nodes. The tables come from the **data set**, but the **graph structure** (which variables are connected) is **given as part of the problem** based on domain knowledge. You cannot just construct any arbitrary graph.
 
@@ -432,9 +578,17 @@ $$P(\text{HD}=\text{Yes} \mid E=\text{No}, D=\text{Healthy}) \times P(\text{CP}=
 
 $$= 0.45 \times 0.80 \times 0.85 \times 0.30 \times 0.25$$
 
-Repeat for Heart Disease = No with the corresponding conditional probabilities.
+**Computation for Heart Disease = No**:
 
-**Result**: The score for Heart Disease = Yes was **much higher** than Heart Disease = No, so the sample is classified as **having heart disease**.
+$$P(\text{HD}=\text{No} \mid E=\text{No}, D=\text{Healthy}) \times P(\text{CP}=\text{Yes} \mid \text{HD}=\text{No}) \times P(\text{BP}=\text{High} \mid \text{HD}=\text{No}) \times P(E=\text{No}) \times P(D=\text{Healthy})$$
+
+$$= 0.55 \times 0.01 \times 0.20 \times 0.30 \times 0.25 = 0.0000825$$
+
+**Comparing**:
+- Score(HD=Yes) $\propto$ $0.45 \times 0.80 \times 0.85 = 0.306$
+- Score(HD=No) $\propto$ $0.55 \times 0.01 \times 0.20 = 0.0011$
+
+Since Score(HD=Yes) $\gg$ Score(HD=No), the sample is classified as **having heart disease**.
 
 ---
 

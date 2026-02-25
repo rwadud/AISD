@@ -107,7 +107,7 @@ In real life, data points will not be neatly clustered. They will be scattered. 
 
 ### SVM as a Supervised Method
 
-**Support Vector Machine** is a **supervised learning** method. It requires class labels. It is most commonly used for **classification** tasks.
+**Support Vector Machine** is a **supervised learning** method. It requires class labels. It can be used for both classification and regression tasks, but is most commonly used for **classification**. SVM works best on **small, complex datasets**.
 
 ---
 
@@ -453,4 +453,32 @@ clf_balanced = SVC(kernel='rbf', C=1.0, gamma='scale')
 7. The **kernel trick** avoids the actual projection by computing dot products in the higher dimensional space directly.
 8. **RBF** is the most widely used kernel but is also the most expensive.
 9. **C** controls margin width vs. misclassification tolerance. **Gamma** controls how tightly the boundary wraps around data points.
-10. SVM works best for **complex data**. For simple data, simpler methods (naive Bayes, logistic regression) may perform equally well or better.
+10. SVM works best for **small, complex datasets**. For simple data, simpler methods (naive Bayes, logistic regression) may perform equally well or better.
+
+---
+
+## Advantages & Disadvantages
+
+### Advantages
+
+- High accuracy, faster prediction.
+- Memory efficient (only support vectors are stored after training).
+- Works well if the dataset is small and separable.
+- Effective in high-dimensional spaces.
+- Effective when the number of dimensions is greater than the number of instances.
+- Variety of kernel functions available for different data distributions.
+
+### Disadvantages
+
+- Not suitable for larger datasets (computationally expensive).
+- Poor performance on overlapping classes.
+- Highly sensitive to the choice of kernel.
+
+---
+
+## References
+
+- https://towardsdatascience.com/support-vector-machine-introduction-to-machine-learning-algorithms-934a444fca47
+- https://www.analyticsvidhya.com/blog/2021/10/support-vector-machinesvm-a-complete-guide-for-beginners/
+- https://towardsdatascience.com/hyperparameter-tuning-for-support-vector-machines-c-and-gamma-parameters-6a5097416167/
+- https://www.geeksforgeeks.org/machine-learning/gamma-parameter-in-svm/

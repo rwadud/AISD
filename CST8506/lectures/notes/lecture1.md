@@ -22,6 +22,16 @@ graph LR
 ```
 *(reconstructed diagram)*
 
+### CRISP-DM Sub-Tasks
+
+| Business Understanding | Data Understanding | Data Preparation | Modeling | Evaluation | Deployment |
+|---|---|---|---|---|---|
+| Determine Business Objectives | Collect Initial Data | Select Data | Select Modeling Technique | Evaluate Results | Plan Deployment |
+| Assess Situation | Describe Data | Clean Data | Generate Test Design | Review Process | Plan Monitoring & Maintenance |
+| Determine Data Mining Goals | Explore Data | Construct Data | Build Model | Determine Next Steps | Produce Final Report |
+| Produce Project Plan | Verify Data Quality | Integrate Data | Assess Model | | Review Project |
+| | | Format Data | | | |
+
 ### Exception: Image Data
 
 When working with images, you do **not** need the understanding or data preparation phases. Only **scaling** is required. The input values for images are **pixels**, so there is no need for encoding, creating new columns, or constructing new features.
@@ -32,13 +42,21 @@ When working with images, you do **not** need the understanding or data preparat
 
 | Type | Techniques Covered Last Term |
 |---|---|
-| **Supervised: Classification** | Various classification techniques |
-| **Supervised: Regression** | Various regression approaches |
+| **Supervised: Classification** | kNN, Decision Tree, Random Forest, Logistic Regression |
+| **Supervised: Regression** | Simple, Multiple, Multivariate |
 | **Unsupervised: Clustering** | K-Means, Agglomerative, DBSCAN |
+| **Unsupervised: Outlier Detection** | Local Outlier Factor, Isolation Forest |
 
 ---
 
 ## Data Preprocessing Review
+
+### Preprocessing Categories
+
+- **Data cleaning** - handling missing & duplicate data, handling noise etc.
+- **Data integration** - combine data from multiple sources
+- **Data transformation** - normalization, standardization, binning
+- **Data reduction** - dimensionality reduction
 
 ### Key Preprocessing Steps
 
@@ -83,10 +101,12 @@ $$Z = \frac{X - \mu}{\sigma}$$
 
 | Type | Description | Example |
 |---|---|---|
-| **Equal Width Binning** | You specify the width of each bin | Age 0-10 → Bin 1, Age 10-20 → Bin 2 |
-| **Equal Frequency Binning** | You specify how many instances go in each bin | First 20 instances → Bin 1, Next 20 → Bin 2 (data must be sorted) |
+| **Equal Width Binning** | Splits the range into b bins each of size `range / b` | Age 0-10 → Bin 1, Age 10-20 → Bin 2 |
+| **Equal Frequency Binning** | Sorts values in ascending order, then places an equal number of instances into each bin | First 20 instances → Bin 1, Next 20 → Bin 2 |
 
 ### Sampling
+
+Sampling types include **top sampling**, **random sampling**, and **stratified sampling**.
 
 **Stratified Sampling**: divide the population into subgroups (strata), then sample a percentage from each stratum.
 
@@ -118,9 +138,10 @@ You can specify how much information you want to keep:
 
 ### Drawbacks of High Dimensionality
 
+- **Time consuming**
 - **High memory consumption**
 - **Complex models**
-- **Visualization limit**: we can visualize at most 3 dimensions. Beyond that, there is no way to visualize.
+- **Hard to create visualizations**: we can visualize at most 3 dimensions. Beyond that, there is no way to visualize.
 
 ### Curse of Dimensionality
 
@@ -136,8 +157,10 @@ With 10,000 features, every instance is a point in a 10,000-dimensional space. A
 
 | Approach | Description | When Covered |
 |---|---|---|
-| **Feature Selection** | Select relevant features, ignore redundant/irrelevant ones | Last term |
-| **Feature Extraction** | Create **new synthetic features** that represent the original data meaningfully | This class |
+| **Feature Selection** | Select relevant features, ignore redundant/irrelevant ones (keeps a subset of the original features) | Last term |
+| **Feature Extraction** | Create **new synthetic features** that represent the original data meaningfully (transforms data onto a new feature space) | This class |
+
+Feature extraction can construct new features by combining existing features, reducing dimensionality to d < k, where k is the total number of dimensions (features).
 
 Two main feature extraction techniques:
 1. **Principal Component Analysis (PCA)**
@@ -205,6 +228,41 @@ graph TD
 > **Key distinction**: finding principal components means finding **new axes**, not new points. The original standardized data must then be **transformed** (projected) onto these new axes to get the new point values.
 
 > **Course note**: an Excel sheet with step-by-step calculations is provided for hands-on practice.
+
+### Covariance Matrix of Iris Standardized Dataset
+
+| Attributes | SL | SW | PL | PW |
+|---|---|---|---|---|
+| **SL** | 1.000 | -0.109 | 0.872 | 0.818 |
+| **SW** | -0.109 | 1.000 | -0.421 | -0.357 |
+| **PL** | 0.872 | -0.421 | 1.000 | 0.963 |
+| **PW** | 0.818 | -0.357 | 0.963 | 1.000 |
+
+*(SL = Sepal Length, SW = Sepal Width, PL = Petal Length, PW = Petal Width)*
+
+### Eigenvalues and Eigenvectors
+
+- **Eigenvectors:** direction of the axes where there is the most variance (principal components)
+- **Eigenvalues:** coefficients attached to eigenvectors, which give the amount of variance carried in each principal component
+- By ranking the eigenvectors in order of their eigenvalues, highest to lowest, we get the principal components in order of significance
+
+#### Iris Dataset Eigenvalues and Eigenvectors
+
+- **Eigenvalues:** [2.94, 0.92, 0.15, 0.02]
+- **Eigenvectors:**
+
+```
+[[ 0.52  -0.38  -0.72   0.26]
+ [-0.27  -0.92   0.24  -0.12]
+ [ 0.58  -0.02   0.14  -0.80]
+ [ 0.56  -0.07   0.63   0.52]]
+```
+
+- **Variance explained by each component:** [0.73, 0.23, 0.04, 0.005]
+  - 2.94 / (2.94 + 0.92 + 0.15 + 0.02) = **0.73**
+  - 0.92 / (2.94 + 0.92 + 0.15 + 0.02) = **0.23**
+
+> Based on the variances, 96% (73 + 23) of information is compressed in the first two principal components.
 
 ### Correlation Review (Needed for Covariance Matrix)
 
@@ -274,6 +332,52 @@ Where $x_1, x_2, x_3, x_4$ are the original standardized features and $a_1, a_2,
 
 This is why the components **do not overlap** in information. One component taking 65% and another 20% means they capture **different** 65% and 20%, not overlapping portions.
 
+### PCA Results on Iris Dataset
+
+#### With TWO Principal Components
+
+- Sum of variance: 0.958
+- Confusion Matrix before PCA:
+
+```
+[[50  0  0]
+ [ 0 47  3]
+ [ 0  4 46]]
+```
+
+- Confusion Matrix after PCA:
+
+```
+[[50  0  0]
+ [ 0 44  2]
+ [ 0  6 48]]
+```
+
+- Accuracy before PCA: **95.33%**
+- Accuracy after PCA: **94.67%**
+
+#### With THREE Principal Components
+
+- Sum of variance: 0.995
+- Confusion Matrix before PCA:
+
+```
+[[50  0  0]
+ [ 0 47  3]
+ [ 0  4 46]]
+```
+
+- Confusion Matrix after PCA:
+
+```
+[[50  0  0]
+ [ 0 48  2]
+ [ 0  2 48]]
+```
+
+- Accuracy before PCA: **95.33%**
+- Accuracy after PCA: **97.33%**
+
 ### Accuracy vs. Complexity Tradeoff
 
 - In the **Iris dataset**, accuracy may slightly increase with PCA because the synthetic values are more robust. But accuracy changes are very subtle since Iris is already well separated (Setosa is far from the other two classes).
@@ -306,6 +410,14 @@ LDA is similar to PCA but with one crucial difference: it **considers class info
    - The spread of points within each class is **minimized**
 3. The axis that best satisfies both conditions simultaneously is chosen
 
+### LDA Algorithm Steps
+
+1. Find the d-dimensional mean vectors for the various classes of the dataset
+2. Calculate the scatter matrices (between-class and within-class scatter matrix)
+3. Calculate the eigenvectors and the corresponding eigenvalues for the scatter matrix
+4. Sort eigenvectors by their corresponding eigenvalues in decreasing order and then select the top k eigenvectors to form a d x k matrix
+5. Use this d x k matrix to transform the samples onto the new subspace
+
 ### Visual Example
 
 Given two classes projected onto two candidate axes:
@@ -325,7 +437,12 @@ Axis 1 is better because class points are closer to each other AND the distance 
 | **Type** | Unsupervised | Supervised |
 | **Class labels** | Not considered | Considered |
 | **Objective** | Maximize overall variance (spread of all points) | Maximize between-class distance AND minimize within-class distance |
+| **n_components** | n_components <= min(n_samples, n_features) | n_components <= min(n_classes - 1, n_features) |
 | **Use case** | General dimensionality reduction | Dimensionality reduction with class preservation |
+
+**Similarities**: Both rank the new axes in the order of importance:
+- PC1 accounts for the most variation in the data, PC2 holds the maximum of the remaining info, and so on
+- LD1 accounts for the most variation between the categories, then LD2, and so on
 
 > PCA preserves the overall spread of the data. LDA preserves the separability between classes and the cohesion of points within each class.
 
