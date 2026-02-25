@@ -163,7 +163,7 @@ Using the Naive Bayes independence assumption, decompose the likelihood into ind
 
 **Concrete counting walkthrough**:
 - To find $P(\text{Refund}=\text{No} \mid \text{yes})$: Filter to only samples where class = yes. There are 3 such samples. Among those 3, how many have Refund = No? All 3. So: $P(\text{Refund}=\text{No} \mid \text{yes}) = \frac{3}{3}$
-- To find $P(\text{Refund}=\text{Yes} \mid \text{yes})$: Same 3 "yes" class samples. For 1 of them, Refund = Yes. So: $P(\text{Refund}=\text{Yes} \mid \text{yes}) = \frac{1}{3}$
+- To find $P(\text{Refund}=\text{Yes} \mid \text{yes})$: Same 3 "yes" class samples. None of them have Refund = Yes. So: $P(\text{Refund}=\text{Yes} \mid \text{yes}) = \frac{0}{3} = 0$
 - Repeat for each feature and each class.
 
 ### Complete Conditional Probability Table
