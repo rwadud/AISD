@@ -16,14 +16,14 @@ Before introducing SVMs, the lecturer reviewed the key difference between PCA an
 
 | Method | Maximum `n_components` | Rule |
 |--------|----------------------|------|
-| PCA | $\min(\text{n\_samples},\; \text{n\_features})$ | The lesser of the number of samples or the number of features |
-| LDA | $\min(\text{n\_classes} - 1,\; \text{n\_features})$ | The lesser of (number of classes minus one) or the number of features |
+| PCA | $\min(\text{n}\_\text{samples},\; \text{n}\_\text{features})$ | The lesser of the number of samples or the number of features |
+| LDA | $\min(\text{n}\_\text{classes} - 1,\; \text{n}\_\text{features})$ | The lesser of (number of classes minus one) or the number of features |
 
 **Why classes minus one for LDA?** To separate two classes you need one line. To separate three classes you need two lines. In general, you need $k - 1$ separators for $k$ classes. Therefore the maximum number of LDA components is $k - 1$ (or the number of features, whichever is less).
 
 **Worked example:** 2 classes, 8 features.
-- $\text{n\_classes} - 1 = 2 - 1 = 1$
-- $\text{n\_features} = 8$
+- $\text{n}\_\text{classes} - 1 = 2 - 1 = 1$
+- $\text{n}\_\text{features} = 8$
 - $\min(1, 8) = 1$ component
 
 > **Course note:** In the exam, you will be given a specific number of features, classes, and samples, and asked how many PCA components and how many LDA components you can create. For example: "We have 5 classes, 20 features, and some number of samples. How many PCA components can you make, and how many LDA components can you make?" Without knowing these concepts, you cannot get the marks.
