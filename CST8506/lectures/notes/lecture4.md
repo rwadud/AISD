@@ -256,11 +256,11 @@ There are three main categories of loss functions:
 
 Used when predicting **continuous real values**.
 
-| Loss Function | Also Known As | Formula | Description |
+| Loss Function | Also Known As | Formula &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Description |
 |---|---|---|---|
-| **Mean Squared Error (MSE)** | L2 Loss | $\text{MSE} = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2$ | Average of the sum of **squared** differences between actual and predicted values |
-| **Mean Absolute Error (MAE)** | L1 Loss, Lasso | $\text{MAE} = \frac{1}{n}\sum_{i=1}^{n}|y_i - \hat{y}_i|$ | Average of the sum of **absolute** differences between actual and predicted values |
-| **Mean Bias Error** | | $\text{MBE} = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)$ | Average of the sum of the differences (not absolute, not squared) between actual and predicted values. Positive and negative values may cancel out, making it less accurate in practice. Useful for detecting whether a model has positive or negative bias |
+| **Mean Squared Error (MSE)** | L2 Loss | $\text{MSE} = \frac{1}{n}\sum\_{i=1}^{n}(y\_i - \hat{y}\_i)^2$ | Average of the sum of **squared** differences between actual and predicted values |
+| **Mean Absolute Error (MAE)** | L1 Loss, Lasso | $\text{MAE} = \frac{1}{n}\sum\_{i=1}^{n}\lvert y\_i - \hat{y}\_i \rvert$ | Average of the sum of **absolute** differences between actual and predicted values |
+| **Mean Bias Error** | | $\text{MBE} = \frac{1}{n}\sum\_{i=1}^{n}(y\_i - \hat{y}\_i)$ | Average of the sum of the differences (not absolute, not squared) between actual and predicted values. Positive and negative values may cancel out, making it less accurate in practice. Useful for detecting whether a model has positive or negative bias |
 
 #### 2. Probabilistic Losses
 
