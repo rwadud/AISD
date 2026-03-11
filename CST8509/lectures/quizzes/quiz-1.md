@@ -1,7 +1,5 @@
 # CST8509 Reinforcement Learning - Quiz 1
 
-**Score: 13/15**
-
 ---
 
 ### Question 1
