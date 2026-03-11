@@ -412,11 +412,11 @@ RL algorithms must balance exploration and exploitation. Too much exploitation m
 
 ### What is Q-Learning?
 
-**Q-learning**: The process of learning the **action value function** $Q(s, a)$, specifically the **optimal** action value function $Q^*(s, a)$.
+**Q-learning**: The process of learning the **action value function** $Q(s, a)$, specifically the **optimal** action value function $Q^{*}(s, a)$.
 
-- $Q^*(s, a)$ is the value function when the agent follows the **optimal policy** $\pi^*$.
+- $Q^{*}(s, a)$ is the value function when the agent follows the **optimal policy** $\pi^{*}$.
 - The star ($*$) means optimized: the value function is as good as it can get.
-- The Q value depends on what policy you are following. Under the optimal policy, you get $Q^*$.
+- The Q value depends on what policy you are following. Under the optimal policy, you get $Q^{*}$.
 
 ### The Bellman Equation
 
@@ -424,7 +424,7 @@ The **Bellman equation** is used to update the Q function table. It is the mathe
 
 For the optimal action value function: *(reconstructed)*
 
-$$Q^*(s, a) = \mathbb{E}\left[R_{t+1} + \gamma \max_{a'} Q^*(S_{t+1}, a') \mid S_t = s, A_t = a\right]$$
+$$Q^{*}(s, a) = \mathbb{E}\left[R_{t+1} + \gamma \max_{a'} Q^{*}(S_{t+1}, a') \mid S_t = s, A_t = a\right]$$
 
 This says: the optimal Q value for taking action $a$ in state $s$ equals the expected immediate reward $R_{t+1}$ plus the discounted value of the best possible action from the next state.
 
@@ -539,7 +539,7 @@ Tetris has also been tackled with RL. See: [CBC Tetris RL segment](https://www.c
 | **Markov Property** | The next state depends only on the current state and action, not on prior history |
 | **MDP** | Markov Decision Process, the formal framework underlying RL |
 | **Bellman Equation** | Recursive equation relating the value of a state to the values of successor states |
-| **Q-learning** | An algorithm for learning the optimal action value function $Q^*$ |
+| **Q-learning** | An algorithm for learning the optimal action value function $Q^{*}$ |
 | **Discount Factor ($\gamma$)** | A factor that reduces the weight of future rewards (covered later) |
 | **Exploration** | Trying new, possibly suboptimal actions to discover better strategies |
 | **Exploitation** | Choosing the currently best known action |
