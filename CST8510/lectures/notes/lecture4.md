@@ -94,7 +94,7 @@ With very few data points, any model can fit through all of them perfectly. The 
 
 **Why the validation accuracy (green curve) goes up:**
 
-With a small training set, the model has not seen enough of the data distribution. The validation set is diverse and may be far from what the model learned. As training data increases, the model generalizes better because it has seen more representative data points. Validation accuracy improves.
+With a small training set, the model has not seen enough of the data distribution. The validation set is diverse and may be far from what the model learned. As training data increases, some validation points end up near the training data distribution and some are further away, but overall the model generalizes better because it has seen more representative data points. Validation accuracy improves.
 
 **Interpreting the gap between curves:**
 
@@ -110,9 +110,9 @@ With a small training set, the model has not seen enough of the data distributio
 The slide shows learning curves for a **Naive Bayes** model (left) and an **SVM with RBF kernel, γ = 0.001** (right). Source: scikit-learn. *(from slides)*
 
 - **Left curve (Naive Bayes)**: Gap is small, but accuracy plateaus around 85% even beyond 400 samples. The model is not useful because its maximum achievable accuracy is too low.
-- **Right curve (SVM RBF)**: Cross validation score reaches close to 1.0. It is overfitting (red curve on top), but there is hope that adding more training data will reduce the gap and improve validation accuracy.
+- **Right curve (SVM RBF)**: The training error is not coming down because the data size still needs to increase. The model is overfitting on the training data even with only a few hundred records. If you increase to 10,000 or 100,000 samples, the training curve would start to come down. The cross validation score reaches close to 1.0, so there is hope that adding more training data will reduce the gap and improve validation accuracy.
 
-> **Practical note**: You can plot learning curves easily using scikit-learn's `learning_curve` function. You do not need to write any custom code.
+> **Practical note**: You can plot learning curves easily using scikit-learn's `learning_curve` function. You do not need to write any custom code. Note that this involves multiple training runs at different data sizes (e.g., five training runs), not five different models. It is the same model trained repeatedly on different sized subsets of the data.
 
 **Additional observations about learning curves:**
 

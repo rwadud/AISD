@@ -20,10 +20,10 @@ When developing in a lab or R&D environment, teams tend to focus only on accurac
 Measure output using business relevant metrics such as precision, recall, or domain specific quality scores. The quality must meet business requirements, not just technical benchmarks.
 
 ### 2. Bias and Fairness Detection
-LLMs and ML models in general can exhibit **algorithmic bias**. For example, a loan processing agent might look at a person's name and zip code and infer a racial profile, then assign a higher default probability based on that. It is mathematically proven that you cannot fully eliminate bias, but you must detect and mitigate it.
+LLMs and ML models in general can exhibit **algorithmic bias**. For example, an agent processing mortgage applications or bank loan applications might look at a person's name and zip code and infer a racial profile, then assign a higher default probability based on that. It is mathematically proven that you cannot fully eliminate bias, but you must detect and mitigate it.
 
 ### 3. Monitoring and Model Drift
-Data distributions change over time. For example, a customer support LLM may start receiving questions about a new product release that it has no knowledge of, because it was not trained on that data and the knowledge base has not been updated. This is a **data distribution shift**, and without monitoring, the system will silently degrade.
+This applies to machine learning systems in general, not just LLMs. Data distributions change over time. For example, a customer support LLM may start receiving questions about a new product release that it has no knowledge of, because it was not trained on that data and the knowledge base has not been updated. This is a **data distribution shift**, and without monitoring, the system will silently degrade.
 
 ### 4. Regulatory Compliance
 Users could accidentally input personally identifiable information (PII) or other sensitive data into a prompt. The LLM must not use or reveal such information. Strict regulatory compliance requirements apply, especially in customer facing applications.
@@ -56,15 +56,15 @@ Infrastructure matters. Latency is critical. If a RAG application takes more tha
 ## Common LLM Failure Modes
 
 ### Hallucination
-LLMs can make up citations, references, and article titles. In the earlier days, models did not have search capabilities, so hallucination was common. Now most commercial LLMs have integrated search, which reduces (but does not eliminate) this problem. For applications involving reports, references, or legal cases, hallucination is especially dangerous.
+LLMs can make up citations, references, and article titles. In the earlier days, models did not have search capabilities, so hallucination was common. Nowadays, if you tell the model not to make things up, it does better, because most commercial LLMs have integrated search. They will search and pick up real sources. But without search, they will definitely hallucinate. For applications involving reports, references, or legal cases, hallucination is especially dangerous.
 
 ### Performance Drift
 Models do not know about new trends, new products, or recent events (such as a new cyber attack) unless they are retrained or updated with new knowledge. Without updates, they will produce outdated information.
 
 ### Emergent Unintended Behaviors
-Research by Anthropic has shown that LLMs can exhibit deceptive behaviors:
+Research by Anthropic has shown that LLMs can exhibit deceptive behaviors. They look at what is going on internally and simulate scenarios, such as shutting down the machine, to observe how the model reacts. Their findings include:
 
-- LLMs may say one thing externally but "think" something different internally
+- LLMs may say one thing externally but "think" something different internally. If you look at the traces of their thinking, the internal reasoning does not match the external output.
 - When asked to explain a calculation step by step (e.g., 4 × 8 = 32), the model will produce a logical looking explanation, but internally it approximates the answer in its own way rather than following the steps it describes
 - These are **emergent unintended behaviors** that researchers are increasingly discovering
 
@@ -91,7 +91,7 @@ graph LR
 
 ### The Subjectivity Challenge
 
-Many LLM use cases produce output that is inherently subjective. Summarization, story generation, and marketing content do not have a single correct answer. There is no clear ground truth to compare against, unlike classification tasks (fraud vs. not fraud, cat vs. dog). This makes evaluation fundamentally harder.
+Many LLM use cases produce output that is inherently subjective. Summarization, story generation, and marketing content do not have a single correct answer. There is no clear ground truth to compare against, unlike classification tasks (fraud vs. not fraud, this class or label, this type of animal). This makes evaluation fundamentally harder.
 
 ---
 
@@ -103,7 +103,7 @@ Many LLM use cases produce output that is inherently subjective. Summarization, 
 | **Automatic Metrics** | Algorithmic measures like ROUGE, BLEU, METEOR, BERTScore |
 | **Adversarial Testing** | Probing the model to infer training data, testing robustness to input perturbations |
 | **User Feedback** | Direct feedback from real users in production |
-| **A/B Testing** | Comparing two different LLMs (e.g., GPT 4 vs. LLaMA 3) on quality and latency |
+| **A/B Testing** | Comparing two different LLMs (e.g., GPT 4 vs. GPT 3.5, or LLaMA 3 vs. Qwen 3) on quality and latency |
 | **Benchmarking** | Evaluating on standard benchmark data sets (SAT problems, NLP tasks, science problems) |
 
 ---
@@ -119,7 +119,7 @@ Many LLM use cases produce output that is inherently subjective. Summarization, 
 | **Development** | Use automatic metrics (ROUGE, etc.) during development iterations |
 | **Testing** | Extensive evaluation on a held out test set not seen during training |
 | **Deployment** | Measure real world performance on production data |
-| **Post Deployment** | Continuously monitor metrics month over month to detect performance degradation |
+| **Post Deployment** | Continuously monitor metrics month over month to detect performance degradation and improve the model |
 
 > **Key idea**: Evaluation is just as important as development and optimization. Think about it at every stage of the lifecycle.
 
@@ -269,6 +269,8 @@ Using the first article from the CNN/DailyMail training data (a story about a wo
 - The generated summary included details not in the reference (e.g., "Royal Free Hospital in London"), making it longer
 - Different summary lengths directly impact scores because longer text has more n-grams, changing the overlap ratio
 - **Important**: you should standardize both summaries to similar lengths before computing scores
+
+Similarly, you can find out how to calculate the BLEU score. Those functions are available in NLP libraries.
 
 ---
 

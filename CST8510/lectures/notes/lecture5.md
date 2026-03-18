@@ -437,9 +437,15 @@ quantized_model = torch.quantization.quantize_dynamic(
 - **Latency**: The median time it takes to serve one request
 - **Throughput**: The number of requests served in one second
 
-All benchmarks used a single server with **36 Intel Xeon Scalable Processor cores** for consistent comparison.
+All benchmarks used a single server with **36 Intel Xeon Scalable Processor cores** for consistent comparison (the video transcript references a 32-core machine, while the slides specify 36 cores).
+
+**Pioneering context**: When Roblox began this work in late 2019, no blog posts or Stack Overflow answers existed for running BERT in production. They were "bleeding edge" and had to clear their own path over many arduous months before they could deliver real user impact.
+
+**The SOTA vs. rock-solid model conundrum**: A common challenge in production ML is picking between state-of-the-art models with an unknown road to production and the allure of rock-solid models, which may leave some recall on the table. Roblox faced this directly with BERT.
 
 **Key decision**: Use **CPUs** for inference instead of GPUs to reduce cost, while using GPUs only for training. GPUs were expensive, added hardware management complexity, and the odds that next year's ML trend would change directions made the investment risky. Roblox had a decade of experience managing Intel CPU clusters and homogeneous CPU workloads, giving them confidence and efficiency using almost every last bit of their CPU hardware.
+
+**Lab vs. production reality**: In the lab, experiments benefited from top-of-the-line hardware entirely focused on a single request. In production, tens of thousands of requests arrive simultaneously, each independently with its own distinct characteristics. This means you can no longer utilize many clever ML tricks, such as batching similarly shaped inputs together.
 
 **GPU vs CPU comparison** *(from slides)*:
 - For inference, GPUs scale best in **batch mode**, not for individual real-time requests
@@ -499,11 +505,11 @@ quantized_model = torch.quantization.quantize_dynamic(
 
 *(reconstructed example)*
 
-Under the hood, all linear layers are replaced with dynamic quantized linear layers that perform operations in INT8.
+Under the hood, all linear layers are replaced with dynamic quantized linear layers that perform operations in INT8. As with DistilBERT, quantization requires giving up a small amount of accuracy for the speed gains. This is a normal trade-off that you have to think about as you scale up your model.
 
 #### Optimization 5: Caching
 
-If many text inputs are identical, cache the model's responses. Some classifiers saw throughput increase by **over 2x** from caching alone.
+If many text inputs are identical, cache the model's responses. Some classifiers saw throughput increase by **over 2x** from caching alone. Caching gains were excluded from the performance chart because the benefit depends on the distribution of your text data, making it hard to generalize.
 
 ### Results Summary
 

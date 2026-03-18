@@ -1,5 +1,7 @@
 # Lecture 3: Feature Engineering, Missing Values, Data Leakage, and Feature Selection
 
+> **Course context**: This lecture builds on MLOps topics covered in Term 1 (Course 1), which included **Data Engineering** (data sources, data formats, data models, modes of dataflow) and **Training Data Generation** (data labelling, sampling techniques) *(from slides)*.
+
 ## Deep Learning and Automatic Feature Extraction
 
 > **Key analogy from slides**: Features are like **signals**. Feature engineering is like **separating signals from noise**. Deep learning algorithms are capable of learning features themselves, but classical ML algorithms require manual creation of useful features.
@@ -350,7 +352,7 @@ A word embedding converts a single word into a fixed size vector. To represent a
 
 You could also concatenate all word vectors, but this produces a very large vector that varies in length with sentence length, so pooling is preferred.
 
-> **Key idea**: Embeddings are today the most used representation of words as features. The reason is they preserve semantic relationships. If your model was trained with "dog" in the vocabulary, at inference time when it encounters "kitten," it understands they are semantically related. But "house" would be very different.
+> **Key idea**: Embeddings are today the most used representation of words as features. The reason is they preserve semantic relationships. If your model was trained with "dog" in the vocabulary, at inference time when it encounters "kitten," it understands they are semantically related. But "house" would be very different. The lecturer noted there is a good article on Medium for learning more about word embeddings.
 
 ### Embedding Models: Evolution
 
