@@ -1,0 +1,287 @@
+Hello everyone, and thank you for joining our session.
+
+My name is Kit, and I'm here today with my incredible colleague, Wok, to share our own trials and tribulations running BERT at scale.
+
+Like many of you, about two years ago, we saw game-changing results when we first applied transformer models like BERT to our ML key tasks.
+
+As lazy engineers, we immediately scoured the internet for a blog post about how to run this amazing technology in production.
+
+To our dismay, we were too bleeding edge.
+
+Nobody had done the hard work for us, and Stack Overflow left us hanging.
+
+After many arduous months clearing our own path, we were able to deliver amazing impact to our users, and Wok was kind enough to share our learnings for the next lazy engineers.
+
+We've received awesome feedback since then from the community about how we've helped them out, as well as heard great suggestions on further improvements for ourselves.
+
+Today, I hope we can help many of you out with both this specific challenge, as well as share our general playbook for bridging the gap from paper gains to user impact with ML.
+
+So first off, who are we to be schlepping advice?
+
+For those without preteens at home, Roblox is a platform to empower imagination.
+
+Developers anywhere can create engaging experiences that can be played around the world in moments.
+
+In the past few years, we've reached massive scale, the diverse community, creating tens of millions of unique experiences.
+
+Messaging is one of our core features, being utilized more than 2 billion times every day.
+
+Ensuring the safety of children's messages is one of our core competencies.
+
+We wanna be among the best in the world at text classification.
+
+And recently the BERT architecture has emerged as a key technology in this space.
+
+We've spent years optimizing rules and classical models to maintain best in class performance.
+
+And with our very first attempt with BERT, we saw double digit improvements in research.
+
+We've earned enough scars though to know, to learn not to naively extrapolate lab results into real world impact.
+
+Like many of you, we've made the mistake in our careers of celebrating spreadsheet data science results with executives only to have engineering teams balk when 50,000 lines of IPython notebook code are tossed over the fence.
+
+These paper results were so promising that we wanted to be very confident we could deliver the user impact under real world constraints.
+
+We wanted to take the challenge head on.
+
+So looking beyond spreadsheet performance, our real concerns were around latency and throughput.
+
+For latency, the initial speeds of about one inference per second seemed perfectly fine when we were testing on the command line.
+
+We know that in production, we are limited to tens of milliseconds to meet our internal SLAs.
+
+As for throughput, our experiments benefited from the top of the line hardware entirely focused on a single request.
+
+In production, we are handling tens of thousands of requests simultaneously, each arriving independently with its own distinct characteristics.
+
+Together, these mean that we can no longer utilize many clever machine learning tricks.
+
+For instance, batching similarly shaped inputs together, even assuming we could process in batch at all.
+
+We are no longer worried about batch latency, but rather the performance of each individual request coming from a user.
+
+So what tools did we have at our disposal in this challenge?
+
+At Roblox, we are huge fans of NVIDIA GPUs, Intel CPUs, the amazing teams behind both PyTorch framework and the great folks at HuggingFace with their NLP tool chain.
+
+This excellent set of tools lends us great opportunities to hit our goals.
+
+So this quickly led us to our first fork in the road.
+
+We couldn't imagine deep learning without the bulky GPUs we know and love.
+
+But you should have seen the tear on our DevOps team's face when we broached the subject.
+
+And they were right.
+
+It wasn't just the dollars and cents of using GPUs, which I should mention was very high.
+
+The complexity of managing separate hardware for certain workloads and the odds that next year's ML trend would change directions didn't leave us super excited.
+
+On the other hand, we are very good at managing gigantic clusters of homogeneous CPU workloads.
+
+A decade of experience here has given us not only confidence, but also great context and intel to help us do every last bit of compute from our hardware.
+
+I'm sure you're all familiar with the challenge in this space of picking between state-of-the-art models with an unknown road to production and the allure of rock solid models, which may leave some recall on the table.
+
+Please feel free to weigh in on the chat or in the later discussions on how your team approaches this conundrum.
+
+While this is usually a fun fight between data science and engineering, at Roblox, I'm lucky enough to partner with great coworkers like Wok here to help us bridge the gap from soda to ships at Roblox.
+
+Thanks, Kip.
+
+So many of you might know that there is only one Kip Kahler, but for me, I get the question all the time, like, are you Kwok Lee, you know, the Google brain researcher?
+
+So before I get started, I wanted to clear up any and all confusion here.
+
+So to start with, I'm Wok N.
+
+Lee.
+
+That's me there on the left in the picture.
+
+And on the right is Kwok V.
+
+Lee.
+
+And this is a picture of us together at the same place, same time.
+
+So we're definitely two different people.
+
+And you can see we have two different middle names, too.
+
+Now, I don't need to tell you that Kwok V.
+
+Lee is quite well-known.
+
+In fact, you might know him as a deep learning researcher who has over 85,000 citations, according to Google Scholar.
+
+But as for me, I'm not doing too badly either.
+
+In fact, I once got kicked out of a casino in Reno for counting cards in blackjack.
+
+So there's another differentiator if you need it, number of citations on Google Scholar and or a number of unfair bannings from casinos.
+
+So they're all good.
+
+So, all right, now that we have that all sorted out, I can get into the relatively simpler matter of how to scale BERT on CPU.
+
+So from a high level, there was a unifying theme in all of our scaling work, and that was less is more.
+
+In other words, we made things faster by making them smaller.
+
+And I'm gonna take you through these five examples of doing just this, which ultimately increased our scalability, that's our latency and throughput by over 30X. So where we started our journey was just with the vanilla BERT model.
+
+And to set the context for you, this was way back in late 2019, before the time of COVID, if you can imagine that.
+
+And we had just trained our first BERT models.
+
+And while the accuracy was great, we had a big problem.
+
+It really seemed like the vanilla BERT models just were not very fast or scalable.
+
+So in fact, if you look inside the pink box there, we were seeing average latencies of about 330 milliseconds and awful throughput of under a hundred messages per second.
+
+And this is on a large 32 core machine.
+
+So not very good.
+
+So the first really big breakthrough that we had was making our models smaller by using something called DistilBERT instead of BERT.
+
+So this literally just means replacing the BERT model with the smaller DistilBERT model and fine tuning on that instead, which is very easy with Hugging Face, by the way.
+
+So we'll talk about the details next, but as our first big breakthrough, we were able to cut our latencies down to 171 milliseconds on average on our benchmark and our throughputs almost doubling up to 185 messages per second.
+
+Yeah, so to give you an idea of why we saw this kind of 2x gain with DistilBERT, this depiction might help.
+
+So DistilBERT is an example of a student model trained from a teacher model using a process called knowledge distillation.
+
+So in this case, the teacher model is just the BERT-based model, which has twice the number of transformer layers and almost twice the number of parameters as well.
+
+So not coincidentally, inferences on DistilBERT are twice as fast as BERT, but luckily for us, we only had to sacrifice about 1% of our accuracy as measured in precision recall AUC in order to get that.
+
+So continuing with the theme of less is more, our next big optimization came from smaller inputs.
+
+And so what smaller inputs means in this context is avoiding the zero padding of input vectors that we pass into the DistilBERT model.
+
+So we'll discuss this next, but as you can see another big improvement here with our average latency is down to 69 milliseconds with this optimization and our throughput almost doubling again to 369 messages per second.
+
+Okay, wanted to give you a little bit more feel for how this smaller inputs works.
+
+So through the BERT tokenization process, a sentence is transformed into a numerical vector and we have many examples of that shown here.
+
+So in our earlier attempts at optimizing, we were trying to batch our inputs as shown in the first box here labeled fixed-shaped inputs.
+
+And because we were batching, we had to zero pad our input vectors of different lengths so that they would have the same length and so that we could pass them together as a batch into the DistilBERT model.
+
+So we thought that batching up these requests was going to be more efficient.
+
+But as it turns out, it was actually much easier and faster just to use batch sizes of one.
+
+And that's what's shown below with dynamic-shaped inputs.
+
+And since we're dealing with real-time request-response application here, this was also much more natural.
+
+So when we did this, we no longer had to zero pad because now the input vectors are all the same length when your batch size is one.
+
+And so this shortened our inputs a lot and we got a big speed improvement that you saw earlier from doing this.
+
+So our third example of less is more, we want to share is quantization.
+
+And this was actually what provided us with our biggest lift.
+
+And it's the biggest part of why we could achieve a 30X improvement over our BERT baseline.
+
+So just with these three optimizations you see here on this chart, we got all the way down to 10 milliseconds of latency on average and over 3000 requests per second on a 32 core machine.
+
+So quantization involves improving the efficiency of deep learning computations through smaller representations of model weights.
+
+For example, representing 32 bit floating point weights as eight bit integers.
+
+The specific quantization technique we leverage for our distilled BERT model is called dynamic quantization.
+
+And this technique involves quantizing weights after training, as opposed to quantizing during training.
+
+And this turns out to be much easier as well.
+
+And one of the really cool things about this quantization improvement is that in PyTorch, you can do it in just one line.
+
+So we're showing here the one-liner to transform, select float 32 weights in the distilled BERT model into eights, so that at inference time, these smaller weights are actually used.
+
+One quick note here too, this is also a change, just like with distilled BERT, where we had to give up a little bit of our accuracy in order to get the big speed gains.
+
+And this is a normal kind of trade-off that you have to think about as you're scaling up your model.
+
+And here's, yeah, just a very quick peek of what things look like under the hood after you quantize your distilled BERT model, is exactly what you'd expect from the one-liner, which is the linear layers in the original model are replaced with dynamic quantized linear layers in PyTorch, where those operations, the underlying operations are done in int8 for the, in order to get that better performance.
+
+Okay, so at this point, we've talked about the three biggest keys to scaling BERT inferences, smaller models, smaller inputs, and smaller weights, but we have two more really important ones to share, and they're also very easy.
+
+So the next one isn't rocket science.
+
+We also get a big boost in our throughput through simple caching.
+
+This is an example of less is more as well, because now we're effectively sending a smaller number of requests to our distilled BERT model.
+
+And the idea is if many of your text inputs are the same, you know, there's no reason really to bother your busy deep learning model with responses that it's already calculated.
+
+So some of our text classifiers had their throughput increased by over 2x due to caching.
+
+And so this is an easy win, but again, it depends on the distribution of your text data, which is one of the reasons we didn't include it in the performance chart.
+
+In the last example of less is more, another simple one, and that's thread tuning.
+
+So this one is so critical that all of the results that you saw earlier are not even possible without doing this on CPU, or at least that was our finding.
+
+So the critical thread tuning is shown on line nine above, but the idea is that when you have lots of processes running a BERT model on the same machine, which is probably almost always the case when you're running at a high scale like we have, you wanna make sure that all those processes play nice with each other in a CPU setting.
+
+So in this case, we did better by limiting thread parallelism for each of these processes, in particular, limiting each process to just one thread.
+
+And to use a foot race analogy, as you can see in the picture below, it's easier for all the runners, analogous to processes, to finish the race if they stick to one lane rather than trying to run in multiple lanes.
+
+So this was really key, and in fact, this is probably where you should start before running any benchmarks and starting to scale your systems.
+
+Okay, so there you have it.
+
+Five easy but critical optimizations for scaling BERT inferences on CPU.
+
+And putting it all together, we got at least a 30X improvement over the BERT baseline, what you can get out of the box.
+
+And we say at least 30X because we're not including the caching gains that we got here either, which would put it well over 30X. Okay, great.
+
+So that's all we have for you today.
+
+There are some key takeaways that we'd like to leave you with.
+
+So the most important things that we talked about today are first that real-time deep learning applications.
+
+For these, it's really feasible and natural to absolutely super scale them, the inferences on CPU.
+
+And so, as Kip mentioned earlier, that was a little bit of a surprise to us, but it's very economical.
+
+It works really well for a lot of applications.
+
+The second big point is that the key to scaling for us was to make things smaller.
+
+And we showed you many examples of that in this presentation.
+
+Third, we'd like to also leave you with the idea that many optimizations that enable scale are actually very easy to implement.
+
+They're one-liners in a lot of cases.
+
+You just have to know about them.
+
+And finally, for more details, please check out our blog post.
+
+We're leaving a link here.
+
+And one more quick final note.
+
+If you have any questions on this, any suggestions, we're always looking to get more performance out of your models.
+
+And please reach out to Kip or myself.
+
+And we're always hiring.
+
+So we'd be very happy to hear from you.
+
+Thank you.
