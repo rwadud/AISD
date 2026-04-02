@@ -1,0 +1,238 @@
+
+And then if we change the policy, then the value functions change in general.
+
+And, especially in our Q-learning, the policy does involve the Q-function.
+
+So, it's sort of like a recursion.
+
+I'll show you what I mean by the policy in our Q-learning algorithm.
+
+Here's our Q-learning code.
+
+Everybody's familiar with this code, for the most part.
+
+We have the hyperparameter section, and here is our epsilon greedy policy, we call it.
+
+So, our policy, and we can see that match action in Q-table means the action that will give you the biggest value from your Q-table, which is implementing this function.
+
+Q-table is this Q-function.
+
+So, the policy and the value function are very closely linked in our Q-learning algorithm, and that's not an accident, that's really a result of our dynamic programming and Monte Carlo, and then it brings us to Q-learn.
+
+So, I may not have done this enough, so let's do it.
+
+We could have a policy like this.
+
+Always go up.
+
+No matter where you are, you go up.
+
+That's a policy.
+
+It's not a good policy, it's certainly not the optimal policy, but it is a policy which we could evaluate.
+
+And to evaluate it, we would go through a, we would do a sweep of the world and see what these functions end up being, given this flashy policy.
+
+But we haven't spent, the reason we haven't spent much time drawing these wacky policy diagrams is that there is this, we're automatically interested in the optimal policy, the best one.
+
+The best policy gives us the best value functions.
+
+And vice versa.
+
+If we have an optimal value function, then it's very easy to decide what the action should be for maximizing reward.
+
+Because you can just look at the values and pick the actions which are going to maximize those values.
+
+And that's what Q-Learning is doing.
+
+It's updating the Q-Table and it's also using the Q-Table.
+
+So it is doing this policy or value iteration on the fly.
+
+So let's look at this slide again.
+
+You're going to get multiple choice questions about these statements.
+
+And you know how those questions work.
+
+There are going to be four or five similar statements and you're going to have to pick the right one.
+
+So you're going to have to know these well enough to distinguish the distractors.
+
+Okay, so generally dynamic programming is a collection of algorithms.
+
+It's not one algorithm.
+
+It's sort of a family of algorithms.
+
+And it's called dynamic programming because the dynamic part is that policy can change.
+
+The dynamic part is this might turn into a more reasonable policy as we do our algorithms, policies changing.
+
+So that's what he means by programming.
+
+What is the policy?
+
+That's kind of the programming.
+
+And doing dynamic programming means you're changing the policy as you go.
+
+So that's, he had to come up with a name.
+
+He explains why this name, it was dynamic, it's a nice word.
+
+Back in the day, everybody was talking about programming, so he just chose a nice word for it.
+
+But it's not the kind of programming that we do with C programming language or Python or whatever.
+
+Good, so, policy evaluation, that's a, that concept is we've got a policy, here's the policy, and we want to find the value functions that we would get if we followed this policy.
+
+So, the way we do that with dynamic programming is we don't have to start off on a path and follow a bunch of paths for a bunch of episodes.
+
+It's just a complete sweep through the world.
+
+And, there's an ambiguity here.
+
+If I am doing a sweep through the world for my value function, like with Q-learning, maybe my policy depends on the value function, so as soon as I change my value function, I also change my policy.
+
+In principle, if I make some changes to the value function, and this is based on the value function, then this also changes.
+
+So, there's an approach to address that concern.
+
+There would be an approach where you're changing a copy of this.
+
+So, if you're evaluating this policy, and the policy makes a reference to either of these, then it is a static copy of either of these.
+
+And you're building the new one.
+
+And then when you're finished your sweep, then you swap the new one into the old one.
+
+And then you have addressed your concern that you're changing the policy while you're trying to evaluate it.
+
+Right?
+
+So, did you follow me with that?
+
+We want to do a complete sweep through.
+
+So, the value table, the Q value table, we can picture it similar to the actual grid world itself.
+
+The beauty of grid world.
+
+So, we have the old one.
+
+And we evaluate a new one where these two things might interact.
+
+We're evaluating this guy.
+
+So, we've got all the numbers filled in here.
+
+And then that becomes our new value function.
+
+And then it turns out that it doesn't matter.
+
+You're going to converge to the same optimal value function and optimal policy.
+
+Whether you keep the old copy and use it or you just have the one copy and you change it while you're using it.
+
+The analysis is, the practical experience is that you're going to converge to the same thing anyway so you didn't have to worry about it in the first place.
+
+But you do have to keep doing it because when you do change your value function then your policy is based on your value function.
+
+You have to keep doing it until you don't get any more changes in your value function.
+
+New laptop.
+
+Is it really this bad in the Windows world?
+
+I don't think so.
+
+Says the guy who spent three weeks trying to get the Mac to work.
+
+I'm going to try taking a taunt through the settings.
+
+System.
+
+This way.
+
+That's it.
+
+I'll have to take a break at 3 and see if I can get it to display.
+
+Come on, machine.
+
+Now i get about 50 copies of it.
+
+I'm going to try to get it to display.
+
+I'm going to try to get it to display.
+
+There we go.
+
+There we go.
+
+There we go.
+
+There we go.
+
+There we go.
+
+All right.
+
+So, policy evaluation, that's where we just iteratively go until our value function over here stops changing, and then there is this very profound step where we can make the policy much better all in one go by just making it green with respect to the new value function, which will change a lot of this data.
+
+But it won't necessarily make it optimal yet.
+
+So, policy iteration is when you keep doing the policy evaluation and then policy improvement until it doesn't change more than a certain amount.
+
+So you give it a criterion for how much it has to change, and then you stop.
+
+So this is trying to find the optimal policy.
+
+The best thing to do to maximize all your values, and they are very closely linked.
+
+The optimal policy is the star.
+
+So if we have optimal pi, we get optimal value functions.
+
+Then this last part, the value iteration, there's just one word different here.
+
+Value iteration is the same as this, except we just do one iteration of the policy evaluation.
+
+Does this seem anything like Q-learning at all?
+
+Let's think about it.
+
+Can we see any Q-learning in here at all?
+
+Let's go back to our Q-learning algorithm.
+
+Here's the main smarts of the Q-learning algorithm.
+
+Now that it's warmed up and ready to cooperate and support it.
+
+Hi there, I'm giving a lecture in T117.
+
+And I've got a new Windows laptop and it was displaying on the screens in HDMI just fine.
+
+And then I don't know if the laptop screensaver wanted to come on or something.
+
+But now the projector says that it's an invalid HDMI input.
+
+And I went to settings to see if I could figure it out.
+
+I'm not really a Windows settings expert, I don't have to do that very often.
+episode like Que learningning Wood. not updating the Q table. Okay. So, see, episode... That's really next up. table. Now, there are these cycles in here. And it, there's 2 different ways of approaching this backup. One is 1st visit and one way is all visits. And so the 1st visit approach will back up until it gets to the the 1st arrival of the certain state, and then it will update the 2 table with the accumulated rewards that learn from this. from this 1st episode. So once it backs up, then it does another episode and that will, is supposed to explore more of the world and then the episode ends and then it can back up and do the learning. So hopefully you can see that that is now getting closer to human learning. It's going to be using the same kind of development equation to do the updates. It's just the just how it updates. 
+So there's a major limitation with There is a major limitation with Monty Cardo, and that is that the episode has to terminate. All episodes must terminate. You can't do Monte Carlo unless the episode terminates because the termination of the episode is when the learning starts. Because you back up from there. And in cue learning, They just incidentally with cue learning, we noticed that that we don't get a lot of meaningful direction until it reaches the target state, right? Because the target state is special. It's gonna end up with these zeros for the 4 action values, which are gonna be greater than anything else in here. So these zeros are going to be, as soon as it reaches them, then all of the nearby cells, especially the one that it came from, are going to be pointing at these zeros. And similarly, as we do more episodes and more updates, then the cells around these attractive ones are going to be attracted. So the attractiveness starts spanning out as we do more and more episodes, more and more reaching here. The attractiveness is spanning out. 
+Now, let's think about monkey Carlo. Monte Carlo doesn't even begin learning until it's in the sweet spot. Then it starts backing up. So that is kind of consistent with the way the information travels with cue learning as well. Beauty of human learning is that we're bootstrapping and we're not waiting until the end until we learn so we can learn a lot about the cliff even before we reach the 1st episode or reach the terminal state for the 1st time. Okay, so that's one of the big disadvantages of Monte Cardo. Then there is this, there are a couple of other notions with Monte Carlo. We want to make sure that every, every state is visited. Because there might be, not in cliff working, but in some grid world, there may be a a 1000000000 reward somewhere. And we're going to want that one billion for sure. And so if we are doing this right, we will be guaranteed to find it, if we're doing it right. And so what does doing it right mean? It means that we have to have randomization in our policy or in our starts. There's this notion of random starts. So with here's our state looping, if we have loops. This steak, we are in this state twice. There's the first visit, and then the second visit, and then go on. There may be third, 4th visits as well. There's a distinction between 1st visit methods and every visit methods. You're here to rescue me. This is the laptop. It's well. I'm surprise there. It was just drawing for a while and then the screen went blankly. So I had to switch to the person. Because don't really commit this. So it might be this, okay, login. So you come with that for you. We're getting a laptop available, so... It did work when I first got here. Now I was saying, yeah, that's... Eight. Yes. 
+Okay. I have one. Yeah. Let's try it. Yeah, that's right. Another one? No, the issue with the code, the agenda. But some men that will be in years. Yeah. So it might be this point is not like the, I think, what, oh, maybe driver? So for now we can use this. I, I, I, I, I, but you can go into ideas and see. it's not working in the classroom No, I'll be a driver or something. It might be the other type of class or not. Right. Okay, so then it's different... I, uh, J. What's that? What's that?. You Okay, back to business. Okay, so 1st visit methods versus every visit methods. I'm not going to be asking you about the details of the difference. I just want you to understand there is the 1st visit versus visit, is talking about cycles, you know, Monte Carlo episode, whether you back up all the way to the 1st visit before you update the value for the cell, or you average the returns that you've got every time you left that. But how to calculate it and all that sort of thing, I'm not going to be asking you that. Okay, now, we were talking about that $1000000 This or $1000000000 or whatever, here. I don't guarantee ourselves, but we have to have to end up this such that every state, every action, in every state, is tried. So we can do exploring starts is a concept with Monte Carlo, where every time you begin an episode, you do it in a random state and take a random action. And then if you do that an infinite number of times or as you approach it, then you're guaranteed because of the randomness, you're guaranteed to visit every action in every state. And you're guaranteed to find billion dollars. 
+Now, exploring starts have this drawback because that's not how our environments work, right? They don't they don't uh, In general, they don't randomly start you anywhere in our cliffwalking environment. We always start at the start. So if we are doing, if we are working with an environment like ours, it needs an environments, we consider only policies that are stochastic with a non-zero probability of selecting all acts in the state. Epsilon soft policies are these ones that have a little bit of randomness. Epsilon and. And so Epsilon ingreedy, if there's that that Epsilon threshold of randomness, we call it Epsilon soft. And if it's either random or greedy, that's called Epsilon Green. And so when we're doing queue learning, Here's our policy. And so what do we call this policy? It's calledndry, that's right. So let us read the... I believe the E part, just make sure we understand what this is going to be, what this is going to be. Every time we need to pick an action, we're 1st going to pick a random number. And we're going to compare that number to our epsilon. Epsilon is usually a small number. which means that most of the time our random number is gonna be bigger than epsilon. These will all be numbers between 0 and one. 0 and one. So if we pick a random number between 0 and one, we compare it to our Epsilon, and it is less than Epsilon. We pick a random action. That's our degree of rent. And if it's not, um, If it's in the main section, then we are greedy, seeing the max. We pick whatever action is going to maximize our current value table. So this is considered a policy that will eventually, if we if we keep doing this enough, a long large number says we will eventually find our $1000000 dollars. Because even if this is small, even if epsilon is small, if we do it enough, we are guaranteed as the number of steps goes to infinity, we're guaranteed to find our $1000000000 dollars. So that's how we that's how we can do it with Monte Carlo as well. And make sure that when we do an infinite number of episodes, we find our 1000000000 dollars. Okay. 
+Anything else about MontyCarlo. Okay, after the episode end, the Asian backs up and updates the Q table just until the 1st change. So, uh, it only makes one change, time effects up. So as it's backing up, it's going to be changing the value to what is already there and change it to the value of what is already there. And then change it to a new value, then we stop. with one car. And that's it. So let's see. I have on Bright Space. There is this notebook. Let's see if I can run it on my new machine here. We won't do or help. I think that's called beef. Nice. Yes. right. So we're going to Monte Carlo. Here's the Monte Carlo algorithm from page 111, or at least that's what I claim, and it is working on our cliff cliff walking world. And you can see that the, um, The, uh, code here is what we're familiar with, uh, with some. This one constantiates to zeros at first. And there's another table for, I believe, the weight it averages. But when we run this, let's see what it looks like. Okay. So, it's going a little fast for us to see, but at least it's full enough, so that you can see the backwards. It looks a lot like you learning when it's heading to the goal. But it's different because if you really look at these numbers, they're not changing until it comes back. So every time it reaches there, it comes back and learns a little bit. And if we do this forever, with an epsilon greedy policy, it will visit every site. Now, clearly, this is not as good as cue learning because cue learning is the sort of the next step we go to after, we look at Monticardo. With cue learning, we start here and we start learning and exploring right from the beginning. Let's take a remind you what that looks like. So, let's see, I hope this runs. 
+Does it Yes, it is. Okay, so there's our cue learning. And it's all in the 1st episode still, and it's learned a lot in this 1st episode. And then it's, uh, it's still not not anywhere near converging yet, but so the agent is learning during the episode, these times are changing during the episode. And then if we do enough episodes, as you've seen, it will converge on the optimal policy. So let's think about, let's just remind you what dynamic programming looks like. This won't have a little guy running around because this is done as sweeps through the entire world. So this would be after the 1st sweep through the world. And what we're going to notice is as we go through more sweeps, the attractiveness of this state is gonna fade, it's gonna fan out back this way. The 4 arrows pointing in all directions means that there is no preference between those 4 actions. They're all equal preference according to the policy. Except for these ones after this suite, these are are, uh, in the updated policy. And then next week we can see this region where it knows how to get to the terminal state is getting bigger, it gets bigger, and bigger. And this is going to continue until it stops changing. And it won't change anymore after that. And this is a, so this is one of our very 1st times when we can just look at an entire policy. 
+This is a policy. If you're here, you can go either that way or that way. it doesn't matter. But if you're here, you definitely want to go this way. Then, yeah, question. And then, then, program, just check, pause, and phone, battle, change, policy. Uh, well, um, uh, The policy evaluation is going to change the value function, then we change the policy when we're doing policy iteration, and then value iteration, let's let's book. Uh, get the... programming again? Yeah. So when we evaluate the policy, we find out, given a value function, what, or sorry, given a policy, what's the value function? Then given a new better value function, we can improve the policy. And if we keep doing these, we have this, which is policy duration. And if we do this shortcut where we cut this short after only one, only one. We don't keep doing it, we just do it once. And then that's the difference between this and this, this just does it once, this does it until the differences are small. just because export the Q tables sort as that we also know people. Thank you. Well, this, the policy is not the same as a Q table. Let's take a look. That's a policy, but that's not a cue table. I'll show you the Q table looks more like this. where, and so this is a visualization of the Q table, where for each state, there are 4 value numbers for these value numbers, but the arrows are just a policy, that's, uh, seen here, that's the pot. And this is why we're doing this. It seems tedious, but it takes a while to get all of this stuff perfectly straight in your mind. Oh now, Let's take a look at the Q learnhail rhythm again, and this is considered an off policy algorithm. Does anybody remember why we call it an off policy on you? I'll give you a hint. Here's the learning. Here is the learning and the learning is is taking the max, uh, on the max value. the positive. But our policy is a little bit random. say. It only takes maximum. Right, right. So the what we are doing is we are learning something, but we're following a different policy while we learn it. And this is how we can learn optimal stuff, optimal stuff is always gonna just throw the clip. But because we are learning off policy, that gives us some exploration where we can find our $1000000000 So this isn't part of cue learning. Cue learning is the off policy one. SARSA is there. And maybe I'll go to... I mean, the old sudden... The show, the user, the airplanes here. That's fine, Carlos, 132. We're almost there. Here we go. Here's our set. So SARSA is on policy. What that means is that it's learning what it is doing. It's learning the policy to fall. And so the critical difference here is this A crime. This is not max anymore. This is choose the action using the policy. And use that value in the learning. So it is using the same policy that it is improving. That's on policy. a SARA. And then as let's look at you learning, just to see, the, you're learning is all my policy, so this part... is different from this part. The epsilon greedy is not what this is doing. So this is learning a policy while it follows a different policy. And that gives us the ability to learn optimal and do the exploration. And then there is this difference here. that we already talked about, where cue-learning find, cue-learning will do the red thing, because it is learning the optimal policy, which is to straddle as close as possible. SARSA is learning the epsilon greed policy. which means that at any time that episode on could make it do something random. So when it is learning with the randomness, it learns that I guess I'd better stay away from the cliff as far as I can. So this is like on policy, does it ends up having a policy where it does not want to be near that cliff because it'll randomly jump over if it comes to one. Sarsa does it or cue learning? is going to be exploring everywhere, but it is learning this thing. And then you can, with catering, you end up paying the price. If, in a relatively unlikely event, you do something random. 
+Off policy versus all. Okay. So that's still our quiz next week. is these slides that we've got. And so there will be lots of multiple choice questions based on this text. Now, speaking of huge learning versus DQN, let's check in on our block squirrel. I'll show you How our blocks world training is going. on It's changed on a Windows machine and's her own desktop on my r. It's's name those at. So, our DQN, with, uh, this is on a 6x6 block girl. similar to the bright space. There's a python blocks world, your nation environment on bright space. And this is trying to train that that That environment in a 6 by 6 configuration. So there's 6 table positions and 6 blocks, which is a lot of action. So what we're looking at here is the episode length and the reward mean as time goes on. There's approximately 3 runs here. The current hurdle or blocker in our queue learning or our DQ end approach is that at about 750 million steps on a Mac studio with 64 gigs of RAM, the process gets killed because of too much memory usage. And this is on a, this is on a 4070 machine, an RTX 4070 machine. It also has the same problem where after a lot of episodes, a lot of concepts, it will run out of family and get killed. But this is what's happening just before it gets killed. The episode length starts off at 200 because we're limiting the episodes to 200 so that it begins a new episode every 200 episodes. or 200 sets. And we can see that they get better than that, right? They come down into the less than 200 steps to terminate the episode. And the reward is going from -15,000. Up to somewhere around -1000 and kind of kind of increasing. There is another run somewhere that I've done with a Maybe it was a 5 by 5 where it actually got above zero. Um, and before it was killed. And so that's that's kind of heartbreaking that it gets killed right before you're getting into where it's actually learning the or even techniques.. The graphics start. I had to grab. Oh, that. Almost 5 days. Yeah, so where do we go from here? This might be, this might make a lab or an assignment, but because it takes so long to get this kind of results, I'm just doing this, whenever I have a couple of minutes, I'll start up another run or whatever. And this is tensor board. So tents are bored is. You can see tensor board being supported in that CST 509 blocks were piping blocks the world code that I posted, tensor board is set up. All that does, what that does, is these log directories while it runs, we'll show you. Uh So, let's see, uh, Python Blogs. There we go. So here's our, uh, our, uh, DQM modology setup. And lots of parameters are being tried. So, uh, that size learning starts, all of these hyperparameters are trying to get better curves here. But We don't get any we don't get any good results in the end. But we're able to look at this because we're using the tensor board option. So tents are board log equals logs here, and the logs here is just logs. should beat. Yeah, there's our log gear. 
+So when we include the tensor board option that allows us to do a, I'll show you what happens. We are in our, uh, we have our log steer here. Only DQN algorithm has been run on this last year. So we do pcer board. Dash dash, logs, deer, all deer, logs. And that starts up this web page that you're looking at at local 06006. So below 6006. And I've can reload this and it'll be the same because nothing's really running right now. So that's how we can and we can do this while the training is progressing. We can monitor it through tensor board as it's progressive. So that's what that is now. What do we do? DQN is not working out for us. And a good a good possibility for why it's not working out for us is that we have so many actions. There is this concept of action masking where we would We would consider our configurations, maybe we've got this kind of thing. K, B, C. A. So all of the actions in our 2 learning or GQN, like moving B from E to this position, is still an action that it might try. It would be impossible. So it would get a penalty. So there's all of these actions, moving C from one from here to here, that's an action. And what we were relying on is that as it executes those actions, it would learn that they're impossible. because they would get a penalty for trying it. But what we're finding is that the PPO out or the DQA algorithm, Let's see, like, can we show you that page? Fun for now. True, learning. This is a PPO paper. Cue learning, with function approximation, fails on many simple problems, and is poorly understood. So I think we are witnessing it, failing on a problem, and we kind of know what the problem is. We've got way too many actions for a DQN to function the way it is meant to be. So what we would like to do is that the only actions that can be considered are moving aid, or E, or F. Those would be the only actions that it should consider in this state. So this is getting into this notion of action masking. And it does kind of make sense because if a child is in front of physical blocks, then it's almost sort of obvious that they can pick the one off. And then, like, let's maybe they would move the whole stack as well, but, um, It seems natural that when you get a certain state, the possible actions are sort of obvious. So that's where it's maybe we can give the PPO algorithm action masking information and then solve this blocks world properly, you know, 6 by 6 or 7 by 7 or 8 by 8. Or even 8 by 3 if we have fewer slots on the table and more blocks that would he, one, two, three, we could have 8 by three. And so that's another valid blogs environment. 
+So this is the next thing that I'm going to try out. You won't you won't have it in a lab or in an assignment. I'm just gonna do it I now repters always back. Action masking with PPO is a it's an enhancement. It comes from the contribute, the stable baseline, and trip package. But what it will do is I'll have to return the observation plus a one hot, a huge vector of one's corresponding to the possible actions in that state. We'll see how that goes. So why am I talking about this failed DQN attempt that I have done? Shouldn't professors only tell you about things that are successful? Shouldn't they only tell you the correct answer? Well, that's not the way reinforcement learning works. This is reinforcement or anywhere. You try a few things, you fail, you analyze why you fail. We think it's because we have way too many actions. So we're gonna try action masking on PPO. PPO supports action asking. Okay. Good. Now, let's go to your son. Oh, okay, I guess this is... This is, uh, so you have an assignment to, and a lab for platform is to add actors into the misebo simulation, and assignment to, is to set up the gymnasium environment for actually doing some PPO or DQN training. on a simulated creating 3 or a real create 3 if you have a real one attached on the network. And so the assignment takes you through building this picture. So I'm just gonna go through the assignment a little bit. Yeah, my stylish pad, so...apping and not sitting. Okay. So, there's our standard disclaimer at the beginning. You're allowed to get all the help you want from me or even classmates or AI. But in the end, you have to do it yourself from start to finish. And that's our current criterion for whether or not you actually know the stuff. Because let's face it, you could prompt with this assignment documents and then let the AI encrypted forcing, but decrypting this is the skill that you want. So we're gonna have roughly 4 stages. We gonna start with a bare bulbs gymnasium environment that in principle has all the pieces connected. That has all of these pieces connected, but it's, it will sort of be a null environment, we'll be able to call the step function and get a result back, and we'll have everything in place, but it won't be learning yet. And then, um... We will end, then we'll finish the gymnasium environment, implement some agents. then fine tune the environment based on the results of stage three. So, we're getting good at creating a new gymnasian environment. And so in that is the examples, create Red Ball V 0 is going to be the name of this environment. you know how to do that. You've done it a couple of times. I have 2 and 3, I believe. It says here that this work shouldn't be competing on your lower laptop. Now, the, you, of course, now you can have the GOI enabled in 8504 last semester. You want supposed to have the GOI enabled? But now, in this course, you can have it working. Most of the time, this does not, all of these gazebos and art business do not work with your virtual machine and setting the display back or running the graphical environment or virtual machine, also decide it doesn't work. Sometimes it will work for you. If you're not taught, it's very powerful, it could work. So you can fall that off alone. Now, another possibility for you is to set up a Windows system for Linux to WSL2 and... That's a problem based on WSM, Texas. So in modern times with Windows, they have done some good work. with getting an environment where you can have your Ubuntu 22.04 machine running in WSL 2 and you can display the GUI, the GUI will just naturally display over Docker desktop. 
+So this does involve dockerization. You need a Docker file for to use Docker that way. Um, But that's not a problem for some of you. I am, like I say, I am thinking that I will give you a lab that takes you through setting up a doctor file because a doctor file in the end, especially in this domain, that is the ultimate way of solving the virtual environment problem. where you have a doctor environment that, so you've got just the Python versions, you need in there, the Python library versions, the Ross versions, the Linux, anything you need installed from above to the next, all of that is worked out by the Docker button. So this is a good way to go if you are interested. But the lowest common denominator is your lower laptop. And then this is This is what I imagine your, your, um, assignment to former what was like, you want to have a get repository because responsible programmers are planning to get often. And get is not the same as GitHub. I hope you know that. Hub is a hosting service. Git is a source code control system. You can use independently of GitHub. It worked well when you do have it attached to GitHub, but you can make local commits to this regularly, then push them to get up. So this is the file structure where we've got our new environment and algonquin user ID, not student number. I going to try that. Because students insist on using their student number there. AISD examples, and then we got the ISD examples, ends, and here is our environment. We create 3 redfalls. And if you if you adapted this from your signed in one environment, then you might have a watch world in there, this is just, this is from side one. I'm not sure. This is a science. Now, um, there is some information about setting up this environment. The, uh, we're gonna have observation space and action space, arbitrary, discrete spaces at first, just trying it out. You need your reset and step methods, and the render method can do nothing saying for now. And let's see. There he is. Here's important information. Okay, so we won't have a main method with our gymnasium environment. We remember with A 504 when we launch our hand squad rule or the move module. There was a section at the bottom of the python module that did an RCO high it, and initialized a node, and then spun the node. So this is not what we're gonna do. We're gonna do this. So this is gonna go in the this line here, goes in the gymnasium environment, constructor. This, uh, Also, is in the constructor of the initializer. where it's gonna book something like self, Red Ball, Eagles, Red Ball, and this is a Ross 2 node. And this, the spin, uh, when we spin a node that sets it into its cycle of operations and then keeps doing that until it's killed. But that's not what we're going to want to do because what we want to do is issue a command, wait for that command to complete, and then look at the world. And so the way we are going to do it is with the spin once. We're not going to use spin. We're gonna use spin worms. in the step method. That'll be the step down. So we're going to issue an action and then spin once until it seems that the action is finished, then we can look at our screen and see what the screen is going to be our observation. And there will be a red ball moving back and forth on the screen. Okay, so this is our 1st time through this. This is sort of the work of the assignment is to figure out, this is how our 8504 nodes used to work, but this note that's implementing a gymnasium environment is going to be different. And it is, it's the only note that needs to be different. It's in our gymnasium. You know, your name is environment. So we have... We have a gnome in here. And that note, talk to all of these nodes. There's, uh, there's a bunch of nodes in the creat 3 and publishing or subscribing to Command Bell, and it's publishing a bunch of topics like battery status and all that sort of stuff. All of that stuff will also just naturally work with this knowing that goes into an Asian environment. So the step method is going to issue an action for this environment and use this node to do that. That's what's going on with the assignments. Okay. Now, what else do we have? We have, um, lab or... Six observations, uh, your... The actor lab is going to have you, um, identify the red ball and give you code for identifying this red ball. It's the red ball is a certain colour, it's going to be really easy to see the centre of that red dog. But let's think about reinforcement learning and actions, states or observations, and actions. So the observation, we have images from that simulated camera. that could be an observation, or we could have a real number indicating where the red ball is in the image. Maybe if there's between 0 on one side of the screen and one on the other. 
+So an observation of 0.5 would mean that the red ball is right in the middle of the screen. That's another that's one possibility, and then there is a pixel value from 0 to 640. And in each of these, what we're considering, hey, we want to be sure that we have a Markov state. so that we can have one one observation and know what is the right action. It has to be in principle possible to know what's the right action. So if all we have, all we have is that, is that enough for us to do an action or not? That's the question of Marco. So it turns out that the way we are doing the spin once, when we look at our observation, the red ball may be going that way or it may be going this way.ary the whole be stationary because it is called. So that's something to think about. This part. Now the actions, what's an action in this world. So again, there are there are options, and that's that's part of the work of this assignment is to think about these options and weigh the trade-offs for yourself. We could have a voting point number. which translates into a twist message that rotates 90 degrees. So the left maybe, or 90 degrees to the right. We could have actions of minus one 0 and +one. where maybe -one means rotate a little bit to the left or rotate to the right name. Or we could have an inch interpret 0 and 640, where 320 would mean that you are right in the middle, there would be no rotation. Zero would be a large rotation to the left. It's supposed to be a large rotation to the right. We have choices to make, and this is reinforcement learning. I am not gonna give them to you. I'm gonna just point you at the thinking that needs to be done, to choose a suitable one. Okay. And episodes resetting. Also, that. Yeah, here it is, and it gives you, oh, that, that it's... So, I create 3 is stop. There's a topic. There's a topic that we can subscribe to to see if the creator is moving. And not obey, that means it's stopped. So we can return the position after it stops. Okay. We are gonna be supporting human rendering because the rendering is Is out here. So the simulator, gazebo is going to be running, the create 3 simulator is going to be running, and that's going to act as our ability to monitor what's happening. And There is the option. I know some of you are going to want to speed this up as fast as you can. And there is the option of running people for these headless so that nothing gets displayed on the screen. The simulation happens, but nothing is displayed on the screen. It's like a rendering mode of none. And that cuts down on the resources required from your laptop while it's running the training because it doesn't have to update the simulator display and things. Well, you definitely want to be rendering the running them headless, actually multiplying running them headless in the actual document. So I'll assume that you're going to be running them the way you run them in lab three. But I just anticipate the question, well, can we run them without displaying the simulator? Yes, we have a simulator headless so that you're not able to monitor what's going on, but you'll still be able to monitor the camera. that you subscribe to. or at least the your agent will be able to monitor it. Okay, so we're going to try DQN PPO, our faithful pair. One isn't good, then hopefully the other is good. This is a an easy one, kind of like card bowl. where it shouldn't be too hard to get PPO to converge for this one. And there are some of you may be thinking that, why can't we just calculate the correct action? And you could, you can't do this without reinforcement learning. 
+And that's exactly what this is saying. We're going through all the motions of doing this reinforcement, aren't to learn about reinforcement learning, but we'll notice that with this environment, we can just do a calculation of what we think the action should be, what between the action should be. configuration, what should the twist message be? No, I just also want to take a look at, uh, the video. That should be too bad once you, uh, once you're sort of familiar with them, there are, there's a tutorial here where you can get XML code for actors. And it even tells you where to find the, like, there's a human, uh, that we can add and it'll tell you where to find the XML code for that human actor. We add that to the house. And then the guy will be walking around the house. But the red ball... Travelling red ball. is here. And this is the this stuff gives you the colouring. And so this is gonna be because it's red and round and it's gonna be really easy to detect it. And let's see. Yes, here is the detection. The detection. Um, For the circle. So it, this is, this code is given to you for detecting the circles. And... The circle is is this. So this just identified. This lab. So this is the lab for, and this will be directly to you, your, your, uh, Amazon or Hollywood School, have the red ball in it, and then your gymnasium environment for the assignment 2 is just a super good. Okay. So, did that all generate any questions? We got some time, questions. If not, then we're pretty much done for today. Remember, we have this in-class quiz 1st thing next week. on the dynamic programming, family of algorithms. So there's a number of them described on that one slide, and the multiple choice questions are going to be asking you about those plus monkey cards. And then we'll have, uh, after... Simon, see you with that four, we'll have a math five. I think it's gonna be a doctor exercise. The final exam, we're done. Any of you using Dopper already? Yeah, so that's it is a, it is the right way to go, right? You agree? You don't know it? I'll tell you, it is, the docker is the way we have all this hybrid, hybrid hyphen, Ross tube, original wireless. And half of you, I will see in the liner in an hour. to give you any help by could possibly render to you. Mary, I wanted that we needed the man this after today at the HDMI work. And then there was... I know that I've had a match. Well, yeah, the last 9 years, I've been using this same map. If another class tries to come in at four, then let the mail...

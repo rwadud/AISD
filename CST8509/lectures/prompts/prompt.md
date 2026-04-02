@@ -10,7 +10,7 @@ Your task is to clean and reformat the transcript by following these rules:
 
 **REMOVE (noise):**
 - Off-topic chatter or side conversations unrelated to the lecture content
-- Course logistics/administrative remarks (e.g., "homework is due Friday", "see the syllabus", "office hours are...") but sometimes you may want to keep them if they are relevant to the lecture content, for example if the lecture is an exam review session
+- Course logistics/administrative remarks (e.g., "homework is due Friday", "see the syllabus", "office hours are...") but sometimes you may want to keep them if they are relevant to the lecture content, for example if the purpose of the lecture is an exam review session
 - Filler sounds or incoherent fragments that carry no meaning
 
 **FORMAT:**
