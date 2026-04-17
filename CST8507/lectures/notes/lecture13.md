@@ -325,7 +325,7 @@ $$ y = \sum_i w_i x_i $$
 For example $0.23 \times 0.5 + (-1.87) \times 0.2 + 0.91 \times 0.8 + \dots \approx 0.23$.
 
 After (Binary):
-$$ y = \sum_i \operatorname{sign}(w_i)\, x_i $$
+$$ y = \sum_i \text{sign}(w_i)\, x_i $$
 
 For the same inputs $x = (0.5, 0.2, 0.8, \dots)$ the result becomes $+1 \times 0.5 + (-1) \times 0.2 + (+1) \times 0.8 + \dots \approx 0.26$.
 
@@ -345,7 +345,7 @@ Microsoft (2023 to 2024) refined binarization by adding a **scaling factor** tha
 
 **How is the scaling factor computed?** The scaling factor for a given matrix is the **mean of the absolute values** of all weights in that matrix:
 
-$$ \alpha = \operatorname{mean}(|W|) = \frac{1}{n} \sum_{i=1}^{n} |W_i| $$
+$$ \alpha = \text{mean}(|W|) = \frac{1}{n} \sum_{i=1}^{n} |W_i| $$
 
 For the example above:
 

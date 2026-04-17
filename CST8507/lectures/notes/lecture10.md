@@ -1012,7 +1012,7 @@ Very simple, so this type is not covered in depth in the lecture.
 
 IBM Watson was introduced in 2011. There's a very famous TV show, Jeopardy, where players answer questions to progress through levels and win up to $1 million. IBM competed against two famous human players and **won**.
 
-> **From slides**: Watson won Jeopardy on **February 16, 2011**. The final scoreboard showed three contestants with totals of **$24,000, $77,147, and $21,600**. All three Final Jeopardy responses were "Who is (Bram) Stoker?".
+> **From slides**: Watson won Jeopardy on **February 16, 2011**. The final scoreboard showed three contestants with totals of **\$24,000, \$77,147, and \$21,600**. All three Final Jeopardy responses were "Who is (Bram) Stoker?".
 
 ### Watson's Architecture
 
@@ -1268,9 +1268,9 @@ A single **start** weight vector (length 768) is dot-producted with every token'
 
 The overall loss is:
 
-$$\mathcal{L} = -\log p_{\text{start}}(s^*) - \log p_{\text{end}}(e^*)$$
+$$\mathcal{L} = -\log p_{\text{start}}(s^{*}) - \log p_{\text{end}}(e^{*})$$
 
-where $s^*$ and $e^*$ are the true start and end indices in the passage.
+where $s^{*}$ and $e^{*}$ are the true start and end indices in the passage.
 
 ```mermaid
 flowchart TB
