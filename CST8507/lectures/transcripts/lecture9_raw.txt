@@ -1,0 +1,1503 @@
+Let's give you the self-attention for the self-attention as the same with the control.
+
+So we have D1 embedding for the world 1, D2, D3, and D4.
+
+So this is the embedding for each world.
+
+So what we can do, we can say here, we will compute, what will we compute?
+
+I don't know.
+
+Let us say we need to compute the self-attention of a world D3.
+
+So, in this case, I want to compute the, set the attention of the word B3, okay?
+
+So, what we can do here, we perform a dot product with B3, the previous, okay.
+
+Now, after the dot product, what we can get?
+
+Scores, okay?
+
+So here, s1, s2, s3, s4, the result of the proof.
+
+OK?
+
+Now, to normalize, we can inform a normalization to make sure that they are in the same range.
+
+So we can apply here normalization.
+
+After normalization, what is going to be the output?
+
+Some weights.
+
+OK?
+
+So that would be 1.
+
+That would be, OK, this is 3.
+
+So this is 3, 1.
+
+So this is 3, 3, 3.
+
+So this is 3, 1.
+
+3, 2.
+
+That would be 3, 3.
+
+And that would be 3, 2.
+
+Because now I want to check the health, the self-attention of the word B3.
+
+Okay?
+
+Now, after we got the weights, we can now multiply again by B's.
+
+So I will write the B again here.
+
+B1, B2, B3, B4.
+
+And then we multiply this by this, and this by this.
+
+And we get the output.
+
+And we get the output.
+
+And we divide this by this and get the output.
+
+And we divide this by this and get the output.
+
+OK?
+
+And what is the dy?
+
+This is the one that we have.
+
+This is the same equation that we have.
+
+Any questions?
+
+The same process.
+
+The same attention.
+
+I try to complete the self-attention of the piece read data.
+
+Then my sentence is consistent of four words in the same sentence.
+
+I apply the dot product of piece read with each one place.
+
+I get some scores, which is attention scores.
+
+I normalize these attention scores, so get some weights.
+
+Based on these weights, I can multiply by the original piece.
+
+And then I have the weighted average sum.
+
+Which is weighted average.
+
+So weighted sum.
+
+OK?
+
+Any questions here?
+
+So this is the self-attention.
+
+What is a problem with this technique?
+
+Is there any training here?
+
+Any training?
+
+Any neural network?
+
+No.
+
+There is no training at all.
+
+So I will say, to make it trainable, and this process is trainable, we just multiply each vector by matrix.
+
+A weight matrix will be trained during the training process.
+
+Okay, they take or borrow some analogies from the database.
+
+So they consider this word as a query.
+
+And this original word they consider it as a keys.
+
+And this will be the values.
+
+When you have a query and you search in, about this query, you're searching your keys, and then you get the values from the database.
+
+So they just forward the analogy from them.
+
+Then they decided to have a matrix here, incredible.
+
+We say MQ and the matrix here, MK.
+
+And we create a matrix here, and.
+
+And this will be trained during the neural network.
+
+So we make this process or a transformer, think to make this process trainable.
+
+So it's not a basic calculation, but it is something that we can learn during that process.
+
+Now any questions on this?
+
+All right, so I will redraw it, but in the form of neural network.
+
+So if we try to redraw this as a neural network, I can do something like that.
+
+This is the input of the neural network, p1, p4, they are infected for each input.
+
+So, this is the input of the neural network, p1, p4, they are infected for each input.
+
+This is the input of the neural network, p1, p4, they are infected for each input.
+
+What is the output of the multiplication?
+
+What is the output?
+
+Scores, perfect.
+
+So we have S-I-G, scores.
+
+What is the next step?
+
+Normalization.
+
+So we can normalize.
+
+What is the output of the normalization?
+
+Weights.
+
+Weights.
+
+So the weights will be W, I, G. And then what is the next step?
+
+Multiplying the values by the output of the normalization.
+
+Here, I'm multiplying.
+
+OK. And what is the output of this step?
+
+one one half, one two half, one four half.
+
+The same.
+
+Yes?
+
+Okay?
+
+And we call this clock...
+
+Self-attention.
+
+And it's spread out.
+
+So there is, if there is, it appear back propagation.
+
+So the back propagation comes from the same two updates points.
+
+This is a neural network of the self-attention mechanism where we introduce a brain.
+
+Okay?
+
+Any questions?
+
+that this is a self-attention mechanism.
+
+Now, they think about multi-head attention mechanism.
+
+What is the idea of multi-head attention mechanism?
+
+As we saw in the previous, in this example, and the example that I wrote in the board, there is multiple attention for the same word.
+
+So the idea comes from the machine vision course.
+
+What do you mean, why we have a layer in convolutional neural network?
+
+Is that a feature?
+
+Feature in?
+
+The image.
+
+Yes, it's a feature, but why we should have layers?
+
+Abstraction, layer abstraction.
+
+So it doesn't take just the pixel shapes and the colors, and then it would be way off the vertical, and then it would be more objective.
+
+OK, got it.
+
+OK, so I want another answer.
+
+Why we should have, OK, in any image, it concludes a different details, yes?
+
+One layer may detect the edges.
+
+Other layer may detect another details.
+
+So this is the same idea.
+
+Multi-head attention, we apply multi-head attention for the same sentence to access a different or complex context in the same sentence.
+
+Different layer of attention.
+
+So they just update the same one with a very simple update.
+
+So instead of have one layer here, I can have a multi-layers.
+
+And they name it here.
+
+It's 1, 2, H.
+
+So this is head number 1, head, H.
+
+And then the same for here, and the same for here.
+
+But the output will be now different, OK?
+
+So instead, we have S-I-G. Now I have a layers.
+
+So I have SIG for head 1 and SIG for head H.
+
+For one foot, which is the number of heads.
+
+And the same for the weights.
+
+I have multiple weights here.
+
+So w i g on the first head and w i g on the head number h.
+
+OK?
+
+And then, also here, we will not have one output vector.
+
+We will have different output vectors based on the number of heads.
+
+So Y1 hat, 4 letters with 1, and 1, 1 hat, 2, H.
+
+So the input, yes.
+
+And UIP, it's a query, all right?
+
+So it is attentive.
+
+So the set attention that we have, for example, So, v1 multiplied by v1 is weight 1, 1. v1 multiplied by v2, weight 1, 2, and so on.
+
+And then we can compute 1 hat for each one.
+
+So, we can compute the weight in sum and that's it.
+
+So, this is the matrix for m8.
+
+So, this is the matrix for m8.
+
+So, this is the matrix for m8.
+
+So, this is the matrix for m8.
+
+So, this is the matrix for m8, m8, m8, m8, m8, m8, m8.
+
+This is the matrix for m8, m8, m8, m8, m8, m8, m8, m8. and y2 hat is the contextual embedding for v2.
+
+Okay?
+
+Is that clear?
+
+Any questions?
+
+And this is the idea of the multi-head attention that's used in the transform.
+
+Okay?
+
+So, transformer, as I mentioned before, it is published in 2017, and the title is Attention.
+
+This is all what you need.
+
+You don't need anything other than the attention.
+
+Okay?
+
+The transformer paper, based on the training data, the objective of the training is the translation.
+
+Okay?
+
+So, if you read the data and the paper, and I give you the data in the hybrid form, it's a full translation process.
+
+Okay?
+
+Based on this architecture, can I remove this?
+
+They train the model for translation hubs.
+
+Okay?
+
+And it is a huge model.
+
+It takes about 3.5 days for the training in two types of data.
+
+The first one is from German to English, and the second one from English to French.
+
+Okay?
+
+As I remember, they used 8 GPUs, and they take about 3.5 days to train the model.
+
+The first data set, it was from German to English, and I think it is about 4.5 million pairs of sentences.
+
+Remember how we train the translation?
+
+We feed the model with a source and the target language.
+
+Okay?
+
+So, and the other one, it was from French, it was French, it's 4H, it's in German.
+
+I think it's 36 million pair of sentences.
+
+This is how they train a transformer, okay?
+
+And the people are from the Google Research Group.
+
+All right, so what is a transformer?
+
+It's come to solve the sequence to sequence task, like translation.
+
+Translation is a sequence to sequence task.
+
+We keep the model with the sequence, and the output of this model is another sequence.
+
+And I relied on the self-attention to compute representation for the input and also the output.
+
+OK?
+
+Now, how we can do this?
+
+This is the transformer architecture.
+
+It is based on the encoder decoder.
+
+But they combine the encoder decoder in a one unit.
+
+We call this unit as the transport.
+
+So we feed the input, which is a source language.
+
+And then the architecture will output the target language, translated target language.
+
+And this is the architecture, actual architecture of the encoder and decoder.
+
+From a high-life point of view, this part is encoder, and this part is decoder.
+
+OK?
+
+You can find here this Nx.
+
+It means we have different decoders stacked on top of each other.
+
+The same item like convolution, unit, and decoder.
+
+OK?
+
+So it is not one encoder.
+
+It is a multiple of encoder.
+
+And the X based on the paper, we have six encoders.
+
+So we have six encoders, and we also have six decoders.
+
+Similar architecture, everything is same.
+
+Everything is same.
+
+So this is similar architecture for all the encoders.
+
+And this is the same architecture for the decoder.
+
+We feed the input for each, for the first layer.
+
+Okay, so the input here goes to the first encoder layer.
+
+And then as you see, we have a multi-head attention that we just computed here, the same technique.
+
+Then add a block, and then I have a feed forward, and then have add a block.
+
+I will explain this in details.
+
+The input will be embedded, and then we add a very important information, what we call a positional encoder.
+
+Why do we need positional encoding?
+
+Because in RNN, if you remember, we feed the model one by one, token by token.
+
+So the order, we know the order.
+
+But now in the transformer, we feed all the input at once.
+
+So we need to preserve the order of each board because it is very important.
+
+In a contextual formation, the order is very important.
+
+That's why they add for the embedding what we call a positional encoding.
+
+I will explain how we did it.
+
+OK?
+
+But this is a general item.
+
+V, the model with an embedding vector for the input words, for the input source language, add positional encoding information to the same vector.
+
+And this is added only once.
+
+And then go to one, to have attention layer, just to compute it.
+
+And then we have Adam law, and then feed forward the neural input.
+
+Here there is six layers, okay?
+
+The output of the last layer will be the input for the decoder.
+
+And the decoder, based on the input from the encoder, and what he has so far, try to predict the position of each one, okay?
+
+They are very similar in the architecture.
+
+We have one exception here.
+
+Look at the two architecture, what is the difference?
+
+Only one difference.
+
+Okay, so they are similar in everything except musket multi-head attention.
+
+The decoder use an extra layer to compute musket multi-head attention, okay?
+
+And this is a general view.
+
+Any questions?
+
+Now we will go deep in each one.
+
+I will start with the decoder, then when we finish the decoder, it is the same decoder, but I will explain what we mean by musket multi-head attention.
+
+But so this is the anatomy of the decoder, encoder, sorry.
+
+Again, this is one layer, but the six layers are the same to have access to multiple levels of information, contextual information, complex information from the same wall.
+
+And this number is a hyperparameter in the transformer.
+
+In the original waiver, it was six, okay?
+
+In other implementations, like here, it comes to 1.4, okay?
+
+But on the transformer waiver, this x equals six.
+
+We have six layers in encoder, six layers in decoder, okay?
+
+As I mentioned here, we feed the sentence at once.
+
+Why?
+
+We need a parallelism.
+
+Remember, what is a drawback of the previous techniques using deep neural network RNN or LSTM?
+
+We feed the model one by one. process award you have to wait the output of the previous one.
+
+But they try to overcome this problem so they feed the model with the whole input at once.
+
+Okay?
+
+And then this created an embedding to organize the current system of course is tokenization and they use a specific techniques for tokenization.
+
+It's white, clear, and code.
+
+Another technique of tokenization, I leave in your, in the hyperlink, I give you a link to understand how they perform with this tokenization.
+
+Okay?
+
+But this is the tokenization technique they use.
+
+After tokenization, we create an embedding vector for each token.
+
+Okay?
+
+And the length of this embedding is 500 megabytes.
+
+So each token represented in a vector of a length, 500 megabytes.
+
+Okay?
+
+Then, for this vector, we add information related to the position and then feed it to the first layer which is multi-head attention layer.
+
+Okay, now the question is how we can add positional input.
+
+So, okay, so for each word and how we can add the positional input.
+
+Position, if you feed all the words at once and you have a parallel processing for each token, in a separate from the other token, we lost a very important information related to the position.
+
+Why the position is very important.
+
+Okay, now, we started to think in a technique how we can add to the embedding vector information about position.
+
+One of the thoughts is, okay, we can do something like that.
+
+If I have the vector for this word of 512, and we have a left embedding values here, I can add another vector with the same length I can create 512 vectors and each value here will be 4, 4, 4, 4.
+
+One of them is.
+
+Okay?
+
+What is the problem in this technique?
+
+Imagine that the board is in position 100 or 50, so what will happen here?
+
+We will lose the most important information in the environment, which is measure the similarity.
+
+Now, I cannot measure similarity, the data will be completely changed.
+
+Okay?
+
+So this technique is a not one.
+
+But this is the way, one of the ways that we add something that should be unique.
+
+The opposition should be unique for each wall.
+
+And then we think about this technique, and this technique is unique, but we have a big problem here because the values will be changing, and then we are not able, the similarity will be lost.
+
+We think about using a function.
+
+We can use a function to create a positional encoding and we keep the same ID.
+
+We will generate a vector of the same length, 512, and this vector will be added to the embedding.
+
+But how we can put the values in this vector?
+
+We think of, we think of initially about the function.
+
+What about if we use sigmoid function?
+
+And for each position, for example number two, the projection of this position in this function is considered as this is a position of this world.
+
+Okay?
+
+There is a problem here.
+
+The nature of the sigmoid function at some time we have the same values here.
+
+While the position should be unique.
+
+It should be unique.
+
+You cannot repeat it.
+
+Then, in the transformer paper, we think about why we didn't use a sine and a cosine function.
+
+Not only sine, both sine and cosine.
+
+To give you more variant of values.
+
+Okay?
+
+And we have a very interesting equation for this.
+
+So the position in value for each position this is the position of the world it's divided into two ways if the index is even then we use sine if the index is odd we use cosine.
+
+This gives you a different variation with the different wavelengths and they build their equation divided by 10,000 And I tried to ask actually and search why is 10,000.
+
+Then the answer is 10,000.
+
+When you write 10,000, it gives you a value of a different range of the frequency in the sine and the cosine.
+
+So if this number is 10,000, then you have the range from 2 pi to 2 pi multiplied by 10,000. any dimension of your 4-dimensional, okay?
+
+And then as you see here for a different index, look at this position, the projection of this position in a different wavelength of the sine and the cosine, this will be your vector, okay?
+
+And I will try to, this is a question for a simple case, if you have a dimension of 4, it's 4, only 4, okay?
+
+And this is how we can use the equation.
+
+I'm not content about this equation, so to let you understand, that's why I create an excel sheet.
+
+And I will do this again.
+
+I create an excel sheet to compute it step-by-step to give you understanding how we can correct this.
+
+So example for this Now, for the word I, in a sentence, I in position zero.
+
+Then zero is even or odd?
+
+Even.
+
+So which to use sine or cosine?
+
+Sine.
+
+So just put i about the position.
+
+It's 0 here, and the i equal 1.
+
+Because here I need a dimension in vector, in this case, 4.
+
+So here this is i equal 0, i equal 2, i equal 3, i equal 3.
+
+Okay?
+
+Then we compute the first embedding position at for position 0 at index 0, and this is the value.
+
+And then for index 1, 1 is odd, so we use the cosine, and then we compute the value for each word.
+
+The computation is clear?
+
+Okay, how they compute the positional encoding using sine and the cosine?
+
+So if you understand this for small dimension, they repeat it for 512 dimension.
+
+So the only difference is d in the transformer is 512.
+
+Yes?
+
+Why do we say d equal 4?
+
+d equal 4?
+
+For simplification only, okay?
+
+Just to show you how the calculation happens, okay?
+
+This is a very limited example for simplification, but actually d in the transformer equal 512, okay?
+
+And then we have difference 512.
+
+So back to this, this is what happens now.
+
+In this example, they compute the frequency as 15 to make it easier.
+
+Then they compute a P1, P2, and so on.
+
+And this Now, I have one vector that includes the embedded information plus positional information.
+
+And, I have a group, and I have a friend, and there are a few I's over there.
+
+So, is that I take a different vector?
+
+Yes, of course.
+
+And, this is the idea of the contextual information.
+
+The same word in a different position has a different impact.
+
+Okay?
+
+That's the idea.
+
+Each word has a different position.
+
+And, this word, the position is unique.
+
+Okay?
+
+So, there is no, you cannot find two multiple values of this position.
+
+It's not duplicated.
+
+Why?
+
+Because we use the frequency of the sine and the cosine, and we add more range by using different between cosine and sine.
+
+Okay?
+
+Any question?
+
+So, this is how they can add that position to the embedded unit.
+
+So, they combine both, and they feed it to the self-attention What happened in the self-attention?
+
+We explain it here in that book.
+
+How we compute self-attention.
+
+We use the same technique.
+
+We have M, we have keys, we have queries, and we have values.
+
+Okay?
+
+Right.
+
+So, this is the part of the self-attention.
+
+This is how.
+
+Again, so we divide it into two We have three copies of the same embedding vector, Q, K, and value.
+
+And this is simplifying the process that I'll show you in the board.
+
+So we have multiplication between K and Q, and then we scale it.
+
+Then I will keep musky now because musky is related to the decoder.
+
+I will apply softmax to normalize, and then we have a multiplication.
+
+Multiply again by Q, okay, the same, and this is a self-attention plane.
+
+Now, at the same idea here, for each query, I have a keys, and then I multiply the key to get the scores.
+
+Scores give me a weights, then we can add attention value for each value.
+
+Okay, and this is what happens in a self-attention plane.
+
+Okay, they compute, they make a self-attention computation in a matrix form.
+
+So we put all the input embedding in a matrix form.
+
+And you know, when we create a matrix, we can now get a benefit of the GPU to make a parallel computation, okay?
+
+So here, this is an input and an embedding matrix.
+
+This is a matrix for Q for learning, and this is a K, and this is V, and then we perform the same output.
+
+OK?
+
+Any questions?
+
+Yes?
+
+So this happens after, in the pipeline, this happens after the generation of the first matrix, right?
+
+Yes.
+
+Here I add the position, and it added only once, OK?
+
+Then I feed this two combined to self-attention layer, OK?
+
+And the self-attention layer, we have now scores or weights to predict what is the y hat, which is a contextual representation of the input sentence, OK?
+
+Okay, right.
+
+It's a transformer.
+
+They didn't use a dot product.
+
+Okay?
+
+Like we did here.
+
+We didn't use a dot product between u and v.
+
+We used something we call it scale dot product.
+
+Why?
+
+Okay.
+
+Look at the Softmax.
+
+And this is their motivation for that.
+
+If you have this vector, okay?
+
+And you apply the Softmax, this is that.
+
+After applying the Softmax, this will be the value.
+
+Softmax is exponential function, okay?
+
+And this will be the power, okay?
+
+Now, if the value is bigger than this, we have big values.
+
+What about the Softmax results?
+
+we have more and more big value.
+
+What is a soft ANAX output?
+
+Very, very small.
+
+This is one of the common features in the soft ANAX function.
+
+Soft ANAX function, it's very sinister to the big values.
+
+OK?
+
+Now, how we can overcome this problem?
+
+Instead of performing what we call it adult product, we will do something we call scale dot growth.
+
+And we can find that the scale has a square root of d.
+
+So for this example, if you have this value, which is a bit, and then we apply a softmax, the softmax result here is very, very small.
+
+But if we scale these values by square root of d, based on what's your dimension, and then apply the softmax, we now have a values in the softmax function.
+
+OK?
+
+You have to explain why we have scaled the dot product.
+
+OK?
+
+So they explained this in their paper.
+
+You will not use the dot product because softmax, it's very similar to the big data.
+
+And this proves by values that, yes, Softmax, it's very sensitive to that dot product.
+
+So that's why they think it's another equation.
+
+And you find the scaling factor is a square root of the dimension of the vector.
+
+So a square root of 500 and 12.
+
+So if you divide each value by the square root of the dimension, and we divide the Softmax, we will have the values here rather than zeros in the order.
+
+OK?
+
+This is why we have a scaled dot product, right?
+
+And this is an empirical.
+
+I tried to prove it, actually.
+
+So I have here a distribution of the original distribution of some data.
+
+And then apply softmax.
+
+This is the distribution of data after applying the softmax function.
+
+But if we scale the same data to apply softmax, you can now notice the difference.
+
+If we use, okay?
+
+Right?
+
+Okay, so this is what happened in a multi-head self-attention layer.
+
+We have, we input the query.
+
+Like here, the input, thinking of machine.
+
+We can get an embedding plus possession.
+
+Then we divide each one to query.
+
+Since we have multi-head attention, how many heads in the transformer?
+
+We have eight heads. 8 heads.
+
+In each decoder, and we have 6 decoders, okay, so for each decoder we have 6, we have 8 heads.
+
+So what they have is, they divide 512 into, divided by 8, the number of heads.
+
+So each part will be computed parallel.
+
+So multiplication or self-attention for each token will have the same equation here.
+
+So this is the query, after division, after dividing into the 8th header, and then this is a key, and this is a value, and we use a matrix multiplication Because we have eight heads or eight head attention, okay?
+
+And then we can compute K, compute V, and this is a summary of what happened actually inside the multi-head attention.
+
+The same, so the input here is supports, embedding, plus again, plus position.
+
+Then we have a query, we multiply the query by keys, and then we divide it by 8, the square root of the scaling factor.
+
+Not by product, again, this is a scaling factor.
+
+And then we have the softmax, apply softmax.
+
+And then we multiply the output of the softmax by V again.
+
+Then we get a Z, which is Y hat for the output of this multi-head attention.
+
+And you will find out for the input here.
+
+For this head, for this specific head.
+
+So this will be repeated for each head, OK?
+
+So I try to write here.
+
+This is a scaling factor, if you remember, the scaling factor to overcome the problem of the softmax that it is sensitive to high value.
+
+The dimension here is 64.
+
+Why?
+
+Because we divided the 512 into 8 heads.
+
+So each one would be 64.
+
+The square root of 64 is 8.
+
+That's why we scaled the query and the dot product by 8.
+
+OK?
+
+The sequence is clear?
+
+Any questions?
+
+OK?
+
+Right.
+
+So this is output of each head at each.
+
+We're still in the self, in the multi-head attention plane.
+
+We're still in this plot, okay?
+
+And then this will be our input to feed forward the neuron.
+
+So back again to the architecture.
+
+After self-attention, the output of the self-attention goes through head and normalize.
+
+I will explain what we mean by head and normalize in a few slides, but this will be an input for a feed forward neuron network, okay?
+
+Right, so.
+
+Okay, as I mentioned, the input is a feed forward neuron.
+
+And here, this will be input for.
+
+Okay, so one of the things that I didn't explain it here, after applying salt to max, multiply again by D, the original D, okay?
+
+understand, tell them why.
+
+But I will explain this.
+
+This is a norm and add layer.
+
+And I will show you why we have to do this in each step.
+
+I'm almost done with this.
+
+Okay.
+
+Right.
+
+So after applying the same process for eight heads, so this is the output for each head.
+
+That denotes for head, the first head, Z1 for the second head, and Z7 for the seventh head.
+
+Okay.
+
+To feed this for the neural network, neural network expected to accept one matrix, not seven or eight matrix.
+
+So we need another Another layer here to do what we can do, compact all the attention hits.
+
+Okay?
+
+And then we multiply by another matrix that we know for learning the attention.
+
+And this will be feeded to neural network.
+
+Okay?
+
+Is that clear?
+
+The sequence is clear?
+
+Okay.
+
+Right.
+
+Now, what is the feedforward layer?
+
+It is a two-layer feedforward neural network, fully connected rail.
+
+And the key here is...
+
+So, the key here, it is not normal forward, the feedforward neural network to be normal.
+
+So, the feedforward neural network, we call it is a positional-wise feedforward neural network.
+
+Why positional-wise?
+
+Because it's for each token, we compute all the previous process and parallel.
+
+Okay?
+
+So, it's related to the position for each token.
+
+So, this is a point here in the feedforward neural network.
+
+When we compute the self-attention, we have some important information, but what is this information?
+
+not each word should attend to.
+
+OK?
+
+But do we use this information in learning the process?
+
+No.
+
+So for example, if I go through the steps, we have the input here.
+
+OK?
+
+And then the input goes to multi-head self-attention.
+
+And from here, we get very important information.
+
+What is this information is for each word, what or who I should So when we come to this level, this word, norm, we should attend to.
+
+Okay?
+
+And then we go to the normalizing, whatever norm and the ads, and again I will explain why we need norm and the ads.
+
+Then we get to feed-forward neural network.
+
+And the field problem in neural network is responsible for this stage, which is, what I'll do, or what I can do, I conclude from this.
+
+I learned attention here.
+
+Now, how I can use this attention?
+
+So what is the knowledge that I gain from this attention?
+
+And this is a rule of the feedforward neural network.
+
+It work like memory storage or memory knowledge that we learn using this architecture.
+
+Okay?
+
+So this is the idea of feedforward neural network.
+
+Again, it's two layers and it is a fully connected layer.
+
+So, if any value less than 0, just make it 0.
+
+Any value other than 0 will be.
+
+So, it's like it's working like a filter.
+
+Okay?
+
+So, because it's a two-layer, so we have two learning matrix.
+
+From here, we have two y's, and this is how, what the feed-forward neural network have.
+
+Okay?
+
+All right, now, what is the add and the norm, and why do we need adds and or norms?
+
+I noted in the architecture of the layer, something that I didn't explain.
+
+Right, so the input and padding, but the attention feedforward.
+
+But here we have add and norm.
+
+What we will add?
+
+The output of the multi-head attention with what?
+
+The input of the multi-head attention.
+
+And this is repeated here also.
+
+Output of feedforward neural network plus will be added to the input of the feedforward neural network.
+
+This is why what they call it residual connection.
+
+So what is the idea of residual connection?
+
+If you remember in neural network, in recurrent neural network and STM, we suffer from a very important drawback, which is vanishing data.
+
+Okay?
+
+And here, the problem is maybe worse.
+
+It's a very, very deep architecture.
+
+Very deep architecture.
+
+So after we compute the self-attention, we get some information about how this, the weights.
+
+It's a weight, okay?
+
+Now, to not lose what we have, we need to add this weights to the original vectors.
+
+And this is what we use it here, add and normalize.
+
+So do not forget what we have.
+
+And avoid the branching problem, okay?
+
+Gradient branching problem.
+
+And this is also repeated here.
+
+Don't forget what we have.
+
+So instead of just to take the result, and this result, because it's a deep, deep, and you know the feed for, the back propagation is a differentiation, okay?
+
+And we saw how that it will be come to zero.
+
+So, and this is a very deep neural network.
+
+So to keep this value and to keep learning, we have to add this in two positions, the previous.
+
+So here, the output, this is the input.
+
+The output of the layer is a concatenation between the output of the layer and the input of the layer.
+
+So to keep learning, not forget the previous information.
+
+Don't forget what we started with, okay?
+
+And this is the idea of the residual production.
+
+Let us add and refine rather than replace.
+
+So we will not replace the initial vector with the refinement, but we will add this refinement to the initial vector.
+
+And that's why we have add a loop, add a loop.
+
+And this y also, we have this multiplication in this slot.
+
+So this one, add a loop, OK?
+
+Right, so this is what we have.
+
+And now I think we finished the encoder.
+
+OK, now if you look at, I think we finished the encoder.
+
+The only thing that's interpret what we add at the norm, which is repeated here.
+
+We add that to this value vector and normalize the data to be entered to the next step.
+
+OK?
+
+Any question?
+
+It's clear to now?
+
+OK. Right.
+
+The idea here, which is a big advantage in the transformer, everything runs in parallel.
+
+So all the multi-head attention work in parallel. we feed the text or the feed the sentence for all the layer at once.
+
+And all the layer work parallel.
+
+There is no sequential here.
+
+And then for each layer, as we mentioned, we have a different Y's.
+
+And then at the end, we compact all this Y's.
+
+And this is the big advantage of introducing the parallelism in the transform.
+
+So everything here is parallel.
+
+And then we have one output of the multi-head attention.
+
+For each layer, we have only one output.
+
+But all the heads here work in parallel at the same time.
+
+But at the end, this is the output of the first layer in encoder.
+
+So just write.
+
+And then it will be input for the next encoder layer.
+
+So the output of the first layer will We input for the mixed encoder there.
+
+And then at the end, and this is how the parallelism work.
+
+We just put, use a matrix multiplication.
+
+We put all the inputs here as a matrix, and then GPU work well with the matrix multiplication.
+
+That's why the parallelism here is a good advantage in the transform.
+
+Now back to encoder-decoder.
+
+Now we finish encoder.
+
+Everything is clear inside the encoder.
+
+Then the output of the last layer of encoder, last encoder, will be input for each decoder.
+
+We have six decoder, so the output of all the encoders will be input for each decoder, okay?
+
+This is what we have here.
+
+For details, I will show you the details, how the output will be input, and in which way, but now we will focus on that in detail.
+
+As I mentioned, it is the same.
+
+The only difference is here.
+
+Musket multi-head attention.
+
+So what is the difference between multi-head attention and musket multi-head attention?
+
+Why musket multi-head attention?
+
+While we still have multi-head attention, we have here multi-head attention, and we have here masked multi-head attention.
+
+But what is the difference?
+
+The difference is, while we have masked multi-head attention, during the training, okay, we feed the encoder with the input sentence, and we feed the decoder with the target sentence, okay?
+
+We want to compute the multi-gate attention in the decoder with all the previous world, not the future world.
+
+Why?
+
+Because we make problems.
+
+We're not allowing machines.
+
+If the encoder has access to the previous world gate, if now I am in the encoder or through decoder, I have now this telephone, has a network and this is a decoder.
+
+And then encoder, this is encoder.
+
+And this is the step.
+
+If the decoder can process this word, what did the decoder want to use?
+
+what did you call them want to use what he processed plus the source okay so he did this information okay that's why musket monkey head attention so for any Any future work just replace it with minus infinity.
+
+So if the max later on will be converted to 0.
+
+And this is the idea of masking one-time repetition.
+
+Any future work will be masked from the decoder to let the decoder learn, not cheat.
+
+And this is only the first step.
+
+So this is how it's the same process like multi-head attention, except that we just use the musket multi-head attention using a lower position.
+
+Okay, now I will focus on this step.
+
+What is this step?
+
+Now, we get that the same process like here.
+
+Embedding, possession, everything is the same.
+
+And then we'll feed the model, we'll perform the musket head attention.
+
+We have add on the non-line encoder to not forget what we have.
+
+And then the output in multi-head attention.
+
+Layer here, we have three inputs.
+
+What is the input is?
+
+The input comes from the encoder.
+
+So in multi-head attention, we have three values.
+
+Query, value, and keys, okay?
+
+The query comes from the decoder.
+
+Keys and the values come from the encoder.
+
+And this is a logic question, okay?
+
+The query comes from here, So this is the question that decoder ask.
+
+I want to learn this one, the situation that I have, plus the output, the input from encoder.
+
+So the end key and the values come from the encoder, while the query comes from the decoder.
+
+I want to attend to what?
+
+And this is the idea of the self-attention.
+
+To whom I want to attend, okay?
+
+So I attend based on the values that I have so far, plus that source, so that I can predict what is next.
+
+This is the information that the decoder needs.
+
+And after that, everything will be the same.
+
+So this is how encoder-decoder stack work.
+
+So I have a multiple of encoders.
+
+And out of last encoder, this is very important, will be the stack to pass to the decoder, each layer of the stack of the decoder.
+
+So it's a process repeat.
+
+At the end, I have a softmax in decoder.
+
+Why?
+
+We make a prediction.
+
+So we make a prediction layer.
+
+We predict what is the next word during the training.
+
+So that's why at the top of the softmax we have, at the top of the decoder, we have a softmax that tries to predict computer probability, according to the all input which we want to become next.
+
+Any questions?
+
+All right, so the architecture of encoder and decoder is now clear.
+
+What is the difference?
+
+How they, what is the importance of each part of it?
+
+So I try to be away from detailed equation.
+
+It will not create a new transformer architecture, but it is important to understand this architecture.
+
+So I try to just focus on the understanding of architecture.
+
+Now, who is having faces?
+
+So what's having faces?
+
+Creative and digital, to be creative.
+
+You have all the models you can just choose between.
+
+It's an ecosystem.
+
+Models, data sets, document, different organization technique, different data set technique.
+
+You just, you don't need to do anything, just to choose.
+
+You have here a set of, I don't know if the interface is changing now, because I took the screenshot maybe two years ago.
+
+I don't know, I need to check if the interface of Hugging Face changed, but here we can check the task, and then we can see all the model related to the task, and the Hugging Face give you a model card, and the dataset card, where it explain how this model trained and all information about the model, and all information about the dataset.
+
+You don't need to train the model from scratch, you can just download the weights, and then fine tune the model based on your data, okay?
+
+So, no need for any training, you don't have to spend 3.5 to train the transformer from scratch, but you can use many, many models.
+
+And this is a very simple for X classification.
+
+We use a very simple method here, a pipeline.
+
+Pipeline is just abstract method, just encode all subprocess.
+
+That will load the model, compute the weights, use the weights, just the pipeline, and you give it the task.
+
+And then use it to predict, to perform this task. a very simple way to make any task using the Hugging Face where we have all the models the same.
+
+But it is very important.
+
+To the tip of my advice, don't download any model unless you read the model card.
+
+Read the model card to understand which model you have to use.
+
+You are not asking you to train the model from scratch.
+
+You use pre-trained model, but try to invest some time to understand how they trained this model, which source of data, how, what is the parameter, what is the size of this parameter?
+
+So this is a lot of consideration you have to take care of.
+
+And for another, also for any MLP task, name the entity of the mission, question answering, This is a very simple one.
+
+Summarization again.
+
+And this is a tree, and this will be our task for the next lecture.
+
+After 2017, we have multiple form of transform.
+
+We have the original transformer was encoder and decoder.
+
+Some another version of the transformer, like T4, part, all this use encoder and decoder.
+
+Some other models use only decoder.
+
+Other models use only decoder.
+
+And third, this will be our task for next lecture.
+
+It is build on only encoder. takes the idea of encoder, improve it somehow, and then that's it.
+
+So Perl, another version of Perl, and all this version, maybe there is some type of versions now, but we use encoder.
+
+Some other architecture use only decoder like JATIC-T. JATIC-T use only decoder version of, not only the transformer, but it's a combination.
+
+I will talk about JATIC-T later on, but this is the model.
+
+So some models use only encoder, some model build on only decoder, some model build on both encoder and decoder.
+
+So there's many variation here.
+
+Right, so we come to the last lecture here.
+
+What is the challenges in the transformer-based model?
+
+We still have some challenges, yeah.
+
+Every natural language processing task before transformer is completely different after the transformer.
+
+There is a huge improvement.
+
+A huge improvement in the performance after 2017, okay?
+
+But still, we have some challenges using these models.
+
+The first one is the language.
+
+Most of the models build on one common language, which is English, okay?
+
+So there's some trials with different languages, Arabic, but still, most of the improvement and the model build on one specific language, which is English.
+
+So this is one of the challenges for the transport.
+
+Data availability.
+
+We need a huge data.
+
+And even if you use a pre-printed model, and you try to fine-tune, you need a huge data.
+
+So you cannot fine-tune a model with pure data.
+
+So you need a label, huge label in the data to fine-tune the model correctly.
+
+Working with a longer document.
+
+Still, we have a problem with working with a long document, why they improve it, but still we have some problem with working with a long document.
+
+Transparency.
+
+Deep neural network.
+
+What about interpretability?
+
+Very hard.
+
+It's a deep neural network.
+
+We will see later the number of training parameters for each model.
+
+But it's a paleo parameter.
+
+So to interpret the output, it's not an easy task at all.
+
+And this is one of the challenges.
+
+Bias.
+
+Because this model trained on a huge data from the internet, from the documents.
+
+Then it comes with the whole bias that is introduced by this data.
+
+So bias.
+
+And you remember the first version of ChattingTee, how it was a disaster.

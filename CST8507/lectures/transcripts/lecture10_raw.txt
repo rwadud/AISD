@@ -1,0 +1,2035 @@
+help Bokin answer this question.
+
+And they started to, okay, so explain how to work on the third part here.
+
+They don't pay attention for the new word.
+
+So the result here of the service, they didn't pay attention to the new word.
+
+But after that, every word has a value and every word is reduced in the context.
+
+And then the answer here is precise.
+
+That's what that we're searching for, okay?
+
+And this is what Burt introduced actually in NLP task.
+
+The performance in most of NLP task has improved.
+
+A huge improvement, actually.
+
+I had the same experience.
+
+One of my colleagues, she was working with ADHD in what university?
+
+And I think she worked in disinformation analysis class.
+
+She has a lot of data come from social media.
+
+And then she tried to get some results from her data, but unfortunately she cannot have a good result from her data, okay?
+
+It's come to she forget everything about her PhD program, started to search for a work.
+
+She find a work in one of the government sectors and started their work.
+
+After that, she tried to use her in her data.
+
+And at that time, she got a very good result, okay?
+
+And then she started to publish a paper and now she's a graduating PhD professor in L.A. So this is what PERT introduced to the NLP.
+
+That's a huge difference in the performance in a different NLP class.
+
+So what is a PERT architecture?
+
+We have two different architecture for PERT.
+
+The first one, we call it PERT base.
+
+It's a stack of a different decoder.
+
+The number of decoder is 12 decoder.
+
+And we have a base large, PERT large, which consists of 24 stacked decoders.
+
+OK?
+
+So this is the two difference, the difference between the base, the base and the base large, a number of decoder, number of attention heading, and of course, the number of parameters.
+
+So base consists of 12 layers.
+
+The heading size is 786.
+
+And we keep this number because we will need this number.
+
+768.
+
+What we mean by this, every token can be represented in a vector of this specific value.
+
+So the dimension now is 678.
+
+And instead of, remember with love, with word to vector, we can choose between 1500 or 300.
+
+But now Perth has a fixed embedding length, which is this length.
+
+So every token can be embedded in this specific vector size.
+
+And then we have a small, we have 12 heads, 12 attention heads.
+
+If you remember how many heads in the transformer?
+
+How many attention heads in the transformer?
+
+It's a basic architecture of the transformer.
+
+How many of them?
+
+Three?
+
+We have eight.
+
+We have eight attention heads in the transformer.
+
+If you remember from the previous lecture.
+
+So here's one layer.
+
+What is the transformer number of layers in total layer in the original table?
+
+nx.
+
+How many?
+
+How many encoders in the transformer basic architecture?
+
+6.
+
+Yes, n equals 6.
+
+But here in a pair with n equals 12.
+
+So we have identical 12 encoders stacked on top of each other.
+
+And with the heading size here, it's what is the dimension in the transformer?
+
+The heading layer in the transformer, the embedding heading layer in the transformer.
+
+What's the dimension?
+
+This is a very important number, 500.
+
+Do you remember this or not?
+
+So this is important, okay?
+
+So the embedding heading or the embedding for each token in the transformer embedded in 512 dimension.
+
+And in third now it's bigger than this, okay?
+
+And then 110 million parameters.
+
+Because it's a huge, huge architecture.
+
+So the number of parameters should be huge.
+
+Now in the third bit we have a different So we have 24 layers.
+
+So 24 decode encoders stacked on top of each other.
+
+The output of each encoder considered as the input for the second encoder and so on, okay?
+
+And the head inside is 1024.
+
+So instead of 788, we have now 1024.
+
+And then we have 16 attention heads.
+
+And the number of parameters, of course, will be huge.
+
+It's 340 million parameters.
+
+So this is a difference between the two architecture.
+
+So a large language model and older model architecture, the more is better.
+
+So their performance, of course, of per-terage should be higher than the performance of the per-scope or per-tables.
+
+But this is the two types of the PERT architecture.
+
+Now, what is the exact architecture of PERT?
+
+As you see here, it is similar to encoder and the transform.
+
+This part is the same.
+
+If you remember this part, we explained it in detail in the previous lecture.
+
+We have an input, little bit difference from the transformer architecture.
+
+The output also is a little bit different, but the basic architecture or the basic plot here of the encoder, it is the same.
+
+Nothing different.
+
+We have multi-head attention with a different number of heads.
+
+We have add and ignore, we have feed forward, and we have add and ignore.
+
+We have a scale attention as we explained the last time, why we need this scale to master attention.
+
+So everything is the same except that we introduce a little bit modification to the input and then a little bit modification in the top of the transformer architecture.
+
+But the main block is the same.
+
+It's an encoder, your encoder architecture.
+
+Okay?
+
+Now, what is the difference between MERT and transformer?
+
+Only the input and the output.
+
+So let's explain the input.
+
+Okay?
+
+The input is the PERT, the maximum size, and this is a limitation of using PERT.
+
+You cannot input any sequence greater than 512.
+
+If your sequence is greater than 512, we have another way to deal with this.
+
+But this is one of the limitations. the repetition.
+
+The input should be 512 token, not what.
+
+Okay.
+
+And then we feed this input again at the same time.
+
+There is no ordering sequentially in this case.
+
+The same like transformer will feed all this token at one step.
+
+One of the main feature of the term is they add automatically another token here at the beginning.
+
+And it should be at the beginning.
+
+A CLS token.
+
+And this token play a very important role in many NN universe.
+
+Okay.
+
+So this is the first step.
+
+We, I will talk about localization, but this This is the first consideration.
+
+We have a limited number of tokens as input in Perl.
+
+We cannot exceed it more than five hundred.
+
+When we add a specific token at the beginning, that's the first token and it should be at the beginning.
+
+A CLS token and this token is very important.
+
+And actually we also add another token which is SEB a separation token.
+
+To separate a sentence if we insert different sentence at the same time.
+
+It's a bit of a task.
+
+I will explain this in a minute.
+
+But this is the first step and then we feed this input to a different decoder level and then we come up with an embedding for each token.
+
+The last layer.
+
+We have an embedding for each token with this specific size and this embedding is a contextual embedding.
+
+It means that we have a deep understanding of the each token or each embedding has a deep understanding of the language because the nature of the data we trained on and the nature of the architecture which is multi-head attention.
+
+So every word is paying attention to all the surrounding words.
+
+Now let us go in details about the input.
+
+Now before we feed this token to the encoder we have some preprocessing especially related to PERT.
+
+So the first step is the tokenization.
+
+PERT uses specific algorithm for tokenization.
+
+We call it word piece.
+
+So word piece tokenization very simply they try to optimize the tokenization process and at the same time they try to overcome the problem of out of vocabulary.
+
+So if based on the word pieces, by the way it is not like word to pick or to run, but very simply they try to minimize the token as much as they can and if they find a word which is not in their vocabulary they just add, they cut the word.
+
+For example ending or let us say playing.
+
+Ok, so they divide it into two words, so play or two tokens and then img.
+
+And to identify they are the same word they added hash at the beginning.
+
+So when they cut the token in the smallest or optimized number of token, we are now have an appearance to represent a different words.
+
+So if I don't have the same vocabulary at least I can find a cut for this vocabulary.
+
+And again word pieces it is not a text.
+
+It is learn it.
+
+There is a training process happen to create a word pieces.
+
+The total size of the word pieces or the vocabulary size in the word pieces is exactly 30.22.
+
+So all and this is cover all the English language.
+
+Right?
+
+So this is the first start or the first part of the preprocessing.
+
+The documentation build in a talk of using a word piece algorithm.
+
+Where we can cut the long word or not appear in the vocabulary in two pieces.
+
+I will show you an example of this.
+
+But this is the first process.
+
+Okay?
+
+The second one is adding a new token.
+
+For your sequence, for input sequence, we add a specific token.
+
+The first token is a CLS, which is added at the beginning, and the second token is an SED, which is added at a a separation between a different sentence, and we have another token which we call it mask.
+
+And there is a specific rule for the mask.
+
+But this is happened at the beginning, okay?
+
+So in a P processing, we perform a tokenization, and then we add these tokens to your data, or input data to that, okay?
+
+Why we add this token?
+
+I will explain this in a minute, but this is what we, what's happening here in Perth, okay?
+
+And then, and this is what happened after tokenization.
+
+So if you then look, and this is the specific sentence, after tokenization, break all the, into the smallest possible tokens, and this is that tokenization process, and then add a CLS and the SCE, since this is one sentence, so SCE will be added at the end.
+
+If we see the model with two different sentences, then we can find the separation, and the second sentence, and so on.
+
+The limitation here, the total number, should not exceed 512 different tokens, okay?
+
+And then, during the tokenization, we map each token to a specific item, yes.
+
+Yeah, I noticed this now.
+
+I think they have to cut it.
+
+So I think there is a mistake.
+
+Because stunning should be, I think it should be cutted to other parts.
+
+Because this is not a sentient moment.
+
+This is not a minimization.
+
+Yeah, you are right.
+
+I think there is something incorrect here.
+
+But this is the idea.
+
+In a vocabulary size of 40 pieces, we have a total of more than 30,000 different tokens.
+
+And then they match each token to each ID based on this vocabulary size.
+
+So CLS usually has this ID whenever you repeat any type of sentence.
+
+You can see that CLS always has 141 as an ID, SEB has 142, and then the other IDs come from the vocabulary size.
+
+They have more than 30,000 vocabulary and each vocabulary has its ID.
+
+So here what happened is a local table searching for each token and its equivalent ID.
+
+Because we need to feed the model with the numbers, not the votes.
+
+Okay?
+
+And this is happening during the preprocessing.
+
+So this is the role of the tokenization. organization and a special tokens and then map each token to its ID.
+
+Okay?
+
+Is that clear?
+
+Any question?
+
+Then we...yes?
+
+If time it has a word, it ends with a hashtag.
+
+Yes.
+
+Whenever it has a word because we need to...okay, so when we train the model, we need to return each word to its original, okay, for a question, answer for system.
+
+We input the question and then we need the answer.
+
+So we don't...the output will not be the IDs.
+
+The output will be the token itself.
+
+So this hash means there is a cut here and the double hash means we compiled these two radios.
+
+This is a code for each special token, so SEP102, CLS is 101, if we have badding, then the code is unknown, it has always a code 100, and the bus has a code 102, ok?
+
+And I will show you an example of this badding, ok?
+
+Then it comes to that next step, which is positional encoding and segment encoding. what is a position encoding?
+
+Remember in a transformer, how we encode a position?
+
+sine and cosine.
+
+Okay?
+
+And it was at that time affixed it, affixed it, a vector added to the initial embedding vector, okay?
+
+It's calculated once, and then adding to each word as a word notation will give the position of this word.
+
+But use a different techniques, okay?
+
+In a position encoding.
+
+They still add a position encoding to each embedding vector, but this encoding is not fixed.
+
+It is come from, it's a part of the learning process, okay?
+
+So there is a weights and the model learn during the back propagation the position of each token and insert input to the model.
+
+So position in turn is part of the learning process.
+
+The model learn is a position of each word through the learning time, okay?
+
+And another input and here added to the embedding what we call it a segment embedding.
+
+All right, so we can for difference and it will be tasked like a question and answer.
+
+I give the model with the question and the answer.
+
+I need to differentiate between what is the question and what is the answer.
+
+And this is the rule of segment encoding.
+
+So A or one, sorry, zero means this a sentence number one.
+
+One means this is a sentence number two.
+
+Or zero means this is a question and one means this is an answer, okay?
+
+And then they add it together to be an input for the first encoder layer.
+
+So here we have position encoding added to segment encoding added to the token embedding come from CLS and then we add all this together to have an input for the first layer of encoder input.
+
+What is the total number?
+
+Still is 512 vectors for each token, but So we add all this information together when we feed it in the first layer or first encoding in depth, encoder in depth.
+
+Okay?
+
+Is that clear?
+
+Any questions?
+
+Okay?
+
+And this is the new thing that we added to the input of the encoder.
+
+Right, so again, we reprocess and feed all our data.
+
+After reprocessing, adding segment, adding localization, adding segment, adding special character, and we feed all these to the first encoder layer, which is the same like what's wrong.
+
+Nothing can change.
+
+The change is a number of layers and a number of attention hit, the understanding of the language.
+
+And then we come to our input.
+
+The output here is different from the basic architecture, which is the transport.
+
+OK?
+
+Now, what is the change in output?
+
+We have two outputs from that.
+
+We have a final heading layer.
+
+So for each token, we have now an embedded, which is 768 dimension of the embedding.
+
+Okay?
+
+And we have another important input, called, who the output, the embedding vector of the CLS.
+
+This is the two output of the first training.
+
+And final heading state, or in the final heading state, we come up with a new embedding vector for each input token.
+
+Lao has a deep understanding of the language, high knowledge about the language, and we have another important output, which is the embedding vector of a special token, which is CLS.
+
+OK?
+
+And this CLS plays a very important role in a classification process.
+
+They claim that, or they prove that, in their paper, The embedded vector of CLS have summarization of all the information of the input sentence.
+
+So they prove that in their paper.
+
+Okay?
+
+CLS is a good presentation of all the sentences.
+
+Now remember in I think assignment one, we perform a classification task where you enter a sentence as a set of words, okay?
+
+Now, how do you get an embedding vector for this sentence?
+
+How do you calculate the embedding vector of this sentence based on assignment one?
+
+How do you calculate the embedding?
+
+We take the average.
+
+Do you think if we have a separate word inside the sentence, the average of all the embedding of this word represents the actual meaning of this sentence?
+
+At that time, we don't have any other choice.
+
+But taking the average means you get each word in a sentence the same priority or the same importance, while usually in real life, this is not happening.
+
+Now, I have a good embedding for all the sentences, not related to the average.
+
+The good embedding here represents the actual or contextual information about this sentence.
+
+And this is what they have to provide us.
+
+In a CLS, why I try to, because the architecture is very, it's very complicated, but reasonably YCNS has a contextual information about the whole sentence.
+
+Imagine that, that is bidirectional multi-attention.
+
+What do we mean by bidirectional?
+
+We scan the sentence from right to left and from left to right.
+
+With multi-head attention, every word will attend to all the other words from left and from right.
+
+So, logically, see at the end of all this training, all this layer, hold an important information about all the sentences.
+
+Ok?
+
+And this is what gives to us to solve another NLP problem. rather than translation.
+
+Okay?
+
+Now I can make a classification using PERT.
+
+I'll feed the sentence, and then just in a top of CMS, I put softmax to get the probability for anything, for that loss.
+
+Okay?
+
+Because the CMS holds all the contextual information related to the whole sentence.
+
+Okay?
+
+Is that clear?
+
+So we get two benefits, actually, from PERT.
+
+The first one is the same like word-to-vector.
+
+Okay?
+
+So the hidden state is considered our embedding vector for each word.
+
+Right?
+
+So we trained the model in word-to-vector to different needs.
+
+We have the model as unsupervised.
+
+So we actually try to predict the world based on the surrounding world.
+
+And at the end, we consider the hidden layer, the final hidden layer, is represented as a valid vector for the input world.
+
+So the same here.
+
+So we feed the model with a token.
+
+And then at the end, the final hidden layer is the contextual embedding vector for each token here.
+
+So we come up with a vector, which represents actually the world.
+
+And we come up with a classification head that can help us in different interpreters, rather than just a translation.
+
+And this is a header CLS token after processing used as a presentation of the entire input sentence.
+
+And this is what BERT introduced.
+
+So rather than you take the average and you get an assignment one, you get an embedding vector for the whole sentence.
+
+Now I can use the CLS to have an embedding vector that represents the whole sentence.
+
+Now, how we train BERT?
+
+To train any model, we need two tasks.
+
+A task.
+
+What?
+
+In the transformer, our task was translation.
+
+OK?
+
+Now, in PELT, they trained the neural network must be for two different tasks at the same time.
+
+So all right.
+
+So here, OK, so the pre-training.
+
+This is a two-task.
+
+We trained PELT in two different tasks, musket language model, and at the same time, next sentence presentation.
+
+The idea of PELT is built in the pre-training and the fine-tuning.
+
+So during the pre-training, which we come up with this CLS and embedding the vector for each one.
+
+This is what we call the pre-training.
+
+After that, we can fine-tune or use the PELT to fine-tune based on your task.
+
+If there's a classification, we add a classification layer.
+
+If it is a question-answer, we can add another layer to solve this problem.
+
+And this is the idea of PELT.
+
+It's based on the pre-trained phase and then a fine-tuned phase.
+
+Now, what is the task that we trained PELT based on?
+
+We have two tasks, and these two tasks will be trained at the same time.
+
+The first task is mask-language model, and the second task is next-sentence prediction.
+
+So what is the mask-language model?
+
+You remember, in order to vet, what we will have, two techniques, step diagram and?
+
+Identifier.
+
+Perfect.
+
+So it's a supervised or self-supervised training, OK?
+
+So if we have a sentence, we identify a window.
+
+And from this window, if you remember what we consider, it's different techniques.
+
+Maybe we take 1, 2, 3, 4, 5.
+
+We try to predict the middle board based on the surrounding board.
+
+And in the other technique, we make the opposite.
+
+We try to predict the surrounding world based on the living world.
+
+Now we will use the same idea of self-supervising in musket language model.
+
+But use a different technique.
+
+So if you have ascenders and we have, let's say, pockets.
+
+So X1, X2, X3, X4, X5, Y6.
+
+They use a musket language model.
+
+What do you mean by musket?
+
+Randomly select some tokens, like this, like this, and this, and this, and this.
+
+And the musket is this token.
+
+And we try to predict this token based on the surrounding token.
+
+This is the idea of the muscle.
+
+Okay?
+
+So the technique that Berg used here is this technique based on the paper. 50%, 15% will be randomly considered as a musket token.
+
+But this 15% divided in a different way.
+
+So 80% replaced with the mask spatial token.
+
+And 10% replaced with random token, not the actual token.
+
+And then 10% will keep the same token.
+
+So we gave the model all the possible compagnies to let the model understand or let the model predict the correct word.
+
+One time I gave him the correct word, compute the loss function, update your training.
+
+One time I gave him the not related word, random word, update your parameter based on this.
+
+Last time I gave him the actual word and predicted it.
+
+If the model can see all the possible combinations, then we come up with an answer.
+
+So this is an embedding vector as a very very deep understanding of the language.
+
+And this is the objective of BERT.
+
+So this is the first task, right?
+
+And then they print the model based on this task.
+
+So we will feed the airbot as we explained.
+
+We added position, segment, and everything.
+
+And this is the main architecture for PERT.
+
+Different encoder with multi-head attention.
+
+And then we try to predict the masked language.
+
+So this is what we feed it at the beginning.
+
+So we feed the model with, why we didn't add CLS?
+
+We should add the CLS, but how this musk add?
+
+So we feed the model with a musk special token in a pre-processing.
+
+We feed the model, we add to the token the CLS token.
+
+We add to the token that separation.
+
+So this is explained what...this is the C tokens added.
+
+Okay?
+
+Now you understand what is the purpose of this machine.
+
+And this tokens added during the pre-processing step.
+
+Before you feed the model with the...is that clear?
+
+Any question?
+
+Okay. then it is just ahead at the end of the max try to predict during the query update the model for each decoder encoder.
+
+This happens for repeated in each decoder.
+
+Alright so the second task is next sentence prediction.
+
+So usually in natural language there is a relation between the adjacent sentence.
+
+When you have a text there is a contextual relation between this sentence and the next sentence.
+
+So they decided to train her on this objective.
+
+If the next sentence is the next sentence or not.
+
+And then what is the objective here?
+
+Is this sentence come after this sentence or not?
+
+So here they have different labels.
+
+So they feed the model with sentence A and sentence B with the label is next sentence.
+
+Sometimes they feed the model with a true and sometimes they feed the model with not next sentence to let the model differentiate between those.
+
+And this is happened in the same architecture.
+
+We feed the model with the same preprocessing and the input and we have also the max function just to propose.
+
+Is it correct or this is not correct?
+
+So, the model is the sentence, the first sentence, musket, and the second sentence also is musket, and we train the model to the output here, we have two multiple heads.
+
+It's just to identify is it the second sentence or not, and another head for to predict the musket, the musket difference.
+
+If this is correct, the musket will be wrong.
+
+And this is all happening together at the same time.
+
+Okay?
+
+Any questions?
+
+The architecture is clear with a lot of complication.
+
+What happens inside?
+
+But this is an overview.
+
+What is the input?
+
+What is the output?
+
+How does this play?
+
+Any other questions?
+
+It's clear?
+
+OK. Right.
+
+And this is after birth, actually, the time of birth.
+
+We always hear about the pre-birth model and fine-tuning And this is what actually goes into the NLP community.
+
+We have, we start with the model.
+
+We then put the data, random parameters.
+
+We don't have any knowledge about the language.
+
+And after the people in the model, we come up with a very strong information about the language.
+
+We have a layer, the final layer is after the clinic.
+
+We come up with a very good understanding of the language, and then we can use it as a fine-tune in any entity.
+
+We can freeze this hidden layer, and then bend in a copy of it your data.
+
+And this is actually what happened here.
+
+So, black is trained in a huge amount of data.
+
+And then the hidden layer has, or the parameter, the architecture parameter, now has a good understanding of the language.
+
+We can use it there to fine-tune it with a different entity.
+
+One of the important tasks is the classification task.
+
+Before that, you are not able to use a transformer in classification task.
+
+But now, we can use architecture in classification tasks and analysis tasks, we cover many tasks in 10x.
+
+Okay?
+
+Any questions?
+
+Okay?
+
+Right.
+
+So this is what we are going to use for next classification.
+
+Just add a layer here, take the CLS, and try to predict the sentence.
+
+Okay?
+
+Using only the CLS.
+
+We don't need all the header, the output for the header layer for each token.
+
+We just need the CLS.
+
+And we use the CLS token for classification, as the CLS has a good representation for the whole entire sentence.
+
+Right?
+
+Okay, so I gave you here some code.
+
+It's very simple, but I tried in this code to show you all the steps in details.
+
+I hope this will work.
+
+By the way, there are two implementations of Perth.
+
+Torch or our TensorFlow.
+
+So you can use torsion or you can use a density flow.
+
+But you have to understand which function goes with which.
+
+In this example, I use torsion.
+
+So here I import torsion.
+
+So all the code is on the torsion implementation of the first.
+
+Now let's go to the step.
+
+So here, the first step is to load the tokenizer, a built-in tokenizer, based on which model we're using there.
+
+Now we have a variant, different variants of the belt.
+
+So large, small.
+
+We have distal belt.
+
+We have over belt.
+
+We have many, many variants of belt.
+
+But once you choose the model, you have to choose its tokenizer.
+
+OK?
+
+So you cannot choose a model with a different tokenizer.
+
+When you choose a model, you have to choose its equivalent tokenizer.
+
+And this is very important.
+
+So I wrote here the tokenizer for Bird, Base, and Kiss.
+
+And then I have the model.
+
+I will not train the model from scratch.
+
+I just use a pre-trained model from its former model.
+
+And then I fine tune it with my example.
+
+Now I have a sentence, I want to see how tokenizer work on my sentence and what is the process that goes through the tokenization step.
+
+Now this is my sentence and I apply tokenization to my sentence.
+
+With some of the parameter, bagging is true and truncation is true, okay?
+
+So again, remember that the maximum size is 512.
+
+You cannot exceed this size.
+
+So if the sentence is greater than 512, actually you cannot choose the maximum size 512.
+
+Because automatically filled as CLS and must and add SEP.
+
+So your maximum size should be less than 500, okay?
+
+So make sure that the maximum size of any input less than 500, just in case because Perth adds a different, an extra token.
+
+Right, so, badding is true because if the sentence is small, less than, so in a batch of processing, all the sentences should have the same size, okay?
+
+So if one of the sentences is smaller than the other, we have to add badding, okay?
+
+Now, I tried to extract all that different component from the pre-processing.
+
+So, the input ID, if you remember that for each token, using a word piece, we map each token to each specific ID.
+
+So, I want to check this.
+
+I want to see what the mapping have.
+
+How the mapping have it.
+
+And I want to see the attention mask and also the, you know, the attention mask. and also the type token ID.
+
+Now, I'm going to explain this in output.
+
+So this is the original and this is the token ID.
+
+Right?
+
+So this is the tokenization.
+
+Again, automatically tokenizer as you see, a CLS, and then apply the tokenization in my input and add a separation at the end because it's just one sentence.
+
+It's not two sentences.
+
+The separation is automatically added by the end of the sentence.
+
+This is happening during a tokenization.
+
+Now look at the second output, which is input ID, where we map each token to its ID in a word piece vocabulary, which is consisted of, if you remember, what is the maximum size?
+
+3,000 approximately.
+
+Exactly, actually 3,000.
+
+So for each token has a map.
+
+So this is a lookup table using the vocabulary text come from the word piece to map each token to each token.
+
+as you see, a CLS, and then apply the tokenization in my input.
+
+And add a separation at the end because it's just one sentence, it's not two sentences.
+
+The separation automatically added by the end of the sentence.
+
+This is happened during a tokenization.
+
+Now look at the second output, which is input ID, where we map each token to its ID in a word piece vocabulary which is consisted of, if you remember, what is the maximum size?
+
+3,000 approximately, exactly, actually 3,000.
+
+So for each token has a map.
+
+So this is a local table using the vocabulary text come from the word piece to map each token to each to each ID.
+
+As I will explain, always CLS has this specific ID and it will not change.
+
+And always SPP has this specific ID and it will not be changed.
+
+The 102 and 101.
+
+Okay?
+
+And then what is the output?
+
+The other output here is attention mask.
+
+What is attention mask?
+
+In this case, it's all one.
+
+What do we mean by this?
+
+I didn't perform any mapping.
+
+So it means that if you perform a mapping, you can see the attention mask like this.
+
+Why is it important to tell the model you have to attend for all these tokens?
+
+Because this is an important token.
+
+So attention mask should be focused for all these elements.
+
+One means attendance.
+
+The attention should be attended to this world.
+
+This is what you need to attend.
+
+If there is a zero, it means don't waste your time to attend to them.
+
+And this is an important for the training process, okay?
+
+What you should you should attend for and you should not.
+
+Now I have a talking type party.
+
+Now this is one sentence.
+
+So the segment here is all zeros, because this is one sentence.
+
+I will show you an example now where we have two sentences to just check the difference.
+
+In another party here, I have two sentences.
+
+So here, because I did the model with two sentences, look at the type token ID.
+
+I have zeros indicated this is the first segment, and one indicated this token come from the second sentence.
+
+Okay?
+
+And this is again important for the training process.
+
+Is that clear?
+
+So this is the output, or this is what happened during the pre-processing.
+
+I will go back here.
+
+This is what I tried to print at the beginning, individual component, and then I printed, and then what else?
+
+Then I used a model.
+
+This is, I used a model.
+
+No guard means whitewash.
+
+What do you mean by no guard?
+
+No guard.
+
+We're not updating the parameter.
+
+So keep this embedding layer as a frozen.
+
+So we're not updating the embedding of the input layer.
+
+Okay, and then I tried to discover what is the output here.
+
+As I mentioned in the lecture, we have two outputs from the pair.
+
+The embedding vector for each input token plus the more the output, which is a CLS.
+
+Okay, now I try to print them.
+
+So the output here is, so this is a presentation of the CLS token.
+
+This is the embedding vector of a CLS, which has seven, six, eight vector dimension.
+
+And then also I try to...
+
+Anywhere we can print it, this is for CLS.
+
+This is a CMS.
+
+And this is the... after the processing, just to make sure that we can go back to the original ID.
+
+So I make the mapping again in a decoding step to return the ID to its same value so I can find here the same information.
+
+Now, using the word bank has two different presentations when it comes in two different context, which is the main problem in a word topic classroom.
+
+The word bank has a fixed presentation, but now a word bank has a two different presentation.
+
+And I will try to prove this.
+
+So I create two sentences where I have the first sentence word bank comes in context of the financial organization.
+
+So I went to the bank to withdraw some money.
+
+The boat in the bank of the river.
+
+And we try to get the embedding of the word bank in the two sentences.
+
+And I just try to apply a similarity.
+
+Cosine similarity between two vectors.
+
+If they have the same embedding vector, what do you expect as a cosine similarity?
+
+One.
+
+And this is what I did actually.
+
+I tried to find the cosine similarity.
+
+This is the embedding for the first one and this is the embedding for the second one.
+
+But at the end, the embedding is a cosine similarity.
+
+So I checked the values.
+
+The values is completely different.
+
+And this group divides the cosine similarity to 0.4.
+
+It means that the same word, when it comes in a different context, based upon verb, it has a different presentation.
+
+This means that actual verb has a contextual information about all the words in the language when it comes Now I try to figure out the output.
+
+So what is this means?
+
+All right, so the last headed state, which is the last layer after 12th layer or 25th manner its shape is 1, 12, and 6, 7, 6, 8.
+
+What do you mean by this?
+
+What does that mean by shape?
+
+So, what is it?
+
+One vector. 12 related to 1.
+
+Number of torques.
+
+And each torque, what is that?
+
+has a size of 767.
+
+Okay?
+
+So this is the output of that last layer.
+
+All right?
+
+So, the header states for all layers, it's number 13, number of header states.
+
+Why 13?
+
+Because the input layer also part of the tree.
+
+So the input layer here is part of the tree, so the number of layers here added are one.
+
+And I ask a question here, are last header states and the last layer output are the same?
+
+So I try to compare the last header state with the last layer, the total output of the output of the bird, then it comes true.
+
+Okay?
+
+So, I'm just trying to give you a So, again, I try to make a cosine similarity between the last hidden state and the last layer, output layer of the bird.
+
+And then the cosine similarity is 1, means they are the same.
+
+Okay?
+
+This is what the output of the bird.
+
+Right?
+
+So, I have a first layer, and then I have a second layer.
+
+So, I have a first layer, and then I have a second layer.
+
+And then I have a third layer.
+
+And then I have a fourth layer.
+
+And then I have a fifth layer.
+
+And then I have a sixth layer.
+
+And then I have a seventh layer.
+
+And then I have a eighth layer.
+
+I have one question.
+
+For the number that he mentioned, 3,500, what do you do to the ID?
+
+We have some numbers greater than that.
+
+Greater than 512?
+
+No, the number of ID...
+
+Nothing is here.
+
+Well, there are some numbers here.
+
+Okay, so numbers, okay, 512 is not the ID.
+
+So, 512 is not the ID. 512 is the dimension of the input.
+
+You cannot enter tokens more than 500, more than 512 tokens.
+
+Okay, but the ID comes from the word piece.
+
+Word piece is a trainable tokenization technique.
+
+Okay, when it's trained with a huge number of data and then try to get an optimized tokenization for any sentence.
+
+And then they have a vocabulary size maybe five where each token in an English language has an it's ID.
+
+Do the total tokens based in the word piece for the English language is this number.
+
+So the ID should be well in this.
+
+Is that clear?
+
+Any other questions?
+
+Okay, then when we have two sentences it's the final output and then it's the same.
+
+Now if I have a multiple sentence here the tokenizer I can get a different parameter.
+
+Maybe I have a maximum length as 12 just to give you information about how the padding and location happen.
+
+So the padding is the maximum length where the maximum length is 12.
+
+So if any sentence less than 12 token then we will add a padding.
+
+And that's why here when I try to print the same output here for the sentence one this is the sentence, this is the CMS, and we add the pad token at the end.
+
+And this is the equivalent ID.
+
+So again CLS141 SEP as you can see 102 where the padding has a value 0.
+
+Attention mask here is different because we have a padding.
+
+So we let the model attend to all this token but not pay attention for this token because don't waste your time with the value.
+
+We don't want the model to learn from the value which is not an important approach.
+
+And that's why the attention mask is different.
+
+Now we are performing the same for the second sentence.
+
+So the number of padding here is different based on the length of the sentence.
+
+And I created the tokenization.
+
+And here attention mask again is different.
+
+What important task we have to attend for and what is not important.
+
+And at the same we can have the last item state.
+
+So this is the patch size.
+
+This is the maximum number of tokens.
+
+And this is the dimension to make sure this is answer your question.
+
+The vocabulary size in a word tokenization is 30522 exactly.
+
+So I tried here to print what is the vocabulary size based on the tokenization.
+
+And this gives you the exact number.
+
+30522.
+
+This is that all the vocabulary related to the English language.
+
+So any word or any token, then we have an idea from this vocabulary science text.
+
+Okay?
+
+Any questions?
+
+Right, so I hope this will give you a clear idea about what is birth and how birth trains and what is the input and what is the output of birth.
+
+We have a list of released pre-trained births.
+
+The most important feature of birth is an open source.
+
+The whole game team, they make it open.
+
+Not like GBT, so GBT till now, we don't know the basic architecture, but it's a open source.
+
+We have a different variant of the birth model, which as you see here, some models that cover a different language.
+
+The difference here related to the head and a huge number of parameters as you see, okay?
+
+And this is one of the limitations of using large language models, like any pre-printed model, but there is a solution for that.
+
+A different variant of birth, the most I think important one is distant birth.
+
+Why distant birth is important?
+
+Because it has the same capability like birth, but a less number of parameters.
+
+So distant birth achieved 97% of the same performance like birth, whereas the reduced size, 40%.
+
+And the number of parameters is 60% faster than birth.
+
+So I think in your lab part, I mentioned that you have to use distant birth.
+
+So this is why distant birth is important.
+
+So to achieve 90% performance with less parameters and faster, so why you didn't go for distant birth.
+
+And I think in the last connection I will show you, we We will explain how we can reduce the size of this huge model.
+
+Because the huge model means a huge number of parameters.
+
+It needs huge computation power, computer with GPU, or something like that.
+
+So we need a lot of resources.
+
+But we still have a tiny version of this model.
+
+We can still use it in your local machine.
+
+And one of these variants is the Stirling.
+
+I think Roberta is trained in a huge number of huge resources of the text, so the text resources.
+
+They used to train Roberta is more than some of these variants trained in a specific type of text, scientific text, medical text.
+
+So you can find a different variant of them trained in a different sources, okay?
+
+And based on your domain, you can choose which one you can use, okay?
+
+And this is very important to choose the one.
+
+Read the information card of this model.
+
+Have this model trained.
+
+What is the source of the data?
+
+This will help you to choose the best model for your task, okay?
+
+Now, the second part we'll talk about, I'll introduce the question-answer system as a new task-level function in NLP.
+
+So now, NLP was in the question-answer system.
+
+And this is a task of your assignment tool.
+
+So what is a question-answer system?
+
+We're trying to learn the natural language processing system, where you can enter a question, and then you get the answer.
+
+And this is simply what a question-answer system has to do.
+
+OK?
+
+Now, this system classifies based in a different categories.
+
+What is the information source of this system?
+
+What is the question type?
+
+And what is the answer type?
+
+So when you build a system, you have to ask about this specific information.
+
+And this makes a huge difference from system to system.
+
+Which model you use and which model is best for your application.
+
+Now for information source, we have a different type of information source.
+
+Unstructured, which come from the internet, paper, books, articles in the internet.
+
+This is unstructured data.
+
+And sometimes we have a source as a structured data, like a a database for example.
+
+We can build the question answer system based on a database.
+
+And another source of data is conversation data source.
+
+Data come from the customer service conversation chatbots you know when you chat with in any website like Rogers for example.
+
+We just had a conversation with them.
+
+Maybe this is a source of conversation.
+
+If you try to build a conversation system, so you have to use this as a source.
+
+Another source of conversation system come from the social media.
+
+X or whatever you have in the social media.
+
+So try to understand what is the source of your data.
+
+And this is, make a huge difference between which model you use.
+
+Okay?
+
+Another category that I differentiate between a different question answer system, a type of questions.
+
+So, you build a system based on which type of question.
+
+We have factorial question like, what is the president of USA now?
+
+What is What is the total size?
+
+What is the population of Canada now?
+
+This is type of factorial, or factorial questions.
+
+And we have another type of question, which we call it open domain question.
+
+Like the questions that you ask, you can ask Shatibi in any field, like in Wikipedia.
+
+You can ask Wikipedia in any field, scientific field, social field, educational field, any field.
+
+This is what we mean by open domain question.
+
+Ask any question related to me.
+
+And we come with a closed domain, which is your task.
+
+We ask the question based on a specific domain.
+
+It is not open.
+
+So, your task in assignment two is based on closed domain question.
+
+Where you build your question answer system based on a specific domain that you propose in that proposal.
+
+Okay?
+
+And then we have a complex narrative questions.
+
+So, a question which is needs deep understanding.
+
+Like, you know, you cannot find the answer directly.
+
+You have to find the answer between the lines.
+
+And this is need deep understanding of that question.
+
+Like some of the questions like discipline, discuss.
+
+This is type of complex questions.
+
+Right.
+
+The answer type.
+
+We have different type of answer on the question answer system.
+
+We have extractive answer.
+
+What we mean by extractive?
+
+It means, you know, when we started to learn English 12 years in education, they have one of the task in English class is comprehension.
+
+Okay, so is there's a difference between a reading comprehension that your teacher gave it to you while you are in grade 2 and a reading comprehension when you are in grade 10?
+
+What is the difference?
+
+You both have a passage and the rest have questions related to this passage.
+
+But what was the difference at that point?
+
+You have a comprehension for a kid in grade 1 or 2 and give a comprehension for a student in grade 12 or grade 10.
+
+What is the difference?
+
+What's the difference?
+
+You're especially like just being like straight answers, just kind of specific.
+
+Yes, the answer, in 11-1 you cannot play with the student.
+
+The answer should be specifically extracted from the text directly.
+
+No thinking.
+
+No reasoning.
+
+But in 11-11 or 11-2 11-12 or 10 they give a comprehension and they need to understand what between the lines to be able to answer this question.
+
+And this is what we mean by extractive answers.
+
+Like year one or grade one.
+
+Just the answer is just extracted from the text.
+
+So you have a comprehension.
+
+You have a text like this.
+
+And then the answer span from this part to this part.
+
+Exactly as it is.
+
+No changes.
+
+Okay?
+
+This is what we mean by extractive answer.
+
+And we have a generative answer.
+
+Answer is generated.
+
+Shantibhichi.
+
+It's based on the generation, okay?
+
+And then we have a type which is knowledge-based.
+
+Answer based on an information set structurally in a database, for example.
+
+Okay, and then, and actually have, okay, so this type of question where we have a name entity recognition.
+
+This is a location, this is a page, this is the name of the person, This is a name of a city, something texted like this.
+
+So this is a type of answer.
+
+And we have yes or no answer also.
+
+This is already simple, so we will not cover it.
+
+But this is the main type of questions, of answers.
+
+So even you extract it directly from the text, even you generate it, or you can just find a match in your database between your query.
+
+So you consider your question as a query, and then you search in a database that the answers that match your query, OK?
+
+And to build your question-answer system, we have a different paradigm, extractive question-answer system.
+
+And the famous one is SQUAD, which is used in Stanford University.
+
+And we have a knowledge-based question-answer system based on a database.
+
+You have a database, you have a query, and then you can search or find a match between your query and what you stored in a database.
+
+We have a hybrid approach which may be used extractive, knowledge-based, generated, a hybrid approach.
+
+We have a generated question-answer using large language model.
+
+And we have the state of the art one which is right, which is a combined, make a combination between the strengths of generate an answer while you get this answer from another resource, an input resource.
+
+And I think you should use this technique in your assignment or your project.
+
+Okay?
+
+Now, an example of the hybrid technique is IPM Watson, which IPM introduced in 2011.
+
+It's a huge at that time.
+
+And there a very famous show, Joe Gioverti, I think.
+
+Then the IBM actually won these two famous people who played on this TV show.
+
+So it's like they ask a question, and then they answer this question.
+
+And while they answer the question, they go up to level and win some money, $1 million at that time.
+
+And then IBM, at that time, come to the competition between the two famous players in this show, and then they won.
+
+So what is IBM?
+
+A very general idea by IBM Watson at that time.
+
+As you see, it's a huge, very complicated system, and modularized system.
+
+So it consists of four basic modules.
+
+The first one is related to the question.
+
+The second one, candidate answer generation, candidate answer scoring, and then merge and compute the confidence.
+
+The first part here, it's a combination of different NNP tasks.
+
+Okay?
+
+And the main objective of this part is just to identify what is an I-bomb question.
+
+This is the output of the first question.
+
+They perform a different NNP task in the question to just get one answer.
+
+What is the type of this question?
+
+Once you identify or classify the question, it goes to the second part where it uses a combination of structured and unstructured resources of data data to find the answer of this question.
+
+Okay?
+
+So, they use a structured data source and unstructured data source to output some candidate answer.
+
+Okay?
+
+Probability of this answer.
+
+And then it goes to scoring, rank this answer, and they come up with the final of the answer with the score of our confidence score of each answer.
+
+At that time, it was a very perfect question answer system.
+
+But as you can see, it's very complicated.
+
+Now, extracted question answer, as I mentioned, it's based on giving a text and give a question related to this text.
+
+And the question answer system is to extract the answer from this text.
+
+This is what we call a comprehension, reading comprehension, extracted question answer.
+
+You feed the model with the text, and you feed the model with the question.
+
+And then the output is the start of the start and the end of the answer of this question from the text.
+
+And a common, a well-known data set, work on extracted question answer.
+
+It's held in Stanford University, I think in 2016 or something like that.
+
+It's consisted of 10 K allocated passage, question, and answer.
+
+So they trained the model of this.
+
+They feed the model with a passage, which is the comprehension, the question, and the answer.
+
+And then the model will train to, given a questions with a passage, how we can identify the answer.
+
+Okay?
+
+And then the passage is selected from English Wikipedia.
+
+The size of the passage not increase 150 total or words.
+
+The question are crowd-sourced, so it's allocated by a human.
+
+So this huge number of data is allocated by the human.
+
+It was a huge project where they have different passages and then they started to create different questions manually and then they feed the model with answer for this question and this is all done by the data are prepared manually with humans.
+
+And then the squared data.
+
+This data set is very popular and available now.
+
+They got actually a very good result based on the reading comprehension.
+
+So after they train the model we can now use the pre-trained model ask a question and they get the message and then the model will extract the answer.
+
+If you use the pre-trained model trained in this case.
+
+And they use as a performance two measurements what one of them is exact match and partial match.
+
+How they can get that?
+
+They compare each answer to a three what we call golden answer.
+
+Okay?
+
+And then they try to find out, compare the prediction what the model predict with this golden answer.
+
+So, for example, they gave the model this question, and then this is the correct answer, three different correct answers.
+
+Okay, so they gave the model with these three different correct answers.
+
+And then this is the predicted one.
+
+So the predicted one is this one.
+
+Then you compare between the predicted and the actual golden answer, right?
+
+So if they are exact match, they have zero, zero, zero because none of the predicted answer is exactly match one of the three golden answer.
+
+That's why the exact match is zero, but the partial match, if you see this is a predicted compared to this answer, there is a partial match.
+
+Compared to this answer, there is a partial match.
+
+And compared to this answer, it's a different partial match.
+
+And they compute the average.
+
+This is the way how they compute the performance of the extracted question and answer system.
+
+For formally, we can represent the input, which is a passage C as a set of tokens, C1 to Cn.
+
+And the question is a set of tokens, Q1 to Qn.
+
+Of course, n should be less than n.
+
+So n is the number of tokens in your passage, and m is the number of tokens in the question, or should n be less than n.
+
+And we tried, they tried at that time in 2016, use LSTM based model to solve this problem.
+
+Okay?
+
+And after PERT, in 2019, they create a second version of the SQUAD.
+
+Okay?
+
+SQUAD 2.0 which is trained using PERT.
+
+Okay?
+
+And this is all the model using a bidirectional.
+
+Very quickly, I will go through the model.
+
+It's built on by LSTM with an attention layer.
+
+So here, this is an embedding layer.
+
+They use a combination between character embedding and the word embedding, and we feed it to by LSTM to find the relation between the two, the words.
+
+Here's the context, and here also the color, which gives a question.
+
+And then we go through attention layer, the question and the passage, which word in the query is related or have to pay attention to the passage.
+
+And then we have at the end a modeling which is LSTM.
+
+With this objective, it is going to predict where is the start of the answer and where is the end of the answer.
+
+Okay?
+
+Then after the exact match at this time, it was 71% versus 4.81%.
+
+And then in the second version, they started to get a benefit of third.
+
+So they trained there the same process, question-answer system, reading comprehension.
+
+So we feed the model with the question and the paragraph or the passage, and then we try to predict the start and the end of the answer.
+
+This is how we can extract this answer.
+
+So it is here, we get the same, the input is the same.
+
+This is the question, embedding, decoding, and masking language and everything.
+
+This is a question, and then try to predict where is the start and what is the end.
+
+So just in the top, or in the top of the pit, in the fine tune of the bird, we just put two heads.
+
+The first head trying to predict which talking is the start of the answer.
+
+And the second hand, try to predict which two is the end of the answer.
+
+This is the answer of your question.
+
+Okay, so we have the two hands here, two layers.
+
+One layer to try to predict the start and the second layer try to predict which two.
+
+This is just exploring.
+
+And then now, this is also just to create your table.
+
+And this is a very important one, which model you will use, a pre-trained model.
+
+So SQUAD2, there is many version of SQUAD2.
+
+Again, SQUAD2, it's built in a top of or the training model built using PERT.
+
+So usually we use anything related to SQUAD2.
+
+And so this is where you will be your model.
+
+And here I can, with auto tokenizer, I can automatically choose which tokenizer work with this specific model.
+
+Okay?
+
+And this is available here.
+
+So once I specify the model and the tokenizer, then you have the input here, and then what is the output.
+
+This is a sample of the first input, so make sure that you add here the special token, CLS, and separator.
+
+And then we can build your model.
+
+So no guard means I will not train the parameters.
+
+I will phrase, retrain the parameter, but I use just a model to fine tune with my data, which is an electronic data.
+
+Okay?
+
+Right, so here I just, this is the score for the first occurrence, or this is what the comprehension, the outcome of the comprehension.
+
+If you give the comprehension a question, this is a question, and this is a context, then it just return where the spam of the study and where the spam of the ending part of your answer.
+
+And this is what I need to return.
+
+So they return the start and probability of the start and probability of the end.
+
+So I use arc max here as a soft max function to just print what is at beginning, high probability to be start, and what's the high probability to be end.
+
+And this is a correct answer.
+
+So how much music and this whole, it is just 6,000 hours.
+
+And this is not very simple, especially with a pre-trained model.
+
+It's simply, can you choose your model?
+
+But choosing your model, it's very important.
+
+Because not any model can work with your specific task.
+
+So again, make sure that you read the information about this model to make sure this is the correct model that you can choose.
+
+This is a common open source database, rather than a squad.
+
+That is, you can use it for training a new model if you create a new architecture and you want to test it.
+
+Then you can use this as a benchmark data to test your new architecture.
+
+It's available and it is online.
+
+Right, so, in the reading comprehension, it's good, why we have a problem, we have to feed the model with the question and the context.
+
+And then we ask the model to find the answer inside the context.
+
+But in reality, we'll not do that.
+
+We just ask the question and we let the model to give us the answer.
+
+I will not feed the model with the context, okay?
+
+And this is what we call retriever-reader architecture.
+
+So retriever-reader architecture deal with this specific type of question-answer system, where we just give the model the question, and then let the model extract the answer for us.
+
+I will not give the model with context.
+
+OK?
+
+In retriever-reader architecture, we have two main components.
+
+The first component is the retriever factor.
+
+OK?
+
+We feed the retriever with our data, with our source of data.
+
+Unstructured data, huge amount of data.
+
+We want to create a question-answer system for whatever grade 12 biology, or whatever.
+
+So I have many books related to this topic, so I can feed the retriever with all this unstructured document. and the retriever, and then give the question.
+
+The question, the retriever try to find, and somehow the similarity between the question and the data that he had.
+
+And then give the output of the retriever is the top, or whatever we decided, top 10, top 5, related document to my question.
+
+Okay, and this is the rule of the retriever.
+
+Receives a question and it stores a huge amount of data that I want to work on, specific domain, then the rule of the retriever, it receives a question, and I will put it there, the most relevant document related to my question.
+
+It will not answer my question, okay?
+
+Then it will feed the reader with this document.
+
+The retriever, the reader will be a reading comprehension, normal reading comprehension.
+
+Now, the reader has the question, and they have the context between using the retriever.
+
+Then this part, it's a normal reading comprehension techniques, okay?
+
+So sometimes, in some application, we need to make some document post-processing after the output of the retriever.
+
+So to rank the importance of this document, to specify a specific number of documents, three documents, one document, five documents, some reprocessing techniques may be added here before you feed the output to the reader.
+
+And also, there is some post-processing or answer before you give the answer to the user.
+
+So, check the quality, check if it's hard or not.
+
+Any type of the reprocessing, printed in a French way.
+
+So, this is an example of the post-processing.
+
+And this is simply, this is an architecture.
+
+We have two components, we have retriever.
+
+It's responsible to retrieve related document based on my question, and we have a reader to receive this related document and the question, and then it works the same like a reading comprehension.
+
+It has a context, it has a question, and then try to find what is the start and what is the end, or as an answer of my question.
+
+Okay, is that clear?
+
+So, this is the idea of a reading retriever architecture.
+
+Okay, so, some details here is related to retriever.
+
+What is the main problem?
+
+The retriever have to save this data.
+
+So, the retriever has, the input of the retriever, it's a huge unstructured data.
+
+How I can save and index this data, so it will be retrieved very fast.
+
+The data is the help of information extraction or information retriever techniques.
+
+We have different information retriever techniques.
+
+We can save this data as a vector based on the statistical techniques, or we can save this data as a vector based on embedding technique.
+
+Different methodologies and memory case which is provided by Facebook.
+
+And we have a different techniques here.
+
+PDIF statistical technique, BME25, it's another statistical technique, or embedding using graph, using what is called that technique for example, and then the last technique is GPR.
+
+Okay, and this is one of the most efficient technique to store the data.
+
+What is a GPR?
+
+This is a example of retrieval.
+
+So what is a GPR?
+
+TPR, it is trained in, right, so they use a little bit different architecture.
+
+So we have, they have two separate encoder.
+
+One encoder is responsible to encode the question.
+
+The other encoder is responsible to encode the answer.
+
+And they trained this model from end to end.
+
+One loss function, okay?
+
+But there is a two separate encoder.
+
+This is what they, the architecture of GPR.
+
+One encoder for question.
+
+One other encoder for answers.
+
+And then they train it from end to end with one loss function, okay?
+
+To make sure that's, to train the model to align in this question and its content.
+
+Right, so this is the idea of GPR.
+
+So we have here encoder, a separate encoder for the question and separate encoder for answers or retrieval of documents.
+
+And then we try to find the similarity, how similar this question related to the answer.
+
+And this is how we can say document the story, how to store the data inside the retriever, okay?
+
+To be able to easily find that, when you have a query, which is a question, how I can find the related document from this huge store the data, okay?
+
+And this is their techniques to do that.
+
+During the training, they try to find out this similarity, and then in the testing or clearance, then I feed on this question, then the model learn how to extract the similar document from this huge data, okay?
+
+Right, so we have a different framework which actually you can work, it's an open source, you can use it to for this type of question-answer architecture, reader-retriever, one of the common framework is HiSTACK.
+
+HiStack comes from DeepSet, it's a German company and it's an open source.
+
+Ok, so here I can show you a very simple example using HiStack to solve this problem.
+
+And this tutorial is online, they provide us with this tutorial, it's a very very simple But again, they use a specific method.
+
+You can play with other method with more data, but the steps are the same.
+
+So here, just download it.
+
+This is a configuration installing all the things.
+
+And the first part here is to how to store the data, document store, which technique you will use to store your data.
+
+So here we use N-memory technique with PM25 as a documentation store.
+
+So I create an embedding vector for my document using this technique.
+
+So it's based on the statistical technique.
+
+Okay, once I store my data, or I choose my store technique for the data, then I can prepare my document.
+
+So here I download some data.
+
+It's already there in the same directory.
+
+And then try to index just to go through the file to have prepared the data in a files.
+
+Converted to text is on the files.
+
+And then it is just the initialize the retriever.
+
+So which retriever I use, it's PM2 retriever, which is the document store that I prepared.
+
+And then you initialize the reader.
+
+Here the reader, as I mentioned before, the reader, it is just a reading comprehension model.
+
+So I use a reading comprehension model, prepared up trained in SQAD2, any reading comprehension model.
+
+Then HiStack gives you a pipeline that just streaming this process.
+
+So you have this pipeline that give you a reader and retriever, and just ask you the question.
+
+So it gives, it's, you know, it's hide a lot of details relating to this process.
+
+And this is can be applicable for any type of data, okay?
+
+So you can change the retriever documentation, document store technique.
+
+You can change the model, for example, but the point it is there just to give the reader and the retriever, and then you can ask the question.
+
+It come with the content or that text related to this question.
+
+So here is, so prediction.
+
+Here I have answer based on my question, how many answers you printed.
+
+It is one of your parameters and it gives you a reference to the context of this answer, which is a good way and I can also print it in a prettier way using also methods in high-stack that you have the answer and the context and this is how you can measure the performance of this model.
+
+Okay, any questions for retriever reader?
+
+Actually, reader-retriever, it is the same.
+
+In RAG, they use the same idea.
+
+So RAG technique just use the same idea but in a different way.
+
+But also we have a reader and we have a retriever and also we have a reader, as you will see in just a few slides.
+
+Okay, any questions for that?
+
+I think this is the last one.
+
+All right, so this was the end of the previous lecture.

@@ -1,0 +1,247 @@
+[The following section (slides 3 to 8) is reconstructed from slide content because the raw audio transcript began mid-lecture.]
+
+Today we are going to talk about BERT, Bidirectional Encoder Representations from Transformers. We will cover the BERT architecture, its variants, using BERT for text classification, and then introduce question answering, including extractive question answering or reading comprehension, open domain, closed domain, and generative question answering.
+
+Let us start with the big picture. The transformer has two parts, an encoder and a decoder. From this, three main branches have grown in the field. The first branch is encoder-only, which is the BERT family. This family includes BERT itself, DistilBERT, RoBERTa, XLM and XLM-R, ALBERT, ELECTRA, and DeBERTa. The second branch is encoder-decoder, like T5, BART, M2M-100, and BigBird. The third branch is decoder-only, which is the GPT family: GPT, GPT-2, CTRL, GPT-3, GPT-Neo, and GPT-J. In this lecture we focus on the encoder-only branch.
+
+Let us also look at the timeline, so you can see how fast this field is moving. Transformers appeared in June 2017, then GPT in June 2018, then BERT in October 2018. After that we had GPT-2 in February 2019, T5 in October 2019, GPT-3 in May 2020, FLAN in September 2021, GPT-3.5 and InstructGPT in March 2022, and ChatGPT in November 2022. Then LLaMA in February 2023, GPT-4 in March 2023, GPT-4o in March 2024, LLaMA-3.1 with 405 billion parameters in April 2024, OpenAI o1 and DeepSeek-V3 in December 2024, and DeepSeek-R1 in January 2025.
+
+BERT stands for Bidirectional Encoder Representations from Transformers. If you look at how NLP evolved, we started with RNN and LSTM, then moved to encoder-decoder and Bi-LSTM, then attention, then the transformer, and then BERT. BERT was trained on a huge amount of data: English Wikipedia, around 2.5 billion words, plus the Book Corpus, about 11,000 books and 800 million words.
+
+Now let me show you why BERT was such a big deal. Consider these two sentences: "We went to the river bank," and "I need to go to the bank to make a deposit." The word "bank" is the same word, but the meaning is completely different. Before BERT, with embeddings like Word2Vec, "bank" would have one fixed representation regardless of context. BERT changed this because it produces a contextual embedding, so the same word has different representations based on its context.
+
+Google applied BERT to search, and there are famous examples showing the improvement. One query was "2019 brazil traveler to usa need a visa." Before BERT, the top result was about US citizens traveling to Brazil without a visa, because the model did not pay attention to the word "to." After BERT, the top result was about tourists from Brazil needing a B-2 visa to travel to the United States, which is what the user actually wanted. Another example is the query "parking on a hill with no curb." Before BERT, the result explained how to park on a hill with a curb, because the system ignored the word "no." After BERT, the result correctly explained how to park on a hill where there is no curb.
+
+[End of reconstructed section. The raw audio transcript resumes here.]
+
+They didn't pay attention to the new word. But after that, every word has a value and every word is encoded in the context, and then the answer is precise. That's what we're searching for.
+
+This is what BERT introduced in NLP tasks. The performance in most NLP tasks has improved. A huge improvement, actually. I had the same experience. One of my colleagues was working on her PhD at a university, and I think she worked in disinformation analysis. She had a lot of data coming from social media. She tried to get some results from her data, but unfortunately she could not get a good result. It got to the point where she forgot everything about her PhD program and started to search for work. She found a job in one of the government sectors. After that, she tried BERT on her data, and at that time she got a very good result. She started to publish a paper, and now she is a graduating PhD professor in LA. So this is what BERT introduced to NLP, a huge difference in performance across different NLP tasks.
+
+So what is the BERT architecture? We have two different architectures for BERT. The first one we call BERT base. It is a stack of encoders. The number of encoders is 12. And we have BERT large, which consists of 24 stacked encoders. This is the difference between base and large: number of encoders, number of attention heads, and of course the number of parameters.
+
+BERT base consists of 12 layers. The hidden size is 768. We keep this number because we will need it, 768. What we mean by this: every token can be represented in a vector of this specific size. So the dimension now is 768. Remember with Word2Vec, we can choose between 1500 or 300, but now BERT has a fixed embedding length. Every token can be embedded in this specific vector size.
+
+Then we have 12 attention heads. If you remember, how many attention heads are in the basic transformer architecture? We have eight attention heads in the transformer, if you remember from the previous lecture. So here's one layer. What is the total number of layers in the original transformer? Nx. How many encoders in the basic transformer architecture? Six. Yes, N equals 6. But here in BERT, N equals 12. So we have 12 identical encoders stacked on top of each other.
+
+What is the embedding dimension in the transformer? The embedding layer in the transformer, what's the dimension? This is a very important number: 512. So the embedding for each token in the transformer is embedded in 512 dimensions. In BERT it is bigger than this. And 110 million parameters, because it's a huge architecture, so the number of parameters should be huge.
+
+Now BERT large has 24 layers, so 24 encoders stacked on top of each other. The output of each encoder is considered the input for the next encoder, and so on. The hidden size is 1024. So instead of 768, we have 1024. Then we have 16 attention heads. The number of parameters is 340 million.
+
+So this is the difference between the two architectures. For a large language model, more is better. The performance of BERT large should be higher than the performance of BERT base. These are the two types of BERT architecture.
+
+Now, what is the exact architecture of BERT? It is similar to the encoder in the transformer. This part is the same. We have an input, a little different from the transformer architecture. The output is also a little different, but the basic block of the encoder is the same. We have multi-head attention with a different number of heads. We have add and norm, we have feed forward, and we have add and norm. We have scaled attention, as we explained last time, why we need scaled dot-product attention. Everything is the same, except we introduce a little modification to the input and a little modification on top of the transformer architecture. But the main block is the same, the encoder architecture.
+
+Now, what is the difference between BERT and transformer? Only the input and the output. So let's explain the input. The input to BERT, the maximum size, is a limitation of using BERT. You cannot input any sequence greater than 512. If your sequence is greater than 512, we have another way to deal with it, but this is one of the limitations. The input should be 512 tokens, not words.
+
+Then we feed this input at the same time. There is no sequential ordering in this case. The same as the transformer, we feed all tokens in one step. One of the main features of BERT is that it automatically adds another token at the beginning, a CLS token. This token plays a very important role in many NLP tasks.
+
+So the first consideration: we have a limited number of tokens as input in BERT, we cannot exceed 512. We add a specific token at the beginning, a CLS token, and this token is very important. We also add another token, SEP, a separation token, to separate sentences if we insert different sentences at the same time.
+
+Then we feed this input to the different encoder layers, and we come up with an embedding for each token in the last layer. We have an embedding for each token with this specific size, and this embedding is a contextual embedding. It means we have a deep understanding of each token, because of the nature of the data we trained on and the nature of the architecture, which is multi-head attention. Every word is paying attention to all the surrounding words.
+
+Now let us go in detail about the input. Before we feed these tokens to the encoder, we have some preprocessing, especially related to BERT. The first step is tokenization. BERT uses a specific algorithm for tokenization. We call it WordPiece. WordPiece tokenization tries to optimize the tokenization process and at the same time overcome the problem of out-of-vocabulary. It is not like Word2Vec. They try to minimize the tokens as much as they can, and if they find a word which is not in their vocabulary, they cut the word. For example, "playing": they divide it into two tokens, "play" and "ing". To identify they are the same word, they add hash at the beginning of the second piece. So when they cut the token into the smallest or optimized number of tokens, we now have a way to represent different words. If I don't have the same vocabulary, at least I can find a cut for this vocabulary.
+
+Again, WordPiece is not a fixed text. It is learned. There is a training process to create WordPiece. The total vocabulary size in WordPiece is exactly 30,522. This covers all of English. So this is the first part of the preprocessing. The tokenization is done using the WordPiece algorithm, where we can cut a long word or a word not in the vocabulary into pieces.
+
+The second step is adding new tokens. For your input sequence, we add specific tokens. The first is CLS, added at the beginning. The second is SEP, added as a separation between different sentences. And we have another token we call MASK. There is a specific rule for the mask. So in preprocessing, we perform tokenization, and then we add these tokens to your input data.
+
+This is what happens after tokenization. For a specific sentence, after tokenization we break it into the smallest possible tokens. Then we add CLS and SEP. Since this is one sentence, SEP is added at the end. If we feed the model with two different sentences, then we find the separation between the first and second sentence, and so on. The limitation here: the total number should not exceed 512 tokens.
+
+During tokenization, we map each token to a specific ID.
+
+Student: I noticed "stunning" should be cut into other parts. This is not a minimization.
+
+Instructor: Yeah, you are right. I think there is something incorrect there. But this is the idea.
+
+In the WordPiece vocabulary, we have a total of more than 30,000 different tokens. Each token matches a specific ID based on this vocabulary. CLS always has ID 101, SEP has 102, and the other IDs come from the vocabulary. So what happens here is a lookup table searching for each token and its equivalent ID, because we need to feed the model with numbers, not words. This happens during preprocessing.
+
+Student: If a token has a hash at the end of a word?
+
+Instructor: Whenever it has a hash, it's because we need to return each word to its original form. When we train the model, we need to be able to reconstruct the word, for example for a question-answering system. We input the question and need the answer. The output will not be the IDs; the output will be the token itself. So this hash means there is a cut here, and the double hash means we combine these two pieces.
+
+This is the code for each special token: SEP 102, CLS 101. If we have padding, the code is 0. Unknown always has code 100.
+
+Then comes the next step, positional encoding and segment encoding. Remember in the transformer, how do we encode position? Sine and cosine. At that time, it was a fixed vector added to the initial embedding vector. It's calculated once and then added to each word embedding to give the position of the word.
+
+BERT uses a different technique for position encoding. They still add position encoding to each embedding vector, but this encoding is not fixed. It comes from the learning process. There are weights, and the model learns during backpropagation the position of each token in the input. So position encoding is part of the learning process.
+
+Another input added to the embedding is segment embedding. This is for differentiating, for tasks like question answering. I feed the model with the question and the answer, and I need to differentiate between them. This is the role of segment encoding. Zero means sentence number one, one means sentence number two. Or zero means question and one means answer.
+
+Then we add all this together to be the input for the first encoder layer. Position encoding, plus segment encoding, plus token embedding including CLS, we add all this together to have the input for the first encoder layer. The total is still 512 vectors for each token. We add all this information together when we feed the first encoder layer.
+
+After preprocessing, adding segments, tokenization, and special characters, we feed all this to the first encoder layer, which is the same as in the transformer. Nothing changes there. The changes are the number of layers, the number of attention heads, and the understanding of the language.
+
+Now the output is different from the basic transformer architecture. We have two outputs from BERT. We have a final hidden layer: for each token we have an embedding of 768 dimensions. And we have another important output: the embedding vector of the CLS token. These are the two outputs of BERT.
+
+In the final hidden state, we come up with a new embedding vector for each input token that has a deep understanding of the language. And we have the embedding vector of the special token CLS. CLS plays a very important role in classification. They prove in their paper that the embedding vector of CLS has a summarization of all the information of the input sentence. CLS is a good representation of all the sentences.
+
+Remember, in assignment one, we performed a classification task where you enter a sentence as a set of words. How did you get an embedding vector for that sentence? We took the average. Do you think if we have separate words inside the sentence, the average of all the word embeddings represents the actual meaning of the sentence? At that time, we didn't have any other choice. But taking the average gives each word in a sentence the same priority or importance, while usually in real life this is not the case.
+
+Now I have a good embedding for the whole sentence, not based on the average. The good embedding here represents the actual contextual information about the sentence. This is what BERT provides. Why does CLS do this? Because the architecture is bidirectional multi-head attention. What do we mean by bidirectional? We scan the sentence from right to left and from left to right. With multi-head attention, every word attends to all the other words from left and right. So logically, at the end of all these layers, CLS holds important information about the whole sentence.
+
+This is what lets us use BERT for other NLP problems beyond translation. Now I can do classification using BERT. I feed the sentence and then on top of CLS I put softmax to get the probability for the class. Because CLS holds all the contextual information for the whole sentence.
+
+We get two benefits from BERT. The first is the same as Word2Vec: the hidden state is considered our embedding vector for each word. We trained Word2Vec in an unsupervised way; we tried to predict a word based on surrounding words, and at the end the final hidden layer is the embedding vector for the input word. The same here: we feed the model with tokens, and at the end the final hidden layer is the contextual embedding vector for each token. So we come up with a vector that represents the word. And we come up with a classification head that can help us in different tasks rather than just translation. The CLS token, after processing, is used as a representation of the entire input sentence.
+
+This is what BERT introduced. Rather than taking the average, as you did in assignment one to get an embedding vector for the whole sentence, now I can use CLS to get an embedding vector that represents the whole sentence.
+
+Now, how do we train BERT? To train any model, we need a task. In the transformer, our task was translation. In BERT, they train the network on two different tasks at the same time: masked language model, and next sentence prediction.
+
+The idea of BERT is built on pre-training and fine-tuning. During pre-training, we come up with the CLS and the embedding vector for each token. After that, we can fine-tune BERT based on your task. If it's classification, we add a classification layer. If it's question-answering, we add another layer to solve that problem. This is the idea of BERT: based on a pre-trained phase and a fine-tuned phase.
+
+Now, what are the tasks BERT is trained on? We have two tasks, trained at the same time. The first is masked language model; the second is next sentence prediction.
+
+What is masked language model? In Word2Vec, we had two techniques, skip-gram and CBOW. It's a self-supervised training. If we have a sentence, we identify a window. From this window, with different techniques, maybe we take positions 1, 2, 3, 4, 5 and try to predict the middle word based on the surrounding words. In the other technique, we do the opposite: predict the surrounding words based on the middle word. We will use the same idea of self-supervision in the masked language model, but with a different technique.
+
+If we have a sentence with tokens X1, X2, X3, X4, X5, X6, they use a masked language model. What do we mean by masked? Randomly select some tokens. The mask is this token. We try to predict this token based on the surrounding tokens.
+
+The technique BERT uses, based on the paper: 15% of tokens are randomly considered as masked tokens. This 15% is divided in a different way. 80% are replaced with the MASK special token, 10% are replaced with a random token (not the actual token), and 10% keep the same token. We give the model all possible combinations so it can predict the correct word. One time I give it the correct word and compute the loss function to update the weights. One time I give it a random, unrelated word, and update parameters. One time I give it the actual word and predict it. If the model sees all possible combinations, we come up with an embedding vector that has a very deep understanding of the language. This is the objective of BERT.
+
+So this is the first task. They train the model based on this task. We feed BERT as explained, with position, segment, and everything. This is the main architecture for BERT, different encoders with multi-head attention. Then we try to predict the masked word.
+
+So we feed the model. Why didn't we add CLS? We should add CLS. But how does this MASK get added? We feed the model with a MASK special token in preprocessing. We add the CLS token to the tokens. We add the separator token. These tokens are added during the preprocessing step, before you feed the model.
+
+Then there is just a head at the end that tries to predict the mask during training, and updates the model for each encoder. This happens repeatedly in each encoder.
+
+The second task is next sentence prediction. In natural language, there is usually a relation between adjacent sentences. When you have a text, there is a contextual relation between a sentence and the next sentence. They decided to train BERT on this objective: is the next sentence really the next sentence or not? So they feed the model with sentence A and sentence B, labeled as "is next" or "not next". Sometimes they feed the model with a true pair, and sometimes with a not-next pair, to let the model differentiate.
+
+This happens in the same architecture. We feed the model with the same preprocessing and input, and we have a softmax function just to predict: is it the next sentence or not? The first sentence is masked, the second sentence is also masked, and we train the model such that the output has two heads: one to identify if it is the next sentence, and another to predict the masked word. All this happens together at the same time.
+
+This is after BERT. At the time of BERT, we always hear about pre-trained models and fine-tuning. This is what goes into the NLP community. We start with a model. We put in the data, random parameters. We don't have any knowledge about the language. After pre-training the model, we come up with very strong information about the language. The final layer has a very good understanding of the language, and then we can use it for fine-tuning on any task. We can freeze this hidden layer and then fine-tune on your data.
+
+So BERT is trained on a huge amount of data. The hidden layers, or the architecture parameters, now have a good understanding of the language. We can use it to fine-tune on a different task. One important task is classification. Before BERT, you were not able to use a transformer in classification. But now we can use this architecture in classification tasks and sentiment analysis tasks. We cover many tasks in NLP.
+
+So this is what we are going to use for classification. Just add a layer, take the CLS, and try to predict the sentence class, using only the CLS. We don't need all the other outputs for each token. We just need the CLS. We use the CLS token for classification, as CLS has a good representation for the whole sentence.
+
+Okay, so I gave you some code. It's very simple, but I tried to show you all the steps in detail. By the way, there are two implementations of BERT: PyTorch and TensorFlow. You can use either, but you have to understand which function goes with which. In this example, I use PyTorch. So here I import torch. All the code is on the PyTorch implementation of BERT.
+
+Now let's go to the steps. The first step is to load the tokenizer, a built-in tokenizer, based on which model we're using. We have different variants of BERT: large, small. We have DistilBERT. We have RoBERTa. We have many variants of BERT. Once you choose the model, you have to choose its tokenizer. You cannot choose a model with a different tokenizer. When you choose a model, you have to choose its equivalent tokenizer. This is very important. So I wrote here the tokenizer for bert-base-uncased. Then I have the model. I will not train the model from scratch. I just use a pre-trained model from Hugging Face, and then I fine-tune it with my example.
+
+Now I have a sentence and want to see how the tokenizer works on my sentence, and what process it goes through. I apply tokenization to my sentence with some parameters: padding is true and truncation is true. Remember that the maximum size is 512. You cannot exceed this size. If the sentence is greater than 512, actually you cannot choose the maximum size 512, because BERT automatically adds CLS and SEP. So your maximum size should be less than 512. Make sure that the maximum size of any input is less than 512, just in case, because BERT adds extra tokens.
+
+Padding is true because if the sentence is small, in batch processing all sentences should have the same size. If one sentence is smaller than the others, we have to add padding.
+
+Now I tried to extract all the different components from the preprocessing. The input IDs: using WordPiece, we map each token to a specific ID. I want to check the mapping. I also want to see the attention mask and the token type IDs.
+
+So this is the original sentence and this is the token IDs. This is the tokenization. Automatically the tokenizer adds CLS, then applies tokenization on my input, and adds SEP at the end because it's just one sentence. This happens during tokenization.
+
+Now look at the second output, input IDs, where we map each token to its ID in the WordPiece vocabulary, which is around 30,522. So each token has a mapping. This is a lookup using the vocabulary text from WordPiece to map each token to its ID. CLS always has this specific ID and it will not change, 101. SEP always has this specific ID, 102.
+
+The other output is the attention mask. In this case, it's all ones. What does this mean? I didn't perform any padding. If you perform padding, you can see the attention mask. Why is it important? To tell the model it has to attend to all these tokens, because these are important tokens. One means attend. Attention should be attended to this word. If there is a zero, it means don't waste your time attending to them. This is important for the training process: what you should attend to and what you should not.
+
+Now I have token type IDs. This is one sentence, so the segment here is all zeros. I will show you an example now with two sentences to check the difference. Because I fed the model with two sentences, look at the token type IDs: zeros indicate the first segment, and one indicates this token comes from the second sentence. This is important for the training process.
+
+So this is what happens during preprocessing. This is what I tried to print at the beginning, individual components. Then I used the model. no_grad means no updating of parameters. We keep the embedding layer frozen, so we're not updating the embedding.
+
+Then I tried to discover what the output is. As I mentioned, we have two outputs from BERT: the embedding vector for each input token, plus the pooler output, which is CLS. Now I try to print them. This is a representation of the CLS token, the embedding vector of CLS, which has 768 dimensions. Then I also try to print the embedding for each token. This is CLS. This is after processing, just to make sure we can go back to the original IDs. So I do the mapping again in a decoding step to return the IDs to their same values, so I can find the same information.
+
+Now, using the word "bank" has two different representations when it comes in two different contexts, which is the main problem in Word2Vec. In Word2Vec, "bank" has a fixed representation, but now "bank" has two different representations. I will prove this. I create two sentences where the first has "bank" in the context of a financial institution, "I went to the bank to withdraw some money", and the second with "The boat in the bank of the river". We get the embedding of "bank" in the two sentences and apply cosine similarity.
+
+If they have the same embedding vector, what do you expect as cosine similarity? One. So I find the cosine similarity. This is the embedding for the first and this is the embedding for the second. The values are completely different. Cosine similarity is 0.4. It means the same word, when it comes in a different context in BERT, has a different representation. This means BERT has contextual information about all the words in the language.
+
+Now I try to figure out the output. The last hidden state, which is the last layer after the 12th layer, has shape 1, 12, 768. What does this shape mean? One vector, 12 for the number of tokens, and each token has size 768. This is the output of the last layer.
+
+The hidden states for all layers: the number is 13, because the input layer is also part of it. So the input layer here is part of the stack, so the number of layers added is one. I ask: are the last hidden state and the last layer output the same? I compare the last hidden state with the last layer output, and it comes true. I also make a cosine similarity between the last hidden state and the last layer output, and cosine similarity is 1, meaning they are the same. This is the output of BERT.
+
+Student: For the vocabulary number you mentioned, what do you do about IDs greater than that?
+
+Instructor: Greater than 512? No, number of IDs. 512 is not the ID. 512 is the dimension of the input. You cannot enter more than 512 tokens. But the ID comes from WordPiece. WordPiece is a trainable tokenization technique, trained on a huge number of data, that tries to get an optimized tokenization. They have a vocabulary size where each token in English has its ID. The total tokens from WordPiece for English is 30,522. So the ID should be within this range.
+
+When we have two sentences, the final output is the same. Now if I have multiple sentences, the tokenizer can take different parameters. Maybe I have a maximum length of 12, just to give you information about how padding and tokenization happen. The padding is to the maximum length, which is 12. If any sentence is less than 12 tokens, we add padding.
+
+That's why when I print the same output for sentence one, this is the sentence, this is the CLS, and we add the pad token at the end. This is the equivalent ID. CLS 101, SEP 102, padding has value 0. Attention mask here is different because we have padding. We let the model attend to all tokens but not to the padding tokens, because we don't want the model to learn from padding, which is not important.
+
+Same for the second sentence. The number of padding tokens here is different based on the length of the sentence. Attention mask is different again: what is important to attend to and what is not. We can also have the last hidden state. So this is the batch size, this is the maximum number of tokens, and this is the dimension.
+
+To make sure this answers your question: the vocabulary size in WordPiece tokenization is 30,522 exactly. I tried to print the vocabulary size based on the tokenization, and this gives you the exact number, 30,522. This is all the vocabulary related to English. So any word or any token has an ID from this vocabulary.
+
+I hope this gives you a clear idea about what BERT is, how BERT is trained, and what the input and output of BERT are.
+
+We have a list of released pre-trained BERTs. The most important feature of BERT is that it is open source. The Google team made it open, unlike GPT, where until now we don't know the basic architecture. BERT is open source.
+
+We have different variants of BERT, some covering different languages. The differences are related to the heads and the number of parameters. This is one of the limitations of using large language models, like any pre-trained model, but there is a solution for that.
+
+A different variant of BERT, the most important I think, is DistilBERT. Why is DistilBERT important? Because it has the same capability as BERT, but with fewer parameters. DistilBERT achieves 97% of the same performance as BERT, with a 40% reduced size, and is 60% faster than BERT. I think in your lab, I mentioned you have to use DistilBERT. So this is why DistilBERT is important: 97% performance with fewer parameters and faster.
+
+In the last lecture, I will show you how we can reduce the size of this huge model, because a huge model means a huge number of parameters. It needs huge computation power, a computer with GPU. We need a lot of resources. But we still have tiny versions of this model, which we can use on your local machine. One of these variants is TinyBERT.
+
+RoBERTa is trained on a huge amount of text, more text resources are used to train RoBERTa. Some variants are trained on specific types of text: scientific text, medical text. You can find variants trained on different sources. Based on your domain, you can choose which one to use. This is very important. Read the information card of the model: how this model was trained, what the source of the data is. This will help you choose the best model for your task.
+
+Now, the second part. I'll introduce the question-answer system as a new NLP task. This is the task of your assignment two. What is a question-answer system? We are trying to build a natural language processing system where you enter a question and get the answer.
+
+This system is classified based on different categories: what is the information source, what is the question type, what is the answer type. When you build a system, you have to ask about this specific information. This makes a huge difference from system to system, which model to use and which is best for your application.
+
+For information source, we have different types. Unstructured data comes from the internet, papers, books, articles. Sometimes we have structured data, like a database. We can build a question-answer system based on a database. Another source is conversation data, from customer service chatbots, or when you chat on a website like Rogers. Another source is social media, like X. Try to understand what your data source is. This makes a huge difference in which model you use.
+
+Another category is the type of question. We have factual questions, like "Who is the president of the USA now?" or "What is the population of Canada now?" These are factual questions. We have open-domain questions, like the questions you ask ChatGPT in any field: Wikipedia, scientific, social, educational. This is what we mean by open-domain. We have closed-domain, which is your task: you ask questions based on a specific domain. So your task in assignment two is a closed-domain question-answer system, where you build your system based on a specific domain you propose.
+
+We also have complex narrative questions, questions that need deep understanding. You cannot find the answer directly; you have to find it between the lines. Questions like "discuss" are complex questions.
+
+The answer type. We have different types of answers. We have extractive answers. What do we mean by extractive? When we started to learn English in grade school, one of the tasks was reading comprehension. Is there a difference between a reading comprehension in grade 2 and a reading comprehension in grade 10? You both have a passage and questions related to the passage.
+
+Student: In the lower grades the answers are straightforward, specific.
+
+Instructor: Yes, in grade 1 or 2 you cannot play with the student. The answer should be extracted from the text directly, no thinking, no reasoning. In grade 10 or 12, they give a comprehension and the student has to understand what is between the lines to answer. This is what we mean by extractive answers, like grade 1. The answer is just extracted from the text. You have a passage, and the answer spans from this part to that part, exactly as it is, no changes.
+
+We have generative answers, the answer is generated, like ChatGPT. It's based on generation. We have knowledge-based answers, based on information structured in a database. We have answers based on named entity recognition: this is a location, this is a place, this is the name of a person, this is the name of a city. We have yes/no answers, which are very simple so we will not cover them. These are the main types of answers. Either you extract directly from the text, or you generate it, or you find a match in your database between your query and the answers.
+
+To build a question-answer system, we have different paradigms. Extractive question-answer: the famous one is SQuAD, used in Stanford University. Knowledge-based question-answer is based on a database. You have a database and a query, and you find a match. We have a hybrid approach that may use extractive, knowledge-based, and generative together. We have generative question-answer using large language models. And we have the state-of-the-art: RAG, which combines the strengths of generating an answer while getting this answer from another input resource. I think you should use this technique in your project.
+
+An example of the hybrid technique is IBM Watson, which IBM introduced in 2011. It was huge at that time. There's a very famous show, Jeopardy. IBM won against two famous people who played on this TV show. They ask a question, the player answers, and as they answer they go up in levels and win money, $1 million at that time. IBM competed against the two famous players in this show and won.
+
+What is IBM Watson? A very general idea: it's a huge, complicated, modularized system. It consists of four basic modules. The first is related to the question. The second is candidate answer generation. The third is candidate answer scoring. Then merge and compute confidence. The first part is a combination of different NLP tasks. The main objective is to identify what the question is asking, to classify the question. Once you classify the question, it goes to the second part, which uses a combination of structured and unstructured data sources to find the answer, to output candidate answers with probabilities. Then it goes to scoring to rank these answers, and they come up with the final answer with a confidence score. At that time, it was a very impressive question-answer system, but as you can see, very complicated.
+
+Extractive question-answer, as I mentioned, is based on giving a text and a question related to the text. The question-answer system extracts the answer from the text. This is what we call reading comprehension, extractive question-answer. You feed the model with the text and the question, and the output is the start and end of the answer in the text.
+
+A common, well-known dataset for extractive question-answer is SQuAD, held at Stanford University, I think in 2016. It consists of 100K annotated passage, question, and answer triples. They trained the model with this: feed the model with a passage (comprehension), question, and answer. The model learns, given a question and a passage, how to identify the answer.
+
+The passages are selected from English Wikipedia. The passage size does not exceed 150 words total. The questions are crowd-sourced, annotated by humans. This huge number of examples is annotated by humans. It was a huge project where they have different passages, and they started to create different questions manually and feed the model with the answer for each question. All of this was prepared manually by humans.
+
+The SQuAD dataset is very popular and available now. They got very good results on reading comprehension. After training, we can now use the pre-trained model: ask a question with a passage, and the model will extract the answer.
+
+They use two performance measures: exact match and partial match. How do they compute this? They compare each answer to three what we call golden answers. They compare the prediction with these golden answers. For example, they give the model a question, and there are three correct golden answers. The predicted one is this. You compare the prediction with the actual golden answers. If it's exact match, the scores are zero, zero, zero because none of the predicted answers is exactly one of the three golden answers. That's why exact match is zero. But partial match: compared to this answer, there is partial match; compared to this, there is partial match; compared to this, a different partial match. They compute the average. This is how they compute the performance of the extractive question-answer system.
+
+Formally, we can represent the input, passage C, as a set of tokens C1 to Cn, and the question as a set of tokens Q1 to Qm. Of course, m should be less than n. n is the number of tokens in the passage, and m is the number of tokens in the question. They tried at that time, in 2016, LSTM-based models to solve this problem. After BERT, in 2019, they created a second version, SQuAD 2.0, trained using BERT, and all the models use bidirectional.
+
+Very quickly, I will go through the model. It's built on Bi-LSTM with an attention layer. There's an embedding layer: they use a combination of character embedding and word embedding, and feed it to Bi-LSTM to find the relation between the words. Here is the context, and here also is the query, which gives a question. Then we go through an attention layer for the question and the passage: which word in the query is related to or has to pay attention to the passage. Then at the end we have a modeling LSTM. The objective is to predict where the start of the answer is and where the end is.
+
+At that time, exact match was 71.3% and F1 was 81.2%. In the second version, they used BERT. They trained the same process, question-answer system, reading comprehension. We feed the model with the question and the paragraph or passage, and we try to predict the start and end of the answer. This is how we extract the answer.
+
+The input is the same: question, embedding, encoding, masking language, and everything. We try to predict where the start is and what the end is. Just on top of the fine-tuned BERT, we put two heads. The first head tries to predict which token is the start of the answer. The second head tries to predict which token is the end of the answer. This is the answer to your question. So we have two heads, two layers, one to predict the start and one to predict the end.
+
+Now, a very important thing: which model you will use, a pre-trained model. SQuAD2 has many versions. SQuAD2 is built on top of training using BERT. So usually we use anything related to SQuAD2. This will be your model. With AutoTokenizer, I can automatically choose which tokenizer works with this specific model. Once I specify the model and the tokenizer, you have the input, and the output. This is a sample of the input, so make sure you add the special tokens CLS and separator. Then we build the model. no_grad means I will not train the parameters. I will freeze the parameters and use the model to fine-tune with my data.
+
+This is the score for the first occurrence, the comprehension output. If you give the comprehension a question and a context, it returns the span of the start and the end of your answer. This is what I need to return. It returns the start, probability of start, and probability of end. I use argmax as a softmax function to print which has high probability to be start and which has high probability to be end. This gives the correct answer.
+
+This is very simple, especially with a pre-trained model. You just choose your model. But choosing your model is very important, because not any model can work with your specific task. Again, make sure you read the information about the model to ensure it's the correct one.
+
+This is a common open-source dataset besides SQuAD. You can use it for training a new model if you create a new architecture and want to test it. You can use this as benchmark data to test your new architecture. It's available online.
+
+In reading comprehension, we have to feed the model with the question and the context. Then we ask the model to find the answer inside the context. But in reality, we don't do that. We just ask the question and let the model give us the answer. We will not feed the model with the context. This is what we call retriever-reader architecture. Retriever-reader architecture deals with this specific type of question-answer system, where we just give the model the question and let the model extract the answer for us.
+
+In retriever-reader architecture, we have two main components. The first is the retriever. We feed the retriever with our data source, unstructured data, a huge amount of data. We want to create a question-answer system, for example, for grade 12 biology. I have many books related to this topic, so I feed the retriever with all these unstructured documents. When we give the question, the retriever tries to find a similarity between the question and the data it has, and the output of the retriever is the top related documents to my question, top 10, top 5, whatever we decide.
+
+This is the role of the retriever. It receives a question, and it stores a huge amount of data I want to work on for a specific domain. The retriever returns the most relevant documents related to my question. It will not answer my question.
+
+Then it feeds the reader with these documents. The reader is a normal reading comprehension. The reader has the question and the context from the retriever. This part is normal reading comprehension.
+
+Sometimes, in some applications, we need to do some document post-processing after the output of the retriever, to rank the importance of documents or specify a specific number, three documents, one document, five documents. Some preprocessing may be added here before you feed the output to the reader. There is also some post-processing of the answer before you give it to the user, to check the quality, check if it's harmful or not. Any type of post-processing, presented in a friendly way.
+
+This is the architecture. We have two components: retriever, responsible for retrieving related documents based on my question, and reader, to receive these related documents and the question, and then work the same as reading comprehension. It has a context and a question, and tries to find the start and end of the answer.
+
+Some details about the retriever. What is the main problem? The retriever has to save this data. The input of the retriever is huge unstructured data. How can I save and index this data so it can be retrieved fast? This is the help of information retrieval techniques. We have different information retrieval techniques. We can save this data as a vector based on statistical techniques, or as a vector based on embedding techniques. Different methodologies: FAISS, which is provided by Facebook. We have different techniques: TF-IDF statistical technique, BM25, another statistical technique, or embedding using graph-based techniques, and DPR. DPR is one of the most efficient techniques to store the data.
+
+What is DPR? They use a slightly different architecture. They have two separate encoders. One encoder is responsible for encoding the question. The other is responsible for encoding the answer. They train this model end-to-end with one loss function, but there are two separate encoders. This is the architecture of DPR: one encoder for question, one for answer. They train end-to-end with one loss function, to make sure the model aligns the question with its content. So we have a separate encoder for the question and a separate encoder for answers or retrieval documents. Then we try to find the similarity, how similar this question is to the answer. This is how we store documents inside the retriever, so that when we have a query (a question), we can find the related documents from this huge data store. During training, they try to find out this similarity, and in testing or inference, we feed the question and the model learns how to extract similar documents from this huge data.
+
+We have different frameworks you can use, open source, for this type of question-answer architecture, reader-retriever. One common framework is Haystack. Haystack comes from deepset, a German company, and it's open source. I can show you a very simple example using Haystack to solve this problem. This tutorial is online; they provide it. It's very simple. They use a specific method; you can play with other methods with more data, but the steps are the same.
+
+Here, just download it. This is the configuration, installing everything. The first part is how to store the data, document store: which technique you will use to store your data. Here we use the in-memory technique with BM25 as the document store. So I create an embedding vector for my documents using this technique, based on the statistical technique.
+
+Once I store my data, or choose my storage technique, I can prepare my documents. Here I download some data. It's already in the same directory. Then I index: go through the files to prepare the data. Convert to text. Then initialize the retriever. Which retriever I use: it's a BM25 retriever, with the document store I prepared. Then initialize the reader. The reader, as I mentioned before, is just a reading comprehension model. So I use a reading comprehension model pre-trained on SQuAD 2, any reading comprehension model.
+
+Haystack gives you a pipeline that streamlines this process. You have this pipeline with a reader and retriever, and you just ask the question. It hides a lot of details related to this process. This can be applied to any type of data. You can change the retriever, document store technique, or change the model, but the point is you have the reader and the retriever, and then you can ask the question. It comes with the content or text related to this question.
+
+So here is a prediction. I have an answer based on my question. How many answers are printed is one of your parameters. It gives you a reference to the context of this answer, which is a good way. I can also print it in a prettier way using methods in Haystack. You have the answer and the context. This is how you can measure the performance of this model.
+
+Reader-retriever is the same idea as RAG. RAG uses the same idea but in a different way. We have a reader and we have a retriever, as you will see in a few slides. This was the end of the previous lecture.

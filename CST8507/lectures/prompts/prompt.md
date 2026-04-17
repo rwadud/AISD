@@ -12,6 +12,7 @@ Your task is to clean and reformat the transcript by following these rules:
 - Off-topic chatter or side conversations unrelated to the lecture content
 - Course logistics/administrative remarks (e.g., "homework is due Friday", "see the syllabus", "office hours are...") but sometimes you may want to keep them if they are relevant to the lecture content
 - Filler sounds or incoherent fragments that carry no meaning
+- Redundant repetitions
 
 **FORMAT:**
 - Break the single line into logical paragraphs or sections that reflect natural topic shifts or speaking pauses
@@ -25,6 +26,6 @@ Your task is to clean and reformat the transcript by following these rules:
 - Summarize any content
 - Remove or alter any substantive information
 - Add new information or explanations not present in the original
-- Do not use em dashes or dashes.
-
+- Do not use em dashes or standalone dashes as punctuation (unless compound word)..
+ 
 You must not summarize. Return only the cleaned transcript after applying all the rules above, nothing else. 

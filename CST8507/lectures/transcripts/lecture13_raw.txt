@@ -1,0 +1,1065 @@
+And this competition closed in 2009, and there's a developer team who won this competition where they increased the accuracy about 10%.
+
+Okay?
+
+This is great. 10% is a huge improvement.
+
+They took the prize, and after that, Netflix never integrated this system in their communication system.
+
+Never used it.
+
+You think what?
+
+Audience Member 6.
+
+What do you think?
+
+Is it complex?
+
+Dr. Fadna Khan Very complex.
+
+You know, the accommodation system is an online system, okay?
+
+When it comes to the development, the deployment, there is some important factor.
+
+Look at the actuals.
+
+The latency, response time, it's very important, especially it's a real-time or stream, real-time or streaming application.
+
+Latency here, it's a very, very important.
+
+Scalability.
+
+Are this model flexible?
+
+It's scaled up when the number of users increase, usually in the mid-flex, the number of users increase.
+
+Then this model would not satisfy all this important constraint when you think about deployment.
+
+So, why is Accel's increase by 10% but they didn't integrate this model in their recommendation system and they stay with the whole system, okay?
+
+So, in a deployment you have to think about different considerations based on your task and based on the nature of your task, okay?
+
+And this is one of a very famous real example that happened in 2009.
+
+Now, if you have two models like this, you have a model A, the accuracy is 99%.
+
+The runtime is two seconds.
+
+So the latency or response time is two seconds.
+
+The size is 125 megabytes.
+
+And you have another model. the accuracy is 97% run time 0.1 second, and the space or the size is 10 megabytes.
+
+Which one do we use?
+
+We use the Model B. The Model B. OK. Why?
+
+There is a difference in accuracy, but it's not very significant.
+
+It's a very huge significance of dropping in the accuracy between the first one and the second one.
+
+We prefer this because the latency, the response time very hard, which is highly recommended for any online system, and also the size, the memory.
+
+The memory is not just a memory.
+
+If the model has a small memory, it means all the computation costs will be reduced.
+
+All the power cost will be reduced.
+
+Many, many factors will be reduced if you have a small model.
+
+So, after 2017, and this is a huge growth in using transformer with a more complicated transformer architecture, more layers, the number of parameters should be increased, okay?
+
+So, they started to think about, we need something else.
+
+We need to improve it in a way that we are able to use this large language model in your Dubai, where there is a limited memory size, or use it as an embedded system, where it's a part of the whole system, so we need a small size of this.
+
+Under one condition, it should be cost-effective, memory and computational power and everything, efficient enough.
+
+We're not putting a useless application or useless model.
+
+And this is how we can raise customized or acceptance level of accuracy.
+
+And this is the big questions.
+
+After all the huge improvement in large language model, producing a very complex large language model need GPUs and high computation power to run it, and you can use it.
+
+So what we come up with as a solution is model compression.
+
+So in a model compression, we have the large-legged model, which is the original model.
+
+And we try to compress it to the small model.
+
+But we keep the three important parameters, So, in the same way, we can also have a model, and we can have a model to be used to predict the outcomes.
+
+But with acceptable level of decreasing performance, this is our conjecture now.
+
+How we can do this, and what is the famous technique to perform model compression?
+
+So we have learning technique and knowledge distillation.
+
+This is the three common techniques used now to compress the model, but it is less.
+
+Till now, it is not the standard technique.
+
+Every technique of this, they started to improve it.
+
+So every week, every month, they improve these techniques.
+
+So it's not come to the standard, but this is a well-known technique and already used in some systems.
+
+So let's start with the quantization.
+
+What is a quantization?
+
+To understand what is a quantization, I think most of you come from engineering background or computer science background.
+
+Yes?
+
+Do you know what is a good representation?
+
+So in in a computer, what is the real number in this form.
+
+This is a technical form.
+
+So, the first bit is for sign, then we have a matissa or exponent, and then we have the matissa.
+
+How many bits for exponent, how many bits for fraction or matissa, it depends on representation.
+
+The common representation is either 32 bit, so for each floating point number can be represented in a 32 bit.
+
+So any real number saved in your computer in a 32 bit code.
+
+Okay?
+
+So what does this number represent?
+
+So the sign represents, of course the magnitude of the number.
+
+Exponent represents the magnitude of your number and the fraction of the matrix represents how many decimal or precession of the number.
+
+Precession is how many numbers after the decimal point.
+
+Okay?
+
+And this is what the multi-point representation represents.
+
+Now, we have different techniques.
+
+Sometimes when you download any application It asks you which your system, 32 or 64 or whatever.
+
+So this is the difference.
+
+For 16-bit floating point presentation, we have one for the sign, five bits for the exponent, and 10 bits for Manteza.
+
+For 34-bit, which is the standard, it's one for the sign, five bits for exponent, and the 32 for Manteza or the fraction.
+
+And then for 64, we have more bits for exponent 11 and the 52 bits for like this.
+
+This is usually in numerical computing techniques where the simulation of the aerospace or something there like that, where the precision is very, very sensitive in this case.
+
+So this is a type of the computation to use a 64-bit, more sensitive or more sensitive, more important application.
+
+Now what happens if we just reduce the precession of any number?
+
+So instead of having 32 bits to store the weight of each, you know we have the matrix and each in the matrix we have a number and this number is the weights and this is represented as parameters.
+
+What if we just reduce the representation?
+
+Instead of the standard which is 32 32 bits, we may choose 8 bits or 16 bits, whatever, just to reduce that number.
+
+What will be the effect of this?
+
+You just say every time.
+
+Less memory, space.
+
+Perfect.
+
+And what happens if there is less memory space?
+
+More fast communication.
+
+OK?
+
+So it's a huge benefit.
+
+Right?
+
+So you reduce part.
+
+What is the cost?
+
+It is the accuracy.
+
+And this is the balance that we try to do.
+
+How we can do this while keeping the accuracy in a reasonable level.
+
+OK?
+
+And this is the idea of the distillation.
+
+Play with the floating lump representation of the lump.
+
+We can come up with a small model with reasonable performance.
+
+OK?
+
+And this is different distillation techniques.
+
+So for the same model, which has 65 million parameters, when it's represented in four bits, this is the size, 260 gigabytes.
+
+The same model with the same number of parameters, when you represent it in a two-bit, it takes only 130 gigabyte space.
+
+And so on until the most promising techniques, which is one-bit representation for each parameter.
+
+I will explain how we can do that.
+
+But imagine the huge number of reduction of the memory space.
+
+And as a consequence, any computation, everything will be reduced while we keep the performance in an acceptable level.
+
+And this is what we can do with distillation.
+
+So the distillation idea is to reduce the floating point representation of the weights for your model weights or model parameters.
+
+Why are you keeping the same model as it is?
+
+We just play with this parameter.
+
+And this is a huge improvement in the computation.
+
+So, for example, you can see here for this model, so TFL is the Tera Floating Point Operation Per Second.
+
+So TFL, this is our measurement, TFLOPS is the Tera Floating Point Operation Per Second.
+
+So if you represent that number for your weights in a 64 bits, this is the number of Tera Floating Point Operation Per One Second.
+
+But when we reduce it to 16 bits, so this is the number of Tera Floating Point Operation Per Second.
+
+The difference here is huge, the computation power will be reduced, I can make more operation per second than here, because we reduce the sums, and everything will be reduced based on this.
+
+And this is a huge difference.
+
+Okay?
+
+Now, do we have a technique so no precession means for self-processing?
+
+Yes. this is the consequences of reduced number.
+
+Because when you, in a low level, in a computer, you deal with bits.
+
+So if the number of bits is small, it means the computation will be, or the time to complete this operation will be in the lower level of your computer.
+
+So lower precision means a faster operation, a faster process.
+
+In Bison, we can do that.
+
+It's very simple.
+
+There we can have quantized model.
+
+It's a Porsche quantization dynamic.
+
+This is how we can apply quantization.
+
+With two important parameters.
+
+The first parameter you have to specify your quantization level.
+
+For example, here I choose to represent in 8.
+
+So in 8 bits.
+
+So the same model will not change the original model.
+
+We will have just another model with a small size, quantized size to fit.
+
+The first parameter actually is very important.
+
+What do we mean by NNL?
+
+We cannot quantize all the model parameters.
+
+Some parameters, we have to keep it, because it will reduce the performance.
+
+So which parameter or which weights we can reduce?
+
+Usually the linear matrices.
+
+So for example, the matrix for Q, for a transformer, we have Q, B, K, we have all such matrix, huge matrix.
+
+So we can apply quantization for all linear matrix.
+
+But for example, the activation function, can we quantize activation function?
+
+Activation function already small numbers.
+
+So don't touch this, the weights of this function.
+
+Another layer that we are not able to quantize it, like an embedding image.
+
+We need the precise, or this, or the precession of the embedding layer, because this is what we learn from the language.
+
+So some layers will be quantized, some layer will not be quantized.
+
+Usually we quantize the linear layer, or linear values.
+
+That's why we enforce n dot linear.
+
+So it's very important to choose which layer you can quantize, while keeping the other as it is, to balance the performance of your model.
+
+OK?
+
+What about binarization, which is, for me, even I wonder how we can do that.
+
+Binary means that means one thing.
+
+So how we can save the parameter or the weight in one place?
+
+So they come with a very intelligent technique, which is, for example, if you have this weight, floating point number represents the weight of the parameter in your model, then they apply a specific threshold.
+
+This is the threshold is 0, so anything greater than 0 converted to 1, anything less than 0 converted to minus 1.
+
+And then we come up with a binary weight, 0 and 1.
+
+All right?
+
+So it's a huge improvement.
+
+Why?
+
+Now we can use in your operation multiplication addition, we can use a bitwise operation.
+
+You know what is a bitwise operation?
+
+So we now work with the lower level of the computer.
+
+We're dealing with the bits.
+
+This improves the accuracy, not only the accuracy, but the computation speed.
+
+So of course, we can now work on the bit level.
+
+So it improves the computation speed.
+
+And this is what they did.
+
+And we come up with binary weights, which is they prove it.
+
+In their paper, for example, if you multiply specific x value, the three values by the new weights here.
+
+The total here, summation of Wi, Xi, for a specific Xi, 0.5, 0.2, 0.8.
+
+The total is 0.23.
+
+While we apply the same 0.5, 0.2, we keep X as it is, that the summation now is 0.26, which is not too high.
+
+And this is their idea, how they can use. a large language model in customized memory devices, like mobile or an embedded system.
+
+Now, Microsoft in 2021, 23, they improved this project by the way, every year they have a new model.
+
+They use binary quantization, and then they have, they added actually another technique to keep the performance high as it is.
+
+What they introduced, they introduced something, we call it a scaling factory.
+
+Okay, so the same idea, this is the original weights, then I have zero threshold converted to plus and minus, But at the inference step, or at the end of your calculation, they multiply all the finalized values by the scaling factor to approximate the original weights.
+
+Now, after I finalize the original weights, to 0 and 1, so I can have a scaling factor when I multiply it back with this binarized value, I can approximate the original weights.
+
+How they compute the scaling factor?
+
+For this paper, they compute it as an average of all the weights.
+
+So this is your scaling factor.
+
+So, for any matrix, to compute its scaling factor, just average all the value of the scaling of this matrix.
+
+This average, they consider it as a scaling factor.
+
+So, keep in your memory, keep the value as it is, plus and one.
+
+And at runtime, they call it in the paper, the fly-on computation.
+
+At runtime, when you're in clearance, just multiply with this scaling factor, and the scaling factor should be 32 or 64 by the floating point presentation, multiply with the scaling factor.
+
+Did you get the idea?
+
+Okay, any questions?
+
+So, this is what Microsoft introduced.
+
+Actually, they have a different way of doing it.
+
+But this is an open topic for research, till now, okay, so every time the research team is working on a new technology, they are working on a new technology.
+
+So, what is the distillation, the distillation is to, now I can say, we have the original LLF, so this is the LLF, the original LLF, which is a huge number of parameters, then we have the LLF, which is a huge number of parameters, and then we have the LLF, which is a huge number of parameters, and then we have the LLF, which is a huge number of parameters, and then we have the LLF, which is a huge number of parameters, and then we have the LLF, which is a huge number of parameters, and then we have the LLF, which is a huge number of parameters, and then we have the LLF, which is a huge number of parameters, and then we have the LLF, which is a huge number of parameters, and then we have the LLF, which is a huge number of parameters, and then we have the LLF, which is a huge number of parameters, and then we have the LLF, which is a huge number of parameters, and then we have the LLF, which is a huge number of parameters, and then we have the LLF, which is a huge number of parameters, and then we have the LLF, which is a huge number of parameters, and then we have the LLF, which is a huge number of parameters.
+
+And then, we have the LLF, which is a huge number of parameters, and then we have the LLF, which is a huge number of parameters, and then we have the LLF, which is a huge number of parameters, and then we have the LLF, which is a huge number of parameters.
+
+So, this is the idea of the distillation, how we can, from a big or large language model, we can have a small, large language model where we can use it in small size machines.
+
+Any questions?
+
+Is the idea clear?
+
+Okay.
+
+So, this is the idea of the distillation.
+
+And its idea is to remove parameter from the model after training.
+
+So, in a matrix, we rely on the matrix multiplication.
+
+Some weights are, has a significant magnitude.
+
+We consider this an important value.
+
+And some weights are very, very small, so we can neglect it and the performance will not be good.
+
+So, for example, we have these weights, they compute the absolute values of this weight and we can neglect it somehow, and then all the values, the small values, just replace this weights by it, okay?
+
+Okay, and this is the effect of, empirical effect actually of doing learning in a different So, as you can see here, the most example of the model here is related to the machine vision.
+
+This is in this part how the compressed of the model affect the model size, okay?
+
+So, here as you can see, if you have a rate of burning, so based on your threshold, you decided to make 30% burning or 50% burning or 100% burning, means everything is zero.
+
+This is your rate, it's your choice.
+
+And this is how the model, the burning and what is this, model increase performance or the accuracy of the model, okay?
+
+As you see, when the rate increase the performance go down, okay?
+
+So from this picture, you can see here, this is the rate or amount of burning.
+
+So we usually consider the same area is from 30% to 50%.
+
+So don't go to higher than this when you decided to use a burning technique, okay?
+
+So, based on all the performance and empirical calculation that we find is from 30 to 50, it's a safe zone, where the performance of the model will not be degraded.
+
+Some models you can see as, I think, model 8, 8X, the performance degraded when you apply pruning.
+
+So, you have to think about this which model you apply pruning and what the effect of the pruning of this model.
+
+So, any question?
+
+This is a three-common technique in the compression, and this is a difference between them. quantization, no parameter are changing.
+
+We just change the precision.
+
+How much space in your computer you save for the parameters.
+
+And pruning, the number of parameters are set to zero based on your pruning rate.
+
+But the rest will not be changing.
+
+Destination, all the parameters are changing as we have here.
+
+And this is the difference between the three compression degrees.
+
+Any questions on the compression degrees?
+
+I have one question about the slide you showed us for teacher model and student model.
+
+So for training, we have some inputs, we have some outputs.
+
+Are the outputs going to the student model and at the same time the student model have access to the data, the original data?
+
+Yes.
+
+So the same data, we train the smaller model, small size model, number of parameter, different architecture with 2M. The first input is the same data that we feeded to the larger model and the output or probability distribution that the larger model added to all the classes.
+
+And this is a tool input for the student model to try to imitate or mimic the behavior of the larger model while we use a small size model.
+
+Okay?
+
+Any questions?
+
+All right.
+
+Now, now I think we need to finish our certificate.
+
+Anyone who are familiar with this two concept?
+
+This is two important concepts, okay?
+
+Which is transfer therapy and fine tuning.
+
+So what is the difference?
+
+What's the difference between transfer learning and fine tuning?
+
+Fine tuning, you're training the original model.
+
+So you're essentially training the original model with data that we worked on in South Africa.
+
+Whereas transfer learning is essentially you're training an entirely new model using some original model with the original training data that we've created.
+
+Original data?
+
+What's the data that you use for training the original model?
+
+You are very near, but I need more, I need reference.
+
+When you perform learning, I mean, for this new model, you're not trained in the same way from the modern model?
+
+In transfer learning?
+
+Yeah.
+
+And then what happened during the post-production?
+
+So what do you do?
+
+You take the original data and what you do is this original parameters.
+
+5G unit?
+
+5G unit mean what?
+
+Adding extra layers or changing the parameters, or some other ways.
+
+Changing the parameters?
+
+Yeah.
+
+All right, so you have some time?
+
+Yes?
+
+I think it's the impression we just made, the new model to predict the answers as close to the original model.
+
+Yeah, your answer is very, very neat, but OK. So let me tell you something.
+
+I would say on transparent learning, I would give you an example like what happened with gloves.
+
+When you train your model with a glove as an embedding layer.
+
+How we can do that?
+
+Do we train glove from scratch?
+
+Right?
+
+But what we have in your assignment tool, or sorry, an assignment one.
+
+In a glove, we have, for example, because this is a very clear example, glove-in-gesositics file, where you have all the vocabulary in English, and for each vocabulary you have the vector represented in this vocabulary.
+
+Now, you want this as an embedded layer in classification tasks.
+
+What you did in this case, can you give me a scenario?
+
+And assign the problem.
+
+It doesn't matter, just assign the problem.
+
+What you did. for your own data, okay, you look up for the vector based on your data, and then you can get your feature matrix, okay?
+
+And this feature matrix, at that time, you just, if you have a sentence, you just get the vector for each word or token in this sentence, average them you want to have one vector for each sentence.
+
+Okay?
+
+This is an example of the transfer learning.
+
+We not touch the glove parameters.
+
+Okay?
+
+So in transfer learning, like PERT, for example, as an embedding vector, we generate our PERT generates that embedding vector.
+
+Okay?
+
+each one, in all that, in all English.
+
+We freeze this layer, and then if we use parity for classification, we build another layer in the top to just the classification.
+
+So we freeze that model parameter, okay?
+
+And this is the idea of the transfer learning.
+
+In transfer learning, we freeze the model.
+
+Okay, so we just take a picture from this model, then we So you will see this affection for our model and then one way's approach.
+
+But in fine-tuning, we will change all the model parameters with our own data.
+
+So the huge parameter or the huge model has a parameter.
+
+Then using transfer learning, we need to fine-tune this large language model with our own data.
+
+This is what you get in your assignment tool.
+
+You have your specific domain data, and you get benefit of the large language model understanding the language, and you finally change all the parameter based on your data.
+
+The benefit here, you will not start it from scratch.
+
+You will just feed your model with your own data and let the the model adjusting its parameter based on your specific domain name.
+
+Is that correct?
+
+You can imagine what happened.
+
+And this is the main difference between fine tuning and the documented learning.
+
+So in a fine tuning, you change all the model parameters.
+
+OK?
+
+And this is not an easy task.
+
+And this is what we call a supervised defining tool.
+
+Supervised, why?
+
+Because we have our own labeled data.
+
+And we will need to change this huge, large language model with our own data.
+
+OK?
+
+So we feed the model.
+
+This is the original model.
+
+Then we have our own data.
+
+We apply supervised learning to change all the model parameters.
+
+So it's a learning layer, not like one of the settings is no guard.
+
+So no guard means not make this layer trainable.
+
+So we freeze this layer.
+
+But here, we need to train.
+
+So the training will be applied from end to end.
+
+I will not freeze any layer.
+
+All the parameters will be changed based on my data.
+
+And what is the issue in this?
+
+So as it is a large-length model, I have a lot of challenges.
+
+Large model means very little parameters.
+
+What happens if you try to change all this during your training of your data?
+
+You need huge memory, huge computation power, models, and a very high quality of data.
+
+You have to choose it carefully to fine-tune the data so not disturb its original weights.
+
+And this is the challenge of using a large-language model and fine-tuning with your own data.
+
+You need a high memory.
+
+You need computational power, GPUs, high computational power.
+
+Now, think about we need to use this in a real-life application.
+
+This will be a challenge due to all these challenges.
+
+Now, think about how we can deal with these challenges.
+
+They have introduced something we call parameter-efficient fine-tuning.
+
+And this research started from 2018.
+
+They have a different technique to make this parameter-efficient.
+
+And the most recent one actually is low-rank adaption technique, pronounced as LORA, LORA introduced by Microsoft in 2021.
+
+In 2021, we introduced LORA.
+
+So what is LORA?
+
+It's a low-rank adaption technique produced by fine-tuning host.
+
+So what is the main idea here?
+
+The idea comes from linear algebra.
+
+If you are familiar with a linear algebra concept, if you have a matrix, how we define the rank of any matrix?
+
+What is the rank of the matrix?
+
+In a linear algebra?
+
+If you have a matrix, you have this is a known technology in a linear algebra.
+
+You can compute the rank of any matrix.
+
+How do you compute it?
+
+Or what do you mean by the rank of any matrix?
+
+Yes?
+
+How linearly in a matrix?
+
+I don't know.
+
+How many independent rows?
+
+And how many independent columns on this matrix?
+
+What do you mean by how many independent columns and rows?
+
+You can find that some rows is a linear combination of the other rows.
+
+But some rows and some columns are wholly independent.
+
+You cannot represent it as a linear combination of other rows.
+
+And this is what you mean by the rank of any matrix.
+
+So the idea that they come for ALORA is to, instead of dealing with the weight matrix, we will deal with the rank matrix, a small version of this matrix, and at the same time, it's approximate, approximation for the original matrix, okay?
+
+By applying the linear algebra technique, which is computed rank, okay?
+
+And this is the IG.
+
+We have the pre-trained weights with the dimension d by d, with the vocabulary with the vector size.
+
+And we can reduce it to two rank matrix, A and B. What is the size of A and B?
+
+It's the rank subs.
+
+So this matrix of rank is 3.
+
+So R here will be 3.
+
+So the first one will be d multiplied by R.
+
+And the second one is R multiplied by T. The same matrix, approximation to the original matrix, but at the same time, lower parameter.
+
+And we will not train, we will not update the original matrix.
+
+During the fine-tuning, we will update this one.
+
+OK?
+
+And at the end, we just add the values to the original.
+
+And this is the result for flow.
+
+And it was very helpful at that time.
+
+Very helpful.
+
+The computations and the parameters, the efficiency of fine tuning was very, very hard with using this very intelligent idea.
+
+Right, so again, we are not able to apply ROLA for any layer.
+
+We can apply ROLA in this layer, the basic weights matrix.
+
+That we do and query.
+
+And we can apply ROLA in T-point to keep the performance of the model as is.
+
+So instead of working with fine tuning, So, we can find a small matrix which is approximation of the final one.
+
+The speed would be high, no memory, we don't need a huge memory location.
+
+Computation power would be less and at the end we just add it to the original one.
+
+And this is the update that your own data used to update the original model parameters, okay?
+
+The ITSP, okay.
+
+Empirically, and this is come from a paper published in 2021, something that you have to take care when you use LoRa.
+
+LoRa needs a higher learning rate than a normal fine-tuning.
+
+So, when you use LoRa, you have to increase learning rate.
+
+And LoRa poorly work on a large batch size.
+
+So, this is two fact that you have to keep it in your mind, is in the empirical result with a large number data, they come up with these two important facts.
+
+So you have to keep in mind when you use LORA, keep these two facts in your mind.
+
+Okay?
+
+Again, it is still, it is not, this is not a final or the standard related to LORA, but again, the research work in this field.
+
+Some research actually, I like it, I like the idea here.
+
+It's, they have a Q LORA, quantized LORA.
+
+The same idea of LORA, but they integrate it with the quantization.
+
+So instead of using a 32-bit, use 8-bit or use 16-bit.
+
+Very intelligent while it's a very simple idea.
+
+So just to compile these two techniques.
+
+Use the LORA with a rank matrix, And using this technique, the trained model, trained, it's a trained 65 value model parameter, This parameter was 48 gigabyte GHz, which I use in the program.
+
+Again, this is toward our main objective, which is how we can use such a huge model in small-sized devices.
+
+Mobile has an impact on the system.
+
+Okay?
+
+Any questions?
+
+Right, so this is all what I want to know, what you know about the compression techniques.
+
+Again, this is not the up to date information, but because every day this is still a hot topic for research.
+
+The research will improve each model.
+
+Maybe they come with a different technique, different idea, with the same objective is to reduce the size.
+
+Reduce the computation cost, reduce the memory, but keep the performance as reasonable values.
+
+Okay.
+
+Now, probit engineering, I will not talk much about probit engineering because all of you know how to communicate with a large language model, and this is the language of the communication between a user and any large language model, so it's a probit.
+
+So, you ask the large language model a question, and your question, we call it a probit, and then he answers your question, and it's very important to take care about how you form, how you write your probit, because this is guide the large language model to response with a correct answer.
+
+Garbage in, garbage out.
+
+Ask a right question to get a right answer.
+
+If you ask not right question, you will not get a right answer.
+
+Okay?
+
+And then this is a basic tool for any probit when you communicate with a large language model.
+
+I think you apply this in your assigning tool.
+
+You have the context, which is very important.
+
+You have to provide the probit with a context, and then you have to provide the probit with an instruction, and then we have the input data.
+
+It's your question, and then give an indicator.
+
+What is the output format you expect?
+
+And this is a very important component that should be included in any probit.
+
+Clearly write your instruction, then you can find a correct answer of correct response from your large language model.
+
+Favorite of problem engineering, problem engineering means how to write a correct routing to your model and move some performance, force move the performance, work out the chain, improve response quality, enhance interpretability, bias mitigation, based on the other input, then would be, the output will not, during the funnel action, you try to mitigate the bias, how you to get this.
+
+And this is a better way for write a corrective prompting to your large library.
+
+Prompting technique, we have many, we have a huge nest of prompting technique.
+
+I thought of a chain, I think you're familiar with this.
+
+Same shot, one shot, two shots.
+
+Never heard about this?
+
+What they told me that you cover this in the project course.
+
+You did it?
+
+You posted me?
+
+OK. Whatever.
+
+This is a common profit to each.
+
+OK?
+
+All right.
+
+So let's start with the first one.
+
+I tried to categorize it into main categories.
+
+Example-based profit.
+
+So, zero-shot, one-shot, and a few-shots.
+
+And we have instruction-based profit, chain-of-thought profit, rule-based profit, and persona-guided profit.
+
+This is not all the category, but I tried to give you a famous example of the profit.
+
+So, let's start with a zero-shot.
+
+Zero shot means you write a problem without giving your model any example.
+
+Just ask a question.
+
+Okay?
+
+So for example here, classify the text into neutral, negative, or positive.
+
+That's it.
+
+Okay?
+
+This is what we call a zero shot.
+
+You didn't feed the model with any example.
+
+In one shot, you feed the model with one example.
+
+So for example here, because I think the foot was right, the sentiment is new.
+
+And this is the idea of one shot.
+
+Give the model one example of your task.
+
+And a few shot means give the model more than one example.
+
+And this makes a huge difference of the performance of the response of this model.
+
+And this is actually COVID here, or they have an empirical experiment about GPT-3, have that, if you feed the model with zero shot, or one shot, or few shots, affect the performance of the model.
+
+As you can see here, the models with high parameter has huge improvement in the accuracy.
+
+If you have, if you give it a multiple shot, This is a model.
+
+For one shot, you can see the improvement of performance, or a few shots where you can increase the number of examples, the performance will be reduced.
+
+And this improvement, especially with a high parameter model, the improvement of performance or accuracy was very high if you did the model with one shot and a few shots.
+
+Another type of problem is the chain of sorts.
+
+So, for example, why it is not correct now?
+
+Because this is not correct now.
+
+If you just write this problem, it will give you the answer directly correct, because you can prove the model itself.
+
+But the idea of the chain of thought is if you want to ask the model a specific question, give it as a chain of steps.
+
+Right?
+
+So for example, if you want to ask such a question, Rogers has five tennis balls, he buys two more cans of tennis.
+
+So this is a complicated question, for example, okay?
+
+Any large language model can answer this question correctly now.
+
+But I just give you an idea how to divide your question into depth in the chain of source.
+
+This will improve the performance of your model.
+
+Now, instead of having this question, we can divide it into chain of source.
+
+So the first part, I ask the first part here, once he got the correct answer, I can build on the top of this answer, and this is what we mean by chain of source, especially for complicated questions, okay?
+
+And this is a very good practice when you write your code.
+
+Okay, so this is an example of chain of source problem where we can have a different levels of problems.
+
+Okay, so, and this is also another example and how the model can respond on this.
+
+This is a common technique actually in a problem engineering, how you can divide your problem into chain of source when you create your template, your problem template, okay?
+
+Rule-based problem, so it's a good practice even when you deal with SHA-GBT or any other, I tried this by myself, if you put the rule.
+
+So, for example, I may ask SHA-GBT as natural language processing professor.
+
+So he will give me the answer based on my rule, okay?
+
+In your case, maybe as a student.
+
+So the rule will be very, very important to control the output or the response of your problem.
+
+So when you come here to any large language model, try to put your rule here like a context.
+
+Persona here is one of the common examples here.
+
+You are well your speed.
+
+If you want the model to generate a story or something like that, give him a specific person so he can generate the story based on the value of the information from our research.
+
+So this is a very good practice.
+
+One is to create a good authority, a good problem.
+
+I'm creating a template, I think, when you have a chatty team.
+
+Just a quick question.
+
+Your project is, I think most of you work on the large language model, yes?
+
+In your project.
+
+How do you do that?
+
+Which model do you use?
+
+Chatterjee team?
+
+It depends on the client.
+
+But you deal with the larger language model.
+
+So you write a problem, because this is the only way to communicate with any larger language model.
+
+So you know what is a problem, how to write a problem, and you have to create a template.
+
+That's why I'm not going deep.
+
+But, okay, so this is a general template.
+
+When you communicate with CBT or any other larger language model, you have to create a template, and then fill this template with your variable parameters.
+
+And I think you are familiar with this because this is how we can communicate with even a question answer system.
+
+You have to create a template and then fill the template with your query and the question.
+
+Next, prompting best practice.
+
+This is a general guideline about how you will create a prompt.
+
+This is how you can create your prompt.
+
+So the material of the final exam is the end of this lecture.
+
+And this is the last part of the lecture.
+
+I will not add any other information to this content.
+
+So it's a comprehensive exam starting from week one till week 31 when we finish that.
+
+OK?
+
+Any questions?
+
+OK. So thank you so much.
+
+I'm very proud that I have wonderful students like you.
+
+I hope that you learned something that you appreciate it in the future.
+
+I hope so.
+
+You remember me.
+
+And what you learned here actually is just a foundation.
+
+OK?
+
+And I tried to make sure that to build a good foundation.
+
+But there is more and more, especially in this field.
+
+You have to keep yourself up to date with the new techniques, It is a new library school.
+
+Everything goes very, very fast, especially in this area.
+
+All right, so what I try to do here is just to give you the basics and the foundation, and then let you fly.
+
+I hope for all of you a full success in your career and in future work, and see you in the final exam.
+
+Thank you so much.

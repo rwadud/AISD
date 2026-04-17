@@ -1,0 +1,1427 @@
+with in this graph.
+
+So before I talk about the lag, I need to touch base with what is the large vantage model and what is the characteristic of a different large vantage model.
+
+Okay?
+
+Then we will talk about the lag.
+
+How does lag work in a question-answer system?
+
+Well, this technique you will use in your assignment.
+
+Okay, right, so what is LML?
+
+So what is LM?
+
+Language mode.
+
+Okay, LM, we mean language mode.
+
+As we discussed it, you apply something like that?
+
+What is the language mode?
+
+What is the role of the language mode?
+
+Generating text.
+
+Sorry?
+
+Generating text.
+
+Generate, predict, the next text. or next word, whatever, okay?
+
+But now, with large language model, we also predict what's coming next.
+
+But here, it's in a massive amount.
+
+A massive amount in the training data, and also a massive amount of generated text.
+
+Using large language model, we can generate paragraph, we can generate a book, we can generate a huge data, okay?
+
+And this is a basic difference between between language model and the large language model.
+
+The other difference actually is architecture.
+
+Large language model now built in transport, a different architecture, okay?
+
+A huge amount of parameters.
+
+And this is the main difference.
+
+Large language model, it's a language model, but it's trained in a huge amount of data and in a different architecture technique, which is a transport, okay?
+
+And then why the objective is try to perform a different MLP task.
+
+A language model, we just, the model we predicted the next word, what is the next word or whatever, okay?
+
+The completion of your test.
+
+But using large language model, I can perform a different MLP task, okay?
+
+Not just generate the text, as you will see.
+
+So, it will have, it will perform a different MLP cost.
+
+This I try to update it every semester.
+
+This is the best that I can find in 2024.
+
+I cannot find something in 2025.
+
+But as you can see, the development of the large language model starting from 2019, it's a huge.
+
+It's not by months, not by year, it's by months.
+
+And even during the months, you may have a different version for the same model.
+
+All right, so, and this chart actually also reflects the amount of investment in this field, so many companies now invest in this field.
+
+That's why it's a huge streamline here.
+
+While we have some common techniques, Sharjah BT, it's one of well-known technique.
+
+Lama, deep sea here, and so this is a common technique that we hear about now.
+
+But this is reflect how it's improved so during war.
+
+This has happened in 20s, 23s, so it's a huge amount.
+
+It's divided by months from 7 to 10, 11 to 12, 4 to 6.
+
+A huge improvement and a huge investment on this field, OK?
+
+So any Russian language model can be identified with a specific component.
+
+This component is the tokenization technique.
+
+The larger language model use the parameters, the context lens, and the architecture, which is, till now, it's a transport.
+
+I read a paper a few days ago about a new architecture.
+
+Did you hear about this, I think, called the Babel or something like that?
+
+So they have now a different architecture.
+
+It's not used in a large scale yet, but they think now about a different architecture.
+
+But for now, ShadGBT, all this models still work based on a specific architecture, which is a cross-form.
+
+Maybe after a couple of months, we can find out there is a different architecture now, okay?
+
+Maba is one of the different architectures, and some research talking about a hybrid technique between the transformer and the Maba, okay?
+
+So this is an open topic of research here now.
+
+But the home in here, they all based on the transformer approach, okay?
+
+Now, what is other component is a tokenization, context, window, and parameters.
+
+So look at this related to the parameters, a comparison between a common large language model in terms of the parameters.
+
+So as you see here, that it needs a huge number of parameters.
+
+What is a parameter?
+
+What's the definition of the parameter?
+
+What is a parameter in any model?
+
+The value.
+
+No, you'll get the gist.
+
+You'll tell us.
+
+I'm sorry?
+
+I think you wanted to say the inputs.
+
+The parameter is a complement?
+
+The weight.
+
+The weight.
+
+The weight.
+
+The weight.
+
+The weight that initialized at the beginning.
+
+And during the learning process, this weight is adjusted according to your task.
+
+OK?
+
+So to understand or to imagine how this, what is this parameter, for example, for a seven-year-old newborn.
+
+So if you have a seven-year-old newborn, you always make these three inputs.
+
+Only two head and nails.
+
+How many parameters in this sequence?
+
+Can you count?
+
+How many parameters?
+
+Can we count?
+
+It's a poly connected?
+
+Okay.
+
+So it's a poly connected where each one connected to the other one.
+
+So, here 3 multiplied by 4 plus how many 4 and here 4 multiplied by 4 plus 4 and here 4 multiplied by 1 plus 1.
+
+Very simple unit of work.
+
+How many number of parameters?
+
+About 40 or something like that.
+
+Okay?
+
+So imagine for a large language model, these numbers in many of them.
+
+So this is the number of the parameter that should be adjusted for So, with increased number of parameters, what do you mean by this?
+
+If the number of parameters increased in any large language model, what do you, what your inference on this?
+
+What we recognize on this?
+
+Our ability to understand is a problem.
+
+Okay?
+
+So, more powerful to understand is a problem.
+
+That's why for every new large language model, you can find this is an increased number of parameters.
+
+Okay?
+
+Other comparison here, the size of the disk, memory usage, and learning.
+
+So, when you download, that's why I put this comparison.
+
+When you decided to use any large language model, don't look at what is the size of this large language model inside your disk.
+
+You have to consider that learning the data size, because this is an inference process.
+
+When generates another, you need more space when you fine tune.
+
+Your model, you need more space based on your data.
+
+So, and this is the parameter that you have to put in your mind when you decided to use a specific large-language model.
+
+So this model actually was very interesting to me, because it's the first time to read about this model.
+
+It's trained on 100 different languages, and in 20 different programming languages, with also scientific papers and mathematical expressions.
+
+It's very, very interesting actually to train the model with these types of data.
+
+And also, it's a base for another model called MedVal, where it's trained, it's fine-tuned with enhanced data.
+
+Using this model, they can, I think they tested on one of the US health license test.
+
+Okay, and what is interesting for this model, you can feed this model with an X-ray image.
+
+And then it outputs an analysis report based on the findings of this X-ray.
+
+And it's a very interesting result.
+
+OK?
+
+It gives a very interesting result, actually.
+
+So one of the important things when you choose your model, check what is the trained input of this model, how this model is trained.
+
+OK?
+
+I will talk about this in a few minutes.
+
+But this is one of the criteria when You have a specific data and they want to deal with this data.
+
+Find the model which is already trained in this type of data.
+
+Okay?
+
+And then you can use it as a fine tool in your course.
+
+A tokenizer, how many tokens?
+
+How the large language model tokenize or create a token or as an input for the model.
+
+Every large language model has a different tokenization technique.
+
+That's why you notice that in the previous demo and in this demo, when you choose a model, you have to choose its equivalent tokenizer.
+
+Okay?
+
+And I found this online that it shows you a different NLP and a different tokenizer, but I want to test it first.
+
+So here you put your text, and then based on which model you choose, you have here the number of twirls.
+
+One of the notes is here, each model use a different technique and to produce a different number of twirls.
+
+So if I use one of the pre-printed model here, open source, it will choose 43, for example.
+
+Another model, maybe use 48.
+
+The number of copies make a difference?
+
+Yes, the number of copies makes a difference.
+
+How the number of copies?
+
+A difference.
+
+Price, they're going to be different.
+
+The price?
+
+OK, one of the criteria is the price.
+
+Another criteria is how do you deal with a large language model?
+
+You get a prompt and you receive an answer.
+
+This is not mine.
+
+Right, so you feed the model with the prompt.
+
+This is how we communicate with any large language model, using the prompt.
+
+You send a prompt and then you receive the answer.
+
+Now, if the number of tokens decrease, what do you mean?
+
+A more context answer, okay, of my query, of my prompt.
+
+And this is related to the second part, actually, to understand why tokenization is important.
+
+It's related to the next criteria, which is a context window.
+
+So what is the context?
+
+This is another parameter that we can use to identify which large language model we use.
+
+The context is a combination of the number of topics of the problem plus any previous conversation.
+
+So this is a combination of those.
+
+And this is a context window for any large language model.
+
+So the more context window means that you can have a long conversation with a specific topic, so continuously reasoning in the same topic with a huge number of outlets.
+
+And this is a common and a survey of a context model of well-knowing large language model.
+
+As you can see, Jenny and I have produced a context model of about two million topics.
+
+I tried to find out two million topics, approximately how big?
+
+It's about 3,000 pages.
+
+So it's a very huge, okay?
+
+And this is how the different language model has a different context level.
+
+So more context level means more powerful large language model, okay?
+
+And this is one of the actually important criteria.
+
+So we have different types of large language model based on the training data, alright?
+
+SHA-GBG for example is one of the large language model which is we call it an open source large language model.
+
+It's trained with a different types of data, general, multimedia from the internet so you can ask this model any questions so so he can answer your questions.
+
+So this is what we call it a general purpose large language model.
+
+Some other large language model trained in the instructional case.
+
+So the training data is something like tutorial, manual, guidelines.
+
+This is a type of the data that the models are trained on.
+
+So this is good for step by step guideline if you ask about any, if you ask this large language model about the steps guideline, it will work well in this type of class.
+
+Many models have this ability, but again, look at the training data.
+
+When you expect some output of large language model, look at what is the training data of this large language.
+
+Some other models trained on conversation dialogue, Childhood Dialogue, Password Service Dialogue.
+
+So they train in this type of data.
+
+So it's good in this type of password.
+
+And domain-specific model, which is your task assignment model, where the model is trained in a specific domain, like medical domain, health domain, education domain, and legal domain.
+
+So here, the model is trained only on specific type of data.
+
+One of the example is biohealth, which is trained in a medical data.
+
+So if you have a medical data, search for the model that is trained on the medical data.
+
+If you start writing one more quiz and a legal data, look at which model is trained in a way that you want.
+
+Now, what is a SHAQ GBG?
+
+SHAQ GBG now, it is one of the famous large, but it's not a large language model.
+
+SHAQ GBG is not a large language model.
+
+SHAQ GBG built in GBT4, which is a large language model.
+
+SHAQ GBG is a fine tuning of GBT4 now.
+
+It's the latest one.
+
+How they fine tuning?
+
+They fine tuning to make a conversation.
+
+You send the probit, and then it give you the answer in a conversation way, okay?
+
+How they trained?
+
+This is high level because GBT, I think GBT starting from three, it is not an open source.
+
+So you don't have the exact code.
+
+So for example, it's an open source.
+
+You can find the code, how they trained, okay?
+
+Why the code is huge, and if you want to reproduce it, you need a huge computation resources with long time, but the source is there, okay?
+
+You can download it, update it, change the instruction, you can do whatever you want.
+
+But GBTE is one of the close, it's not an open source, but so we don't know exactly how the training process happen, but this is from the high level, okay?
+
+So it starts through the steps.
+
+The first step is GBTE model, which is a non-argumentation model, trained with a huge amount of data.
+
+Once it's trained with a huge amount of data, it means it has a lot of knowledge about the language, okay?
+
+And this is the start one.
+
+And then they fine-tune it in stage one, where they prepare a pair of a problem and response.
+
+The human work, okay?
+
+to a GPT model with a huge data in a form of profit and response.
+
+Okay?
+
+And this is happened using the, what do they call it, what do you call it, SFT?
+
+Okay, what's that?
+
+It's a neural network that trained on this object.
+
+Okay?
+
+And then once they have this, They have the second step where a human also evaluate and rank the response of this model.
+
+So they train the model, point to the model with a prompt and response.
+
+Huge data, labeled data by the human.
+
+So they train the model using this data.
+
+And then they run the model again and get the answer of this prompt.
+
+And the human working to rank this, the answer.
+
+This is what we call reward model.
+
+And then they feed this information to a different model.
+
+We call it reward model to train the model to find out which best response is on this code.
+
+So after the human rank the output of the first stage model, they feed, they rank this data and they feed it again to another different model, which is reward the model, another neural network, they to train the model to, for a good response.
+
+How to produce a best response related to this specific problem, after the ranking, okay?
+
+So the rank should be high at this case.
+
+And then in the last stage, this is where you use reinforcement learning.
+
+You may be better than me in this part, because I don't have any actual background about reinforcement learning, but they use reinforcement learning techniques to optimize the cost based on the reward, okay?
+
+So this is a high-level idea about how the chaltec will be trained.
+
+So it's the fine tool of GBT, where they train in a huge data, human prepares this data, this is the problem, and this is the best answer for the problem.
+
+And then they train the model, and then at the next stage, they run the model, give the model some problem, and receive the answer.
+
+And then the human ran this and defeated to another model, reward the model.
+
+This is what we may call it reinforcement, reinforcement in the human feedback.
+
+Okay, but here they use an optimization technique in the reinforcement learning.
+
+I think they call it here PPO.
+
+I think so, yes, PPO.
+
+What is this reinforcement technique, can you cover it?
+
+What's the objective of it?
+
+You deploy the agent in a real time environment and it collects rewards.
+
+So, using the rewards, the output of the reward, they try to make an optimization between the output of the reward, the model, to optimize the first one.
+
+So, you can get the model now a question and then you can get results.
+
+Okay?
+
+This is a very high level.
+
+But, what about the modern training lab?
+
+They use a different technique actually, ShagGBT-4 and Plotute, a different technique.
+
+ShagGBT now, the difference in ShagGBT, they are multi-modal inputs.
+
+So, they now work in a text, work on pages, work in a 7.
+
+So, this is one of the important features in ShagGBT-4.
+
+But also the plot use a different concept here.
+
+The concept here is called Constitutional AI.
+
+They have some, Constitutional AI means they have some principle, okay, and they identify this principle.
+
+And we say, not be harmful, P is a context, it's a principle like this.
+
+And they frame according to, according to this principle.
+
+The main idea here, they found out that in a previous technique, there is a lot of human work.
+
+And this human work is expensive and it's slow.
+
+So what we try to do here is to make a model with the size itself.
+
+According to the principle, they run the model and let another model or the model itself calculate the size, it's output related to the same principle, if the model stick with the same principle or not.
+
+So they get rid of any human work in during the training.
+
+And this is the main, actually, what have, how the model version for blood or cell eligibility trained them.
+
+Okay?
+
+They try to get rid of all human work. core human work.
+
+Because here we have a lot of human work.
+
+We have human work here and a human work here.
+
+So, they get rid of the human work and they let AI characterize itself.
+
+So, after human gets the output, now try to rank this output based on the same principle which is a constitutional court.
+
+Okay?
+
+And this is how they train now.
+
+We have a limitation in LLM.
+
+Yes, we still have a limitation.
+
+One of the common limitations, which is the fixit.
+
+Is it still a limitation?
+
+This was a limitation when in 2023, for example.
+
+But now, do you feel this is a limitation?
+
+It's one of the limitations?
+
+If you ask any LL about something happened yesterday, you will get a response or not?
+
+Yes.
+
+You will get a response.
+
+Before, at the beginning, you will not get a response.
+
+Okay, I am afraid to tell specific facts.
+
+Remember, okay.
+
+Now, while this problem is mitigated now in workaround solution, but still the model are trained in a cutoff, it's static, still it's cutoff, static.
+
+The model itself is static, there's a cutoff, dates, okay?
+
+But they try to mitigate this with a workaround solution.
+
+One of the workaround solution is right.
+
+The model can now contact with the internet, search in the internet and to give you the information.
+
+A mitigation, workaround solution.
+
+But it's still, there's a cutoff for each one.
+
+What else is static?
+
+And actually, this round of solution bring another limitation.
+
+Like what, okay, now, they search it on the internet and get some information from the internet.
+
+What about unreliable information?
+
+What about noise?
+
+What about how to integrate?
+
+This information comes from different resources.
+
+And this has come up with a different limitation.
+
+And it's still open for research.
+
+Now, the other limitation, which is limited context size.
+
+So, if you consider this is a limitation now, with 2 million context size, which is 3000 pages, maybe it makes 4 or 5 books, something like that.
+
+So, you consider it is still a limitation.
+
+The new research proves that there is a limitation of this huge number of context size.
+
+One of the problem is they found out that large language model was good with the beginning of the context and the end of the context.
+
+The letter, they cannot find or they cannot figure out the information or extent of information in the letter.
+
+When you have a long conversation with a large language learner, they correctly remember the beginning of the conversation and the end of the conversation.
+
+The conversation in the letter, the performance is not very good.
+
+Okay, and this is proved by a lot of research.
+
+Another problem here also that with this huge number of context of information, it can affect this or your problem.
+
+If you search for a finite piece of information, it will be very hard.
+
+The large language model failed in this.
+
+OK, so it is still a problem, but in a different way.
+
+So at the beginning, yes, context is a problem.
+
+So the feedback when we use Chantipiti in 2023, we have a limited feedback when you set a problem.
+
+But now with 2 million token, it's a huge.
+
+So you can make a big or long conversation, and the idea is we focus on the topic.
+
+Okay?
+
+And this is a very good example.
+
+But still, we have some issue with this, and still it's an open topic for research.
+
+Still, no one, okay, you have to wait, especially for the open, for the closed source, you have to wait, which is also another limitation.
+
+A different limitation here, or you can say challenges, which exist right now, Coincidence, still you may have not consistent feedback.
+
+Not like the beginning, of course, it's improved.
+
+There's a huge improvement, but still sometimes you get, what is this answer?
+
+OK?
+
+We still have this situation until now.
+
+Lack of a specialized domain or the large amount Most of the big large language model, it's general purpose.
+
+The specialized large language model, it is not huge like the general purpose, okay?
+
+So they invested more in the general purpose large language model.
+
+Why?
+
+Because the specialized is primary, it's not, not everyone can use it, so they not invest in this part.
+
+Lack of transparency, it's a huge amount of parameter, Very deep neural network, about your principles.
+
+Connect, okay?
+
+Privacy and security.
+
+Everything you know, all you have to know is in Shajibati.
+
+I told my kids about it.
+
+They ask Shajibati about everything.
+
+So one of my colleague, he just asked Shajibati about one question, what do you know about me?
+
+Then he gave his whole test sheet.
+
+So there is no safe information, privacy now is not right.
+
+What about with the images?
+
+So he came with the image from it.
+
+What about copyright?
+
+OK, so this is another challenges.
+
+Huge energy, it was a huge energy environment impacted, Yes, because a huge model, 24 days, electrical consumption, this is effective that environment.
+
+And this is another challenges of using large language model.
+
+High competition and...
+
+So to run large language, you have to have a high computer, high computational power computer, because it's a huge model.
+
+That's why if there is a workaround solution, then it's good, actually, but it's bad.
+
+It's a huge amount of computation, the model is huge, the size of the model in the desk is huge, the number of the parameter is huge, and you need an extra space to inference with this one.
+
+Okay?
+
+Right, so one of the workaround solution to mitigate the cutoff training of any large language model is to augment this model with an extra documentation, okay?
+
+Which here is, we call it, retriever-augmented generation.
+
+They try to combine the power of information retriever when you can easily extract any information from a huge number of documents, plus the power of generating data, okay?
+
+If it was a question, you can generate the answer.
+
+So, this is actually, what is a RAC?
+
+A combination of two techniques.
+
+The first technique is, so, this is the RAC.
+
+We have an NNF, this powerful capacity to generate a text, and then we have an extra document that will feed it to the model make sure that the result come from this specific documentation.
+
+Okay?
+
+So this is the idea of the RAP.
+
+So we feed, we have large language model and a retriever, a reader.
+
+So the reader here is a large language model.
+
+Okay?
+
+And the retriever is an external, we feed the model with this external documentation to make sure this, the answer of our question comes from this specific document.
+
+Okay?
+
+How we can do that?
+
+The first step, again, we have a huge collection of documents based on your domain, medical domain, medical domain, education domain, based on your information.
+
+You collect the data and then you divide this document into chunks.
+
+And then you can use an the embedded technique to have a vector for each chunk.
+
+Okay, so this is how retriever, augmented retriever work.
+
+Okay, so when you collect the data, you have a technique and it's very simple and it's available open to divide it into a chunk and then you have an embedded vector representing each chunk.
+
+Okay, which embedded technique?
+
+This is another issue.
+
+You can choose with a different environment.
+
+And then the problem here can be that a user client can ask a question.
+
+And with a combination of this data store, which we embed all the documents in a vector, we call it a data store.
+
+And then we feed it to the large language models to get the strengths of the model that generates a coherent answer. and then go back to the site.
+
+And this is another architecture for question-answer system.
+
+Okay, we take a large language model where the documentation is stored, which is based on an information retrieval.
+
+It's one of the NLP parts.
+
+Now, in details how it works, we have a question.
+
+You can read the model with the question, We have a retrieval, the same idea.
+
+Start here.
+
+And we have the external knowledge, which is your documentation prepared as a vector.
+
+And inside the retrieval we can encode or embed this documentation in a different device.
+
+How do you create this high-dimensional dividing vector?
+
+Many degrees, Pn, cosine, n, vector, GPR, any degrees.
+
+You can save this information for index, this information using a retriever.
+
+OK?
+
+So the same retriever will now put a context rank.
+
+And this rank will feed it to a large language model, any large language model, to generate sounds.
+
+So the answer now it will be generated.
+
+But generated based upon my confidence, my knowledge.
+
+OK?
+
+We will use the advantage of large language model with high knowledge of the language, how the structure of the language.
+
+This is what the large language model knows.
+
+High knowledge of the language, structure of the language.
+
+I will take this as threats, but I will let him generate the output based on my external.
+
+What is it?
+
+I feed it to my computer.
+
+OK?
+
+So this is the two common components.
+
+A retriever and the reader.
+
+The reader now is a large language model.
+
+But the same idea of reader-retriever thing.
+
+OK?
+
+OK, so this is what actually happened in large language model.
+
+We have a document corpus, huge.
+
+We divide it into chunk.
+
+And you decide what is the size of each chunk.
+
+We have different technique for that.
+
+And then we feed it to the embedding technique, where each chunk converted to high-dimension data.
+
+OK?
+
+And then this is the important rule with the vector database.
+
+So what is a vector database?
+
+It's the first time after a huge involvement or the development of AI, we always hear about database.
+
+What is a database?
+
+We say the structure data inside a data.
+
+So what's the difference between vector database and database?
+
+We will not say the data structure data.
+
+We will say vectors and emphatic vectors.
+
+And the power of vector database is how to index this vector.
+
+So when you ask a question, how do you retrieve this data?
+
+Very fast.
+
+So the indexing technique is very, very important.
+
+And this is how we differentiate between a vector space and another vector database.
+
+The techniques of indexing the data.
+
+Because they will not when I retrieve the data from a vector database, I will not search for an exact match like a database.
+
+When you have a database and you have a query, you search for an exact match.
+
+Okay?
+
+But here I will not search for an exact match.
+
+I will search for a similarity.
+
+So how to take this imbalanced chunk and indexing where the similar chunk will be near to each other.
+
+And when it comes, when you have a question, how you find that query?
+
+How do you find that similarity between the question and this chunk?
+
+And this is the rule of the vector t.
+
+So it's completely different from the normal database.
+
+And we use it now.
+
+After this, the era of AI.
+
+So, the main part of the vector database, how they're indexing this documentation and how they retrieve this documentation.
+
+And this should be very, very fast.
+
+The optimization here is very, very important.
+
+Okay?
+
+And then, we're using a database, we're indexing the data, and then we have a questionnaire, a probit.
+
+Okay?
+
+There is some optimization searching technique.
+
+When we search for this huge number of data with a specific task, which is a probit, then we choose which vector retrieves the chunks.
+
+Okay?
+
+And then return it back to the probit, and this is the answer of your question.
+
+This is the life cycle of the cookie.
+
+And each of these cycles, the same cycle, not changing, but you just, in your code, just choose which technique you use.
+
+And the techniques are available.
+
+You will not write a code from scratch, but you should really understand what is going on with each step.
+
+Okay?
+
+And then, now, how to create this chunk?
+
+This technique is a fixed size chart.
+
+I fixed number of tokens, number of characters, and this is my chart.
+
+Okay?
+
+Or even another technique to have an overlap.
+
+This technique is fast, easy to implement, but it has some drawbacks.
+
+What is the problem with this technique?
+
+As it's a fixed size, so maybe the answer will be in the border, for example.
+
+Okay?
+
+Or, what do you think is the other drawback of this technique?
+
+Is there any semantic behind this definition?
+
+No semantic meaning.
+
+This is all that I know.
+
+Another improvement technique is based on some semantic meaning.
+
+So I divide it into sentence numbers, specific number of sentences, or divide it into based on the paragraph.
+
+So the paragraph would be my child.
+
+The second paragraph would be my child.
+
+Or I can use an overlap so to make sure that the answer will not be in the folder.
+
+Okay?
+
+This has improved the technique because now I divide in more semantic meaning, but at the same time I have a problem here.
+
+What about the size of each chapter?
+
+This is another problem that vector b's have to deal with.
+
+Okay?
+
+But this is the technique how they divide a part of a chapter.
+
+Okay?
+
+Then to communicate with any large language model, we have to create a template problem where you have a question and then you get the answer.
+
+And this template is just copy-pasted for any of your questions.
+
+So the template problem answers the question based only on the following context.
+
+And this is the variable, so anything between that curly bracket means it's a variable.
+
+Okay?
+
+And then the answer based on the content is, what shall we retrieve the data from a vector base?
+
+Okay?
+
+And then this is a different type of a vector database.
+
+As you can see, some of them are open source, some of them is a closed source.
+
+Some of them is dedicated for a vector base.
+
+Some of them it's improvement.
+
+They, it's a well-known database, MySQL, MostAddress, because they recognize the importance of the vector base, they include it now in their framework.
+
+So you can find a vector for MostAddress, and I think the common one is a Chroma.
+
+I think this is the top now, Chroma, as an open source, and we can use it.
+
+So this is one of the vector base that you can choose for your system.
+
+But this is a different vector in the database.
+
+Now, how to measure the quality of your rank system, question answer system based on rank?
+
+We have a two-run criteria.
+
+One of these quality criteria is the return with vectors or return with chunks.
+
+We can choose the top.
+
+We can rank it.
+
+And we can make a cutoff to a specific k.
+
+So top three, top four, top five, top ten.
+
+And we use this to have a measurement for the quality of the output.
+
+One of these measurements, we call it normalize, is connected to a narrative at k.
+
+And n, g, c, g at k, at specific rank, where the k is around.
+
+So, 5, k, and a phi, p, 10, based on your choice.
+
+And how they compute it?
+
+We compute it with this equation.
+
+Submission from 1 to k, relative at i, divided by log 2 i plus 1.
+
+OK, so the rank is different from the relevance.
+
+OK, the rank is the output come from your model.
+
+But relevance exists between chunk is relevant to a question or not.
+
+This is your rule in your assignment.
+
+This is the technique that you test.
+
+You get the chunk, how they turn it, and then you rank this chunk, which one is relevant.
+
+So the rank may be different.
+
+So one of the documents come in a rank one, but you find out that this is not relevant.
+
+I give it two as a relevance.
+
+I give it three as a relevance.
+
+So relevance is different from the rank.
+
+So the difference is three.
+
+All right.
+
+So we can compute it by this equation, where li is the relevance score at position one.
+
+And the penalty of the lower rank, we divide it by log i plus 1 I have to finality.
+
+This document is not a correct relevance.
+
+Right, so the value is between yes.
+
+Between rank and relevance.
+
+Okay, so rank, when you have a question answer system, you have to decide how many documents return it for you.
+
+As we can see in the myexample, it returns with a lot of context related to your question.
+
+Okay, so it will not return just one context related to your question.
+
+With your parameter, you can ask your model to return back what is a top 10 document related to my question.
+
+And this is not.
+
+Okay, with a huge amount of documentation, you may find a different document answer your So this is what we mean by rank.
+
+They return the rank a different and they consider if you choose 10, this is the top 10, based on the rank, the model rank.
+
+But when you answer, when you see this documentation, you may have a different rank, in your opinion as a user.
+
+This document which is ranked 1, it is not ranked 1.
+
+It may be ranked 3 or 4.
+
+And this is ranking 1 or 2.
+
+So you have, as a user, a different rank.
+
+And this is a difference between ranking and relevance.
+
+You decide what is this document's relevance to your question.
+
+And using these two information, we can compute this as a measurement of the performance of your body.
+
+Okay?
+
+Okay.
+
+I tried to, if the rank of bed is perfect, it means this will equal 1.
+
+If the rank is the bed, and relevance are the same, this will be 1.
+
+Okay?
+
+Now I try to give you an example.
+
+Actually, I try to understand what's going on.
+
+So, I go through an example step by step to understand it.
+
+So, I have a five document chunk.
+
+Chunk one to chunk five.
+
+And this is the rank based on the output of my rank model.
+
+And this is my relevance rank.
+
+So, as you see here the first chunk rank it as one and it's relevance actually is one.
+
+The second one it rank it at two but it's relevance is three.
+
+So, relevance may be different from rank.
+
+Then I apply the same equation.
+
+So, I compute an equation for each one.
+
+Compute the total.
+
+As you see the total of this is three.
+
+Okay.
+
+And then we will solve relevance in descending order.
+
+So, ideally sorted relevance is this in descending order.
+
+3, 2, 1, 1, 3.
+
+This is your relevance.
+
+Then I computed the inverse DGC based on this specific rank.
+
+And then I have here the total inverse DGC.
+
+And when I divide it first, this is the evaluation.
+
+The final value of DGC and the specific rank.
+
+And this is how you compute.
+
+Okay?
+
+Any questions?
+
+And you can mix it up with your knowledge.
+
+And they try to delete the human.
+
+But for your project, if you have, I think I remember that I asked you to test your model.
+
+You have to extract this and manually check the computer report.
+
+So you can do the same one of these techniques.
+
+Another technique actually, RR is central rank at K. Y divided by K. Another technique is more than K, so different quality measurement to measure the quality of a light system.
+
+Okay, the recession has came.
+
+Absolute value of top, relative top of K divided by K is a different measurement.
+
+When you create a large language model, we have two important parameters.
+
+Temperature and top P.
+
+What is a temperature?
+
+What is a temperature?
+
+What is a temperature?
+
+How much that it is deterministic?
+
+How much your model will be deterministic?
+
+Okay, right.
+
+So, and a top K?
+
+We use a large language model.
+
+Yes, okay, so this is a two important parameter.
+
+You have to keep it in mind when you create or deal with any large language model.
+
+That framework, we have many framework available to solve that task.
+
+Many of them is open source.
+
+It's a very famous framework for this specific task.
+
+And you can use it.
+
+Chi-Stack, which I just explained a few minutes in the previous lecture, Chi-Stack is one of the open source framework where you can implement any rough system.
+
+They have a vector space.
+
+They have a document store.
+
+Vector space, document data, large language model, you can choose from as either.
+
+So this is many, many, but I think language sharing is a famous one.
+
+It's very powerful for many reasons actually.
+
+The reason is come from here.
+
+This is the ecosystem for the language, okay?
+
+You can find here 157 different document stories.
+
+Huge number of document stories you can choose from.
+
+You can have here only 50 or something vector stores. source.
+
+You can choose from them.
+
+Large language model.
+
+A lot of tools and techniques all in one framework.
+
+That's why language chain, it's very popular in this specific task of the problem, that problem, because it's an ecosystem with a lot of tools, a lot of techniques in one place and it's an open source, free to use.
+
+You can download it easily and then you can work on it.
+
+Okay?
+
+Choose between all these things.
+
+That's why language chain, I recommend to use language chain, but it's up to you.
+
+To solve your problem.
+
+There's an open source large language model.
+
+This is an example of the open source large language model.
+
+You can download it in your computer and work on it.
+
+Some other are not open source, so you have to pay to access the API key and you have to pay for token.
+
+But for our assignment, there's no need to do that.
+
+You just try to work with any open source document.
+
+Even the performance may be not good, but I prefer to work with this.
+
+This is an example of an open source large language model.
+
+And this is how to decide which large language model can fit in your computer.
+
+So I tried to make this comparison.
+
+If your computer is 8 gigabyte RAM, then this is a perfect version of, because for each large language model, we have a different version.
+
+So I think this is perfect with, anyone has a computer with 8 gigabyte Then you have more powerful computer with 16 bytes, for example, of gigabyte RAM.
+
+Then this is maybe a good thing, with this more powerful computer, that has a large language model to work on it.
+
+And as you see, all of them work on the Ullama.
+
+Okay, so this is Olamo command to grab this model.
+
+I think you have this experience with everyone when you use Olamo.
+
+Yes?
+
+You can use it in another one.
+
+So what is Olamo?
+
+You can download your large language model and make it work locally in your computer.
+
+Okay?
+
+We have a different, actually, environment system for large language model.
+
+We have Ulema, it's one of them, which allows you to work in your large language model, another one which is similar, it's LMS Studio, it is the same, but Ulema is more popular than that, but they are both free and work locally in your computer.
+
+Another, which is a cloud-based.
+
+So, DLLM is a cloud-based, Hugging Face is a cloud-based.
+
+Which one you use?
+
+Okay, I'm not talking about the assignments, but I'm talking generally.
+
+If you work in a company, which one you use, it's based on the business logic of your company. your company.
+
+Like what?
+
+If you work with a service provider, who will not go with that love.
+
+Ok?
+
+This is one of their signs.
+
+If you want a full control over your money, you want to go with that love.
+
+If you want to work with your application from anywhere in the go with the cloud.
+
+If you want your application automatically scaled up, or scaled down based on the number of users, go with the cloud.
+
+The cloud provider gives you the facilities, gives you the service to scale up automatically.
+
+If you have a huge number of users, automatically gives you more resources.
+
+Automatically.
+
+Scale up automatically, scale down automatically. but if you work locally in your computer, you need two extra storage, extra resources in your computer to scale it up, for example.
+
+Okay?
+
+So it's based on your application, the business logic, what you want to do.
+
+You can work if you locally.
+
+You don't need to access an Internet.
+
+You don't need this Internet to work with your application.
+
+But in the cloud, Internet is essential.
+
+So it's based on a task, your business logic, choose which one you go with.
+
+Local storage or the cloud-based environment.
+
+And this is a comparison.
+
+I didn't include here LMS4G because it's the same.
+
+It is an open source, and they are local.
+
+But they here, I gave some difference between LMS, FM, and HubRef.
+
+So this is maybe help you to choose which one you can use based on your business model and your application.
+
+An open source, this is a language tools and open source.
+
+I think we use it, so you don't need to just make about adjusting to this language.
+
+And this is actually a two important slides.
+
+Now, how we can compare between a different language, a large language model with a huge amount of language model introduced every single day.
+
+How I can choose.
+
+OK, so we have two different benchmark comparison.
+
+The first one is a leaderboard community driven.
+
+I can show you here.
+
+So while it's updated every day, based on the community feedback of using this large language model and their thoughts.
+
+So it's a community-based, it's not based on a benchmark standard metrics, but it's a community-based ranking.
+
+So here you can see, for example, the model plot is in a top, and how many votes for plots based on if you use plot in your task, then you can go and vote.
+
+And so, there is a category here.
+
+So in math, for example, you can find the model is changed.
+
+The rank of the model is changed.
+
+So in a math task, the rank here is changed.
+
+In instruction following, instruction tools, maybe this is different.
+
+In a coding, for example, coding tasks.
+
+So in a coding, you may find a different rank between a different large language model.
+
+So to choose which is the best large language model, it is based on your question.
+
+Invest some time to make a search.
+
+To find the best large language model, fit it with your task.
+
+SHA-GBT-4 is the best one, but maybe it's not good for your specific task.
+
+So this is one of the best thing how to choose.
+
+It may be help you.
+
+The other important one actually, it's more standard, which is called holistic evaluation of large language model.
+
+This is done by Stanford University, where they tested the model based on the benchmark data.
+
+Okay, so it's not a community, it's not a voting, but it's based on this is a model with a benchmark data.
+
+So it's the same model with, apply the model with a different benchmark data and then rank the model based on this.
+
+And there is a different criteria actually to rank this model, which you can ask Helium based on that, which model is safest, which model is more powerful in any field of the, from ethical point of view, which model preserve the privacy, they rank this one, okay, based on this data.
+
+So I consider Helium VCs as the standard and the more professional website to look at the the rank for the existing large language forms.
+
+So here, you can see this is built on context.
+
+JVG form here is in the book.
+
+The mean is called, and also, another scenarios.
+
+OK, so in a different scenario, you can see here.
+
+This is course.
+
+OK, descriptions.
+
+So it's a different way, but this is a standard way to look at the performance of up-to-date large language.
+
+So I recommend you to go with this point, while the community one is also acceptable.
+
+So this is an important thing that you have to take care when you choose your large language.
+
+Don't use any charge language model, because it's famous or new.
+
+Look at this benchmark, OK?
+
+But we have a different dimension.
+
+They rank the model based on the accuracy.
+
+They rank the model based on the firmness.
+
+So we have a different rank based on the firmness.
+
+And you can find this in the website.
+
+Bias and efficiency, different criteria you can define language.
+
+Any questions?
