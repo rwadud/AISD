@@ -1,0 +1,620 @@
+!
+So I was trying to do the drag, I was announced that we will be doing a KWB today.
+Again.
+So I was trying to do the drag that was announced in the KF review today.
+So what happened was that last four years I was using spreadsheets to do it because
+I had given the original books and everything in a spreadsheet but then I had to do a lot
+of manual work because even if I have to load that into some Pandas data frame and process it, what happens?
+When students submit it, invariably somebody submits in excel instead of CSV and somebody will write their name
+wrong or anything. So I spend days to just stack all the data frames. Then it's just a 500 printable script.
+So I am trying to make it into some Google form, some other website so that PCC post
+students also once they put their email they will know what their teammates name become.
+So I am working on it, so I am not completed for next week while we do the presentations.
+You can do that.
+So today we will do the last lecture which is, so we did in the last few sessions right
+we did prompt optimization, then drag, intuning, so what is remaining is LLM fine tuning
+so I will cover that today and I will walk you through a code to do that
+I may not be able to execute the code fully, it takes time and not only that, I keep trying
+that in my collab notebook and my credit code over, so they only allow so many times to
+manage it, so I don't know if after I do one, they will reset it.
+But the code I will show you, you can take this code and share it on Google Colab.
+So you can copy it to your main and try to yourself and try to go through the code.
+Okay, so what is LLM by doing?
+So usually, all of you know that when they generate a large number of models or a population model,
+they train it on a vast amount of general data right so they build a model which is more genuine
+for course that's mainly for cost answering or creating embeddings right and so you want to do
+some specific task like doing a classification right but i don't believe it's actually like
+So as it is that motor is not very useful, also it is not very expert in specific domain.
+So they decide like that. So the analog in Iran is like a home cook versus chef, like a sushi chef.
+Home cook knows to cook, to vary your food, but the sushi chef knows only one thing to cook,
+but that will be very tasty. So that's kind of an allotment.
+So fine tuning is a process of converting or training how to become a sushi chef.
+Put in a very simple way. So that's the idea of fine tuning.
+The reason fine tuning and not training because you are going to do...
+So when you train large language models, you typically have to do the training over a longer period of time, maybe days.
+And you have to use knowledge cubes. And you have to use these days, like, you know, one million tokens of input text like that.
+whereas fine tuning, you are adapting that model to a specific domain like healthcare, fintech, cybersecurity
+so you, for classification task, you typically tune only with a small dataset and also you don't tune every parameter
+you only tune some layers and some sort of stuff, that's called fine tuning
+So this is what I said, right?
+Let's say an example is a pre-trained LRM is like a home cook and a 5-2 LRM is like a sushi chef.
+Now when do you need to find you and also when do you not need to find you.
+So you need to find you when the LLL need to perform the congruence task like finding
+vulnerabilities in the code or write like a very special expert software developer.
+That's one reason. Second reason sometimes is that you may want to use, you know you
+don't want to use a costly LLM here or reduce the cost but then you know you take a small
+small LLM it may not be doing, let's say summarization of some text in your domain or your organization
+very well. So you want to match the task efficiency and performance of the task you are doing
+using a smaller LLM rather than a bigger LLM. That will save your computational power. So
+So then you rule by doing it. Then there are some applications like healthcare or critical applications like aerospace or some applications like that or OT systems.
+So there, the accuracy is very important. So even if it's a general question, I will say accuracy, not classification.
+You don't want any type of hallucination. You don't want to make up any type of references, all that kind of stuff.
+For example, probably in law, law, law, etc. So accuracy and loavelities are very important.
+then also you do fine tuning. Then other place where you do fine tuning is you want the LLM to respond to your customer queries in a specific way.
+So you want to be more temperate or more factual or more tolerant to their posting.
+So if you want to adjust the tone and style, sometimes if you are a brand, right?
+Certain brands, you know, they have certain style of entertainment.
+So it could be a luxury brand, right?
+And talk to the customer in a certain way, in their marketing material in a certain way.
+So you need to adjust the tone, style and behaviour, you know, when you respond.
+and we generate a response automatically using this LLM.
+Then the next use case is you want the LLM to respond in a particular format like creating a JSON or creating a particular format.
+So usually at these old days if you ask a small LLM give the output in a structured JSON format,
+do not print any text before or after, you know 80% of the time it lobes, 30% of the time it does not do
+so even if the format in JSON it may not be very neat
+and these days you can pass the parameters to the invoke function and enforce it
+but again not all LLMs particularly small LLMs have that option
+So fine tuning helps to enforce the output to be given in a particular format.
+And finally is the domain of adaptation. Domain of adaptation is that again you want to remove that
+you know element of specific domain like cybersecurity, healthcare, you know, law, fintech.
+you need to make it more detailed knowledge of the domain.
+So you do lag, but sometimes lag is not enough.
+So you want to do some kind of domain adaptation.
+So that's another use case where you fine tune a little bit.
+Now let's look at when not to fine tune.
+fine tuning is not good. So before I go there, so before fine tuning, do these things.
+This we learned in the last lecture, right? Give few short examples, chain of not prompting,
+Then I talked about self-consistent, the short ways prompting, prompt of optimizing institutions that we are all in.
+And you also do path-back, you want to do domain adaptation, you do lag, and where you do semantic checking, where is the information,
+then you should do the rewriting of the retrieved text.
+This is all we talked about.
+So before you do fine tuning, you should do all these things.
+And then, even after all these things, if you are not happy with your performance of the LLM,
+and then you go about doing that
+sometimes you need to do this also do fine tuning
+it is not that complementary thing
+it is not that if this didn't work then stop this and fine tune it
+still you have to do fine tuning
+so it is not an or it is a case of that
+now when you should not do fine tuning
+you should not do fine tuning
+fine tuning. So typically when you do train an LLM, it is expensive. You don't want to train an LLM every week or every day.
+Because your data set is changing very frequently. Like for example stock market data.
+So if you want to make your LLM, think about some stock scenarios.
+right stock market scenarios then don't use fine tuning option because the stock market data
+will change for example with the recent geopolitical events right the stock's distribution has changed
+so so it's not good to do fine tuning of lms when you when data distribution changes
+very quickly. Then, also if the task is not very complex, right? If it's a simple binary classification or simple multi-level classification,
+you know, maybe you can do fine tuning but often fine tuning does not improve the accuracy so much.
+so it may not be as efficient as giving few short examples and things like that
+which I don't always do
+then another important thing when it comes to by-tuning is that
+even if you did all the prompt optimisation, lag
+and you need to use it for critical applications
+so that you need to improve your model
+but let's say your data, the training data is not good quality
+so even if you need to fine tune the model
+and your training data is not good quality then
+fine tuning will not help, it's always
+garbage in garbage out, so the quality of training data is paramount
+so therefore do not
+do not fine tune your data
+lastly if your data contains any personally identifiable information
+or any privacy related information
+do not fine tune because it is very hard to erase once you fine tune a model
+So always mask those data before you fine tune the model.
+That's very important.
+So these are the cases, you know, when you do not need to.
+So for those who came late, so I was talking about fine tuning the model.
+So these are the scenarios when you should fine tune the model, or when to fine tune the model.
+So when LLM needs to perform complex tasks or your cost and latency needs to be optimized
+for critical applications where the accuracy and reliability are important or if you want
+to adjust the tone and style of your model relating to your class or your applications
+and if you want to enforce the particular structure of the output or if you want to
+how to adapt that LLM versus the domain like healthcare or you know, speed tech or law
+these are the things that you should go about fine tuning
+now let's think of talk about what are the different ways of fine tuning
+So you can always do the full fine tuning.
+So you have some data and let's say you want to fine tune your model to adapt to the domain of law.
+So you have some data, you have a decent pot for some data and you can always train on top of your already pre-trained model.
+model. But there are two problems that when you do that it has to update all parameters
+but that can lead to what is called a catastrophic failure. What can happen is that whatever
+the LLM has learned before can completely fail. This is a very interesting thing that
+So if you try to do a full fine tuning with the new data if you include the old data then
+it is fine if you include the old pre trained data set and add the new data set and do the
+then it's fine, but if you don't include the pre-trained data set, you add, take a new data set,
+you pull parameters by doing that, most of the time, most of the time, it will take a while.
+That does not fix the data set.
+Because it updates the data set, you know, it will do something complicated.
+You don't understand?
+It does. And also it's expensive, because that kind of training will like give you thousands of dollars.
+So people use something called adaptor.
+So they do, they don't do a full fine tuning, they do what is called a low rank adaptation.
+So the low rank adaptation what it means is that think of your plan and model, parameters
+So, maybe each layer is one row and each in each layer each neuron weight is like a column
+ok. So, you can think of it as a matrix or or tensor right because of the parameter would
+be you know multiple dimensions. Now, you freeze these model weights you do not touch
+So you have original matrix W which you don't touch that.
+Now you only select some layers in that.
+So you then only those layers or some neurons in that you train that.
+so the updated weight matrix is equal to the original weight matrix plus
+another matrix delta w so w prime equal to w plus delta w now that delta w you know that
+right any matrix can be factorized as well as it satisfies any matrix can be factorized
+is the product of the truth for all lower end matrices like matrix
+that is if you have a matrix of size m cross n you can decompose as a product of a tall matrix
+m into k times a thin matrix k anywhere right so those two matrices are small and if you choose k
+So you only train a small matrix of size m into k, then that matrix you keep separately
+and at the time of loading, loading the model into memory, take that matrix and add to the
+So that is the updated way. So you update the way you are loading the model. So you don't touch the original way.
+You can keep different adapters for different domains. So I can take the same LLM and fine tune, create an adapter for the domain of dog.
+create another adapter for the domain of healthcare, another adapter for the domain of fintech or
+cybersecurity. By tuning, so fine tuning means generate the adapters. Then at the time of
+depending upon the application, you can switch the adapters. Because the original model is
+is same, so you load the original model weight, you load that adapter for that domain, add
+that is a new weight, right, that you then use to create your neural network and other
+types of inference, okay, then you pass the query to the model. So you can store, you
+know, and these adapters are small, right, they are like few MP, not even G, okay, your
+Your original model is like QGP, adapters are very easy to store, tuning, creating adapters you can do with small data sets like maybe 10,000 or 1,000,000 or so
+can do it in a couple of hours, few hours and on a small GPU, not small GPU because
+still you have to load the whole, suppose your original model is a small model like
+you know, let us say LLAMA 8MB or LLAMA 3MB. Actually when you load that model it loads
+every way it goes, because it has to keep a copy of the data. So totally you need a
+memory and you put everything together, you want to fine tune a model of 3 million parameters
+that will come to about 24 GB. But you know still that can be done in a small single GPU,
+You don't need a new password.
+So these are the advantages of using fine tuning.
+When you are doing fine tuning, you are going to change some weights.
+Do we have to change specific weights or how do we change which weights we are going to keep?
+Which weights we are going to change?
+Yeah, so you are talking about which layer you are talking about.
+Right.
+Does it matter which layer you choose?
+So I think they are sort of, you know, if you fill in the last few layers, different sort of application.
+With the classification, you can take the last few layers. That's what, you know, they do.
+And again, that's a tunable thing. That's a kind of a parameter.
+So this is how you do this Dora. So in the Dora you can picturize like this. Your original model is that book, wind book.
+Now you are keeping that side, you are not adding that book. You are adding another small book on top of that.
+That's an adapter and you can keep different adapters for different domain and at the time of loading the model for inference to attach them.
+So again that's a simple illustration of what is a robot.
+And as I said you see this original matrix is D into D, right?
+And you can see that by doing matrix you can see that W new equal to W original plus A new.
+Any questions? Any other questions?
+How you guys done any fine tuning in your projects?
+Have you taken this in your LLM course?
+How much you have taken in it?
+NLP course?
+They have taken it right?
+They have taken TAUTI and LORA?
+This LORA they have taken?
+What is basic?
+We have a fine-tuned distilled bird.
+Oh, okay, okay.
+That's kind of a full fine-tuning.
+That's what class means.
+So there are different pi tuning variables like UNFLOT, ASSO, LMRFATLY, FET, FET stands for parameter chip, HF stands for hugging phase
+So these are different advantages, so for example UNFLOT which you can use it for very fast pi tuning
+and you can only load that and it has a very simple drop and load mode ideal for doing that
+and you can do it on single GPU and that's one but the problem I think with that is that you don't have much control
+ok, this is the other extreme, you can configure everything, whatever you want to configure
+but it needs to be expensive, it needs memory, large memory, to use multi GPUs, difficulty is high
+Then, all the factors in between. But what people typically use is more popular is this
+hanging trace parameter which is my doing. So the advantages with that, typically the
+models are you see, models are you download from a link based file. So these are the direct
+you can directly download the model and find you using PEPP and there is a python API and
+you can use it on single page if you want to if you want to find out your model size
+ok and you know and difficulty is not a big issue so today we will talk about PEPP find
+So what I will do, I will go through the code and walk you through the code.
+You can try to see the various steps.
+So you can access this if you click on the screen.
+So just
+So to create a copy you can say file, save a copy, or save as, then put a different name here.
+Thank you.
+do
+
+do
+
+So there are few things which is not for lab. By the way, this is the phone which is using
+VS code on your laptop. This is an extension of the VS code for lab.
+So if you are running for lab, you need to do one certain thing.
+So, let me see if I can connect this.
+Okay, good.
+Let me run this.
+So, it is working.
+So, let me learn this.
+So, it's installing some libraries.
+So, what are concepts of libraries?
+Whether if the running use the GPU option, we use GPU, again GPU does not work with Shibuta
+and it uses 4 models because even 3 GPU models are not run on GPU. This is a Tesla GPU, Tesla
+GPU is like 14 GB, right? So it's not running. Now, this bit set by its module, which is
+So we are going to use a version of 2 lava, we are going to quantize the base further.
+So bits and bytes is the library for using that.
+So exactly you need to store some great info.
+Thank you.
+So, meanwhile I will go through code.
+Next is importing library.
+So you have multiple options to find the same report.
+You can use this Microsoft Python for instance the 2.1 parameter just to go to an estimated memory if you load it into the report,
+it will report by db and it's ideal for this.
+And then something called dilenama which is again 1.1 db.
+the recent model is 3.2, Lama 3.2, 3 billion but it's hard to run it and write as it is
+the company is not good enough, so today I am going to do Lama 1 billion
+hopefully that will be, this is a bigger model, it's called such a big model
+So these are the models we are going to use at the time of running the product.
+Then you need to import the libraries from the system or from standard libraries.
+So that is this part.
+So we need to use this part.
+Let's go to the model.
+So this is just, you know, the important thing is library.
+Then what are the data sets? So I am going to fine tune this model using that.
+Cyber security data set. So there is a data set available in Bates called Security Attacks, MITRE.
+So MITRE is a framework used, you know, as a standard in cybersecurity where they have different attack tactics in the maintenance.
+!
+So it's very highly up-to-date. Each of the states is a very high-risk area for people to go to.
+Those are the vertical reports.
+So this framework is used by cybersecurity professionals to tag attacks and do your threat investigation
+and back to some standard attack technique, attack methodology,
+which helps with the very big issues.
+So it's a very standard.
+And typically LLMs are trained on that.
+They're inspired on that, you know, they cannot be very, you know,
+this model, you know,
+they're asking mostly about micro-travel.
+You know, a lot of times they'll have this thing.
+So here they are by doing this model,
+and it seems to be a little bit easier, right?
+So they have several post-its. I think this is a small dataset with 345 training samples and 26 variation samples.
+So what the answer is, what the dataset is, it uses in IT, for example, multiple failed login attempts in different passwords for users.
+Online enterprise application. Log file shows failed login attempts in IT which are also different. Seems to be a similar data.
+So then the LRM says this appears to be MITRE technique T111 0.001 which is possible in the same.
+It should respond with the correct. So given a scenario, LRM should respond with the correct MITRE technique.
+So that's this dataset. We have this question answer pair.
+I think it's done.
+It is installed.
+So now let's do import of the nice bits.
+This should take some time.
+Everything is done.
+So you should make sure that this website
+everything is loaded.
+Otherwise it will take a lot of time.
+Now let's load and export the data.
+Now, you want to pass the dataset and extract, because the dataset comes with these, you
+you know this thing and text and post it everything right so we have to parse those things correctly
+so yeah so now we are actually downloading the model so these LMR these models are actually
+So if you go to AgingPage, you cannot download this model so you need to fill a questionnaire
+and see what the research workforce or whatever is saying.
+Then you submit it and they will approve it.
+In fact they will take probably one day or two and they will approve it.
+Then only you can use it. So how do they know that it won't approve it?
+So insert this AgingPage API key.
+if you put it here, then it knows that it is a secret
+so I will put a key
+because that is why company is a key, I have to make this invisible
+so actually there is a secret, there is a way you can actually store secrets in fallah
+from the left you say key
+Thank you.
+Thanks.
+Thank you.
+So what is happening, I think there is some, since I logged in from my Drupal IP, it is
+suspecting, so I entered the correct API key, as I am sure, I printed, but it is denying
+denying me access. So I want to be able to show you the model.
+I am saying that you know, you have to make sure that you have access to this.
+So this, I was actually playing around with it yesterday so I have access to the same information.
+Most likely I will never try to find my home on the office right?
+I should go to places I have an accident in.
+Sorry, in ways, right?
+So probably the situation is wrong.
+So what I can do is try to find my home.
+It is very easy, you have to submit that question to the manager.
+So maybe we can try some other model, right?
+which does not require that.
+So that's .
+So not all models are gated, so all of them are gated.
+So that is the load.
+Thank you.
+do
+
+do
+
+So if you're using that, OK, so what we're going to do is keep it.
+Please help me sir, it's not difficult.
+So what it does, so before, before, so you wanted to make sure that your fine tuning is
+improving your classification.
+If you do a baseline, what is your evaluation before fine tuning?
+So that you take the model from, you know, past the same dataset, then you generate the
+So that is the system for these tools.
+So now, this is the main thing. What we have is 2 LoRa, LoRa and 2 LoRa for 5 euros.
+So you need to download this package. So there is this label, the spec library.
+And I am going to use my shooting library. So that contains this volume.
+Prepare order for K-Lit range. So that you import here.
+When you import here, you see that those libraries are being imported.
+So you see here, you see from transformers you have to import this auto-toppenizer, auto-model-top-model,
+data, data performance, then you need to down or import, yeah this is the thing, from pep
+you have to import this LoRa configuration, get pep model, prepare model, ok, so these
+So these are the libraries used for parameter emission.
+So what you need to do is that you need to
+You need to configure LoRa, right?
+And you need to call this repair model for cable training. That's your model.
+So this is the fine tuning model.
+Then you have to give in the law of configuration what should be the lag, the size of the vectors, the width of the vectors.
+Then there are some parameters. The law of dropout means that if you randomly take this much fraction of weights and put it to zero,
+then the task type is you are taking the quantum model.
+Then you have to get this model, this model you have to move this model, you have to pass the number to this model
+Then you know it will bring the variable parameters
+So out of 1 billion, right? 1 billion 23 thousand, so this is like, you know, so this is, yeah,
+so this is almost like 12 billion, you know, so many parameters, so many plightable parameters,
+which is 0.14 which means only these many parameters can go to update the Q log of H
+so that is if you take that adapter right that what is the size the original width I
+So this is the main step. After that we need to create the data set for find2d. So this
+So this is class for data sets in a new page.
+This is basically an identifier.
+We need to create a mini-batches which is a port to supply the mini-batches.
+This is a data identifier.
+So it will see a user and it will just post that to the new page.
+And load your data into that.
+It will just search all the software.
+Then it will just do the fine tuning.
+So when you are fighting shooting with two Lola, you need to use this class called Blaming Argument.
+Inside that, you know, number of the pops, what is the back size, what is the graded excitation step.
+After so many steps you accumulate graded.
+So, there is a way to take and where to take is like, you know, that is quite simple.
+You know, it's not that you take it.
+You are doing steps, you know.
+After all these steps, you need to do the other points also.
+What is the variation strategy?
+All these things you have to keep clear.
+So, these are basically your training parameters.
+So you do the training parameters, then you create the engineer, then you start fine tuning.
+That's it.
+So this is the training itself.
+This is the same as the typical training mode.
+So what is different is this rawa model.
+This is the actual test you will do.
+So then you train this model and that model is adapted and after you find two you can
+do evaluation, you can ask the same questions and compare the answers.
+So here there is a comparison result.
+So I can probably try with a different model right, let's try with the, the, the, the, the
+Thank you.
+So, to find, so let us find tiny labs.
+.
+do
+So let's see, this was the thing, okay?
+Baseline model evaluation.
+That's very easy.
+So while it is running, next week you are having this presentation right, so just everybody
+listen okay, just for fun, for content.
+So I expect these things in your presentation okay, you need to show the demo okay, so 50%
+Now the other 50% is that you need to in your presentation should include high level architecture
+high level architecture on diagram then you should include evaluation what evaluation
+what data set you used for your creating the demo and your evaluation okay so data set
+evaluation architecture diagram demo okay and I you guys are big so I don't want to
+give mark for presentation style or I want to give more importance to how you did the
+project. And the demo is command line is okay with you? Command line is okay. You want to show me a GUI submitting a query and using the
+So that's what our team should try.
+And if you want to save time, you can bring the poster and add these additional slides.
+Let's say your poster is there and let's say that doesn't have evaluations, it's possible,
+but you can just add additional slides.
+So I'm okay with that too.
+I don't want to spend too much time.
+But you have to upload the thing to the post also.
+Ok. I will send a mail.
+Yeah, that's what Sandra said.
+They don't want, if you are not attending, tell them so they will
+the server will take the post out
+they don't want
+they don't want to be there
+yeah they don't want to be there
+she mentioned that
+you have to come and wait
+not this grade but they will come and ask
+see there is a competition they are going to grade you
+so I told you right so when the judges come
+nobody there, they are not going to read the post, they will give you zero.
+So otherwise you might get some certificate or something, right?
+You can probably add in your resume saying, oh, we won, our project won the best poster.
+It's just one or two hours here.
+You should read the red one.
+Yeah, yeah, yeah.
+And then after 10 years you become very versed in the movie,
+you're like, oh, I should write a good person.
+So, my data is not going to change.
+Email.
+Ok, so this is it.
+Ok, so this is the postage.
+And the user model data
+uploaded to the cloud storage
+is expected.
+This is the expected answer.
+So, this is the expected answer.
+God has sent the subsidy partner
+to upload it and use the model data
+to the cloud storage.
+So, you don't need the
+So, similarly
+So this is before fine tuning the model. So now let's try to run the fine tuning. Let's run, what is the lower marks?
+Okay, in this case the pain out parameters is like 2.25 percent, what parameter is 672
+percent.
+Okay, that's about .2 percent.
+You can see that it's much smaller, adapter is much much smaller than the actual model
+itself.
+Okay.
+then prepare data for this. Now this is the fine tuning, we are setting up the trainer.
+It will save in this file. This is a model version. Yeah, it already did the training.
+So it did only 10 FOMs.
+Now let us do the post-fine-tuning model evaluation.
+I am not expecting even that.
+And following week, you will have the
+results.
+and following week you will have to upload the project report and all of you have got the template right?
+So add these results everything there. When you upload the project report also you seek your entire code.
+If you upload project code without code, I won't give you the key.
+What is the code?
+It's always too large.
+I don't know.
+No, no, it's 40 of them.
+Oh, okay.
+And there is also an option that you can do it on Google Drive and schedule it.
+Yeah, I do try to do that, but after a while the game goes away.
+So I think it is too large, like very very large study.
+Yeah, but the idea of loading is that the textures of the client want the code.
+Which has happened, the client comes back after one year and says,
+Yeah, probably our client, because he never responded us.
+Yeah.
+So, by the way, any questions on this?
+So, you understood the concept?
+And you guys should run this code at home.
+Possible trial with the LAMAT midpoint.
+Midpoint will not work.
+One billion model should work with the T4.
+Or you can ask for TPU and, you know,
+run it so that you don't make changes.
+That it will do.
+It has an agent used to correct the code.
+In Brightspace, it says final presentation is due on April 11th, which is Saturday.
+No, no, I think last year.
+Usually in Brightspace, you just copy from last year's.
+Then I, you can go and change the date.
+But look at the calendar, the calendar, no?
+Look at your first, that...
+The CIS?
+the CIS yeah that has not CIS the week 0 or whatever right that has all the correct dates
+course schedule yeah that has the correct dates
+course information
+15th is final presentation is 8th and 15th right
+29th.
+That's presentation and 15th is the?
+24th.
+21st is your exam, that's in a different classroom and 28th I think is your grade related.
+Students got any co-op?
+Where do you live?
+I live in Kachchor.
+I mean, I have been to Kachchor.
+So actually, they were
+trying, we were getting good
+projects from the last few years.
+Somehow this year what happened, their
+the person in charge
+probably got changed.
+For some reason they did not respond.
+Otherwise, they were giving us
+good projects and we have been delivering good
+projects.
+In fact they also have, you know, one student in the past got a job here.
+Agriculture and Agri-foods right?
+Yes, yes.
+They initially posted one job.
+So it checked last year another student got in Kinexis.
+Kinexis? Really?
+They didn't invite us anybody and just sent rejections.
+This year it is very low because no companies are on the state side.
+No companies are employees, right?
+No private company.
+And all the cops I know for now until now it is all government.
+Because government they have some quota.
+They say they have to do that.
+So there is some obligation to start this work because they are giving grant.
+Private companies are not like that. They only take cops, they are hiring. They are not even hiring normal employees.
+They are firing people so they don't take cops. That's a bad situation.
+So what happened, not only that, all these Waterloo guys, they are not getting jobs there, they are not coming to the University of Ottawa.
+Yeah, they are not coming to Udawah. Even Carlton and Udawah guys are not coming.
+So it's all crystal.
+But always, you know, it's like saying, in a war, always there is peace, right?
+You keep trying because so many factors decide, right?
+Matching, love, so many things that we do. So none of those factors
+those are matters, you should stop your trying, try as much as possible, after all luck is almost like 50%
+you should try the other 50%
+sell yourself as much as possible
+So you are unacquired again after four months.
+After four months, you still know it?
+After the comedy act.
+After the co-op act.
+No, but that is experience.
+Experience?
+Well, you get a much higher chance of identifying the character.
+In Canada, there is this kind of concept of Canadian experience.
+No.
+okay so it needs some model evaluation
+so let's compare
+it is not too much
+that is expected in a small model
+or our data set is small right
+So let us see which one is the traditional one.
+I do not know how to compare.
+Okay, so this is you know just for illustration purpose.
+So you guys can choose a different dataset and bigger dataset and choose a different model and try it out.
+the same code as RAR and it's a good thing to do and get that experience
+just like from tuning RAR right so if you know from tuning RAR and by tuning you pretty much know JNA
+and multiple stuff
+Professor the presentation is on 8 when do you expect the presentation slide itself when should we upload that
+No, see that is okay, you can upload same day or...
+Yeah, because once you present the...
+If there is some changes, you can do the same.
+But I am going to evaluate you...
+I need, but what happens if I want to go back and check something, right?
+So I expect to do the same day.
+Because, see, what you are going to present day...
+So you can just upload it.
+Ok, so that's what I have for today.
+So any tips or anything to update?
+Or any questions to ask?
+Otherwise, we don't have a team.
+So only your team, right?
+Any other team?
+So then you teams can come, you guys first.
+Otherwise I don't want that just a standard.
+And we'll do as I said, I'm still working on that peer evaluation.
+So, that is the first situation, made it like a software, website and you can do it.
+Excel sheet is giving me lot of problem when I compile it.
+So, next week I will do it.
+Okay? Good. So, see you guys.
+So, your, your, always your draw is the same, that's a, just way but there's, yeah, so that's, okay, so that is the only, which is to, which is a, but then make sure that you can go, you need to first of all find out what are the dimensions on which you are, okay, in this case, what is your dimension, what, what is the,
+Only if we do some research on micro micro micro
+Then you have to ask to get the other person's answer.
+So you already have a sanction question.
+And you have to put the answer in the question.
+So similarly, whatever the criteria, you have to write the answer.
+Then you give the response and the answer.
+for third, second and third.
+Then use some rubrics.
+In this case, we can just go for a little bit.
+Some cases, it's like just a summary question.
+Just to ask the dimension of it.
+For here and there.
+Each metric, let's say,
+some use of grades 0 to 25.
+Define what is 0, what is 1.
+So, you need to define first of all what do you want to do?
+Then define the pentagon. Then define the operands.
+So again that math is a bit difficult.
+For example, if you have a hole in the middle of the line, that will not work.
+then you have to do some other search.
+You can search for the main level.
+You already know how to do some research.
+You can search for the main level.
+You have to do some research.
+All you do is search and it will stack.
+You have to be little bit know-it-all.
+Whatever it is, we will do.
+How come that we are getting more complicated?
+Kind of like, somebody wants to have this kind of water.
+Or we cannot do that.
+What we can do is take some samples.
+So one will not be enough.
+So, you need to have 10 tasks.
+Otherwise, you know, once I'm with you, I'll be there for you.
+But whatever you can do, I'll do whatever you can do.
+But keep doing it.
+So, nothing is perfect, but it's simply amazing.
+Yeah.
+Then, what is it?
+What is it?
+You did that.

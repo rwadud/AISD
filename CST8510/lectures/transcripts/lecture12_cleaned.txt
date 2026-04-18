@@ -1,0 +1,137 @@
+Today we will do the last lecture. In the last few sessions we did prompt optimization, then RAG, then instruction tuning. What is remaining is LLM fine tuning, so I will cover that today, and I will walk you through code to do that. I may not be able to execute the code fully; it takes time. But the code I will show you, you can take and copy to Google Colab and try yourself and go through the code.
+
+So what is LLM fine tuning? Usually, all of you know that when they build large language models, they train on a vast amount of general data. So they build a model which is more general purpose, mainly for question answering or creating embeddings. When you want to do some specific task like classification, as it is, that model is not very useful, and it is not very expert in a specific domain.
+
+So the analogy is like a home cook versus a chef, like a sushi chef. A home cook knows how to cook a variety of food, but the sushi chef knows only one thing to cook, and that will be very tasty. So that is kind of the analogy. Fine tuning is a process of converting or training it to become a sushi chef. Put in a very simple way, that is the idea of fine tuning.
+
+The reason it is fine tuning and not training: when you train large language models, you typically have to do the training over a longer period of time, maybe days. You have to use large GPU clusters, and these days you have to use one million tokens of input text or so. Whereas in fine tuning, you are adapting that model to a specific domain like healthcare, fintech, or cybersecurity. For a classification task, you typically tune only with a small dataset, and you don't tune every parameter. You only tune some layers. That is called fine tuning.
+
+So an example: a pre-trained LLM is like a home cook, and a fine-tuned LLM is like a sushi chef.
+
+Now, when do you need to fine tune, and when do you not need to fine tune. You need to fine tune when the LLM needs to perform a complex task like finding vulnerabilities in code or writing like a very specialized expert software developer. That is one reason.
+
+The second reason is that you may want to reduce the cost. You don't want to use a costly LLM, so you take a small LLM. But a small LLM may not do, let's say, summarization of some text in your domain or your organization very well. So you want to match the task efficiency and performance of the task you are doing using a smaller LLM rather than a bigger LLM. That will save your computational power. Then you fine tune.
+
+Then there are some applications like healthcare, or critical applications like aerospace, or OT systems. There, accuracy is very important. Even for a general question, I will say accuracy, not just classification. You don't want any type of hallucination. You don't want to make up any type of references. For example, in law. So accuracy and reliability are very important. There you also do fine tuning.
+
+Another place where you do fine tuning is when you want the LLM to respond to your customer queries in a specific way. You want it to be more empathetic, or more factual, or more tolerant to their prompts. If you want to adjust the tone and style: some brands have a certain style of engagement. It could be a luxury brand, and they talk to the customer in a certain way, in their marketing material in a certain way. So you need to adjust the tone, style, and behavior when you respond and generate a response automatically using this LLM.
+
+Then the next use case is when you want the LLM to respond in a particular format, like creating JSON or a particular format. Usually in the old days, if you asked a small LLM to give the output in a structured JSON format and not print any text before or after, 80% of the time it fails, or 30% of the time it does not do it properly. Even if the format is JSON, it may not be very neat. These days you can pass parameters to the invoke function and enforce it, but again, not all LLMs, particularly small LLMs, have that option. So fine tuning helps to enforce the output to be given in a particular format.
+
+Finally is domain adaptation. Domain adaptation is that you want the model to have more detailed knowledge of a specific domain like cybersecurity, healthcare, law, or fintech. You do RAG, but sometimes RAG is not enough. So you want to do some kind of domain adaptation. That is another use case where you fine tune a little bit.
+
+Now let's look at when not to fine tune. Before I go there: before fine tuning, do these things. We learned this in the last lecture. Give few-shot examples, chain-of-thought prompting. Then I talked about self-consistent, threshold-based prompting, prompt optimization using OPRO, and all that. You also do fallback. If you want to do domain adaptation, you do RAG; and where you do semantic chunking, where the information is, then you should do the re-ranking of the retrieved context. This is all we talked about. Before you do fine tuning, you should do all these things.
+
+Even after all these things, if you are not happy with the performance of the LLM, then you go about doing fine tuning. Sometimes you need to do this and also do fine tuning. It is not a complementary thing; it is not that if this didn't work, then stop this and fine tune. Still you have to do fine tuning. So it is not an "or"; it is a case of "and".
+
+Now, when you should not do fine tuning. Typically when you train an LLM, it is expensive. You don't want to train an LLM every week or every day, because your dataset is changing very frequently. For example, stock market data. If you want to make your LLM reason about stock market scenarios, don't use the fine tuning option, because the stock market data will change. For example, with the recent geopolitical events, the stock distribution has changed. So it is not good to do fine tuning of LLMs when data distribution changes very quickly.
+
+Then also, if the task is not very complex, if it is a simple binary classification or simple multi-label classification, maybe you can do fine tuning, but often fine tuning does not improve the accuracy so much. It may not be as efficient as giving few-shot examples and things like that.
+
+Another important thing when it comes to fine tuning: even if you did all the prompt optimization and RAG, and you need to use it for critical applications so you need to improve your model, if your training data is not good quality, then fine tuning will not help. It is always garbage in, garbage out. So the quality of training data is paramount. Therefore, do not fine tune on bad data.
+
+Lastly, if your data contains any personally identifiable information or any privacy-related information, do not fine tune, because it is very hard to erase once you fine tune a model. So always mask those data before you fine tune the model. That is very important.
+
+So these are the cases when you do not need to.
+
+For those who came late: I was talking about fine tuning the model. So these are the scenarios when you should fine tune the model: when an LLM needs to perform complex tasks, or your cost and latency need to be optimized, for critical applications where accuracy and reliability are important, if you want to adjust the tone and style of your model relating to your brand or your applications, if you want to enforce a particular structure of the output, or if you want to adapt that LLM to a domain like healthcare, fintech, or law. These are the things for which you should go about fine tuning.
+
+Now let's talk about the different ways of fine tuning.
+
+You can always do full fine tuning. You have some data, and let's say you want to fine tune your model to adapt to the domain of law. You have some data, and you can always train on top of your already pre-trained model. But there are two problems when you do that. It has to update all parameters, and that can lead to what is called catastrophic forgetting. What can happen is that whatever the LLM has learned before can completely fail. This is a very interesting thing.
+
+If you try to do a full fine tuning with the new data: if you include the old pre-trained dataset and add the new dataset and do the full fine tuning, it is fine. But if you don't include the pre-trained dataset, you take just a new dataset, and you update all parameters by full fine tuning, most of the time it will forget what was there before. It does not retain the old data because it updates the weights. Also, it is expensive, because that kind of training will cost thousands of dollars.
+
+So people use something called an adapter. They don't do a full fine tuning; they do what is called low-rank adaptation. Low-rank adaptation means: think of your pre-trained model parameters. Each layer is one row, and each neuron weight in each layer is like a column. You can think of it as a matrix or tensor, because the parameters would be multiple dimensions. Now, you freeze these model weights; you do not touch them. So you have the original matrix W, which you don't touch. Now, you then select only some layers in that, or some neurons in those layers, and you train those.
+
+The updated weight matrix is equal to the original weight matrix plus another matrix delta W, so W prime equals W plus delta W. Now that delta W, any matrix can be factorized as the product of two lower-rank matrices. That is, if you have a matrix of size m by n, you can decompose it as the product of a tall matrix m by k times a thin matrix k by n. Those two matrices are small if you choose k small.
+
+So you only train a small matrix of size m by k and k by n; then that matrix you keep separately, and at the time of loading the model into memory, you take that matrix and add to the original. So that is the updated weight. You update the weight while you are loading the model. You don't touch the original weight.
+
+You can keep different adapters for different domains. I can take the same LLM and fine tune, create an adapter for the domain of law, create another adapter for the domain of healthcare, another adapter for the domain of fintech or cybersecurity. Fine tuning means generate the adapters. Then, depending upon the application, you can switch the adapters. The original model is the same, so you load the original model weight, you load that adapter for that domain, add that, and that is the new weight that you then use to create your neural network and do inference. Then you pass the query to the model.
+
+These adapters are small; they are like a few MB, not even GB. Your original model is like GB; adapters are very easy to store. Fine tuning, creating adapters, you can do with small datasets, like maybe 10,000 or 1,000,000, and you can do it in a couple of hours on a small GPU. Not a small GPU, because you still have to load the whole model. Suppose your original model is a small model like LLaMA 8B or LLaMA 3B. When you load that model, it loads every weight, because it has to keep a copy of the data. So totally you need memory, and if you put everything together, if you want to fine tune a model of 3 billion parameters, that will come to about 24 GB. But still, that can be done on a single small GPU. You don't need a new computer.
+
+So these are the advantages of using fine tuning.
+
+Student: When you are doing fine tuning, you are going to change some weights. Do we have to change specific weights, or how do we change which weights we are going to keep, and which weights we are going to change? Does it matter which layer you choose?
+
+You are talking about which layer. There are sort of, if you fine tune the last few layers, different applications suit differently. For classification, you take the last few layers. That is what they do. And again, that is a tunable thing; that is a kind of parameter.
+
+So this is how you do LoRA. In LoRA you can picture it like this: your original model is a big book. You are keeping that as-is; you are not adding to that book. You are adding another small book on top of that. That is an adapter, and you can keep different adapters for different domains, and at the time of loading the model for inference, attach them. So again, that is a simple illustration of what LoRA is.
+
+As I said, the original matrix is D by D. You can see that by doing the matrix, W new equals W original plus A new.
+
+Any questions? Any other questions?
+
+Have you done any fine tuning in your projects? Have you taken this in your LLM course? How much have you taken in it? NLP course? They have taken it, right? They have taken PEFT and LoRA? This LoRA they have taken? What is basic?
+
+Student: We have fine-tuned DistilBERT.
+
+Oh, okay. That's kind of a full fine tuning. That is what the class means.
+
+So there are different fine tuning libraries like Unsloth, Axolotl, LLaMA-Factory, PEFT, and HuggingFace. PEFT stands for parameter-efficient fine tuning; HF stands for HuggingFace. These are different libraries.
+
+For example, Unsloth, which you can use for very fast fine tuning; you can load it, and it has a very simple drop-and-load mode, ideal for doing that. You can do it on a single GPU. The problem with it is that you don't have much control. The other extreme: you can configure everything whatever you want to configure, but it needs expensive memory, large memory, multiple GPUs, and difficulty is high. Then all the factors in between.
+
+But what people typically use, which is more popular, is HuggingFace's parameter-efficient fine tuning. The advantages with that: typically the models you download from HuggingFace, from the hub. You can directly download the model and fine tune using PEFT. There is a Python API, and you can use it on a single GPU if you want to fine tune your model of that size. And difficulty is not a big issue. So today we will talk about PEFT fine tuning.
+
+What I will do: I will go through the code and walk you through the code. You can try to see the various steps. You can access this if you click on the screen. To create a copy, you can say File, Save a copy, or Save As, then put a different name here.
+
+There are a few things which is not for Colab. By the way, this is the pane which is using VS Code on your laptop. This is an extension of VS Code for Colab. So if you are running Colab, you need to do a certain thing. Let me see if I can connect this.
+
+Okay, good. Let me run this. So it is working. It is installing some libraries.
+
+So what are these libraries for? If the run uses the GPU option, we use the GPU; again, the GPU does not work without quantization, and it uses 4-bit models, because even 3B models cannot run on the GPU as-is. This is a Tesla T4 GPU; the T4 is like 14 GB. So it's not running. Now, bitsandbytes is the module.
+
+We are going to use a version of QLoRA; we are going to quantize the base further. So bitsandbytes is the library for using that. You need to store some state info.
+
+Meanwhile I will go through code. Next is importing libraries. You have multiple options to fine tune the same model. You can use Microsoft Phi, for instance, the 2.1 billion parameter; the estimated memory if you load it into the GPU, it reports in GB, and it is ideal for this. Then something called TinyLlama, which is again 1.1 B. The recent model is LLaMA 3.2, 3 billion, but it is hard to run it and the quality is not good enough. So today I am going to use LLaMA 1 billion. Hopefully that will be fine; this is a bigger model.
+
+These are the models we are going to use at the time of running the code. Then you need to import the libraries from the system or from standard libraries. So that is this part. So let's go to the model.
+
+Then, what are the datasets? I am going to fine tune this model using a cybersecurity dataset. There is a dataset available in HuggingFace called Security Attacks, MITRE. MITRE is a framework used as a standard in cybersecurity, where they have different attack tactics. This framework is used by cybersecurity professionals to tag attacks and do threat investigation, mapping to some standard attack technique, attack methodology. So it is very standard. And typically LLMs are not trained deeply on that, so they are fine tuning this model.
+
+There are several splits. I think this is a small dataset with 345 training samples and 26 validation samples. What the dataset uses, for example: "multiple failed login attempts with different passwords for users in an online enterprise application. Log file shows failed login attempts in an IT which are also different." Seems to be similar data. Then the LLM says, "This appears to be MITRE technique T1110.001, which is password guessing." It should respond with the correct technique. So given a scenario, the LLM should respond with the correct MITRE technique. So that is this dataset. We have this question-answer pair.
+
+I think it's done. It is installed. So now let's do the import of the libraries. This should take some time. Everything is done. So you should make sure that this site has everything loaded; otherwise it will take a lot of time.
+
+Now let's load and export the data. You want to parse the dataset and extract, because the dataset comes with text and posts and everything, so we have to parse those things correctly.
+
+So now we are actually downloading the model. These LLaMA models: if you go to HuggingFace, you cannot just download this model. You need to fill a questionnaire and say what the research purpose is. Then you submit it and they will approve it. They will take probably one day or two, and they will approve it. Only then can you use it. So how do they know? You insert this HuggingFace API key. If you put it here, then it knows that it is a secret, so I will put a key. Because of confidentiality, I have to make this invisible. Actually there is a way you can store secrets in Colab; from the left you say key.
+
+So what is happening: since I logged in from a different IP, it is suspecting. I entered the correct API key, I printed it, but it is denying me access. I want to be able to show you the model. I am saying that you have to make sure that you have access to this. I was actually playing around with it yesterday, so I have access to the same information. Most likely I will try from home. It is easy; you have to submit that questionnaire to the maintainer.
+
+So let's try some other model which does not require that. Not all models are gated; some are. So that is the load.
+
+If you're using that, okay, so what we're going to do is keep it. So before, you wanted to make sure that your fine tuning is improving your classification. If you do a baseline, what is your evaluation before fine tuning? So you take the model, pass the same dataset, then generate the outputs. So that is the baseline.
+
+Now, this is the main thing. We have QLoRA, LoRA, and QLoRA for PEFT. You need to download this package. So there is this PEFT library, and I am going to use the HuggingFace library, which contains this module, prepare_model_for_kbit_training. You import that here. When you import here, you see that those libraries are being imported. You see, from transformers you have to import AutoTokenizer, AutoModelForCausalLM, data, data performance. Then you need to import from PEFT: LoraConfig, get_peft_model, prepare_model. So these are the libraries used for parameter-efficient fine tuning.
+
+What you need to do is that you need to configure LoRA, and you need to call prepare_model_for_kbit_training on your model. That is your fine tuning model. Then you have to give in the LoRA configuration what should be the rank, the size of the vectors, the width of the vectors. Then there are some parameters. The LoRA dropout means that you randomly take this fraction of weights and put them to zero. Then the task type is causal LM. Then you have to get this model, you have to move this model, you have to pass the number to this model. Then it will print the trainable parameters.
+
+So out of 1 billion, it is like 1 billion 23 thousand; so this is many trainable parameters, which is 0.14%, which means only these many parameters can go to update the LoRA layers. So that is if you take that adapter, that is what the size is. The original width is the original model.
+
+So this is the main step. After that, we need to create the dataset for fine tuning. This is a class for datasets in HuggingFace. This is basically an identifier. We need to create mini-batches, a port to supply the mini-batches. This is a data identifier. So it will see a user and post that to HuggingFace, and load your data into that. Then it will just do the fine tuning.
+
+So when you are fine tuning with QLoRA, you need to use this class called TrainingArguments. Inside that: number of epochs, what is the batch size, what is the gradient accumulation steps. After so many steps you accumulate gradients. There is a way to take and where to take. You are doing steps; after all these steps, you need to do the evaluation also. What is the evaluation strategy? All these things you have to keep clear. So these are basically your training parameters. So you do the training parameters, then you create the trainer, then you start fine tuning. That's it.
+
+So this is the training itself. This is the same as the typical training mode. What is different is this LoRA model. This is the actual test you will do. Then you train this model, and that model is adapted. After you fine tune, you can do evaluation; you can ask the same questions and compare the answers.
+
+So here there is a comparison result. Let me probably try with a different model. Let's try TinyLlama.
+
+Baseline model evaluation, that is very easy.
+
+[Runs baseline] So the user model data uploaded to the cloud storage is expected. This is the expected answer. So this is before fine tuning the model.
+
+So now let's try to run the fine tuning. Let's run. What are the LoRA numbers? Okay, in this case the trainable parameters is like 2.25 million; total parameter is 672 million. Okay, that's about 0.2 percent. You can see that it's much smaller; the adapter is much, much smaller than the actual model itself.
+
+Then prepare data for this. Now this is the fine tuning; we are setting up the trainer. It will save in this file. This is a model version. It already did the training. It did only 10 epochs.
+
+Now let us do the post-fine-tuning model evaluation.
+
+Any questions on this? So you understood the concept? And you guys should run this code at home. Possible trial with the LLaMA 3B model. 3B will not work; one billion model should work with the T4. Or you can ask for TPU and run it so that you don't make changes. That it will do.
+
+Okay, so let's see the model evaluation. So let us compare. It is not too much; that is expected in a small model, or our dataset is small. Let us see which one is the traditional one.
+
+Okay, so this is just for illustration purposes. So you guys can choose a different dataset and a bigger dataset, and choose a different model and try it out. Same code as RAG, and it's a good thing to do and get that experience. Just like from tuning RAG: if you know RAG fine tuning and LoRA fine tuning, you pretty much know GenAI.

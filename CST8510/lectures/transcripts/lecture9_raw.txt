@@ -1,0 +1,606 @@
+It's any project they want to ask me something.
+No, just ask this.
+Otherwise, you should not have the...
+You should ask the question.
+You can write the test and then go.
+So I'm just nervous.
+So Terence always...
+Who?
+Terence always gives a bad email.
+No, she said it's in the queue.
+If you want to check, you can do it here.
+I'll check my page.
+So, if you can, can you ask the...
+No, you cannot ask.
+You can.
+I'll check, I'll check.
+Yeah.
+I'll check.
+Oh, we got that .
+Yeah, we did that.
+I hope, just have to be .
+Okay, so let's have this class today, then we'll start the seminar meeting and we'll come back.
+Okay?
+And I usually do not have any class after the second term, I just keep working on the project.
+But I still need two classes actually.
+One is something more...
+So today we are going to talk about infrastructure.
+I don't know if you can hear me.
+I don't understand it.
+That's what makes it interesting.
+So what is the meaning of the thought that you put into the results?
+What is the thought that you put into the results?
+Monitor that.
+So that was the meaning.
+And then I usually think one more on .
+So I guess you may have learned that in the course.
+.
+So if you've already done that, .
+So, that's how we do plastic beginning.
+So, that I will connect this to April onwards.
+So, we will start our presentation by April 3rd.
+I think the server is open.
+Okay, so let's start the task.
+Now, we are talking about infrastructure.
+This is very much dependent upon one kind of company you are working on, one kind of service.
+So it can, in some companies, for example, there's only one application, right?
+There are a lot of apps in the city, on the desktop, on the App Store.
+Behind the scenes, maybe running a service on Splunk, or on Facebook.
+Like today, it's on Slack, or something.
+Just one app, which we're sending a request to a developer, and they're sending us a response.
+So those kind of scenarios are very basic. Some companies are just a website.
+Website on start could be deployed on the connection. So they are just our website.
+So in these kind of scenarios, you don't need a really big processor.
+Just get one root machine, one root server and process your database.
+You could do road talking with this.
+It's infrastructure.
+Start processing your database when you have multiple services running.
+So for example, take the example of Uber or Netflix.
+There is payment, there is back end supply, managing your suppliers, managing your warehouse.
+So if you take e-commerce, e-commerce is a very common scenario.
+You see there are so many services running.
+So, those things again, prepare for. Again, if you are talking about a e-commerce company like Amazon, they are very very interesting.
+Those will be in the high end, high end specialized. In fact, Amazon is the one who started with this whole concept of service oriented architecture.
+So they are highly specialized but something like in between, right?
+For example, maybe something like a bag.
+A bag has multiple services but not as complex as a balloon.
+So they probably need an infrastructure, probably they get not a good idea.
+They will now for example ban, so there is a code banning service which is usually a
+little bit separate, you use mainframes and legacy infrastructure for banking both ends
+Then all the other services like your online banking, your personal support, all that you need to do can go through these services.
+which may be on the cloud.
+So that's another thing, right?
+So when we say that not necessarily these days,
+you know, a single cloud, because of this,
+not every cloud is right.
+These days people use multi-cloud options.
+Thank you.
+doing this quiz one hour ago the other day.
+And we lost like 4 points.
+We are walking on the tightrope now.
+Walking on the tightrope. So we have like 6 points here.
+So don't make any mistake today.
+Yeah, one, two, three.
+One, two, three.
+So, yeah.
+Yeah, yeah, yeah, you got it, you got it.
+It was, it was a little bit...
+Hello?
+So, so, uh, can you change to try to classify?
+Try to identify.
+Why?
+You were thinking.
+What?
+What's the code that I use?
+Why is she doing that?
+So what I am saying is that the infrastructure requirement depends upon what type of company or service is there for you.
+So generally, the perspective of that is a kind of, you know,
+the size of infrastructure in all layers of the field.
+The lowest layer is what we call the storage and compute layer.
+So that's why you can come to your bare machine,
+your Sunflowers, your fucking auto cloud, your Amazon,
+So those come from the lowest layer.
+And the lowest layer is always more amortized.
+There is not much difference between different load borders.
+Obviously, load borders are the same type of distribution.
+Then on top of that there is your source data, so the workflow of the strategy is typically
+This is typically like your databases or you want to, when you deploy something, you deploy
+So it will spin off a lot of pods on a user interface.
+So that's a workflow of the stator.
+So typically a deployment will involve a lot of containers,
+it will involve containers and pods, framework-like Kubernetes.
+Kubernetes is a kind of a stator deployment.
+Then on top of that comes this ML platform.
+So ML platform example is Amazon SageMaker where you can develop a model and deploy at an endpoint
+but just using mouse commands, just quickly, you don't need very much code.
+So this platform takes care of entire management, provisioning and management of resources.
+like you are underlying a suburb or architecture or you want to deploy your own virtual private cloud
+So all that resource allocation, resource management, all that is automatically taken care by the platform
+So you don't have to worry about commissioning them.
+Once the service is shot, you automatically clean the infrastructure,
+delete the infrastructure, free up space, free up the brain.
+And it takes care of building, it takes care of observability,
+it takes care of logging.
+So lot of these things are taken care by the
+you know, member platforms like C3, Assumestudio I think, and GCP Buttons, Context AI platform.
+And also they take care of storing your models, working your models, storing your features,
+the approach of these days, but it comes with a cost.
+So not every company go for SageMaker.
+The charge, SageMaker will have a charge on top of
+using the GDU's. So some companies want to have their own
+and they have their own
+or MLMG, they set up their own orchestration, their own ML platform.
+So, it again depends on how comfortable you are.
+Typically a startup who don't have that much of time, they go for these kinds of services.
+Expensive, but for them, startups are just burning money.
+They just want to export to a new customer.
+So they just go for the release of products.
+So they typically go for these platform there.
+Whereas if your company is already very big,
+they have their own legacy software, legacy services, etc.
+They typically build their own
+So this is the system with the... they all build it.
+So the last layer, the topmost layer is what you typically apply.
+It's the direct measurement.
+Your ID is the nodes.
+Or your... you know, VS code or whatever.
+IntelliJ or whatever, right?
+Then you build... or your...
+CICD pipeline, GitLab, or GitPost, that will run the code, test the code, deploy the code.
+That's the development.
+So any kind of production or
+of course, there are the staging, the production itself is different from staging and
+So just going through a little more details, you already have the data storage and storage and ML workloads are actually run.
+Then, I said, resource management.
+Resource management, like, what you should do, you orchestrate it, and then you have to fix it.
+And ML platform, say, make that a control.
+And I'm very proud of it, because it's already been tested.
+So storage, at the end of the day, is still using the same term as storage.
+They still use hard disk drives, hard disk pipelines, and the problem was that they needed to be
+used for the right purpose.
+They did not ask for storage.
+So it's a very basic thing.
+Now, the compute layer, right?
+A few players, right, a few players is,
+consists of, because of this virtualization,
+so it is sort of, you are basically a virtual instance.
+Full of, full of CPUs and GPUs and stuff.
+And that is a pretty smooth,
+split into three types of systems.
+Thanks.
+So, this is the materialization of the material.
+Then there is containers and box.
+Containers and box are an important concept to learn.
+That's what everybody is using.
+Inquiring about the conditions.
+And then they will look you more into the container.
+How much GB does it have?
+For example, if you write to a commission, you need to do instance, right?
+There are some instance names, right?
+So, GXL some number like that.
+So that will, they may say it is like 24 GB and you know, 5 or whatever, they talk about the speed.
+So, these are the multi-core, there are the 4 cores, there are the cores, the top things are stock, they are talking about cores.
+So this is like 8 core 24GB or 16 core 48GB like that is.
+And of course we will go into detail you can see those clock speed also.
+Not every clock speed is same like AMD and Intel or some other chips.
+But the interesting thing is that, which I didn't know, typically though you say you have a certain computing capacity, you cannot achieve 100% of that.
+The reason is that there is always a system of comprehension.
+And there is always, you know, certain things are coming from memory to heart, there is some kind of garbage collection going on.
+So a lot of things are going on by the operating system.
+And the network is also going on.
+So your computing program can at the most achieve 50% of your innovation.
+That means if your certain compute capacity is there, and certain props are there, you are going to use only about 50% for your computation.
+That's all it is for managing, there are a lot of things that are used for that.
+So this is something you have to keep in mind.
+The vision, your email, your resources.
+So storage is an old chart, which is possibly the next creator of the internet.
+We are just talking about people going from enterprise private on-prem data centers to cloud.
+So it is a bit reverse now. What is happening is that you see cloud is becoming expensive and cloud is also not particularly durable.
+So people are moving kind of hybrid data center, cloud or multi-cloud.
+And also what is happening is that, see the cloud product is our tactic, what they do is that you can store as much as data you want,
+but then it will be charging less, but the moment you start sending this data to another cloud, it will charge.
+So that's not a long way. So because of all that, people have kind of strategies for keeping data in some cloud.
+You see that data is going to be difficult to communicate. So again, it depends on your business, depends on your cost, everything, right?
+or how critical is your application
+so you will have different strategies
+where you want to store your data
+so nobody does a million phone calls
+unless they are smart business
+any serious business
+they will have 30 calls
+30 messages
+and then come to the point where
+they will say the same thing
+development will probably be more involved
+but we will be talking about that
+in the future
+we will be talking about
+the
+then all of you must be using some version of the right
+with the
+or the things like
+there is also data version
+in BBC
+and there is
+software like
+DevOps
+and the rates and all that
+right version is modeled
+and
+and back to the experiment
+then if you are
+So we are into DevOps things, continuous integration, continuous development, continuous integration,
+continuous lead test, and then of course we use Jira, and then we use Degradation.
+So that's what we are getting here.
+So most of the business people don't know.
+They just want to get into the first step.
+But at the end of the day, it's not in time to get it out.
+It's getting into detail.
+For example, if you want to get into analytics, I was told to get into analytics.
+It's a very difficult complex platform to learn and master.
+So it's a complex session.
+It's very complex.
+So if you want to get into that level of detail, you have to get into analytics.
+Now notebooks, notebooks in the school people mainly use for experiments but some companies like Netflix have taken different methods and notebooks they are using notebooks for compression.
+So data scientists by the way can directly record notebooks for compression.
+The actual data is produced probably knowing that it's a kind of mix of a write code,
+which is like Python, like it can run, and also it can document, store, and search.
+It's ideal for experimentation.
+The data scientists will love it, but MLM may hate it,
+because you cannot do testing of the thing, you cannot do debugging, right?
+and it's possible that you execute some cell,
+then later on change the variables somewhere down the line,
+and then come back and execute it into the platform.
+So it's very necessary to do, I think.
+But it's possible to extend data to...
+There are frameworks like paper mill, computer, NVDVD, they are trying to extend this notebooks to more standard IDUs like VS4, VLT.
+I don't know, I don't use it on this but this is, I don't hear.
+maybe they
+yeah
+but what happened
+these days frameworks like
+VS code or
+the normal idea is
+they provide out to the users
+right so you
+the way I at least write this code is
+very bad
+very, of course this is everybody's
+hell of a
+so you create
+plain code it
+maybe it's a class or something, then that code you run from code 2 with the exclamation
+which Python makes that even. So that way you are sort of using both the words. The
+code is separate, it uses a separate file, then that Python file will run from the cell
+I don't want to use an exclamation mark.
+I'll go somewhere else.
+So that way, I find it more useful.
+When you want to give the report to the product, I don't want to give it to the company.
+I think it does the job.
+And when I want to do it, I don't want to use the report.
+So I think this is becoming more and more important.
+So now comes the container.
+So maybe you should
+Next slide.
+The question will be for me.
+So come.
+.
+Question will be next.
+So containers, right?
+So containers came because people face a lot of challenges
+They do not test everything in their development environment.
+They use this to test production engineers and they are trying to deploy in their production
+helping brains.
+So there are so many reasons for the hardware improvement.
+and this was the reason, so people wanted to sort of, you know, more standardise the
+basic system. So what people came up with was this idea of a docker container. So docker
+container is sort of a lightweight standalone executable package. So from trying to sort
+So they started to sort of miniaturize everything. Earlier everybody was running all applications on big servers like ITM servers, HP servers, ITM servers, some servers.
+Then company will have to do this all the applications are running.
+Then once the development is seen, cloud is there, VFR, all these things can be visualized.
+They started virtual machines.
+They will have this, you know, some part of the application will run on virtual machine.
+So what virtual machines will have to do is, it's like what we have done in Tintas.
+It's small and it's build up, it's shut down, it's provisional.
+Then it became a high-class service architecture.
+So each application will have some kind of a machine that can do it.
+Then they tried to miniaturize further.
+Then they said, still you don't need so many things to run one application.
+So one application may need only few libraries and just require computing components and so on.
+Then they try to package only that much.
+So if you just take, for example, you want to run a Python code,
+all those libraries require to run the Python code and the database is required for that.
+And you package it to a smaller unit, that's for the container.
+So container is a standalone executable software package and it improves all the libraries and code and runtime and everything and it programs that application.
+So that way, another problem with Python came, Python came with open source library.
+There are so many libraries available to write, people started using that and these libraries come in all different versions.
+So always when your application ends, for example NumPy, Pandas, NumPy or something else, let's say Python, all that kind of thing, there are certain versions.
+No, Amazon application is not available. So there is always conflicts.
+So this conflict management became huge because of the over-voting.
+So that Amazon business containers came because each container can have a version.
+So, this docker container is kind of a software environment ensuring that it's always what
+I do it and what works for me.
+That software is always software.
+Now, another thing in that, as I mentioned in the beginning, right, if you take this
+you can take this in your laptop or in your development environment and give this to production guys and then test it on production environment
+So avoid that. So that is the idea of a manual plan. Once you install a doctor, then you can take the doctor from your environment and give him a production platform.
+because they excitedly take the information
+so it sort of abstracts that topic
+and makes it easy to move your images
+from one environment to another
+and runs still without any confusion
+so that's the biggest advantage of data
+ok so this slide is talking about benefits for document managers
+Portability.
+Condeiners can run on any system with Docker installed.
+It doesn't have to be a Linux version.
+So for example, if your Docker is installed on Windows,
+and you created an image,
+and the same version of Docker is installed on Android,
+and you run a Condeiners,
+you can port the image into Windows.
+You don't have to worry about that.
+Consistency.
+Cartel has ensured that application be in the same way in development, testing and production.
+So this is the biggest issue.
+Isolation. Cartel has run in their own improvement with basic conflicts in other applications as I mentioned, right?
+The Python library version, all that kind of conflicts.
+Scalability. Cartel has been easily scaled up by DocMate in simple and minor applications.
+So basically the way you do is that after you create an image container, you upload it to some container or something.
+So that people can search for that and download that image.
+And if you want to produce multiple instances, you just download it and deploy it.
+So scalability is easy. Version control, just like Cessna, is talk of how it is worth proposing.
+You can version the domain just like a software. You can give access control, you can make it searchable, all that.
+So therefore containers become very very popular. But containers are not the basic tools that we use as a product.
+The basic tools we use as a product are the docs. So this is an example of how do we use docker containers.
+Let's say you want to do the following tasks. Download the latest white docs and clone NVIDIA's repository to GitHub.
+and then you want to set up a code
+then let's say you want to plow a new page and then you want to do this
+Then this is the kind of command, this is the kind of syntax of creating Docker queries.
+So we say from Python's run, so run is like this, run give load nvidia f, then run cdfx,
+So, run sql cd, run cd effects and you know, all these commands together.
+Basically, it says cd to this directory, effect, execute this command python, and then run python.
+And, so basically what you are doing, you are loading all those three effects, change the directory to effects, and run it in setup.py.
+then after that you install
+you know
+cpp
+doda
+so all these three commands
+basically install python
+can be put on one command
+and then create a directory
+you have to use this command for first time
+start and save
+then go to the directory, run, you load
+again you load this
+change to the directory and install
+so basically running scripts
+before we build the running scripts on Linux.
+So that's the same kind of language.
+You have to use one verb setting up a few scripts.
+So this is an example of how to create a kind of language.
+And so you guys can, for example, one way I would suggest,
+hand out your projects to a client that you want to play with.
+Containers are not the basic unit required in production. Those are called pods.
+So what are pods? Pods is a group of one or more containers.
+But the thing is that they share the same storage in the pods.
+And they will ask for instructions on how to run each of the containers.
+So, what is the smallest required unit that is used in the framework?
+The reason why bots are used in ROS, not contrived in ROS,
+typically as I said, every application will have a microservice client.
+They will depend upon more than one service.
+And each service, for example, if you take a small ecommerce,
+you will have payment service, you will have authentication service, you will have some kind of you know sub service right
+you want these services to have their own you know versions of software their own independent software using right
+so each of the service you package into container then take all these containers which are dependent on each other to run the whole service right
+So they share the same IP, they share the same network, they share the same storage, put it into one pod, and deploy that pod.
+So pod is large enough number of containers which are dependent on each other to run a service.
+So you can have probably pods which maybe I don't know, but the idea of pods is the basic, smallest,
+interactive way to evaluate the scale of the population.
+So they share the pods, all the containers with the same pod scale, same IP address and pod space.
+and find each other, because they can each other search Google articles.
+And they can also share a focus group.
+So they share the same thing.
+They share more and more and more containers.
+Same portion, same entry, and they explore.
+And, as I said, you can do things, but what is the ultimate goal of scaling?
+When you scale an application to a platform, you are not scaling the content, you are scaling the ports.
+As I said, port services, there is a need for multiple content, micro-services and provider services.
+Now, this whole idea of resource management, so this is basically infrastructure, right?
+Antenna and ports are essentially computing infrastructure.
+But how is human radiation that can then orchestrate to the fans?
+So that's what we are talking about.
+So long back, when I was looking for PhDs, the time Lilacs just came,
+we were starting using Lilacs and what you would see is that guy, you know, these main flexors, the backs,
+There were these unique workstations.
+So that time, there were like, computers are shared.
+Every department will have one computer.
+So you have to be able to run things scheduled.
+So you cannot
+So the way you use
+is to set time.
+Set time.
+So that is the kind of thing that you do for a tourist's use today.
+It's a fraud software.
+So you can use a fraud to get your money.
+Now, the problem with fraud is that
+so if you want to run something every day at a fixed time, you pay for fraud.
+But the problem with fraud is that you cannot run only one software.
+You cannot run.
+Because of course, application can't even be, it cannot handle different.
+So, then came up the idea of schedulers.
+So, schedulers are an enhancement of plot, basic plot, which can handle different things.
+So, for example, let's say you have this task, some kind of ML model pipeline, where you want to first pull data,
+piece data from a data warehouse, then create pictures, then write a model on extracted pictures,
+train model A, then train model B, compare A to B on a test set, then if A is better
+than B, it's like A, if B is better than A, it's like B.
+Let's say you have this one flow, you want to execute every day, every week, once in a
+week, this cannot be run by CROP, you can call it run, each of this is separated by
+This whole workflow, it needs more than a set of blocks.
+That's how schedulers come.
+Schedulers take this whole workflow as a task,
+and execute each step with that task.
+And it sort of creates a few hundred blocks.
+So schedulers can handle one flow, that is, different entities.
+So that idea is in here.
+So what are the schedulers?
+How much schedulers can you use in a scrum?
+So, for example, from here, you can see the second command.
+And now, the best class, job name, what type, how much CPU you can allocate to this job, and how much memory you can allocate.
+So, this is how you schedule your students.
+No?
+The schedulers are, they schedule the job in execute.
+But they cannot create you the secure domain request.
+They can only allocate.
+You need some other service to create your virtual machine, your pods, your database,
+So that is the job of orchestrators.
+Schedulers are concerned with where to run the jobs and what resources you can allocate to the job.
+But where do we get the resources? How do we create resources?
+That is the job of orchestrators.
+Orchestrators are concerned with where to get the resources.
+So they create, they do the virtualization, they create containers, they create the pods,
+that is the job of orchestrators. They can scale up and down, if a scheduler says we need more machines,
+orchestrators can create more pods.
+so orchestrators can dynamically increase the frequency of the instruments available to the instrument
+orchestrators deal with the whole structure of the instrument
+so that's the difference
+scheduler's job is scheduling the application
+allocating how much resource should be used in the next orchestration
+what are the differences?
+But how to create those resources
+from your virtualization?
+That is the job of
+social media.
+Actually, it's more powerful than social media.
+Maybe it's working.
+But high level is the question.
+Now, there is one more
+So, you need a high level framework to define your schedule.
+So how do you do that? You can either design your workflow using the Python code or using YAML.
+YAML is an idea for you guys to use. But there are some softwares which do that. One is called Airflow.
+So, Airflow is a software developed by every Indian company.
+And, so this is kind of a...
+So, there you can define
+you can easily define your own workflow
+and modify it. But the problem with Airflow is that
+it is sort of...
+kind of... not too late. You don't change it
+so we don't pass the parameters, we cannot change the parameters and we have to restore.
+So right now if you want to run the same machine learning model, right?
+Plane to different learning methods.
+What's plane? Plane, I told you this is training model planes.
+So this vertical, you can vary it in the actual, but if you want to tomorrow change the learning method,
+or change some other parameters in this training plane,
+you cannot pass it as a parameter to the airflow
+you need to create a different instance of that workflow in there
+so airflow is the tag that's tagging
+you can't automatically create new steps
+so you cannot modify the tag
+once you create the tag on airflow
+you have to run it or you have to recreate it
+you cannot edit or put it there
+But there are these other workflows like R flow and perfect, they are both flexible.
+You can edit your workflow, task parameters, you can do this kind of thing.
+Again this is very high level, very very high level.
+But I don't know if some of your projects may require R flow.
+I remember in the past one of my projects was in California.
+What does that mean?
+It's very difficult.
+I don't want someone to have to go through all this.
+I'm afraid it's very black and very...
+You can't control yourself.
+They're not really...
+I don't know.
+So as I said, if you go for managed service, you have to pay more.
+Think about the need, use name, the amount, the service, the service name.
+So that's part of it. You can use some open source.
+There are open source platforms that are again good for us.
+So there are some open source platforms that are quite good for us.
+So these are some of the ways and contexts that there are some of the tools you can use
+So the main thing, the advantage, I see in, once you create a model, right, just say
+import, click a button, it will go, create a, basically the loop, import it, another
+Some others, we have to see that they can't copy me.
+Then you get an endpoint.
+Just a reply page, then you get an endpoint.
+Then that endpoint will get just query.
+That's the reason why you get your prediction.
+So that makes life very easy.
+If you don't want to just delete that,
+If you are doing this with DevOps, you have to write a history, say a business model,
+that type of writing.
+You have to write DevOps steps, like you did with the image.
+Then you deploy it.
+So all that you have to do is...
+But certainly there are other areas, DevOps, DevOps, you can do all these other things.
+You have to worry about what service you are using.
+You have to worry about what service you are not using.
+You have to shut down the internet, otherwise they will charge.
+But if you start using the internet, you will not have to worry about the latency.
+Probably, only when you start running, they will only charge.
+Otherwise, when you are running your own instance, you are running on a physical instance,
+24 hours, there is a chance. If you are doing serverless, the only chance is to make an action.
+So there are a lot of advantages to this.
+But it's a kind of a trade-off.
+Yeah, so remember, for the additional use cases, you can store the model personally.
+So all it is saying is that if you wanted to be a popular model, that is another advantage
+So, you can create different versions and you can track whatever experiments.
+You can create different models.
+I'm not a reporter, sorry.
+Each model is versioned and each experiment run on that model version is stored.
+You can go back and just put in data and store.
+So, all that needs to be tracking.
+It's easy to do but it's easy to go back and use the whole version.
+Go back with your whole version.
+Something goes wrong with the new version.
+And you can even, you know, check in your phone if you need to go back and fix the problem.
+and if you show all your metrics, like your trading is very interesting right
+we discussed trading curve, so that we discussed like
+we lost all the trading curve, all that
+directly to the card
+and so we can easily see whether the model is coverage or you know
+you can play more
+so it provides that kind of thing for top of requirement
+so that's another problem
+dealing with your passengers, drivers, etc.
+So there are different kinds of ML models.
+Some ML models will be using the same features.
+So you don't need to create separate features for each model.
+Rather, you create a set of features and store it and keep updating those features.
+whichever ML model one you have, you can just query that feature from that feature table and use it.
+And the model, you don't have to worry about updating those features.
+That is done independently by the feature developers.
+So features are also very useful. Very very useful.
+And again, it's not very, you know, it's ultimately some statements, right?
+So, it's a question of creating a data pipeline to compute those features and storing it in some tables and publishing them.
+And metadata and some other tables on that.
+The third is, know, if I want this particular feature, which table I should use?
+Variant platforms.
+So, it is as simple as that.
+So, again, most can be, so streaming features you don't typically store.
+and you know produce a lot of issues.
+Typically what you store are digital features
+like bags and bag features but these days
+there are features stored like that
+they can store both online and live.
+So that means that online features
+are reasonably computed and they have to keep updating
+every machine correctly under a certain conditions.
+Just that.
+Still, slowly, it has been made quite a bit interesting.
+So, yeah.
+So this is all we can do with this lecture.
+It's all high level concepts.
+Of course, these are important concepts.
+idea of work flow, idea of machine colors, idea of what is antenna, what is the port,
+and what are the different levels of what are the different components of the master
+features go over, model goes through, and your experimental part too.
+So these are some of the issues.
+So any questions?
+Ok, so let's do one thing.
+So how many of you want to half an hour to divide the data?
+I think there are not many questions.
+What I can give you often how to do it?
+What is that?
+7.5
+7.5?
+7.10?

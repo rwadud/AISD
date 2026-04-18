@@ -1,0 +1,555 @@
+you know, or you take the majority answer, you can use simple way, take the majority answer and say that is output.
+
+For example, here there is a question, I am from, I am flying from Nashville to Atlanta, I need to land at 1 pm local time in Atlanta, by what time should my flight leave?
+
+Now, the catch here is that between Atlanta and Nashville, there is time zone difference.
+
+So, the LLM should not only take into account of time of y plus we should also take into account the time.
+
+So if you look at the three answers and you see that you know their answers are all different.
+
+So one says that you should, you should know that the labour AMC, the other says that going to be a local time and the third also says labour AMC.
+
+So the second answer did not take into account the actually the difference correctly.
+
+But if you take the proportional answers, two answers are 11 am and one's answer is 12 pm.
+
+So you naturally you take the majority of the answer and return answer as 11 am.
+
+So this is another, you know, slightly better way.
+
+So instead of just squaring once, if you are just squaring once, you can probably get some other answer, 12 pm or 12 pm.
+
+But if you query three times or five times and give that majority answer, this you can only do if the answer is single, you know, number or word or something like that.
+
+Like single answer, like 11 am, 12 pm.
+
+It's a kind of a long test to determine if the clue, whether the answer is just three things, you can do.
+
+Now you can do this slightly better.
+
+You can do one step further.
+
+What you can do is that you want to, this again doesn't, this only, you know, 1 third of the time, 60 percent of the time, roughly, the answer was correct.
+
+You still don't know if I do it 10 times, right, I wouldn't get the same answer.
+
+Suppose you want to be, to make sure that the answer is 90 percent, the probability of the answer correct in 90 percent.
+
+Right, confidence is very high.
+
+You can put a threshold on this.
+
+So how do you do that?
+
+You sort threshold properly.
+
+So you calculate this multiple times, maybe 5 times or 10 times.
+
+Look at the unique output.
+
+There will be count each different output.
+
+For say 11, I have done that 30 M. For say 11, I have done that 30 M. Right. then count the each unique output how many times it occurred and look at the fraction of that percentage of each unique output.
+
+Only if you know at the top the answer which occurred maximum it occurred more than above threshold that threshold you can decide depending upon your comfort of risk you can take.
+
+For example, here you can say that if the the proportion will be output is more than 0.5, then I will give that answer.
+
+If that all the answers were proportions are below 0.5, then it is a total answer.
+
+Then you should say I do not know.
+
+So, if the unique output proportion is less than 0.5, I do not know the answer.
+
+Then you ask for the support or you use a friendly answer I do not know.
+
+If So, here the top frequent answer is proportion more than the threshold, you say the answer is that.
+
+So, this is called uncertainty thresholding with self consistency.
+
+So, you are doing more than self consistency here, you are putting a threshold on you know what level of consistency you need.
+
+Clear?
+
+Then, you can again improve this.
+
+How?
+
+So you take these uncertain answers, the answers which gave less than 0.5 proportions, right, or the top.
+
+Then for those scenarios, take questions, those questions which have lot of answers which are less than your threshold, right.
+
+Take those questions.
+
+So not all questions will have, you know, answers which is less than, you know, so many answers which are less than, you know, threshold, right.
+
+So you take those questions which have lot of answers below the threshold.
+
+Then for those scenarios, give the correct answer and put it in your prompt, your chain of thought, as the few short learning examples.
+
+If you are anyway teaching the LLM in questions which is struggling, you keep doing this, the questions, it is answering lot of questions whose confidence level is low, then take those and add the correct answer and add it to the pool of, you know, short learning example and include those examples in the problem.
+
+So this is called an active learning.
+
+So you dynamically learn with the feedback and improve the prompting.
+
+So this is the third way of optimizing the prompting.
+
+Now you can use LLM itself.
+
+This is called OPRO, optimizing by prompting.
+
+So here what we use that we use LLM itself to suggest better prompts.
+
+And so you can describe the LLM to say that this prompt gives these answers.
+
+So for example if I state the problem, we looked at this example of what time I should start the flight from Nashville so that I reach Atlanta by 1pm.
+
+You saw that there are many answers which are not correct.
+
+Then probably you need to reword that prompt like a better.
+
+Say that please take into account the time difference and the soul difference.
+
+So you take that prompt, take the solutions generated and ask the LLM to give both the LLM and ask the LLM itself to generate a better prompt.
+
+So just keep doing that.
+
+So this is called an optimization and this is another example.
+
+So there is an example given here.
+
+So how do we do that?
+
+So this is the initial prompt, input to the LLM containing the problem description, solution constraints and previously evaluated solutions.
+
+Then LLM generates a new candidate solution based on the information in the meta prompt.
+
+Then you need to, you know, so LLM generates a set of candidate prompts, then you need to evaluate which prompt is, you know, in this candidate is better.
+
+Then probably you need to use another LLM, like a general LLM, right, or a human, human in the loop, if it is, you know, not, not much number, right.
+
+Then evaluate each of these prompts and then give the feedback to LLM that these prompts answers you give are better, ok.
+
+So just to give an example here, so this is something actually they found that, this is not something made up, but this is actually they found from, there is this grade school math proper dataset, which is, of course this all, you know, actually happened couple of years ago when the GPT, GPT just came and they were not that smart models, things like that, ok.
+
+And so people are, this chain of thought was just coming So people wanted to improve the LLM, you know, for forwarding, GSM, M8K dataset.
+
+So GSM, M8K dataset is a graduate school math dataset containing 8000 questions.
+
+So they were trying to do the problem engineering and they asked LLM to do that.
+
+So some analysts said break this down.
+
+Some other suggestion from an analyst was that a liquid of isomethic and vertical approach will help us to clear out the solution.
+
+So these are the kind of new prompts suggested by the analyst.
+
+And they found that, you know, this prompt, take a deep breath and work on the problems step by step.
+
+That is most of the time.
+
+So that is not because of taking deep breath, LLM is not sweet, but the thing step by step.
+
+So that step by step apparently, you know, it is like a chain of thought that introduced, told LLM in a way to break down the problem and reason in a kind of sequential manner.
+
+So this was actually, this particular prompt was actually suggested by an LLM.
+
+Okay, and since this is from a paper publication, the paper, I have written the reference here.
+
+So a lot of optimization problem, right, you do this convex optimization, you know, optimization problem, right.
+
+If the problem is small enough, you cannot solve, you know, traveling salesman problem or the large city kind of thing with LLM, but if it is a small optimization problem, you can describe it in words and LLM will find out.
+
+So that is what this paper is about.
+
+So this is yet another way to improve the prompt.
+
+Then there is another paper came out which talks about what it calls is self-evaluation.
+
+So self-evaluation, so far we looked at, we are trying to just improve the prompt either by, you know, inserting, you know, statements that, you know, if you do not have all the answers say no.
+
+Or, you know, we looked at multiple times sending the same prompt and look at the proportion of the time, based on the threshold, we never asked LLM itself to do some data math, you know, checking all of the answers before you do this, say that right, as humans, we always do that right, we solve a problem, before we submit the exam, we go through, it is correct, think about that right.
+
+So here, this approach, again a paper came out, I think, Google or something, such a question.
+
+So, what it does is that, so there are two ways of doing this question, one is a feedback viewer, okay, so user will say either it is good or bad.
+
+So if it is bad, it will know that the answer is bad and then it will try to change the problem.
+
+Or you ask the LNM mixer to write the answer.
+
+In both cases, what happens is that it will trigger some kind of a chain of thought.
+
+If you look at, it is like this.
+
+I will tell you very briefly.
+
+When you ask to write a letter or write a poem or whatever, you don't think, right?
+
+you just write, right.
+
+It's a creative process.
+
+It's a creative process, you don't think much.
+
+You just, whatever comes to my mind, you write.
+
+Then you go and, you know, put your rational mind.
+
+Read it and see if it's correct or read it and see if the grammar is correct or read it and see how can I improve, right.
+
+So, it's the same way.
+
+LLM, first time when you generate the answer, you just generate the next token, next token, like that.
+
+It doesn't really, you know, do a reasoning process.
+
+It does if you put chain of reasoning and that, but otherwise, but then when it reflects, actually take the answer generated, then do lot more reasoning to see if that is correct.
+
+So this is called self-reflection.
+
+Self-reflection either implicit or feedback driven.
+
+So that process is shown in this diagram. is that is what is shown in the pink boxes.
+
+You take this prompt and probably take each part of the prompt, sorry generate an answer and do a evaluation that is a test case generation.
+
+Then it does the test, then it based on the test, if it found that for example, the input and the output does not inconsistency.
+
+So, then it sort of refine that, refine the solution and again do the test, that is why this loop.
+
+You see that refines loop, goes back.
+
+So, this loop continues until it find the solution.
+
+So, this of course, this was before the error of reason and error.
+
+This paper came out actually when I made this slide two years ago, there was no reasoning and error.
+
+Then only this deep seated or reasoning and error came out.
+
+That always does that, produce multiple answers.
+
+So, this to some extent I think it does, you know particularly if you take the option of thinking mode in MNI or thinking mode, right.
+
+In thinking mode it sort of does this.
+
+But it's a kind of idea how it does.
+
+This is a center position.
+
+Now here for example, how do you do a feedback non-center position?
+
+Example is given.
+
+So again, the first scenario of flight attendant.
+
+So the question is, my flight has been delayed.
+
+Where can I go for more information on my flight status?
+
+So, at least it said I am sorry to give that but that answer was not very helpful, right.
+
+It says please visit our flight status page and it will give a URL or anything.
+
+So, that is why it was negative, that is why the red sign, so the response was labeled poor and response was labeled incomplete.
+
+Please modify the relevance of your previous response.
+
+Today it is very challenging information.
+
+For a more specific, so once this feedback is given, then the next time, you know if you give the same prompt, you say I am sorry to give that, more and more information is delayed, right.
+
+Please consider consulting one of the following resources.
+
+Airport website, airline kiosk, airport information screen, so this is little bit more specific than the previous one, so this happened because the users had the initial response was not good and while user was good, so this is something probably we need to put in the feedback kind of you know, so maybe we should ask the question is this you know, feedback was helpful or not so good, the user said no for both, you keep these two boxes and insert as a link, so then you give results, so this is how you do you know, self reflection in a feedback algorithm, the implicit self reflection that is if always analyze the you know, result itself, so that is example is my price has been generated, where I can get more information And then you give the original answer, I have stored it in your laptop, more details on your slides.
+
+Now you say, you know, there is a hidden self-referential layer, which is the instruction set says, before you send this answer to the user, evaluate the relevance of your previous response to the customer's video, either with an internet connection or for a more specific and simple solution.
+
+So this is the two ways of doing the, you know, two ways of doing the self reflection.
+
+Any questions?
+
+So we discussed for those who are in late, we just started with the output, in the prompt If you yourself say that at the end that you do not know the answer, you say so, that's a very basic thing.
+
+Then one can do self-consistency, which means that you send the query multiple times, and take, if it's a unique answer, if the answer is like a one word or number, right, take the answer which gave the maximum number of time, that answer has the maximum number of That is a measure of most self-consistent answer.
+
+And third approach is that you take this one step more, that if you want very, very high confidence in your answer, only give an answer if the proportion of the maximum answered is more than a threshold.
+
+Then you do active prompting, that you take the questions for which the proportion of uncertain answer is more, then manually put the correct answers and insert those examples into the prompt as, you know, few short learning.
+
+And keep increasing this set of prompts, few short learning prompts, right.
+
+In return you have to feed all of them, you can sample from them and feed.
+
+But you keep increasing that as you, you know, keep doing the...
+
+So these were the things, you know, I covered.
+
+Any questions?
+
+Of course, these days prompt engineering has become almost a best in the world.
+
+Some of these things have become... these prompt templates are available.
+
+And also LLMs are also improved.
+
+They have reasoning LLMs and chain of thought, right.
+
+So it's a bit more...
+
+But some of these basic, you know, ideas...
+
+Because you may be using a lot of modern LLMs.
+
+They are probably still bigger.
+
+If you are using GPTs and Gemini's...
+
+You know, call it whatever you like.
+
+You are using LLMs and that kind of thing, right.
+
+They are still not researching or testing.
+
+So, you know, maybe these are for the… Companies are now hiring separate people for prompt engineering only.
+
+Companies are now hiring only for prompt engineering.
+
+Yeah, that's true.
+
+Separately.
+
+Yeah.
+
+So, prompt engineering has become more advanced.
+
+But, you know, as a generic engineer, you should know this.
+
+Now we are talking about lag.
+
+So, the simple rag, what you do, you just take a set of documents and you convert them into, you break them into chunks and convert each chunk into a, you know, embedding vector and store it in the vector store. then at the time of inference, take the query again, convert it to an F1A, then query against this vector with the store, then retrieve the context, then combine the context along with the original query, send it to LLM and get the answer.
+
+All of you know this, right?
+
+But this is very basic and it's not always, you know, gives satisfactory answers.
+
+But there is a lot of problem because your main problem is in your, the way you metricize your data because it is not necessary that you know your answer precisely lies in one channel.
+
+You would have to keep some overlapping channels, right.
+
+And it is always not necessary that the kind of query and answers are semantically very, because a lot of answers may be similar.
+
+So as a result, the simple rag may be not good enough to get you a very good record and very good precision in your response.
+
+So again there is a lot of improvement on rag has been made.
+
+I think there are some 20 different kinds of rags out there.
+
+I am not going to talk about it.
+
+I myself do not know all that.
+
+But talk about why some of the common basic principles.
+
+So generally people say this is agentic lag.
+
+So agentic lag is a fancy word but the idea is that you can do few things to you know improve your lag.
+
+So somehow involve your, the first thing itself is to take the input query and modify it a little bit.
+
+Sometimes what happens, somebody asks you a question you don't know the answer, you you are not able to clear what the question is.
+
+But if you repurpose the question or you reformulate the question, reformat the question, you can understand the question and answer better.
+
+So you can do that there as well.
+
+So you can do some co-edit transformation.
+
+And also you can set the co-edit to multiple vector source or multiple LLMs or whether you should use a vector search or keyword search to get the sample.
+
+So this is what query routing is.
+
+So sometimes what happens, if you have a large set of documents, you keep two kinds of indexes.
+
+One you take each chunk and convert it to a vector and then store a big set of vector index.
+
+Other you take probably each paragraph or each chapter of a book.
+
+Let us say we are talking about a book.
+
+And summarize that and create a summary index, which is the high level.
+
+So some query maybe you need to look at only the summary index.
+
+Some query you may need to look at the, you know, the detail.
+
+And some query maybe better to do a keyword search.
+
+So what agent can decide, whether it is for this particular So, you can do using agents, because you can have one agent which does query transformation, you can have other agent which does query re-routing.
+
+So, that is one thing, change the query to multiple retrieval.
+
+Then usually when you query, it returns result in a particular order, first result, second result.
+
+But that is based on Poisson's similarity, some kind of similarity, it takes the similarity between the input query embedding and the chunk embedding and return the result with maximum similarity.
+
+But that may not be the best priority.
+
+Why?
+
+Because when you do this, you are going to have a lot of errors.
+
+Why?
+
+Because when you do this similarity search, it is taking query and document as two independent vectors and taking just the cosine similarity between them.
+
+Now, what is, we start looking at query and answers together and do this thing.
+
+So, what we do that, people use this So, this is the first stage, we want to re-rank.
+
+Reranker in an LLM, what it does is that it takes the original rank, originally ranked list of answers, takes input, then it look each answer and query and inspect more closely and decide is this relevance, right, is high or low.
+
+Then it reranks, that's more effective.
+
+So, there is a reranking LLM. the top 100 in the first similarity search, then do the rewriting, then take the top 10.
+
+So that is another.
+
+Similarly, you know, so this agents that you add up here to get back is because the agent is doing go-ahead transformation and the go-ahead routing, actually using LLM also, right, because agents should have an LLM, right, the LLM assistant, that is what it means by this.
+
+So this is one simple architecture of a, you know, agent driven or agentic RAC.
+
+So this is something maybe some of you guys are already implementing and all, but RAC So, that is business, business is God-forsaken.
+
+The other thing you can do is chunking itself.
+
+So, the chunking in the beginning, people chunking based on just a fixed window size.
+
+If your context length is of the FNN model is 512 tokens, then you split it roughly, each chunking is a 512 token, then you keep an overlap of, you know, stride of about, you know, one-third of that, one-fourth of that kind of thing.
+
+So, if window size is 512, then you keep an overlap of 0.28.
+
+So, that is a kind of a very basic chunking.
+
+Then, something called unstructured chunking.
+
+That means that you keep, you make use of rules to decide where should be the boundary.
+
+So maybe it's wrong
+
+to say each paragraph is without the chunk.
+
+But they also doesn't give you good kind of answers.
+
+So people doing even more better chunking these days using more semantically similarity method.
+
+What they do is that they split the document into each sentence, then Then they create an F24E example.
+
+Then they do a semantic clustering.
+
+That means they take these sentences and group all sentences which are semantically kind of closer.
+
+Then that is your chunk.
+
+So each cluster is your chunk.
+
+So that actually helps to help to give retrieval.
+
+More semantically closer answers.
+
+And you can instead of one sentence, you can take two sentences on a window.
+
+So this is actually one of the very important steps of this.
+
+Of course, this will increase your computation.
+
+Then other thing you can do is extend in the context window.
+
+What it means is that the rag retrieves, the usual rag retrieves the context.
+
+That is you know which part of the document it came from.
+
+What you do is that you take some more, extend that.
+
+So you take some more sentences, you know, from before that window and some more sentences after the window.
+
+So you give a more broader context.
+
+So this is another method, you know, people, you know.
+
+So I don't know how effective is this but this will probably make your overall prob more normal.
+
+It may not be very good because your final LLM context, overall context will be spot right.
+
+So this is another thing that you know you combine your retrieval techniques that is whether you use a hybrid.
+
+So this is always better because you can always take keyword search and vector search and then combine the results that always you know and then do a re-ranking.
+
+So you can combine the results then do a re-ranking based using LLM right that gives a better result than just doing a you know vector search alone because there are lot of cases you know for example let's take cyber security right there are some rare tools that there are rare processes used for cyber attacks which do not come in your when you do similarities but they are rare keywords right they will get captured when you do a keyword.
+
+It touches on what PJ had to say.
+
+So this is what I was saying that the RAC pipeline should do a re-ranking so as I said the basic retrieval they are called big bi-importers because when you do the retrieval just like you do the RAC pipeline, it does not have a co-sign similarity between the query, the documents, the stunts and it treats the query and the documents as independent but the re-ranking is done using cross inference where they take the query and answers together and do reasoning.
+
+So one can use work kind of models for that to do the re-ranking. there are clear angle models available.
+
+So, but one can use that kind of model and they are called cross end models because they consume both the story and the truth to sort of to decide the right in the reasoning of the.
+
+So, all these slides are linked below right and if you look at every slide most of the slides are linked below right.
+
+You see if you want to know more detail about each slide you can look at some of the papers, some of the articles, you can look at those.
+
+So, rewriting of course is very, very important.
+
+We have found in our own experiments that rewriting always helps.
+
+Some kind of contextual studying helps, semantic checking helps, hybrid search helps.
+
+So, keep these three things in your architecture and rewriting of course increase the latency for your traditional So if you are worried about latency, then you don't need to rely on these products.
+
+But hybrid stuff, so you can do that.
+
+The last section is fine tuning the embedding.
+
+Because usually the embedding models are created using a standard large portals.
+
+And embedding models are smaller.
+
+And they are typically, you know, they are less than 1 billion parameter type.
+
+So they don't have very deep knowledge of everything.
+
+Assume you are playing a small model with a very large corpus.
+
+So what you can do is to fine tune the embedding model itself.
+
+So everybody models up to a certain point.
+
+And you can... it's not necessary.
+
+And so that fine tune can fine tune a model.
+
+Then again you can transform it into things like your cube of...
+
+So that's, you know.
+
+But, you know, it's...
+
+I wouldn't recommend this because unless you have a lot of data sets and you really need to fine tune to specific domains, right, this probably will not give you very good answers because it's very sensitive to your data, quality of the data.
+
+Very sensitive to how many training data you have.
+
+So this is something I wouldn't recommend only if you really require all the other options I did not give you the improvement you should do.
+
+So that's the kind of last part of the talk.
+
+But I will talk how to do fine tuning.
+
+Any questions?
+
+So I think we have got one question.
+
+So I told you right now our plan is that next week I will have a class on fine tuning.
