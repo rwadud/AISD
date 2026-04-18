@@ -1,0 +1,687 @@
+Why?
+
+Since we are going to the ten different positions, and I take the majority vote and say I have this decision.
+
+So this is the question, not the question.
+
+Now, the question is, is that correct or not?
+
+The lives.
+
+It's the explaining the decision.
+
+The majority voting or bagging or ensemble approach takes the out of different experts, different classifiers, And just simply combine the results.
+
+So when somebody asks you why you made this decision, or ask someone, why you made this decision, if it says, OK, just I received these decisions, and I'm combining some of them, this is not the explainment.
+
+Because the user is looking at the exact explanation Why the first classifier made that decision?
+
+Why the second classifier made the other decision?
+
+Why the third classifier made the other decision?
+
+So the end user is not looking for the explanation from the 10 different definitions.
+
+It's a short and useful explanation.
+
+You cannot say, OK, I, by the way, this is very simple.
+
+This was a simple example.
+
+So only one data, only one feature.
+
+So we have data with hundreds of features, with millions of features.
+
+So in that case, you cannot explain, even the single classifier, you cannot explain the single that's why you are saying that the ensemble methods are weak in explanation.
+
+You know, the ensemble is too much to explain, it's too long to make it hard to explain.
+
+Why C4 predicted and neutral or whatever?
+
+So we are looking for transparency.
+
+If you say here, it's not transparent.
+
+If you say, OK, why did you make this decision?
+
+If you say, because we take the majority voting on the outputs of several classifiers, and it's going to be majority.
+
+And it's going to be majority vote.
+
+It's not transparent, because you don't know anything about why this C1, C2, C4, C5 predicted those decisions or something.
+
+On the other side, we have the boosting method.
+
+In fact, I think so, we just simply sub-sample the training data to create different training sets. with replacement, without considering the importance of the sample.
+
+We treat all the sample equally, right?
+
+But it's not perfect.
+
+So most of the time, some samples are difficult to predict, to predict the correct label for them. some samples are very easy to get the correct answer.
+
+It's normal.
+
+So you are studying machine learning, advanced machine learning, or NLP, or reinforcement learning.
+
+Since you are studying these courses, doesn't mean that all of you, all of you are or have the same ability in all different topics that you have studied.
+
+So if you are good in some, for example, if you are good in SVM, you're French, you're good in NLP, okay, if you are good in some other one, so you have, it means that different classes can have different knowledge on different regions.
+
+But if you know the solution, I'll get behind it.
+
+If you know that you are not good in pure learning from the beginning, so what would be the solution?
+
+What are you going to do?
+
+Instead of just thinking and reviewing the definition of reinforcement learning, it's what you think was meant to be something we have different components, environment, agent, reward, and so forth like this.
+
+If you studied 100 times the same stuff, not relevant to the Q-learning, your Q-learning would not be improved.
+
+We have the same thing here.
+
+So we train classifier with some sample of the training data, then apply that classifier on the training data, on full original training data, not tested.
+
+That's the important point here.
+
+On training data.
+
+We test it on training data.
+
+And we look at the results.
+
+We look at the samples that our classifier missed that, right?
+
+Then, just simply, let's map it to our reinforcement learning.
+
+I studied reinforcement learning.
+
+And I have time of two final exams.
+
+Today I started reviewing my stuff.
+
+And I have planned to review all these stuff 10 times.
+
+Today I started.
+
+So I think, at the first step, I think that I'm good in all the topics.
+
+I'm good in all the topics.
+
+So I review everything.
+
+And then I try to solve some sample question.
+
+It's some sample question.
+
+And I solve some sample question.
+
+I realize that, oh, I don't know what's the Q-learning.
+
+I don't know what is the deep Q-learning.
+
+I don't know what's the SARSA.
+
+I don't know what's the TD.
+
+But I know the definition of reinforcement learning.
+
+So in the next review, what are we going to do?
+
+Forget about.
+
+No, not for you to say.
+
+OK, if your brain is good, there is no need to review the definition parts.
+
+But you put more focus on your weak points.
+
+So TB, SARS, tumor learning, whatever.
+
+Now, then you test it again with all the topics, all the topics.
+
+If you realize that, take 90 seconds.
+
+If you realize that, no, your tumor learning improved.
+
+Take yourself days off.
+
+There is no need to review it.
+
+Because your brain degrades something for some reason.
+
+Then you continue to improve your ability in all the topics.
+
+This is how those things are written. who understood.
+
+It's an intuitive procedure to adapt to the change distribution of training data.
+
+So we change the distribution of training.
+
+At the first system, we treat every topic same, equally.
+
+Then in the second review, we change the subject.
+
+OK, I need to forget about the simple definition and put more focus on the TD and SARSA and the others.
+
+In the next step, again, distribution would be changed.
+
+But what's the difference between this one and bagging?
+
+Take the same example I mentioned.
+
+Weights.
+
+Yeah.
+
+But with bagging, it's like, with bagging, in all the review steps, you take the topics random.
+
+You choose the topics random.
+
+So it would be possible, even if you are weak in Q-learning, it would be possible to review 10 times the material without touching the Q-learning, right?
+
+So initially, all N records, our original samples, are assigned equal weights.
+
+So I think that we are OK with it.
+
+There is no difference between the topics.
+
+Unlike bagging, weights may change at the end of each boosting round, which is the weights of the sample can be changed.
+
+So the records that are run, we classify the topics, topics that we realize that we are a bit on, will have the weights increased.
+
+And we missed two learning, so its weight must be increased.
+
+But I remember the definition of the reinforcement limit, its weight would be decreasing.
+
+So for example here, you see we have three rounds.
+
+At the first round, everything, you know, taken equal.
+
+Everything is.
+
+So we just do the random sampling.
+
+Random sampling?
+
+Bit replacement.
+
+So then in the second round, you see the probability of the 4 appear 3 times.
+
+So why?
+
+Because most probably, at the first round, it missed 4 to correctly classify.
+
+Then again, second classifier, most probably, again, it missed the 4.
+
+So because of that, you see here, we have 4, 5, 5, 4.
+
+Any questions?
+
+Is it clear?
+
+the weight of the pole.
+
+That's why in the previous classifier, we missed 4.
+
+So its weight increased, and by increasing the weight, the probability of selecting 4 would be increased.
+
+So in the case of round 3, the model can correctly classify 4.
+
+So the weight of 4 will be decreased by 4.
+
+So the model can correctly classify 4.
+
+So the model can correctly classify 4.
+
+So the probability of selecting 5 would be increased, and for the other it would be decreased.
+
+So from the implementation perspective, what do we know?
+
+Before we can see that there is a 5, should I get to my mind?
+
+Okay, so this is after selection.
+
+So before selection, just how we select and continue the program.
+
+I didn't understand the question.
+
+I mean, who did not understand the question?
+
+You can get the question.
+
+Can increasing the...
+
+No, no, no.
+
+There is a way, there is an approach to increasing the savings.
+
+Like how we increase or decrease the rate.
+
+So, I mean, what's the meaning of this?
+
+Let's say we have 10, 2, 3, 1, 2, 3, 4, 5.
+
+Okay, I have the sample inside the bag.
+
+When I say that at the first step, the probability to be selected is equal to the same, meaning that when I put my hand inside the bag and want to take one of them, the probability is the same.
+
+You can see the little difference between this one, this one, this one, this one, right?
+
+Again, for the next sample, I return it to the bank, and do the same.
+
+But in boosting, that was for the first step.
+
+In boosting, I said, OK, after the first step, the probability of these samples would be changed.
+
+OK, now let me know how I interpret the process that I explained for you.
+
+I put my hand into the bag.
+
+I want to consider the probability as the key.
+
+OK, how do I show the highest probability?
+
+OK, how do I consider the weight in my selection?
+
+The simplest way is to duplicate the number twice.
+
+OK, so for example, if this is 25%, 35%, what should I do with this one?
+
+How many times do I duplicate this one?
+
+How many times do I duplicate this one?
+
+Did you understand the question?
+
+Research.
+
+Like, we're trying to understand.
+
+You mean that's like a sine wave?
+
+It seems that we have something like that.
+
+If we cut and assume that this is, this is the way it shows the probability.
+
+Okay.
+
+If I have, and I'm gonna, I'm gonna have to learn how to do it.
+
+As soon as we are spinning this, each part, have in front of this, I didn't select that.
+
+When I say that the ability should be there, it means that just play, for example, if the probability of 2, 1, 2, 3, 4, something like this, or if I do the same thing, it means that the probability of two being selected would be much more than the other one.
+
+Do you mean we need to assign a weight?
+
+Yeah, it's a good question.
+
+Assigning the weight is a very important selection from the implementation of how we consider those weights.
+
+Okay, so then, let's say, first of all, In bagging, we don't consider any importance rate for sample.
+
+Also, we don't consider, we don't take into account any weight, any importance weight for the classifiers as well.
+
+But in other positions, or M1, other positions, other position M1, we consider the weight also for the samples to the selected, and also for the classifiers.
+
+So we have base classifiers, we have the frame, and then for the classifier, find the error rate.
+
+And also here, what is the WJI?
+
+What is the N?
+
+N is the number of samples in our training set.
+
+The original number of the samples in our original training data.
+
+What is the WJI?
+
+Wait for sample J, based using the classifier I. I, if it's The output is 1 or 0.
+
+If it predicts the labels for xj, sample j correctly, that the Ci of xj equals to yj, true label.
+
+The output must be 1.
+
+The other one should be 1.
+
+For simple error rate here is half the rate of second rate.
+
+Second rate.
+
+This is the error rate.
+
+Then based on the error rate, we define the important limit for this line.
+
+Alpha i equals to 1 over 2 ln natural logarithm 1 minus i over error i divided by i.
+
+This is the weight for the classifier.
+
+This is error rate.
+
+Right?
+
+Then what we need to do to finish the solution very soon, we need to update the weight of the sample.
+
+How we update?
+
+OK. So the weight of the sample J in the next run, for the next run, becomes the weight of the sample that you currently draw, divided by the sum of all the, sum of the weights of all the samples that you currently draw, is the normalization factor, dI.
+
+I e to the power of minus alpha I, if classifier I classifies the sample J correctly, so it It means that WJ times e to the power of minus alpha i means that WJ at the next step, at the next round, would be decreased.
+
+Otherwise, if it's misclassified XJ, the coefficient would be e to the power of alpha i.
+
+So being that the important of sum plus j for the next round, which is j plus 1, must be, right?
+
+So there's also a theory.
+
+If any intermediate, any intermediate round produced error rate higher than 50%.
+
+So in each round, in each round, in each step, in each round, We train a classifier with some training samples and apply it on the original training sample.
+
+OK, original training sample.
+
+And evaluate it.
+
+Find it's important.
+
+And if this important, if the error rate is much higher than 50%, it means that it's worse than the random game. then we will not update the weights at that step.
+
+What should we do instead?
+
+Game says, before the base, go to another position.
+
+Then you go to another position, take third decision.
+
+And you go to the other one, take game, take decision, go to this one, and take decision.
+
+I have here four decisions.
+
+But then, in the simple majority voting, I treat all the positions equally.
+
+But in weighted majority voting, I consider the importance of the first one.
+
+If I know that one of the positions was the best student ever, it was graduated, or she was graduated from the best university in the world.
+
+And I don't know she or he had lots of scientific papers.
+
+But the others, they don't have such things like that.
+
+So it means that I should put more weight on that condition, expert.
+
+Sometimes, this is the way it usually be in our life.
+
+You ask a question from different people, okay?
+
+But take the one that you are sure that it's from someone experienced in that, right?
+
+Consider the classifier rate in our minority voting process.
+
+Any question?
+
+What do you do this way?
+
+We check.
+
+Rate on the end.
+
+We have W rates, so at the first step, for all of our N samples that we have in our training data, the rates at the first step is one over N.
+
+So it means that their rates are equal, actually.
+
+So number of boosting rounds.
+
+2K is number of boosting rounds.
+
+So 4I. K times 2, we create training set, 3I, data set I, by sampling the displacement from D, according to down.
+
+Take into account the weights.
+
+The first step, everything should be fitted in.
+
+Then we train the base classifier, TI, Then we apply it to all the original training set.
+
+And the original training set means that when you train the classifier with this training pick up, this one, you should apply it on not this one, on this one, original training pick up.
+
+To train with this one, again, you should apply it on this one.
+
+In error rate, simply average of the weights of the sample.
+
+If the error rate was greater than the random guess function equation, again, you restrict the weights to 1 over n.
+
+So this classifier doesn't work, so we cannot change the weights based on the rubbish collateral.
+
+Go back to the simple, and then finally data collateral is a bit stackable then, so we'll just say this is an example have one data is one dimensional data one feature and one target label and the old stratification based on a condition, based on a threshold so I just create this one now let's assume that we have three rounds and the first round features we selected the sample and based on some threshold we've got some result let's say for the first one it could be threshold of 0.75 and all the sample if we write is 0.75 must be labeled as minus 1.
+
+1.
+
+OK. And then, the second one.
+
+For the second classifier, the threshold at its bias is labeled everything as 1.
+
+And for the third classifier, we have this threshold.
+
+For each classifier, we can find the importance rate, the alpha.
+
+It's very simple.
+
+You need to, for the first one, for the first run, can you read for the first run?
+
+You need to find first, you know, the error rate.
+
+This is your original data.
+
+And these are the correct labels.
+
+This is your original data.
+
+At the first step, all the weights are the same.
+
+Now, you need to, you see, we have to test our model on original data, right?
+
+Not this one.
+
+So, for the first one, okay, if the value of the feature is less than 0.75, it should be minus 1, otherwise 1.
+
+If it is less than 0.75, it should be less than 0.75, minus 1, minus 1, minus 1.
+
+If it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and if it is less than 0.75, it should be less than 0.75, and way that would it be stored, so arranging the items in different places.
+
+But this is one approach that they can do.
+
+So then, just I'm introducing the main important concepts here.
+
+Then we have the item set, collection of one or more items.
+
+For example, this is Portuguese transaction.
+
+This is one transaction.
+
+Bread and meat is one item set.
+
+And we have k item set concept, or k item set.
+
+An item set that contain k items.
+
+For example, if you say three items, this one, then we have the support count, so frequency of occurrence of an item set.
+
+For example, if it's support count for the bread and meat, how many times we see bread and milk appear together.
+
+Bread and, it shouldn't be two.
+
+Bread and, ah, bread and milk, we have one, we have two, three, okay?
+
+For this one, milk, bread, and diaper, we have milk, bread, diaper one, milk, diaper two.
+
+Then we have the support fraction of the transaction that contain an item set, okay?
+
+So how many times our system has transactions, you can see this main thread that occurs together.
+
+It's the two over transactions.
+
+And then we have this concept, frequent item set.
+
+We use this support card and support, and also this frequent item set concept to create or to find those rules.
+
+By the way, finding the rule, finding these kind of rules, the concepts here, find that kind of three-point item set.
+
+The item set whose support greater than or equal to main support threshold.
+
+We should make support.
+
+And the association rule, the implication expression So, we have the form X and Y, where X and Y are item sets.
+
+Okay, so like this, main directory.
+
+So, how we can evaluate our rules, based on support and confidence.
+
+Based on their support and confidence.
+
+Fraction of transactions, the support is.
+
+Between both and what?
+
+For example, here.
+
+For this rule, the support would be how many of time we can see both X and Y.
+
+Take the union of X and Y.
+
+And confidence, measure how often items in Y appear in transactions that contain X. So it's based on this confidence and support score, we can evaluate the rule.
+
+And based on some threshold that we put for the support and for the confidence.
+
+Because if this rule is valid, we are trusting this rule.
+
+We can do something based on this rule or not, right?
+
+So these are the things, why I said that this is not very difficult.
+
+Just by looking at this set of transaction, you see we have a very few number of items.
+
+In total, we have 1, 2, 3, 4, 5, 6 items, right?
+
+Only we have 6 items, right?
+
+We can simply find these different kinds of rules like this and then find the support and confidence and check with our threshold, right?
+
+And decide about the validity of them, right?
+
+But if we have D unique items the total number of item sets would be 2 to the power of D. The total number of possible association rules 3 to the power of D, 3 to the power of D plus 1, only have 6 items the number of possible association rules just 6 items would be 602 rules.
+
+Now, just assume that how many items do we have in possible?
+
+How many items do we have in common?
+
+So, here you cannot do kind of front forcing or exhaustive search.
+
+I'm going to find all possible rules and check the confidence and support score and make my decision based on those values.
+
+This is the authority association rule writing.
+
+So if any of you have any topic, you can just send me an email.
+
+I can read it.
+
+So where is my email?
+
+Yeah, it's in the announcement.
+
+So it's the announcement, midterm announcement.
+
+So for the two day, for the two day lecture, you have to cover, you have to cover this hyperparameter tuning.
+
+So I believe you all know what is the hyperparameter tuning.
+
+Do we have anyone that doesn't know?
+
+She doesn't know what the hyperparameter tuning is.
+
+It's finding the best possible values for the hyperparameters of any algorithm.
+
+It's known as hyperparameter tuning.
+
+So, and we need to set them before training.
+
+And the difference between hyperparameters and parameters, hyperparameters, we should give the value, but the parameters we learn during the training.
+
+So for different algorithms, we can have different parameters and different hyperparameters.
+
+So you, for example, for the K-means, the number of clusters is hyperparameter, and cluster centroids, the final cluster centroids or the cluster representatives will be magnified.
+
+Why it's important is, you know, it can find good values for the hyperparameters You don't lose access.
+
+I still have my phone. and ensure the optimal user communication.
+
+I can find the best possible values for the hyperparameter.
+
+There are three manual search, there are four.
+
+Manual search just try everything one by one by one.
+
+Read search, just try the, first of all, define the set of possible values for each parameter, each hyperparameter.
+
+Then train your model, if you know, with different combinations of those values.
+
+This is grid search.
+
+And also, this is random search.
+
+Again, it's the same.
+
+With the grid search, you try all possible combinations of the what?
+
+Different values.
+
+With random search, you just choose some random values from the set of predefined values.
+
+And the fourth approach is what?
+
+And the fourth approach, which is usually you use it in the research, no scientific or academic stuff, is what?
+
+Just referring to the other word. or let's say using the best practices.
+
+Most of the times when you publish a paper, so the reviewers ask you, OK, why you went with these values for these hyperparameters?
+
+Why you didn't change, you know?
+
+Why you didn't use the other values?
+
+In that case, you really say, because these values are popular values among the other researchers.
+
+So, usually, you can use any values for backslide.
+
+But usually, we use the size of 32 or 64, because most of the people use 64.
+
+So, we use the size of 32 or 64, because most of the people use 64.
+
+So, usually, we use the size of 32 or 64, because most of the people use 64.
+
+So, we use the size of 32 or 64, because most of the people use 64.
+
+So, we use the size of 32 or 64, because most of the people use 64.
+
+So, we use the size of 32 or 64, because most of the people use 64.
+
+Not the iteration.
+
+Step size.
+
+This is the step size.
+
+Same size to me.
+
+We're just going to take a photo.
+
+Take a selfie.
+
+I found it here.
+
+It says here, the branch section.
+
+Same thing.
+
+The branch.
+
+And then something else.
+
+I'm going to sit here and play.

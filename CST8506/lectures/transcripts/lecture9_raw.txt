@@ -1,0 +1,699 @@
+when we have minimal amortized problem.
+
+Or for the credit card friction, based on the confusion matrix, not based on the accuracy.
+
+Here, half of them.
+
+Although here we have most of the negative sample.
+
+So what are the alternative measures?
+
+Find the precision.
+
+What's the precision?
+
+So what kind of information, precision, show the?
+
+This is one of the essentially how many allow...
+
+How is it actually true that actually two values were able to be...
+
+So precision is this, okay?
+
+So A over A plus C, right?
+
+So A plus C, A plus C, so this is the prediction.
+
+So A plus B shows us that A plus C is this or the number of samples predicted as positive.
+
+A plus C.
+
+So, and A is the correct, A over A plus C shows that more all the samples predicted as positive, how many of them were positive, right?
+
+Similar for recall, for recall A over A plus B. So A plus B shows what?
+
+And then how many of the, how many predicted, how many A plus B, how many of the actual class has A plus B?
+
+Yeah, how many samples are actually, so among the, all the real positive samples, how many of them, how many of them predicted correctly?
+
+It's a question, interpreting the precision and recall in most of the.
+
+Then we defined it, so why did you find the F-measure?
+
+For the precision and recall.
+
+Yeah, it's harmonic mean of the precision and recall, but it wouldn't be how many of the values, how many of the predicted class, how many of the, how many of the class yes is?
+
+No, no, no, just don't, just don't interpret.
+
+The question is why we need, why do we need another measure like the F-score?
+
+why we have two well defined metrics?
+
+The answer is very simple.
+
+If you want to compare two things, if you have only one metric for comparison, that would be fine.
+
+Okay, based on this metric, based on the value of this metric, this one is better than this one or worse than this one.
+
+It's based on one metric.
+
+But once the number of metrics grows up, so the comparison would be difficult.
+
+For example, if you have two models, if you have two models, for one of them the recall is high, the precision is low, And for the other one, the record is low, but precision is high.
+
+How we can compare these two models?
+
+So to solve this problem, we define another metric, like the F measure here, which is now, this one is F1 measure, or F1 score.
+
+In general, we have F beta score.
+
+Here, this one is for, and what is the beta here?
+
+Beta shows that the importance of the recall with respect to the precision.
+
+How many times, beta times, let's say, beta time recall is important than precision.
+
+So when we say F1 score, beta equals to 1, So it means that we take their importance equally.
+
+But most of the time, their importance are not equal.
+
+For example, in, let's say, in disease detection.
+
+So the recall is important or precision?
+
+Both of them are important.
+
+Both of them are important, right?
+
+But let's not deal with it.
+
+OK, let's say for COVID, for COVID detection, Which one is more important?
+
+Precision.
+
+Precision.
+
+I think it's precision.
+
+No, I would be recall.
+
+It's recall.
+
+For what?
+
+Recall.
+
+Why?
+
+Because you need to pair above the actual class number.
+
+You see?
+
+I think you should let us know.
+
+So you need to find that.
+
+Most of you want to find the most of the people.
+
+Yeah.
+
+Most of the people that are infected by COVID.
+
+So here, in that case, the recall is.
+
+But precision is also important, but just a little bit.
+
+So here, in this confusion matrix, precision would be 10 over 10 plus 10.
+
+Recall.
+
+OK. Now, if you have two models like this, so for the first one, first one, accuracy would be 9%.
+
+And here, accuracy would be 10 measured by R.
+
+Just by look here, this one.
+
+But then for both of them, other plus false, we have another matrix.
+
+True negative rate.
+
+True negative, divided by true positives.
+
+So true negatives plus false positives.
+
+This sum shows us all the real negative samples.
+
+All the real negative samples.
+
+From all the negative samples, how many of them We have the rate, false positive rate, or sometimes we show it in alpha.
+
+False positive divided by true negative plus false negative 1 minus the same.
+
+Over the negative sample, how many of them are negative?
+
+Then we have the Fn rate, Fn over Fn times the overall number of real positive samples.
+
+So then how many of the real positive samples are predicted as negative?
+
+These are for the classification test or machine learning test.
+
+For different machine learning tests, we have different evaluations.
+
+For machine translation, we have some other measurements like the rule for text generation.
+
+We have another one, Turbulent City.
+
+Also compare the model based on true quality or false quality.
+
+We have the Recurve Precision and Recurve R.
+
+If you have F-measure 80%, accuracy 80%.
+
+Here, F-measure is very low, for a very low setting, but we can make that performance. based on the energy or that is more significant.
+
+Then sometimes you listen different types of the metrics for accuracy, micro score, macro score, weighted micro score, but no, they are not all of them.
+
+You need, you should know which metric for everything.
+
+For example, our east, And you want to say you are going to say, decide about deployment of a model.
+
+So seeing that you train a model for a task, what is values for the evaluation?
+
+And you wanted to decide about if you're going to deploy this model or not.
+
+What you can say?
+
+No, do you understand the question?
+
+Here in college or university, so we are training the model for some marks, right?
+
+But in reality, we should train the model for the usage, right?
+
+And it doesn't mean that whatever model that we train, we should deploy it, we should use it.
+
+There must be some criteria for this kind of decision.
+
+So now, you train a model and you got these results.
+
+The last one is better.
+
+Compared to the previous two models.
+
+But the question is, now you trained one model and you got these results.
+
+Now the question is, are you going to deploy this model or not?
+
+No, it's just random.
+
+No, it's not the random yet.
+
+This one is the random.
+
+It's worse than the random guess.
+
+It's worse than the random guess.
+
+But the random guess, you got 50%.
+
+But it's worse than the random guess.
+
+You got 28%.
+
+So, because of this, it's worse than the random guess.
+
+You should forget about this one.
+
+This one, random guess.
+
+This one, in this case, it's better than random guess. where you cannot go in there after you should be moving first, then, generally, you know, based on the problem.
+
+If you remember, I mentioned that sometimes for some problems, the recall is much more important than the precision.
+
+In those problems, this is where we have higher recall, right?
+
+But most of the time, we want to have, and also, just looking at the difference between the precision and recall, you can say that your data set that you use for training the data was balanced or imbalanced.
+
+For using the imbalanced data set, most of the time, the difference between the precision and recall is that it was balanced.
+
+Precision and recall also should be like, or 90 positive samples, but only 10 of the predicted correctness.
+
+So in that case you should take the low and positive sample.
+
+Now an ROC or receipt.
+
+This is a graphical approach.
+
+A data between a detection rate, so we want to display the performance of the model.
+
+We can use this ROC graph, a different model.
+
+So it's developed in 1950s for signal detection.
+
+So ROC curve plus TPR against the data.
+
+So here, 00 for this TPR, true positive rate, false positive rate, 00, this one, okay.
+
+Declare everything to be negative class.
+
+True positive, what does true positive rate?
+
+Close to positive.
+
+And for negative, false negatives are 0.
+
+Positive means that we have more than most of the positive samples predicted here.
+
+All of these discrete values, what should we do?
+
+We are looking at the final analogs.
+
+So for decision trees, let's say at the leaf, we have a set of positive samples and negative samples.
+
+Instead of having the discrete value for the leaf, we can take the fraction of the, let's say, positive sample over the old sample.
+
+We convert it to the output values from the most likely positive classifier to the least likely classifier.
+
+And here, we are using different thresholds on this value, the output continuous value.
+
+We can create different variations of the classifiers with different true positives or false positives.
+
+Then, many classifiers produce only discrete values.
+
+So, we have to convert the discrete sample just by dividing the number of positive samples over all the samples in this node.
+
+We will get, now, based on different threshold values, to make decisions on the class labels.
+
+For example, if we take all the samples, all the samples with a value higher than this one, it must be labeled as positive.
+
+So, then we can have some confusion matrix like this.
+
+If we change this threshold value, the confusion this matrix will also be changed.
+
+Given that we have one dimensional difference in two classes, we have only one variable.
+
+It's located at x greater than t for alpha.
+
+We classify, we classify it as positive.
+
+For example, if we put the t or alpha here, very short here, all the samples greater than t this side, one can be defined as positive sample, and the other one can be labeled as negative sample.
+
+If we change the t, change the value of the t or alpha, everything will be changed.
+
+And if you imprint values for, for the values for all of you, you will get a trend to positive rates and follow the post-hearing.
+
+Plus something based on the term which I'm trying to measure.
+
+So these are the probably examples.
+
+So these are the examples.
+
+Mixed, have one dimension.
+
+And we learn from values that we predicted.
+
+So the ROC curve, we can see the scores, classes, true classes, for each sample.
+
+So, we are just following these steps.
+
+Classifier that produces continuous value, the score for each instance.
+
+More likely for the instance to be here, we show this instance or this sample as something.
+
+Then, sort the instances in degree order or according to the score.
+
+Apply a threshold at each unique value of the score.
+
+For each different score, we will take each different score as key threshold.
+
+And then we will find the number of the true positives responsible students to find the true positive rates and false positive here.
+
+We have samples here.
+
+First we take this 0.25, our t.
+
+All the samples, all the samples with the score below 0.25 would be negative samples, would be a predicted and negative sample.
+
+And the remaining one, all the samples greater than or equal to 0.25, would be positive samples.
+
+So here, let's say this is the true classes.
+
+So we're gonna have another example here.
+
+That score is equals to our T, right?
+
+So the prediction would be positive.
+
+For this one, score is greater than 0.25, the prediction would be, again, positive.
+
+And for all of them, the prediction would be positive.
+
+But how many of those predictions or the samples are positive?
+
+But how many of them are correct positive?
+
+Only one, two, three, four, five.
+
+Two positives, five.
+
+And the remaining five predictions would be all positives.
+
+And since there were no samples, we took a negative.
+
+So negatives would then even move to the other one.
+
+All the samples, all the samples, for below 0.43 would be predicted as negative.
+
+And all the samples with the score higher than or equal to 0.43 would be predicted as positive sample.
+
+So positive, positive, positive, positive, positive, positive.
+
+Negative.
+
+Then how many of them were correct, positive, correct prediction we have here?
+
+Everything would be predicted as positive.
+
+But how many of them were really positive?
+
+One, two, three, four.
+
+Two positives.
+
+False positives.
+
+How many of them predicted incorrectly as positive?
+
+1, 2, 4, and this one also has positive.
+
+False positive, true negative, true negative, false negative, similarly, you can maybe 1, 2, 10, 11, 12, or whatever.
+
+It's essentially that the classifier is better than random for all values that are small.
+
+For this reason, classifies it.
+
+In general, so if you have two classifiers with two ROC curves.
+
+And we want to compare these two classifiers based on the ROC curves.
+
+In that case, we should have a look at area under curve.
+
+So classifier maximum area under curve AUC would be better than the ROC.
+
+This way we can compare different classifiers just just by looking at the ROC curve.
+
+So for example, let's say we have two classifiers, two models, M1, the ROC for M1 is this, for M2 is what we can say about M1 and M2 here.
+
+And this one is randomness.
+
+Here, just to see, M1 is better for small.
+
+So you see here, in this region, the M2 are smaller, And the area under this part of care is higher than, much than M2.
+
+But for M2, M2 for large, no question, small, or for large MPR, the meaning of these two, so probably the most of the area is before 0.5 to the area under the care part, then the care M2 is low.
+
+Here in this video, the key word is, but what's the meaning of lower FPR and higher?
+
+The story of predicting home positives or...
+
+So sometimes, sometimes when you train your classifier model, so usually after training the model, after you train the model, so you should analyze the results, where your model works fine, where it doesn't work, okay?
+
+which kind of sample works fine, which kind of sample doesn't work.
+
+And how you can find that part when an FPR.
+
+This model, the FPR rate for this model is high.
+
+It means that most of the negative samples are this model predict most of the negative samples as positive.
+
+And when we say FAR's positive rate is low, It means that it works by negative sample.
+
+So in that case, if you have different models, you have different models.
+
+So you can say, OK, for this part, this model, if you have some kind of, you know, if your false positive rate low, you can use M1 condition.
+
+And if your false positive rate was high, you can use M2, false positive rate, false positives, false positive model sample are predicted correctly as positive sample.
+
+The evaluation part and evaluation itself.
+
+But what are the solutions to handle imbalance problem before training our model?
+
+So the solution is simple.
+
+We need to balance the data set.
+
+So how to balance the data set is by sampling.
+
+Sampling can be done in two ways, undersampling or oversampling.
+
+With undersampling means that we need to remove some samples from the media, but with oversampling means that we We need to increase the samples from the minor class.
+
+So based on the way that we apply for the undersampling or oversampling, increasing the number of the samples from the minor class or decreasing the samples from the major class, different sampling algorithms are proposed.
+
+So if you Google the different sampling methods, you will see lots of different algorithms for sampling.
+
+But in its simplest way, for the oversampling and undersampling, we have random undersampling and random oversampling.
+
+And also we'll talk about the SMOTL kind of specific, of the oversampling techniques that we are artificially creating new samples.
+
+So here, in the undersampling, assuming that we have 9,000 positive samples, undersampling, we should be free from negative categories.
+
+How?
+
+Randomly.
+
+Randomly remove some samples.
+
+Here, random undersampling.
+
+And we have oversampling.
+
+We have the same problem, 9,000 negative samples.
+
+Negative samples.
+
+Now we want to increase the number of positive samples.
+
+How we can increase it?
+
+Just randomly sampling.
+
+Sampling, we would be displacement.
+
+Means that after oversampling, random oversampling, We will have lots of duplicates of our data.
+
+So what does it mean?
+
+These 10 cows to your are not ordinary model, ordinary model, none of the over sampling or under sampling, they're not guaranteed, you know, at the end, the problem will be solved.
+
+Then we have SM identities, minor entities, minority over sampling.
+
+So the logic behind the SMOTD is very simple.
+
+So by random over-sampling, since we are replicating the data, so it means that most of it.
+
+By SMOTD, we do the over-sampling, but with no replication of the same, exactly the same data.
+
+We generate the new data.
+
+Generate the new data.
+
+For each minority class instance, add new sample.
+
+Neighbor is different to the instance you generated with your neighbor.
+
+Can I ask a question?
+
+So just applying process minor, because now all the data samples are numeric.
+
+We are generating new data samples, again, new data samples.
+
+But now let's assume that we are working in text classification or doing some kind of, you know, maybe something with text.
+
+Our samples are not numeric, our samples are text.
+
+So how we, and also we have the classing balance problem.
+
+How we can handle or how we can find these?
+
+It's like you translate it to a picture.
+
+Yes, we have information.
+
+Yeah, exactly, it has some kind of problem because, you know, when you convert the, did you understand what he suggested?
+
+He just, okay, you convert the text to a numeric representation, okay?
+
+And then we'll have a vector and we can apply normal.
+
+But in text, okay?
+
+So when we convert text to a numeric representation, we know that part of it is also valid.
+
+So we can, you know, give mapping to the, map the vector to the token, right?
+
+But when we apply these vectors around the sheet, that's when it's valid.
+
+So maybe instead of a direct, you'd choose like, because I know there's text perturbation, or you can do that.
+
+Yeah, so what would be the simplest way?
+
+Just replace one word with its synonym.
+
+Yeah, text to mother.
+
+We can replace the one word with a synonym.
+
+Substitute another.
+
+You can also do it the simplest way.
+
+The simplest way.
+
+You are always working with any element.
+
+Now we have the text generation ability.
+
+So we can simply give a piece of text. generate thousands of similar tapes.
+
+One that you can record.
+
+So we are, I think we need to go on to the outlier.
+
+So what are the anomalies or outliers to set up data points that are considered different than the one question?
+
+What is the difference?
+
+What is that outlier?
+
+Something that is unrelated.
+
+Mismatched data.
+
+Outlier is related, but they are distinctly different from the measured class.
+
+Exactly.
+
+So noise is not a valid data point.
+
+Outlay is valid, but it's different than the norm of the data.
+
+So for example, let's say, say, OK, average height of the people is, I don't know, for example, 1.80.
+
+So if you find someone with, I don't know, 3 meters, it's valid. but the value of the head, different than the nose.
+
+And usually, we want to know, find these outliers or different data points, but they will affect, they can affect the mass of the brain, but no, most of the people will be a height of three meters.
+
+So one in thousands, or context is important, so freezing tends to be important, so we need to also look at the context.
+
+It can be important or not or nonsense.
+
+For example, a really high blood pressure is important.
+
+We need to detect it because it's important.
+
+But I don't know, for example, 200 pounds for weight for two years old might be too much.
+
+So because of the anomalies or outliers being outlier, data from different classes, sometimes For natural variation, you need to code the error so that the data can be closed for other.
+
+There are different approaches or techniques to outlier or anomaly detection. to look at the data.
+
+So the outlier would be an object that has a low probability with respect to the probability distribution model of the data.
+
+So if you find the data distribution or probability distribution for the data, so the data with the lowest probability, so we apply that these data most probably should be outlier.
+
+And they use some methods like the crop-scale.
+
+Just to make sure that we have outliers in our data set or not.
+
+So we have proximity-based approach or distance-based approach.
+
+So the anomalies or outliers are points far away from the other points.
+
+So with the rest of the approach, I'm kind of knowing the last three methods.
+
+The other thing is clustering upper level.
+
+I differentiate them.
+
+So the outlier score of an object is the distance to its case nearest neighbor.
+
+So in this case, we give the outlier score for each sample.
+
+And based on that, we judge if this sample is outlier or in proximity base or distance based measure, that would be the distance to its case nearest neighbor.
+
+For the density based, we have also density programming.
+
+Then we have the clustering-based rule.
+
+So we say points far away from cluster centers are outlier.
+
+First, we have to find the clustering point.
+
+And also, small clusters can be considered an object.
+
+Then we also have another technique, reconstruction-based methods.
+
+So reconstruction-based methods, usually we use the autoencoders.
+
+So we try to lower the dimension of the data in applying the autoencoders.
+
+Then we do the reverse.
+
+So we look and we try to bring the non-data, and we look at the difference between the, if the difference was high, this is outlier, otherwise, this is normal.
+
+And also we have one class SVM model.
+
+We apply the SVM, one class SVM on our unlabeled data to find the boundary of the normal data.
+
+And then all the samples out of the boundary of the normal data would be labeled as for the density-based outlier score.
+
+These, in terms of k-nearest neighbor, one definition is inverse of distance to the k-neighbor.
+
+Inverse of the distance, we define that in density.
+
+So another definition, instead of, you know, inverse of distance to k's neighbor, we define that inverse of the average distance to k-neighbor.
+
+One over average of this.
+
+Point is an outlier, not just because it's far from the average distance, then look at the density of the k, because much less than the average neighbors.
+
+So if there are regions of different density, this approach can have problem.
+
+So this approach, this density-based approach works based on the region's density.
+
+But what if, you know, the nature of our data set something like, you know, we have some regions with low density.
+
+In that case, we have some.
+
+So for the method for this one, we will need load for local error.
+
+To apply the load method, so we consider the density of point relative to data, it's k nearest neighbors. y1 up to yk being k nearest neighbors of dense neighbors.
+
+And the relative density of this average density is first divided by first of any density based on the k nearest neighbors.
+
+Divided by k for density in k nearest neighbors.
+
+Now, x from out to the big, much bigger This number is much greater than 1, most probably more than 99%.
+
+Based on this method, A2, you are considered a liar.
+
+Sometimes, this method is used for...
+
+We have the clustering based on an object, a cluster. a single type based cluster, object is an algorithm, if it's not close enough to a cluster, we set a cluster or density based cluster, if it's density, we have the reconstruction error, we bring the object back to the original space Now call this object height.
+
+Now this error difference between the original object and the fixed height will not be maintained.
+
+From the lower dimension, call it as reconstruction error.
+
+If this error is low, it means that the object is not outlier.
+
+If it's high How we can do it?
+
+by different model like PCA PCA, yeah PCA, whatever you have, whatever methods you have for dimensionality reduction Then another way is just to apply the autoencoders Just same as the output, you are trying to generate the input And you will use the hidden layer as a dimensionality reduction technique.
+
+All for noise reduction.
+
+Then we have one class...
+
+Thank you.

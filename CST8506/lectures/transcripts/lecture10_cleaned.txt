@@ -1,0 +1,133 @@
+As you know, this is the structure of an autoencoder. We have some kind of neural network, which can be any architecture: MLP, RNN, or whatever. Here, the goal is to give the input to the network and try to reconstruct it at the output. What is the use when we do reconstruction? We give the input and try to regenerate it. Regeneration, reconstruction, memorization: the input and the target output are exactly the same. In translation, the input and the output are different. In summarization, the input and the output are different. The input and output have to be the same, right? Yes.
+
+Why are we using an autoencoder? With the encoder part, we decrease the dimension of the data. The encoder encodes our input into a lower dimensional space, the hidden state h. Then we give that low dimensional representation to the decoder, after training, to reconstruct the input. This is how we compress the data. Suppose the dimension of our input is 10 million and the dimension of the hidden layer is 100. Instead of storing the data at 10 million dimensions, we only need to store it at 100 dimensions. After training, whenever we want to access one specific input, we only need the lower dimensional representation.
+
+One of the uses of the autoencoder is noise reduction. To train this model, at training time you give the input as input to the model. What is the target? Again, the input. The input and the target output should be the same.
+
+Now assume you have training data with some noise. Let's say the samples are images, and the images are noisy: some noise has been added to the image, or to the voice, or to the text. You know this, and you know what the correct data without noise looks like. At training time, you can give the noisy data as input, but instead of giving the noisy input as the target, you give the clean data without noise as the target. Here, you train a model to denoise your data, to remove the noise.
+
+There are different types of autoencoders. The most popular type has a hidden layer smaller than the input dimension, but it is possible to increase the size of the hidden layer. We can also use the autoencoder for anomaly detection. We try to regenerate our input using the autoencoder. If the generated output is different from the real input we gave to the model, that would mean the input contains some noise and our model denoised it, so that input sample is anomalous.
+
+What kind of noise are we talking about? Any kind of noise: noise in images, in voice, or in text. We are working with numbers. Let's say this is your image; there are numbers here, the original pixel values. How can I show that this image is noisy? If for any reason some values change, for example if something is added to different pixels so a value changes, the sample is noisy. The important application of this solution is to detect anomalies, and we can also use it for denoising data.
+
+Then we have one-class SVM. I don't want to go into depth on the algorithm, but in simple terms, we use an SVM model to classify the normal objects. We already know that SVM is a classifier; it separates data from different classes. But for anomaly detection, we don't have a label, or we have only one label, and one label means no label. So how can you use an SVM to separate data with no label? That is what one-class SVM does.
+
+The main idea behind OCSVM, or one-class SVM, is that if we have some data, we try to separate it. With one-class SVM, we try to find a boundary around the normal data. Samples inside this boundary are treated as normal, and samples outside the boundary are considered outliers. This is the main idea behind the hyperplane. The kernel choice and the way we set the boundary all aim to enclose the majority of normal data within some boundary. That means we are separating this majority from something else, but we don't have that something, which is the problem.
+
+To solve this problem, we use the origin trick. What is the origin trick? We assume that a data point at the origin (0, 0, 0, ..., 0) is an outlier, not normal data. So we try to separate the real samples from the origin. That is how OCSVM works.
+
+Then we have the formulas, the general formulas. We have the function f(x) = w · φ(x) − ρ, where φ(x) is the kernel and ρ is a parameter we learn. For any data point x, if f(x) > 0, it is normal; otherwise, it is considered an outlier. It is an optimization problem, similar to the others we've seen.
+
+You will probably work with this in one of your assignments or labs. You have some parameters to play with: the nu parameter and gamma. With nu, you control what portion of the data you want to consider normal. If you set nu = 0.05, it means that at most about 5% of the data is considered outliers, so only about four samples here are flagged as outliers. But if you set nu close to 0.2, the number of outliers is much higher. That is the role of the nu hyperparameter. If you change the value of gamma, you can change the boundary as well. That is it from the last lecture.
+
+Is that algorithm confined to SVM? Yes, everything in scikit-learn you can use similarly; you just apply it like that.
+
+Now let's move to the third part of this course, sometimes called ensemble learning. What is the meaning or idea behind classifier fusion, or ensemble learning? It is simple: instead of relying on one classifier, we take the opinions or decisions of multiple classifiers and combine them. It is popular, and we are used to it. For example, if you have a health problem, you can go to a physician. That is a single classifier prediction. But sometimes, if the problem is serious, you don't rely on one prediction. You say, I got the opinion of this physician, but I would like to hear more from another expert. So you go to others. The first physician says you have disease A, the second says B, the third says A, and the fourth says no, you are fine. Then you can look at the overall decisions and simply take the majority vote to see which decision most of the experts agree on.
+
+This is the ensemble idea: construct a set of base classifiers from the training data, then predict the class label of test records by combining the predictions made by multiple classifiers. There are different approaches to majority voting: simple majority voting, weighted majority voting, and heuristic weights for majority.
+
+So why do ensemble methods work? Here is a simple problem. Suppose there are 25 base classifiers, analogous to 25 physicians. Each single classifier we consider a base classifier. Each has an error rate of 35%, meaning each classifier misclassifies about 35% of the data. We take a simple majority vote of classifiers for classification.
+
+If all classifiers are identical, instead of going to 100 different physicians you go to the same physician 100 times, and he or she will not change his or her opinion. So the error rate of the ensemble, taking the majority vote across 100 visits to the same physician, is the same as the individual error rate.
+
+If all classifiers are independent and their errors are uncorrelated, they behave differently from each other. That means we have a diverse set of classifiers. In ensemble learning, we should have diversity.
+
+How can we find the error rate of the ensemble? It is the probability of having more than half of the classifiers being wrong, because that is when the ensemble is wrong under the simple majority rule. With 25 classifiers, half of them is 12.5, so at least 13 must be wrong for the ensemble to be wrong; in that case, the probability of individual terms is on the order of 1.1 × 10⁻⁶.
+
+With this formula, we can find this probability. What is C(25, i), the combination 25 choose i? It is the number of ways we can select i classifiers from 25. So i starts from 13; you should consider all possibilities: when 13 are wrong, 14 are wrong, 15 are wrong, and so on. ε to the power of i is the probability of i classifiers being wrong, and (1 − ε) to the power of (25 − i) is the probability that the rest of the classifiers are correct. We sum this over all possibilities, and if we solve the equation, the probability comes out to 0.06.
+
+So compared to the single classifier error rate of 35%, the ensemble error rate is 6%. Even under the assumption that most of the classifiers in our pool could be wrong, the error rate is only 6%. That is why the ensemble works. In theory, ensemble learning works, but it is not guaranteed that you always get improvement when you apply it.
+
+For the first 12, do we consider some threshold or error rate and separate them? No. For the first 12, assume the first 12 are correct; they predict the class label correctly. Just assume they are correct. We want to know the probability, or the error rate, for when the ensemble predicts the wrong class.
+
+What if we have more than two classes, and the ensemble votes three-way? In this ensemble learning, we only use majority. At the worst case, the error rate of the ensemble would be much higher than the error rate of a single classifier.
+
+Necessary conditions for ensemble methods: to apply ensemble methods, all base classifiers must be independent of each other. You cannot go to one physician 100 times and say you got the opinion of 100 different physicians. Being independent means the classifiers must be diverse. If you want to know more about diversity and how to measure it, you can look at the classifier combination literature. There are more than 10 different metrics to evaluate the diversity of classifiers. The simplest one is to look at the performance of the classifiers. If the performance differs, that means the classifiers are diverse. Regardless of the performance metric, if the predictions of the classifiers on different samples differ, the classifiers are diverse.
+
+Also, all base classifiers must perform better than random guessing. If you go to 100 physicians who don't know much, whose knowledge level is low, the ensemble may still fail; having a specialty doesn't mean being an expert. If you go to hundreds of such physicians and take the majority vote, you won't get a useful decision. At minimum, each individual classifier must perform better than 50% (better than random guessing for binary classification).
+
+Ensemble methods work best with unstable base classifiers. What are unstable base classifiers? Unstable means that if you change something during training, the results change a lot. In neural networks, everything depends on the initial value of the weights, so if you change the initial weights, the results change. In KNN (K-nearest neighbor), if you remove the nearest neighbor from the sample, the label can change, so KNN is unstable. Decision trees are also unstable: if you change the data, the tree changes. Ensemble learning is designed for unstable classifiers. What about stable classifiers? Stable classifiers include logistic regression and SVM.
+
+I believe you are familiar with the term bias-variance decomposition. Essentially, the spread of the error is noise. In simple terms, let's assume we have a machine. We want to project the input x to the target. The prediction is shown as y-hat; it can land at one value or another. For different x's we have different y's. What is the variance? The variance is: if you change this projection, change the parameters of this device, it will predict different values, for example if you change the initial weights of the network, or if you remove some samples. The average spread of this difference, the spread of the prediction, is the variance.
+
+Here, for example, we have y-hat and the target. The difference between the average of the true targets and the average of the predictions is what we call bias.
+
+What is the ideal case? The ideal case is no bias: y-hat equals y. We are looking for low bias. We are also looking for low variance, which means stability. If every time you run the model it generates different results, after two runs you would never use it. We want low bias and low variance, but usually it is not possible, so we need a trade-off between bias and variance.
+
+In general, for classification tasks, we have the generalization error of the model, the overall error we expect when we apply the model to unseen data. It is a bit different from the test error. The generalization error has a c₁ term, an irreducible error we cannot remove, because in most classification algorithms some steps use random values. For example, for a neural network, we never know the ideal values for the initial weights, so we will always have this error. Then we have the bias and the variance. Together these form the generalization error.
+
+Based on the variance and bias, we can redefine overfitting and underfitting. What are overfitting and underfitting? Overfitting is when your model fits too closely to the training data, so the training data is over-represented, and it predicts poorly on new classes. Underfitting is basically not giving the model enough training, to the point where it doesn't understand the pattern.
+
+Overfitting means the model memorized; it didn't learn anything. It just memorized the training data, so it cannot be applied to new data. That is overfitting. Underfitting means the model does not work for training data or for unseen data.
+
+When we have overfitting, we have high variance: on new unseen data, it predicts something nearly randomly, so the variance is high, but the bias is low. For underfitting, for the opposite reasons, the bias (the difference between the average predictions and the average target) is higher, but the variance is low. So we can rectify overfitting and underfitting by adjusting bias and variance.
+
+What is the relation of ensemble methods to bias and variance? With ensemble methods, we can reduce the variance of a complex model, so we can deal with the overfitting problem. There are, of course, other approaches to solve overfitting.
+
+For underfitting, what can we do? What are the reasons for underfitting? The same question applies to overfitting. Reasons for underfitting: the model is not complex enough, the model is too simple, we don't have enough samples from different classes, we didn't train the model for enough epochs, and the data quality is low.
+
+Reasons for overfitting: training too much, too little training data, and using a very complex model.
+
+How can we deal with overfitting? One approach is augmenting the data, increasing the size of the training data, usually by augmentation or by collecting more data. We don't always collect perfect data, so the extra data we use for augmentation usually contains some noise, though we wouldn't directly call it noisy data. So we implicitly introduce some noise into the augmented training data. Then there is regularization: you can apply regularization by introducing dropout at different stages; the learning rate is also related to overfitting. You can also simplify your model, for example by pruning, or by using dropout in neural networks. For neural networks, using the proper activation function helps as well. In general, using ensemble methods is another solution for overfitting.
+
+With these classifiers, what can we do? We apply all those classifiers to test samples, and for each sample, we take the decisions of the different classifiers and combine them. The question is: how can we train a diverse set of classifiers, how can we add diversity to our pool?
+
+First, to create a diverse set of classifiers, we can use different classification algorithms. The results of an SVM are different from those of logistic regression, which are different from those of a neural network. So if we change the algorithm, the results change.
+
+Now assume we use three different algorithms with default settings, say SVM, KNN, and an artificial neural network, and the performance of these three models is 60%. Are these classifiers diverse? Yes. Why? They got the same percentage, but how they got there matters. Probably one classified something as no and another as yes, but the overall percentage is the same. Exactly. To assess diversity, we need to look at the predictions for each sample. It is possible to get the same overall performance with different true positives, false positives, and true negatives. So just by looking at the overall performance, you cannot say whether the classifiers are diverse or not. But you can say that because you used different algorithms with different mechanisms, for some samples SVM will work fine, for other samples KNN will work, and for others ANN. The main idea in ensemble learning is to use different classifiers so they can cover each other's weaknesses. If one classifier works well in some region of the data, we use that one; if another works well in another region, we use that one.
+
+One way is to change the classification algorithm. Another way to add diversity is through the classifier's hyperparameters. Assume we use these three classes of different algorithms with the default settings. If we change the settings, let's say using one classifier like one-class SVM, by changing C, gamma, or other hyperparameters, we get different classifiers. Changing hyperparameters is another solution. Another option is to search for the proper hyperparameter values.
+
+The question is how we can add diversity to our pool, or how to train different classifiers. If we use different subsets of the training data for the same algorithm, we train, for example, one SVM with 10 different subsets of the training data. We mentioned that ensemble methods work well when we have an unstable classifier; if we change the training data, the results change.
+
+How else can we create a diverse set of classifiers? If we play with the labels, for example if we remove some samples from the majority class, or change labels to add some noise, that would be another solution. Another approach, not for ANN but for traditional models, is to change the feature set. If you change the feature set, the results change, so using a different subset of features (including feature reduction) is another solution.
+
+In my experience, if statistically one model like SVM has a 30% chance to work and another has 60%, it is not necessary to combine them; we should just use the better model. It is more efficient, especially if the better one is a more complicated tree model. But of course, if the F1 score is the same, it makes sense to combine them. Usually the F1 scores are quite different. This was just an example to say that performance alone cannot tell you about the diversity of a model. Even if all of them have 85% performance, it is still possible, by combining them, to get 90%. That was the motivation.
+
+So, back to creating a diverse set of classifiers: remember the previous option with multiple stages, lower-level and higher-level models? We can also use a combination of these approaches: different classifier algorithms, different settings, different subsets of the training data, and different features.
+
+There are famous ensemble approaches based on bagging, stacking, and boosting. Boosting has several variants.
+
+Stacking is much simpler than bagging and boosting. If the ensemble is arranged in layers, with one level feeding into the next, that is stacking. You stack the classifiers one on top of the other. Here is the analogy: you have a problem, you go to one physician, then another physician, then another. Then, instead of introducing yourself to a final decision-maker, you just give him or her the decisions from those three physicians. Is that similar to majority voting? What is the difference?
+
+For a single classifier, when I say classifier, think of the expert. I have a problem, I go to the expert, I introduce myself, I represent myself with my feature set: I have this, this, this. The expert tells me, you have this problem. That is normal classification.
+
+Now, ensemble. I don't rely on a single physician. I go to one, get a decision; then I go to another, and then another. Now I have three different decisions. Up to this step, stacking and majority voting are the same.
+
+In stacking, I take the decisions from the three experts and give those decisions to another expert. The other expert will analyze the decisions from these experts, without talking to me, and make the final decision. That is stacking. That is why in your previous assignment you put a logistic regression as the meta-classifier and gave it the outputs from different base classifiers. That is stacking.
+
+In the normal ensemble approach, we don't have another expert at the top. I just get the decisions from the different experts and take the majority vote. If two of them say I have problem A, I assume I have problem A. That is the difference between stacking and a normal ensemble.
+
+We also have bagging. What is bagging, and what are its steps? We have the original data, say 10 samples labeled 1 through 10. Then we randomly sub-sample from these with replacement. Let's say in the first round I have one set of samples, in the second round another, and so on, as training samples. Since we are sampling with replacement, it is possible to have duplicate data, and it is also possible that some original samples do not appear in our training sample.
+
+In general, the probability of a training instance being selected in a bootstrap sample is about 63%. It is not close to zero. That means the probability of each individual sample from the original data being selected in one of the bootstrap samples is acceptable; it is high enough.
+
+Now, k is the number of bootstrap samples. Here k is 3. Then for i from 1 to k, we have k bootstrap samples, or k different training samples, which means we train k different classifiers. Create a sample of size N named Di (dataset Di). Train a base classifier Ci on Di. So we train k different classifiers.
+
+Are the classifiers diverse here? Yes, because we use different training sets, so even if we use the same algorithm, the results differ from round to round. At test time, we just take the majority.
+
+Can we have the same training set? Yes, you can.
+
+Let's use an example with one-dimensional data. You have only one feature, and these are the labels. You have 10 samples: the first sample's feature value is 0.1, the second is 0.2, and so on, with the corresponding label 1, and so on.
+
+Assume we are using a decision stump for classification, and we apply a condition to make our decision: if the value of x is less than some threshold, assign one label; otherwise assign the other. We have two labels.
+
+In the first round, using the data from that round, we place a threshold at 0.35. For all x less than 0.35, the prediction y-hat must be 1; otherwise, y-hat must be -1. It is y-hat, not y. Similarly, for other rounds, for other stumps, we change the threshold. For the third, fourth, and fifth rounds we pick thresholds such as 0.35 (thresholds can also repeat across rounds). For the sixth and seventh rounds the threshold might be 0.75.
+
+This is our summary of decision stumps. In round 1, the split point or threshold is 0.35: all samples with x less than 0.35 are labeled 1, and the others are labeled -1. Similarly for all rounds.
+
+Now let's take a new sample, x = 0.1. Round 1 says if x less than 0.35, predict 1. Round 2 says if x less than 0.7, predict 1; and so on up to round 5, all predicting 1. Round 6 says if x less than 0.75, predict -1. Round 7 is similar: less than 0.75, predict -1. You get the whole row of predictions. Round 10 says if x less than 0.05, predict 1; otherwise predict 1 as well, so effectively always 1.
+
+You can take the majority (you could also take the minority). Just count the number of 1s and -1s. For each column, sum them up and look at the sign: if positive, the label is 1; otherwise, -1.
+
+Most of the time you end up training classifiers that classify everything into one class, but the ensemble still works. The classifier works like this: we use decision stumps, we make decisions based on a condition, and then we perform bagging to get our results.
+
+If you want to compare this bagging algorithm with the single classifier we used here, how do they compare in terms of strengths and weaknesses? The strength is here: based on the different samples used in each round, the stumps divide positives and negatives differently, including for the cases where a single classifier would get it wrong. The labels produced differ across rounds because we use different sub-samples. This ensemble approach works better than a single decision stump; the performance is better.
+
+Just because a model, or a system, told me it rejected something, it should explain why. You should explain to the customer why, but first, the model should explain to you why it rejected. This is explainable AI. Explainable AI is not a new domain, but it is a hard domain.
+
+The weakness of the ensemble, compared to an individual classifier, is in explainability, the ability to explain the decision. For an individual classifier, we can simply say why we predicted this. For each individual stump, if you ask why it predicted 1 for a sample, you can go back to the table and say: because x was less than 0.35, I predicted 1. But if you ask the ensemble why its answer is 1, you cannot just say: because I trained 10 classifiers and took the majority vote, so the answer is 1. The most important weakness of the ensemble is a lack of explainability.
+
+We are voting, so it is a confluence of decisions. Yes, and it doesn't explain anything. When we say we cannot explain, we mean we need a reason. You say you got some decisions and took the majority, right? That is not a reason for why each classifier predicted what it did.
+
+You may say, well, we have 10 classifiers, and for each classifier it was very simple: if x is less than 0.35, predict 1, otherwise the other label. But what if we have millions of experts, like MoE (mixture of experts), millions of experts? We need to explain; we cannot just say, because these millions of experts each said this, because of that, we came to this decision.

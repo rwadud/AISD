@@ -1,0 +1,1205 @@
+So, as you know, I think this is the texture of autoencoder.
+
+So this is, we have some kind of, can be any kind of neural network, MLP, RNN, whatever.
+
+So, here, the goal is to give the input to the network and try to get it in the output area.
+
+So, what should we do?
+
+What is the usage when we are doing RNN creating?
+
+So, just give the input and try to regenerate it.
+
+What's the usage?
+
+Regeneration, back generation, memorization.
+
+The input, the output, and the input are exactly the same.
+
+So, in translation, the input and the output are different.
+
+In standardization, the input and the output are different.
+
+Any idea?
+
+The input and output have to be the same, right?
+
+Yes.
+
+Today is my last day here.
+
+Please try to show me your reactions in fact.
+
+Any idea why we are doing, why we are using your thing?
+
+We are, okay, so with the encoder part, you see here, so we decrease the dimension of the data.
+
+So with encoder part, we encode the data, our input to the lower dimension space, H, Hidden State, or the other way.
+
+Then we give that low dimension, low dimensional data to the decoder after training, to get the input data.
+
+So this is the way we compress the data.
+
+We have this dimension of our input is 10 million, and the dimension of the hidden layer is 100.
+
+So in setup, storing the data with 10 million dimension, we only need to store the data with the dimension of 10, or 100, right?
+
+So after training, then whenever we want to have access one specific input, we need to store the input data.
+
+One of the uses of this autoencoder is noise reduction.
+
+So to train this model, trace this model, in the training time, so you will give the input as input to the model.
+
+And what will be the output?
+
+The targets.
+
+What will be the targets for the model?
+
+Again, the input.
+
+So the input and the target outputs should be the same.
+
+Now assume that you have training data with some noise.
+
+You know that every sample, let's say it's images.
+
+Images are noisy.
+
+There are some noise added to the image or to the voice or to the text, whatever.
+
+Right?
+
+You know that.
+
+And you know what are the correct image, correct data without noise.
+
+So what you can do, you take the training time.
+
+You can give the input data, noisy input.
+
+And instead of giving for the target data, Instead of giving the noise input, you can give the data without noise.
+
+Right?
+
+So here, you train a model to denoise your data.
+
+To remove the noise of data.
+
+Understood?
+
+Wow.
+
+What?
+
+No, no, no.
+
+Wow.
+
+No, no, no.
+
+Like, wow.
+
+No, no, no.
+
+Really.
+
+I mean, that makes sense.
+
+I mean, that's a very...
+
+That's like, denoise?
+
+It's up to you.
+
+It's up to you.
+
+Okay, so...
+
+It doesn't make sense.
+
+It doesn't make sense.
+
+It is possible.
+
+So there are different types of the encoders.
+
+Different types of the autoencoders.
+
+So the most popular one is the size of the hidden layer must be smaller than the input dimension.
+
+But it is possible you can increase the size of the hidden layer.
+
+Now, for the anomaly detection, we We can use it for the automation as well.
+
+So we try to generate, regenerate our input using the autoencoder.
+
+If the generated input is different than the real input that we gave to the model, so that that would mean that the input data has some noise.
+
+And our model denoised it.
+
+So that input data is anomalous.
+
+That's it.
+
+Any questions?
+
+So what kind of noise are we specifically talking about?
+
+Any kind of noise.
+
+Any kind of noise.
+
+When I say noise to the image or, I don't know, the voice to the text.
+
+We are working with the numbers, okay?
+
+So we are working with the numbers.
+
+Let's say this is your image.
+
+There's some numbers here.
+
+The original, this is the original value.
+
+Now, how can I show that, for example, this image is noisy?
+
+If for any reason, some values, let's say here, if something added to different pixels, I change the value, it means that...
+
+So, the important part of the implant solution to detect the anomaly, or even we can use it for, as I said, for people denoising the data.
+
+Then we have the one class SPM.
+
+Okay, so just in a simple way, I don't want to go into depth of the algorithm.
+
+In a very simple word, we use the SPM model to classify the normal objects, right?
+
+But we already know that the SPM is a classifier.
+
+Okay, so it's going to separate the data from different classes, from each other.
+
+But for the anomaly detection, we don't have a label.
+
+We don't have a label.
+
+Or let's say we have just one label.
+
+One label means no label.
+
+So how can you use the SVM to separate the data with no label?
+
+So this is how one class SVM works.
+
+So the main idea behind the OCS view or one class SVM is that it says if we have some data, we substitute that data.
+
+So with one SVM, one class SVM, we try to find the boundary, OK, to put boundary on the normal data, OK, this one, and then it says if samples inside this boundary would be treated as normal samples, OK, and if all the samples out of this boundary, OK, should be considered as outlet.
+
+This is the main idea behind the hypergraph.
+
+So the kernel, files of the kernel, but to falsify the binary, it's in a normal tree.
+
+All these things are going to separate the majority of, I'm going to put the majority of normal data in some boundary.
+
+What means that we are going to separate this majority from something, but we don't have that something.
+
+That's the problem.
+
+For this one, to solve this problem, we use the origin trick.
+
+Okay?
+
+What is the origin trick?
+
+We assume that this data sample in the origin, the 0, 0, 0, 0, 0, 0, 0, 0, 0 is on the left of the origin.
+
+And you already know that 0, 0, 0, outlier is not normal data.
+
+So we try to separate these samples from the origin, right?
+
+So this is how OCSVM works.
+
+Understood?
+
+Okay.
+
+So then we have something, again these are the formulas, but the general formulas.
+
+We have function f of x, define w, phi of x is the kernel, minus rho is the parameter that we are going to learn.
+
+For any x, for any data point, if f of x greater than 0, it will say it is normal.
+
+Otherwise, it should be considered as outward, it is a kind of optimization problem, it is one of these ones.
+
+Also, it is up to us, it is up to us, if you were to be always creating one of your assignments or labs.
+
+So you have there some parameters to play with, the new parameter and gamma.
+
+So with the new parameters, you are seeing that which portion of data must be you are interested in considering as the normal data.
+
+So let's see how about new here.
+
+So it's new here.
+
+Then you say, okay, new is 0.05.
+
+Means that, see, you limit 0.045 here.
+
+Only four samples are considered here as outlier.
+
+So it means that only 5% of the data at most must be considered as outlier.
+
+But here, when you say near close to 20%, the number of outliers is a lot.
+
+So this is the role of the new hyperbola.
+
+And if you change the value of the gamma, you can change this for me.
+
+That's it from the last lecture.
+
+Any questions?
+
+No questions?
+
+Oh, yes.
+
+Is that an algorithm confined to the SMT?
+
+SMT?
+
+SMT?
+
+yes yes yes everything in scalar can use it with the scalar so we just applied up like that?
+
+yeah yeah yeah so we just up like that?
+
+yeah we just create up like that?
+
+yeah the other one yeah now let's move to the third part of this course sometimes it has ensemble learning okay so what's the meaning or the idea behind the fusion classifiers fusion or ensemble learning?
+
+it's very simple okay said that instead of relying on one classifier, we take the opinions or the decisions of multiple classifiers and combine them.
+
+It's popular, and we are used to that.
+
+For example, if you have some problem, a health problem, you can go to... this is a single classifier prediction.
+
+But sometimes, if the problem is serious, you don't rely on one prediction.
+
+You say, okay, I got the opinion of this position.
+
+But I'd like to hear more from another expert.
+
+So you go to the others, but I think not in Canada.
+
+So you can go to the other, and then this position says you have yeast disease, A. The second one says, you have B. The third one says you have A. The fourth one says you have no URFB.
+
+There is no problem.
+
+Then you can look at the overall decision and just simply do the majority vote.
+
+And see which decision most of the experts are agreed on.
+
+Right?
+
+So this is the unsupported.
+
+So construct a set of base classifiers from the training data.
+
+Predict class level of test records by combining the predictions made by multiple classifiers.
+
+By taking the majority of different, there are different approach to for the majority.
+
+Simple majority voting, weighted majority voting, and also some heuristics, heuristic weights for majority.
+
+So why do ensemble methods work?
+
+OK, here's a simple problem.
+
+Suppose there are 25 classifiers.
+
+We have 25 base classifiers, each of those positions.
+
+Each of single classifier, we consider base classifier.
+
+Each classifier has error rate of 35%.
+
+So it means that each of those classifiers, at most, they misclassify 30% of the data.
+
+So majority vote of classifier rules for classification.
+
+We just take the simple majority vote.
+
+If all classifiers are identical, all the classifiers, instead of going to the one, going to the hundred different position, if you go to the same position hundred times, right?
+
+I didn't tell you this stuff.
+
+Going to the different position, just going to one position hundred times.
+
+Okay, so if you go to a position hundred times, he or she will not change his or her opinion, okay?
+
+So, the error rate of the ensemble will take the majority vote of the hundred times of going to the same position.
+
+Again, the error rate is weak.
+
+If all classifiers are random, and the errors are uncorrected, they are different.
+
+So, it means that we have diverse setup classifiers, right?
+
+So we have diversity.
+
+In ensemble learning, we should have diversity.
+
+I'll put it.
+
+Error rate, so how can we find the error rate of the ensemble?
+
+Because the probability of having more than half of the classifiers being wrong.
+
+When ensemble, when ensemble, they would be wrong.
+
+Just taking this simple majority rule.
+
+And now set up classifiers. we want to take a, no, agreement to our final decision.
+
+When the decision will be drawn.
+
+Most of the classifier, if the most of the classifier are wrong, so the most of classifier means that at least half of them should be wrong.
+
+So 20, we have 25, half of them will be 12.5.
+
+So we can take the at least 13 in that one treat.
+
+Okay, 1.1 times 10 to the minus 6. 10 to the minus 6.
+
+Yes.
+
+Okay.
+
+So then, the probability, do this, okay?
+
+Now see, with this formula, we can find this probability.
+
+So what is this 25 or the combination of the 25 over i?
+
+How many times can we select i classifiers from 25 classifiers?
+
+So i starting from 10.
+
+You should consider all different possibilities.
+
+When only 13 of them are wrong, 14 of them wrong, 15 of them wrong.
+
+So, e to the power of i, the probability of, or the error for classifier i being wrong.
+
+And this 1 minus e to the power of 20 minus i means that the probability of the rest of the classifiers are correct.
+
+And we take this up for all different possibilities.
+
+And if we solve this equation, the probability would be 0.06.
+
+So comparing to this one, so here it means 6%, the error rate of single classifier, for of our single classifiers is 35.
+
+But if we assume that most of the classifiers in our pool are wrong, the probability, the error rate, even with that assumption, the error rate would be 6%.
+
+That's why the ensemble works.
+
+Ensemble learning, we assume that it works.
+
+But it's in theory.
+
+It's in theory.
+
+But it's not guaranteed that always you get improvement if you apply it.
+
+For the first 12, we consider some threshold, or error rate, for instance, and we separate them?
+
+No, no.
+
+For the first 12, assume that the first two are correct.
+
+They predict the class name is correct.
+
+Just assume that they are correct.
+
+And this assumption is we want to know what's the probability of, or what's the error rate for when the ensemble predicts wrong classes.
+
+What if we have a little more than two?
+
+Say the ensemble votes probably three way or something.
+
+If we choose to not charge it for all the- No, ensemble learning.
+
+Only majority.
+
+Majority.
+
+We are at the worst case rate of the ensemble learning, ensemble method, would be much higher than the error rate of the single classifier.
+
+Any other questions?
+
+So necessary conditions for ensemble methods.
+
+So to apply the ensemble methods or ensemble approach, All base classifiers must be independent of each other.
+
+You cannot go to one position 100 times and say, okay, I got the opinion of 100 different positions.
+
+Being independent means that classifiers must be diverse.
+
+So if you want to know about diversity and how to measure the diversity of the classifiers, You need to go and have a look at the classifier combination book.
+
+OK?
+
+So there are more than 10 different metrics to evaluate the diversity of the classifiers.
+
+But the simplest one, the simplest one is just to have a look at the performance of the classifier.
+
+If the performance of the classifiers are different, So it means that the classifiers are diverse.
+
+If the performance of the classifiers, regardless of the performance metric measurement, if the performance of the classifiers on different samples, are different, the predictions on different samples are different, it means that the classifiers are diverse.
+
+Then, also, all base classifiers perform better than random guesses.
+
+So, if you go to the 100 positions, it's just one position, if you go to the 100 positions that they don't know much, the knowledge level is not that high.
+
+It's possible, it's always possible.
+
+So having a self-identity doesn't mean that being a herpet, right?
+
+So if you go to such physicians, or hundreds of those physicians, and gain the majority vote, over our idea, over our decision, and gain, what are the feed-in items?
+
+So at least we need to have 15%, or up to 150% of the performance, for each individual classifier.
+
+Okay, big question.
+
+Then, are some of the methods work best with unstable-based classifiers?
+
+So, what are the unstable-based classifiers?
+
+The unstable means that if you change something during your training, okay, the results will be changed a lot.
+
+So, in neural networks, we know that everything depends on the initial value for the weights of the network.
+
+So, if you change the initial weights, the results will be changed.
+
+Or in K&N, K nearest neighbor, if you change, let's say, you have neighbors.
+
+So if you remove the nearest neighbor from the sample, meaning that the label can be changed.
+
+So the K&N is unstable.
+
+Decision tree as well.
+
+If you change the data, right, so the tree will be changed.
+
+The results, the ensemble learning for unstable, then you have a stable classifier.
+
+Question?
+
+This is the first thing.
+
+Stable, classical, logistic regression, stable, and SVM.
+
+I believe you are familiar with this term, Bias-Variance Composition.
+
+So you know what is the bias and what are the bias and variance.
+
+Essentially, the spread of the error is a noise.
+
+So just in a simple word, so let's assume that we have a machine.
+
+So we want to project the input X to the target.
+
+And the projection can be only shown the projection example as Y hat.
+
+Right?
+
+It can be here, it can be here, it can be here, whatever.
+
+So, also for different x's we should have different y's.
+
+So now what would be the y hat?
+
+What would be the variance here?
+
+So the variance would be, if you change this projection, change the parameters of this device, so it will target different things.
+
+Maybe like the one, I mean, if you change the initial weights of the networks, right?
+
+Or if you remove some samples, it will target different places, right?
+
+So the average of this difference, so the prediction and variance.
+
+So here, for example, we have white and target.
+
+So the difference between the average of the true targets with this average of the predictions, we consider white.
+
+What would be the ideal case?
+
+I think the ideal case, we are looking for ideal case. the ideal case would be no bias.
+
+So we want to have the y-hat equals to the y.
+
+So the bias, no bias.
+
+We are looking for the low bias.
+
+Also, we are looking for low variance.
+
+We are looking for stability.
+
+If you use the model, if you use the model, whenever you run the model, it generates different results.
+
+After two runs, you will never use it.
+
+We are looking for low bias and low variance.
+
+But usually, it's not possible.
+
+So we need to have some kind of trade-off between bias and variance.
+
+In general, for classification tasks, we have the generalization error of model, the overall error.
+
+It's generalization error.
+
+That's this generalization error.
+
+So when I say the generalization error, the error that we assume that we will see when we apply the model on unseen data.
+
+It's a bit different than the test error, right?
+
+For that, this generalization error, we have C1.
+
+C1 is now an irreducible error.
+
+So the error that we cannot reduce, that we cannot remove, we always have some kind of error.
+
+Why we have that kind of error?
+
+Because for most of the classification algorithm, we we are using some part of the process, some steps of the process, we are using some random values.
+
+So for example, for the neural network, the initial debates, so we never know what are the ideal or the perfect values for the weights.
+
+So definitely we will have this error.
+
+Then the bias and also the variance.
+
+This would be the overall, the model for this generation.
+
+And as I mentioned, so based on the variance and based on the variance and bias, we can define, redefine overfitting and underfitting.
+
+So what are the overfitting and underfitting?
+
+So based on your previous study, so what are the overfitting and underfitting?
+
+Overfitting is when your data, when your model is, it's too, when the model fits too close to the data, to the training data, and so that's when it's presented in the data.
+
+And also when you predict the classes.
+
+Underfitting is basically not putting enough of training data to the point where it doesn't have an understanding of the error in between?
+
+Yes, exactly.
+
+So the overfitting means that the model memorized didn't learn anything.
+
+Just memorized the training data.
+
+So since it memorized training data, it didn't learn anything.
+
+So it cannot be applied to new data.
+
+So keep overfitting.
+
+And for the under fitting, under fitting means that our model does not work neither for training data nor for unseen data.
+
+So here, you can say the over fitting, when we have the over fitting, we have a high variance.
+
+So it's needed for new data.
+
+And for new unseen data, it predicts something randomly.
+
+So the variance is high.
+
+But the bias is low.
+
+So for obvious reasons, for other reasons, the bias, the difference between the predictions, the average predictions and the average rule I think it's probably higher.
+
+But the variance is low.
+
+So we can say they rectify over picking and under picking to increase the new bias.
+
+So increase the new variance.
+
+So what's the relation of the ensemble methods with the bias and variance?
+
+unsolved methods, we can reduce the variance of the complex model so that we can deal with the overfitting problem.
+
+And there are, of course, other approaches or other solutions to solve the overfitting.
+
+For the underfitting, what we can do with the underfitting?
+
+What are the reasons for underfitting?
+
+The test is same for the overfitting as well.
+
+Your model is not competent.
+
+The model is very simple.
+
+The model is very simple.
+
+We don't have enough samples from different classes.
+
+So also, we didn't train the model for enough competence.
+
+And the quality of data as well.
+
+The reasons for overfitting.
+
+Yes, that's one reason for the neural networks.
+
+So training too much, then low amount of the training data.
+
+And the third one, yes, using very complex model.
+
+So how we can deal with the overfitting?
+
+introducing, not introducing the noise, just augmenting the data, okay?
+
+So just increasing the size of the data, okay?
+
+By augmentation, usually by augmentation, collecting more data and adding more data for the training part, okay?
+
+Training set.
+
+We don't always, you know, collect perfect data, okay?
+
+So the extra data that we are using, we will use for the augmentation, usually they contain kind of noises, but directly saying the noisy data, it's not correct.
+
+So, but yes, we introduce, we implicitly introduce the noise to the training data can be augmented, then regularization, regularization, so applying regularization, you can do that by introducing the dropout in different states of them, learning rate will be related to the overfitting.
+
+So, but what you can do is just simplifying your model, sharing something, and without broken neural networks.
+
+So for another one for the neural networks, using the proper iteration function.
+
+So, and in general, say, ensemble using the ensemble method is another solution to deal with the overfitting.
+
+These classifiers, what can we do?
+
+We apply all those classifiers and test samples, and for each sample, we take the decision of different classifiers and apply the decision.
+
+Now, the question, how we can train diverse set of classifiers, how we can add diversity into our pool?
+
+Don't look at these slides.
+
+I know you have a question.
+
+How can I apply diversity to the classifier?
+
+Diversity, it would be first of all, first to create diverse set of the classifier.
+
+If we use different classification algorithms in general, so the results of the SVM is different than the results of the logistic regression, different than the neural networks, So if we change the algorithm, the results will be changed.
+
+Okay.
+
+Is it clear?
+
+So if we have, no question, function, find performance, and to evaluate the performance you use one of the methods.
+
+So it was model, do you have a question?
+
+Okay.
+
+Now we have the classifier, and one way to create a diverse set of classifier is just to change the classification algorithm.
+
+Now we use three different algorithms, the default settings, no, I'm wrong, SVM, KML, Layman, artificial intelligence, and the performance of those three models are 60%.
+
+Now the question, are these classifiers diverse, can we consider them as diverse set of classifier?
+
+of classifiers, yes or no, why?
+
+Yes, why?
+
+So they got the same percentage, but how they do it is important.
+
+So probably one of them classified something as no and the other as yes, but the percentage is the same.
+
+Exactly, exactly.
+
+To find the diversity, we need to have a look at the sample, the predictions for the sample.
+
+It's possible to get the same performance results with different true positives, false positives, and true negatives.
+
+Therefore, just looking at the performance, you cannot say the classifiers are not diverse or they are diverse.
+
+But you can say, since you use a different algorithm with different mechanism, definitely, definitely for some samples, SVN will work fine.
+
+For some other samples, KNN will work, and for the other, ANN.
+
+So they will come just, you know, the main idea, besides the one I mentioned for the ensemble learning, is that we use different classifiers because we want them to cover their weaknesses.
+
+If this one works fine in some region of data, so we use this one.
+
+And if this one works fine in other region, we use this one.
+
+So one way, change the classifier algorithm.
+
+Another solution to put the diversity to the classifier partition.
+
+So assume that we use these three classes for a different algorithm with the default settings.
+
+Now, if we change the settings, let's say using one classification, we can use one SVL.
+
+But if we change the C1, C2, gamma, by changing those hyperparameters, we will get different classifiers.
+
+So changing the hyperparameter is another solution.
+
+Another way of doing search is for finding the proper values for the hyperparameters.
+
+Note, the question is how we can add diversity to our pool, or how we can train different classifiers.
+
+If we use different subset of the training data for the same algorithm, we train one sphere with ten different subset of the training data.
+
+We mentioned that the ensemble methods is good when we have a tailored classifier, right?
+
+If we change the training data, the results will be changed.
+
+Any idea?
+
+You all are doing research or coding or what you know?
+
+Everything.
+
+How we can create diverse set of classifiers.
+
+If we play with the labels, for example, if we neglect some samples from the majority class, or if we change the label just to adding the noise, OK?
+
+Some kind of a notation.
+
+That would be another solution.
+
+Another approach.
+
+You can change the, not for the ANN, for the others, for the traditional model.
+
+If you change the feature set, the results would be changed.
+
+Another solution.
+
+Yeah, so that's using a different subset of the features, includes the feature reduction.
+
+Another solution.
+
+My experience, it will be wonderful if, well, if in statistics, for example, one model, for example, SVM, have 30% chance to work, and another 60%.
+
+It's not necessary to use a mixed result, because we should be using better model.
+
+It's more efficient because it's a more complicated tree model.
+
+But of course, if it's the same F1, yeah, it makes sense to mix it.
+
+Yeah, it's the main.
+
+But usually, it's absolutely different.
+
+F1, we have.
+
+Yeah, so no, no, no.
+
+This was just an example, OK, just to say that if the performant cannot say anything about the diversity of the model based on the performance.
+
+Yeah.
+
+Yeah.
+
+Yeah.
+
+But if, for example, even if you have, let's say, if you have all of them, the performance of all of them, 85%, OK, but it is, again, possible by combining them, we get 90% performance.
+
+So that was the problem.
+
+That was the reason why it's possible.
+
+So the other approach, create a diverse set of classifiers.
+
+Like the one I mentioned.
+
+For the first one.
+
+Remember the previous option?
+
+Yes.
+
+It's got phases, lower models, higher models.
+
+OK. So if you use, we can also use the combination of those.
+
+We can use different set of classifier, with different setting, with different subset of the training data, with different features.
+
+Right?
+
+It's famous to ensemble codes and based on boosting.
+
+So we can use it as bagging, aggregation, and boosting methods.
+
+Boosting codes are other boosts.
+
+Right?
+
+Stacking is much simpler than bagging and boosting.
+
+If the environment is from front to back environment, that would be stacking.
+
+You stack one above each other.
+
+Right?
+
+Like this.
+
+You go...
+
+You have a problem.
+
+Go to one physician.
+
+Okay?
+
+And another physician.
+
+Another physician.
+
+Okay?
+
+Then, instead of introducing yourself to the final solution, you just give him or her the decision by those three conditions.
+
+It's similar to the majority voting, right?
+
+What's the difference?
+
+Did you understand this analogy?
+
+No?
+
+In single classifier, when I say classifier, you think about the expert.
+
+I have a problem.
+
+I need to find my problem.
+
+I go to the expert.
+
+I go to the expert, I introduce myself, I talk about, you know, I represent myself with my feature sets.
+
+I have this, this, this, this, this, this, this.
+
+So this expert, right, tell me, okay, you have this problem, right?
+
+This is normal classification.
+
+Now we have ensemble.
+
+I don't rely on this position.
+
+I go to this, because it's available.
+
+I got his decision.
+
+Then I say, OK, it's better to go to another.
+
+I go to this one.
+
+They're OK. It's better to go this one as well.
+
+But nothing planned, as I said.
+
+Now I've got three different decisions.
+
+Up to this step, they are the same for stacking and voting, for ensemble, right?
+
+Now, in stacking, I received the decisions from three other experts and gave the decisions, these decisions, to another expert, OK?
+
+So the other expert will analyze the decisions from these experts without talking to me, right?
+
+And we'll make the final decision.
+
+This is the stacking.
+
+This is the one.
+
+Because of that, you put the logistic regression here and gave it the output from different classifiers in your previous assignment or last assignment, right?
+
+This is the stacking.
+
+Now, in ensemble approach, in ensemble approach in general, we don't have another physician here, another expert here.
+
+I just get the decisions from the different experts and take the majority.
+
+OK. Two of them say that I have the problem A. So I assume that I have problem A. Right.
+
+So this is the difference between stacking and normal ensemble.
+
+We have the bagging as well.
+
+So what is the bagging?
+
+So what is the process?
+
+What are the steps for bagging?
+
+We have the original data.
+
+We have 10 samples.
+
+1, 2, 3, 4, 5, 6, 7, 8, 9.
+
+OK, then we randomly sub-sample these.
+
+We create the sub-samples from the original data randomly with replacement.
+
+OK, sampling with replacement.
+
+So let's say at the first, I have this one.
+
+For the second round, I have this one.
+
+And for the training sample, right?
+
+So you see, since we are sampling with replacement, that would be possible to have duplicate data.
+
+And again, that would be possible not to have some sample in our training samples.
+
+But in general, so the probability of training instance being selected in a Pudisra sample is the second probability.
+
+So it's the probability around 63%.
+
+So it's not close to zero.
+
+Right?
+
+So it means that the probability of each individual sample from original data being selected in one of the Pudisra is acceptable.
+
+It's high.
+
+It's good enough.
+
+Right?
+
+So now we created our sample, training sample.
+
+Now, then, k is the number of bootstrap samples.
+
+Here we have 3. k is 3.
+
+Then for i from 1 to k, we have k bootstrap samples, or k different training samples.
+
+Means that we should train k different classifiers.
+
+Create a sample of site A named as DI.
+
+Data set, DI.
+
+Take the base classifier CI, DI.
+
+I'll just have sample DI.
+
+So we train take different classifiers.
+
+Are the classifiers diverse here?
+
+OK. The data is randomized.
+
+So the answer is yes or no.
+
+Yes.
+
+Yes.
+
+OK. The answer is yes, because we are using different training sets.
+
+So even if we use the same classifier, we must move to the other reading.
+
+Take the sample case, we just take the majority.
+
+Is it clear?
+
+We can have the same set of a result.
+
+Yes, you can have the same training set. set, say, with just one dimensional data, you have the other numbers.
+
+You have only one feature, this one.
+
+And these are the labels.
+
+You have 10 samples.
+
+So for the first sample, the feature value is 0.1.
+
+Second sample, the feature value is 0.2.
+
+The expected feature is 1, and so on.
+
+Now let's assume that we are using the decision tree before the classification, and we apply the condition to make our decision.
+
+Based on the condition, if the value of x is less than some threshold, we make the label something.
+
+Otherwise, make the other labels.
+
+We assume that we have two labels here.
+
+In the previous case, we have, say, at the first round, the first round, we have this using the data from here.
+
+And just putting a threshold on 0.35.
+
+So for all of the x, all of the x less than 0.35, The prediction must be white.
+
+This should be hat.
+
+This white hat must be hat.
+
+White hat, not white.
+
+The white hat should be one in white hat.
+
+Otherwise, white hat must be white.
+
+The prediction must be white.
+
+And similarly, here for the other, sorry, for the other drum, for the other stuff, we change the threshold.
+
+For the third one, for the fourth one, for the fifth one, 50 per threshold, 0.7.
+
+Again, also they can be the same.
+
+They can be the same.
+
+And for the sixth round, for the seventh round, 0.7.
+
+So this is our summary of decision stuff.
+
+So for the round one, we've selected 0.35 as the split point or the threshold.
+
+Okay, so I have said, okay, the left class, all the samples with the x less than 0.35 must be labeled as 1.
+
+Others must be labeled as minus.
+
+Similarly here and for all.
+
+Everything is wrong, right?
+
+Now, let's say...
+
+Now, we have these samples, new samples.
+
+Let's have a look at this one. x equals to 0.1.
+
+So the first line says that if x less than 0.35, predict it as 1. so the third one, if x less than 0.7 say the label is 1 up to let's say up to 5 they say 1 now for 6, 6 says if x less than 0.75 say the label is minus 1 Right?
+
+It's minus 1.
+
+At 7, as well, say, it's 75.
+
+Say, the negative is 1.
+
+So you have this whole function.
+
+Then for the 10 specified, less than 0.05, say, it's 1.
+
+Otherwise, for most cases, say, it's 1.
+
+You can take the minority, however you can take the minority.
+
+Just count the number of 1 and minus 1.
+
+For CSK we have 1 and minus 1.
+
+You can sum them up.
+
+And let's look at the sign.
+
+If the sign was positive, the label would be 1.
+
+Otherwise, it should be minus 1.
+
+Something like this.
+
+So most of the time you are training classifiers that classify everything into one class.
+
+So the classifier works like this.
+
+So we use decision tree.
+
+We make our decisions based on criteria, based on the condition.
+
+And then we did the bagging, and we got our results.
+
+If you want to compare this bagging algorithm with the simple decision or simple algorithm that we used here, how do you compare it in terms of the, let's say, the weaknesses and its strength points?
+
+The strength points is here, right?
+
+So they are dividing the positive one, negative one, for instance, for the wrong case.
+
+Based on the problem that we have in each round, we use different samples.
+
+So we have taken this one.
+
+Take this one.
+
+Do you see the labels are different than here?
+
+Why?
+
+Because we use different cases, different sub-samples.
+
+So let's say for the strength points, say, OK, This works better since it's the ensemble method.
+
+And the performance is better than the dual-core device.
+
+Just since, you know, just because the model, my system told me the rejection.
+
+You should explain why.
+
+Meaning, you should explain to the customer, but the model should explain to you why it rejected these.
+
+This is the explainable.
+
+And this explainable AI is not new domain, but it's the hard domain.
+
+So the weakness point of this, again, or this ensemble in general, comparing to the individual classifiers is in the explainability, the ability to explain the decision.
+
+In individual classifiers, we can simply say, okay, why you predicted this, why for each individual classifier, each of these groups, each individual classifier, if you ask, can why you predicted one for this sample?
+
+Just simply go back to this point, to this table.
+
+Since it was less than 0.35, I just predicted one, right?
+
+But if you ask this, why this is one, why this is one, cannot say because I did, I trained 10 classifiers, okay?
+
+And then I take the majority voting, okay?
+
+And based on the majority voting, I know that it should be one.
+
+So the most important weakness point of the ensemble tool a lack of explainability.
+
+We're voting in the confluence of religion.
+
+Yes.
+
+So, it doesn't explain anything.
+
+No, it doesn't explain.
+
+So, when I say, cannot say explainability, we need to say, we need to hear something of the reason.
+
+So, you say, okay, I got some decision, I got some change in, I take the, take the majority, right?
+
+So, this is another reason why the other classifiers predicted, you know, different classifiers.
+
+Okay, you may say, okay, just we have here 10 classifiers, and for each classifier, it was very simple.
+
+The classifier said that if six is less than 0.325, should be one, and the other one.
+
+But what if we have millions of experts, a hot one, experts, M-O-E, or another one is M-O-E, millions, mixture of, mixture of millions of experts.
+
+Okay?
+
+We need to explain, not say because you know, these millions of experts, each of them said this, this because of that.
+
+Then we came up with this decision.
