@@ -1,0 +1,239 @@
+A model has three parts: the backbone, the neck, and the head. You can think of the neck as an extra model that takes the features coming out of the backbone, processes them, and passes them to the task heads that perform classification, object detection, or segmentation.
+
+Student question: Can you not add the neck portion into the backbone like another layer?
+
+Yes, you can. The reason I separate them is that when I talk about transfer learning, you can freeze the layers of your backbone but you might want to train your neck and your head. There are different ways to do transfer learning. You could initially freeze all of your backbone and only train the head, then slowly start unfreezing layers. The reason I've set it up like this is because OpenMMLab calls it backbone, neck, and head. You could consider the neck as part of the head itself, but it's good to conceptualize it this way because in a lot of the libraries, when you're taking a classification model, they call the last layer the head. As such, a neural network is just a bunch of layers, so you can put a layer as part of one or the other.
+
+Student question: Is the neck limited in how many layers you can put, or can you just put as many as you want?
+
+You can just put however many. Think about how the existing models came about. Models like ResNet-50 and MobileNet came about as graduate students sitting in a lab adding one more layer at a time. It was actually known as graduate student descent for the longest time, because we were just sitting and putting one layer, then another. You can think of neural networks as Lego blocks; each layer is a Lego block and you're just building. It's up to you how you build it, as long as it works.
+
+What are the main steps in transfer learning? First, you need to define your model. You have a pre-trained model, and you take your own new model. That new model can be exactly the same as the pre-trained model, or it can be different and only initialize some parts with the pre-trained checkpoint. So first, you define your model architecture, and it's good to define it in terms of the backbone, the neck, and the head. Then you take a pre-trained checkpoint, take the weights from it, and load them into your model for each of the layers.
+
+You can think of your saved model as a big dictionary, where the keys are the names of the layers. If you just print your model parameters in PyTorch, it will bring this whole thing up. You name your layers, for example conv1, batch_norm1, relu1. You can name them whatever you want, and with each layer you have all of these different parameters. When you load your checkpoint, you're loading this big dictionary into memory and then matching keys. You have your pre-trained checkpoint, and you've defined your model with layer 1, layer 2, and so on. You're taking the weights from the checkpoint and copying them onto your model. The keys need to match between your model definition and the checkpoint you're loading. If you find errors like "keys do not match," that means some layer keys don't match between the two.
+
+Optionally, if you have less compute or want a staggered approach, you can freeze all the pre-trained layers, only train your head, and slowly start unfreezing. Or you can fine-tune all at once if you have a small dataset like the cats and dogs example. It depends on the data available, the compute available, and how much time you have. If you have only five minutes, you can just load the pre-trained checkpoint and run it as is.
+
+Student question: How does this relate to continual learning?
+
+Continual learning and restarting training are almost similar to transfer learning. Imagine you trained your network for 10 epochs and decide you should have trained it for 50. You restart your Colab session, load the saved checkpoint, and restart training. You're basically doing the same thing, but you don't have to worry about removing parameters because you're loading the same model again. When restarting training, you also need to load the optimizer settings. The optimizer settings include your learning rate, which is on a schedule, so you don't want to start with a high learning rate again at, say, iteration 420.
+
+To summarize transfer learning: define your new model, load your checkpoint, copy the weights from the checkpoint into your model definition, and then optionally freeze some layers if you want, and train.
+
+Student question: When you freeze a layer, do you just skip it?
+
+The whole goal of transfer learning is to start from a good initialization of the model. You've trained on ImageNet, and now you have cats and dogs, which comes from a similar data distribution. ImageNet is basically a bunch of houses, cars, animals, and so on, so the data distributions are very similar. In that case, you can just use the pre-trained model as is and don't need to fine-tune it because the data distributions match. But say you had x-ray images. ImageNet doesn't have a lot of healthcare images, so in that case you do want to further fine-tune the feature extractor. When I say freeze the model, think of it as: those weights are fixed, you're not updating them. To freeze a layer in PyTorch, you set requires_grad to False. That's all you have to do.
+
+Student question: When you freeze something, you're not skipping it; you still go through it?
+
+Yes, but you're not updating it. When you do the backward pass, you're not updating it. You still do the forward pass through the layer, but because you're not updating it, you don't track gradients and you don't do the backward pass on it.
+
+Before I go into how you do transfer learning, I want you to understand the ResNet model. When I talk about dimensions, it'll become clear, and based on the assignment, it seemed like many of you didn't really understand the architecture of ResNet. So this is a refresher.
+
+Why is ResNet important? What does ResNet stand for? The big connection, also called the residual connection, is the main innovation in this model. When I read the paper, we were just like, "this is so dumb, just one extra connection and they get a paper at NeurIPS," which is the main conference for deep learning. But it actually worked, and so it kind of became standard.
+
+When you were writing a config in MMPretrain, you put in a number of stages. Those stages are these things in the diagram. You can think of each of these blocks as a block of layers at the same spatial dimension.
+
+Let's go through how this works. If you have an input image resized to 224 by 224 with 3 channels (RGB), it goes through your first convolution layer. The first convolution in ResNet-50 has a 7x7 filter with a stride of 2 and 64 filters. If somebody told you to deploy ResNet-50, you'd need to know the size of GPU you would need, which means knowing how many parameters this model has so it fits into your VRAM.
+
+What does a 7x7 filter mean? You have 3 channels and a 7x7 filter, so each of the 64 filters is 7x7x3. You do the convolution: multiply the filter by the patch on each channel, then sum across channels to get one pixel value. That's the amount of compute that goes into producing each output pixel. That's why you do it on GPU, because they're all very parallelizable processes.
+
+Do these dimensions make sense, how you get 112 out of 224 with a 7x7 filter and a stride of 2? You take your input, pad it, so the input size increases. Then the output is (input minus filter size) divided by stride, plus one.
+
+That's the first layer. Then in max pooling, there are no learnable parameters; it's just taking the max. Generally max pooling is used to decrease the spatial size by 2, or by whatever the stride is. Here, 112 decreased by 2 gives you 56.
+
+Then it goes into these blocks. Each block is a 1x1 convolution into a 3x3 convolution into a 1x1 convolution, plus a residual connection. Every time you look at a 1x1 convolution, think of it as a squeezing layer, because a 1x1 is not taking into account any context around your pixels; it's squashing all your channels.
+
+This is an example of what a 1x1 convolution does. If this is your image and this is your filter, you multiply them, do the same for greens and blues, add them all up, and get one value. So 1x1 just combines the channels. It's a sum of all your channels, not an average; a sum. A 3x3 convolution takes the context into account. So in the ResNet block, what's happening is: it takes your input, squashes the channels, does the actual 3x3 convolution, and then expands it back up because you want to add it to your initial input via the skip connection and the dimensions need to match. That's why it's sandwiched between two 1x1 convolutions.
+
+Student question: Why do you do the squeeze, then a 3x3?
+
+What is the point of a convolutional neural network? Convolution detects features in your images. The more you stack convolution layers, initially it starts by detecting edges, then objects; the deeper you go, some filters detect eyes, some detect ears. They become specialized feature detectors on their own. Empirically, the deeper you go, the more advanced the feature detectors become.
+
+Initially you start with a large filter receptive field to find global features like big edges. As you move deeper, you reduce the spatial resolution of feature maps to capture smaller features. So you start with a big spatial size and slowly decrease it. Empirically, they found that as you reduce the spatial resolution, you don't want to lose information. So they halve the spatial resolution but double the number of filters at each step, so your total information stays the same. Again, this isn't necessary; you could halve both. This is what that particular graduate student found, and they published a paper, so everybody used it. But you could halve both and maybe get no difference in your results.
+
+Why the skip connection? It was the main innovation. As you keep increasing the layers, imagine a thousand layers. When you do backprop, you're computing gradients. You're computing dY/dX using the chain rule, so you multiply the gradient of this layer by the gradient of this layer. Now imagine multiplying 0.1 by 0.1 by 0.1; that's 10 to the minus 3. Over lots and lots of layers, you get a really, really small number. This is called the vanishing gradient problem, and it creates very unstable learning. So they said: pass the gradient backward through the block, but also give it a direct connection from the input. That way the gradient doesn't vanish as much.
+
+Now the gradient path looks like you're directly skipping the block but also going through the block. So you're getting both the small gradient through the block and a direct gradient through the skip. This is repeated at every single stage. Each stage groups blocks at the same spatial dimension. By spatial dimension I mean 56x56, 28x28, etc. In one stage everything is 56x56, in the next everything is 28x28. As the spatial dimension halves, the number of filters doubles. That is just a choice for this model. The justification was that they're keeping the information the same, but you can make justifications after the fact. You'll find that everything in neural networks is very empirical; there isn't always a real reason behind it.
+
+Do you understand why the 3x3 is sandwiched between two 1x1 convolutions? The first 1x1 is to squeeze. The second 1x1 expands it back up because you're adding it to the input through the skip connection, and you can't add tensors with different dimensions. So you want the dimensions to match.
+
+Student question: When we squeeze, are we forcing the model to learn small, fine-grained details?
+
+Yes. Usually in convolution we learn basic edges. The model also learns these style details.
+
+Student question: When we're skipping, are we skipping in the backward pass or the forward pass?
+
+Both. The model architecture has skip connections everywhere; there's a skip connection here, here, and here. This is just so you understand when I talk about cutting off the head and how many channels there are. You don't really need to understand this in so much detail, but it's good to know because ResNet is one of the main models used in computer vision.
+
+Student question: What's the goal after the squeeze?
+
+The goal is to run the 3x3 over a smaller, squeezed version. The squeezing concentrates information so that the 3x3, which is the main convolution that finds new features, operates on more information in less space. It's also easier for computation.
+
+The previous slides had a theme on the tech stack and how to use Conda. I found that lacking, so I've put together some things you should be aware of if you're going to work in startups in this field. This is the tech stack that's mostly used.
+
+In terms of neural network frameworks, why are there so many libraries? Each graduate student in each lab created their own libraries because at the time there wasn't a good environment. Some took off, some didn't. Initially it started with TensorFlow, which came out of Google around 2012; before that it was called something else, but then it became TensorFlow. TensorFlow went through different iterations, starting with TensorFlow 1. Around 2016 or 2017, PyTorch came out of Facebook. It was just one guy sitting and creating PyTorch over a few days. You can write PyTorch on your own out of NumPy if you want, because it's basically the computational graph plus autograd.
+
+At that time, Python was pretty slow, so both TensorFlow and PyTorch were used in industry because TensorFlow was written with a C++ backend. It had both Python and SQL APIs but compiled to C++, so it's really fast. It's still good for edge devices that need speed, but it was difficult to use. So PyTorch started getting a lot more adoption.
+
+Then Google came out with JAX, which one of my colleagues in the Boston offices created. What was the difference between PyTorch and TensorFlow before? In TensorFlow, you create the graph, compile it, and it's static; you can't change it. Every time you do a forward pass, you have to recompile the graph. PyTorch is just-in-time and dynamic. It's called eager execution, so as you change the input, the graph is recomputed on the fly. That's why it's much easier to use.
+
+JAX follows similar principles to PyTorch but is slightly different. It's written on something called XLA, which is a linear algebra library, and it's based on functional programming. Both JAX and PyTorch do dynamic graphs. TensorFlow then came out with a new version called TensorFlow Eager, which also does dynamic graphs. In your slides, you might have seen that TensorFlow is described as static; that was the old TensorFlow. In 2019, they came out with TensorFlow 2.0. So now all of them do dynamic graphs, but PyTorch has the most adoption. Mostly it's good to just learn PyTorch. What you use depends on which company you join: if you work at DeepMind you'll use JAX, if you work at Google you'll use TensorFlow, if you work at Facebook you use PyTorch, and if you work in open source it's mostly PyTorch.
+
+You were asking the other day, why are we writing everything from scratch? Because these are the lower-level libraries. People saw that they were writing trainer code, training loops, checkpointing, and visualization, so they came up with their own libraries on top.
+
+A group at the Chinese University of Hong Kong came out with OpenMMLab, specific to vision tasks. Their main thesis was to make it very modular, so you don't have to write code; you can control everything through configs, and it calls the underlying code in the background. It has some support for TensorFlow and JAX, but it's mostly PyTorch.
+
+Hugging Face initially started as an open-source NLP library. They had just the tokenizers and Transformers library, but it has grown into a big ecosystem where you can upload your models. There's Hugging Face Spaces where you can upload your apps, and Hugging Face Datasets where you get datasets. Right now the ecosystem is moving towards using Hugging Face for most things. If you want to work in industry, it's good to be aware of how to use Hugging Face. If you know Python, you kind of know Hugging Face; you mainly need to know the Transformers library. If you're working in generative modeling like diffusion models, they have a really good diffusers library. So I'd highly suggest learning how to use Hugging Face and getting familiar with Hugging Face Spaces.
+
+Hugging Face initially supported PyTorch, TensorFlow, and JAX, but recently they dropped support for TensorFlow and JAX. So now they only support PyTorch. That's why I've drawn dotted lines: there's some legacy support for TensorFlow, but going forward they've stopped supporting it.
+
+Keras was started by a grad student called François Chollet. Initially it supported mainly TensorFlow, and he got hired at Google, so now Keras is a better abstraction on top of TensorFlow, similar to how you use Hugging Face on top of PyTorch. They've started supporting PyTorch and JAX, but not everything is supported in PyTorch and JAX, which is why it's not fully usable for those backends.
+
+The main libraries in deep learning right now are PyTorch, TensorFlow, and JAX. It's good to know PyTorch. I'd highly suggest learning PyTorch. Then, on top: OpenMMLab is based on PyTorch, Hugging Face uses PyTorch, and Keras mostly uses TensorFlow but also has PyTorch support.
+
+Student question: You said Hugging Face is one of the most important ones. In other classes we've done Keras and OpenMM. Why use each one?
+
+Keras used to be the new kid on the block when I was in grad school around 2017. At that time, Keras was just so easy to use because everything was packaged together. I feel since then your syllabus might not have been updated. Things are moving fast, so you should have a good conception of how things work, and how a new library would compare. That's what I'm trying to put together in this lecture.
+
+On the tech side, your lectures use Conda. I'd say use Conda or venv or anything else that creates an isolated environment for downloading specific versions of Python, NumPy, SciPy, etc. As you saw with OpenMM, it depends on old versions of Transformers and Python; it hasn't been updated because the professor who was maintaining it passed away and after that it became unmaintained. So every time you start, if you want to try a new library on your machine, always create a virtual environment. You can do it via Conda, venv, or whatever you want.
+
+You can also create Docker containers. If you're working in industry, generally everything is dockerized and put on cloud machines. Learn how to write Docker configs. These days, a lot of it can be done by Cursor and similar tools, but you should understand what the different parameters in the config are. I'd highly suggest dockerizing something and putting it on an EC2 machine or any cloud machine. If you're applying for machine learning roles, it's good to know Google Kubernetes and Docker; how to architect different Docker images, how to do multi-machine setups with multi-GPU, and so on.
+
+Your slides only mentioned EC2. Why this preference for only AWS? You should know GCP and Azure as well. Right now I only use GCP day to day, but it's good to have a conception that in the cloud, you have virtual machines: in AWS it's called EC2, GCP calls them virtual machines, Azure calls them virtual machines too. Then you have blob storage where you put all your data. Each cloud has different names: AWS calls it S3, GCP calls it blob storage or buckets. So get the conception that you have cloud machines, data storage, some form of SQL in each of these, and some form of NoSQL database management. Get a basic understanding of what each thing is in each cloud.
+
+Your slides mostly only had VS Code. Why this preference for only VS Code? I'd highly suggest trying one of the AI code editors because everything is moving towards AI code editing. You should know how to set up your AI assistant: the main rules file, the instructions, how to use the composer, when to use an AI code editor, when to take a suggestion and when not to. In a large codebase, if you ask it to make changes here, it might involve changes in other files. So you need to know how to put in those guardrails so it doesn't do too much. Learn how to set up agentic computer use, like OpenAI's Operator and similar tools, where you give it instructions in a sandbox because they can go off the rails really badly.
+
+Cursor basically has similar functionality to VS Code, so if you're used to your key bindings on VS Code, Cursor is a good alternative. I've heard good things about other AI editors as well. I mostly use Cursor. Interviews at Facebook and similar companies have started moving toward seeing how you use code editors and work with AI, so I'd highly suggest getting familiar with them.
+
+PDB is a debugging tool for Python; learn how to put in checkpoints and how to debug Python code. Poetry and uv: if you have a Python app, you can use Poetry, which is now standard, or uv, to install all your requirements. Terraform is for deployment so you can do one-click deployment. FastAPI is the newest web framework that most companies are using; it's a Python-based framework.
+
+If you know all of these and name-drop them in interviews, you'll most likely get the job because the interviewer thinks "this person knows stuff." I'd suggest playing around with these, creating small projects: if you've built object detection, deploy it as an app on a GCP machine, see how to make it faster. Those types of skills actually help in interviews. These days everybody can download a model from Google and say, "I created a classification model, I created a recommendation engine." Everyone can say that. But then they probe you: where did you get stuck? How did you scale this? Most of the AI code editors can write tutorial-level boilerplate, so you should know how to debug it, deploy it, and scale it. Those are the skills most companies are looking for. Setting up a code editor that's comfortable for you is a game changer and will really increase your efficiency.
+
+I'm not going to go into the frameworks and how you do transfer learning with each of these in detail.
+
+In PyTorch, many of you already use it; what is PyTorch? It's basically doing autograd over your computational graph. Whatever operations you set up form a big computational graph, and PyTorch automatically calculates the backward pass and gradients for you.
+
+What I do for ResNet loading: first, define your model. Assuming your model has been defined, you need to load your checkpoint. In PyTorch, you can use torchvision.models, which has existing pre-trained models. So you can directly use torchvision to load the weights. That's the easiest way if that model exists. But maybe you've written a custom model and want to take the weights from another model into your new model. How would you do that?
+
+In this example, I'm loading the model from torchvision and defining a new fully connected layer. You can choose to freeze these weights: for each parameter in the model, you set requires_grad to False. That's frozen, and you'd do the forward pass through it. Maybe you want to unfreeze the last block of your pre-trained model and train it in the first iteration. Think of your model as a big dictionary of layer 1, layer 2, stage 1. Go and unfreeze the specific parameters by setting requires_grad to True. Now you've unfrozen them, and you start training.
+
+If your pre-trained model is not in the torchvision library and you want to load it from a checkpoint, you point to the checkpoint path. You'd find a checkpoint file like a .pth or .h5 file. First, define your model architecture and set the weights to None. Now you've defined the architecture but the weights aren't initialized. Then you find your checkpoint and load it. You want only certain parts of that checkpoint loaded into your model. Sometimes the checkpoint is saved as a dict, sometimes it's saved as just the state dict; this might give you an error. If it's a dict, you get the model dict from it; otherwise just load the checkpoint.
+
+PyTorch has load_state_dict, where you load the state dict. The state dict is key-value pairs of conv1 parameters, conv2 parameters, batchnorm1 parameters, and so on. There's an option called strict: when you're doing transfer learning for classification tasks and set strict to False, it doesn't error on missing or unexpected keys, so the final FC layer that's named differently won't be loaded.
+
+If you want to do something non-trivial, not just take an existing classification model and remove the head, you might have to go through each parameter and copy over the ones that match. So Option 1 is to use load_state_dict with strict=False. Option 2 is to go through each parameter and set specific parameters' requires_grad to False, checking that it's not the final layer. Option 3 is to go through each parameter and choose which layers to load and which to set requires_grad to False on. When it comes to object detection, it's not trivial to copy weights from a classification model into an object detection model. But in most cases you won't be doing this.
+
+In your head, the model is: I've defined the model, now I need to fill it with the right weights. I look at my checkpoint and see how each weight matches to my model definition. I can do it manually, or I can just say take these weights, put them here, take those, put them there. Then for the weights I want to freeze, I set requires_grad to False on those specific layers.
+
+To check this, in PyTorch you can print all of your trainable parameters, and it should print only the parameters you want to train.
+
+Student question: Would it just show layers requiring grad, or would it check missing keys?
+
+Trainable parameters only show the ones with requires_grad set to True. For missing or unexpected keys, you have separate variables. If you have a ResNet-50 model and you're loading a ResNet-50 checkpoint, those should be empty. I put this in because when I show you the object detection example, the unexpected list will have the FC layer bias and weight, because the classification head is unexpected when transferring to object detection. So you just print the unexpected keys and see what's there.
+
+That was how you load a checkpoint in PyTorch and copy weights from an existing checkpoint.
+
+Next is OpenMM. OpenMM is a library written on top of PyTorch. The main thesis in developing it was modularity and specificity for computer vision tasks. It was developed at the Chinese University of Hong Kong (CUHK).
+
+The main engine here is MMEngine. Everything is built off of MMEngine, which has the main training engine and evaluation engine. Then you have specific use cases: MMPretrain for pre-training, MMDetection for detection, MMSegmentation for segmentation, and so on. I was confused at first; could I not use MMPretrain to do object detection for the assignment? It seems MMPretrain is only for classification. For detection, you use MMDetection; for segmentation, MMSegmentation. Each has its own config. We'll see that these configs actually reuse each other. MMDetection reuses checkpoints from MMPretrain. They're created as separate modules where you change the context they give you and run the models.
+
+The main thing in OpenMM is the runner. The runner runs your entire training. It's the main entry point. Within train, it has events called before_run, before_train, before_train_iter. When you looked at your log file, you saw these events: before_run, after_train_iter, after_val_iter. These are events. The logger uses hooks. In your config, you saw four hooks. You can write your own hook for each of these events, and each hook has a priority. In your log file, you'd see before_run with hooks defined at very high, normal, and low priority. If you look at your log files from classification, you'll see these same hooks and their priorities.
+
+In OpenMM, the training engine calls the runner. The runner looks at all the hooks that have been defined and their priorities, and runs each hook based on which events are defined in it. If I only have four hooks defined in my config, the runner looks at each hook, sees if it has a before_run event, collects all of those, and runs them. Then it looks for before_train, runs all of those in priority order, and so on.
+
+If you wanted to write your own hook to collect all training losses and validation losses, you'd have events for after_train_iter and after_val_iter, and maybe after_test_iter for test. You'd give it normal priority and just collect the losses. It'd be two lines of code per event. Then you plug it into your config, and you have your own hook for visualizing losses as training is happening.
+
+The main conception of how OpenMM works: it runs hooks defined in your config file based on priority. The main thing in the config file for transfer learning is the model, where you define the pre-trained checkpoint type, what the checkpoint is, and how many stages you want to freeze. The prefix is because the model has a backbone, neck, and head, so you give the prefix accordingly.
+
+Student question: This one just has backbone and head, no neck.
+
+Yes.
+
+Student question: For the frozen stages, are there specific parameters I should keep, or is it my choice?
+
+It's your choice. For ResNet, which has 4 stages, maybe you want to freeze the first one, then go more granular. If you want to freeze all 4 stages, you set frozen_stages equal to 4. It depends on the type of model you have and what its conception of a stage is. There might be better ways of doing this with more granular control, but I'm not too familiar with the latest changes.
+
+Student question: How do you prioritize which hook runs first?
+
+When you register the hooks, you give them a priority: very high, high, normal, or low. There are about four levels. So when you register the hooks, you give them a priority level, and they run in that order. In your log, you'll see the priorities mentioned for each hook. There's a registry where you register your hooks, and you can also define the priority there.
+
+On Hugging Face: Hugging Face is very similar to PyTorch. A lot of what you do in Hugging Face is very similar to PyTorch, but Hugging Face has batteries-included tools for specific things. The main thing to be aware of is the tokenizers library and the Transformers library; Transformers is the main engine. In OpenMM you had MMEngine; in Hugging Face they have something called the Trainer, which is part of the Transformers library. You don't have to write the entire training loop. You can just call trainer.train() and it'll train.
+
+timm is the image processing part of the Hugging Face library, with pre-trained image processing models for computer vision. timm is the equivalent of torchvision for Hugging Face. So you have torchvision for PyTorch, and timm for Hugging Face.
+
+To load a pre-trained model in Hugging Face for vision specifically (speech and NLP are different), you do timm.create_model and pass the pre-trained model name, like resnet50. To load a checkpoint from a checkpoint file, you do what you do in PyTorch: load the state dict and copy over the parameters. They don't have anything to automatically load. So in Hugging Face you can combine stuff from their library with PyTorch directly. You create the model, load the model, and set whatever you want to freeze with requires_grad to False. Loading a checkpoint from a checkpoint file is exactly the same as PyTorch.
+
+Student question: pretrained=False vs True?
+
+In the previous case, I was loading an existing pre-trained model. In this case, I want to create the model with weights not initialized. The weights aren't initialized, and then I load the custom checkpoint and populate the weights into the model. So this first call only defines the model architecture; then I load the checkpoint, get the weights, and add them to the model.
+
+In PyTorch you write your own training loop; in Hugging Face you just call trainer and it does all the checkpointing, metric calculation, and loss calculation for you. So why would anyone use PyTorch? Why not just use Hugging Face?
+
+If you want custom losses, if you're doing non-trivial things like taking gradients and using them, or if you're researching a new method that's not yet in the Hugging Face library, you use PyTorch. Otherwise, just use Hugging Face. The thing to learn is the Trainer, which is in the Transformers library. They also have the tokenizers library and an extensive optimizers library, which matters more if you're doing NLP.
+
+Finally, Keras: if you want to use a TensorFlow backend, Keras is the abstraction. Keras is also very memorable because it has the Sequential and Functional APIs. It makes it such that every layer is a Lego block, and you just define layer 1 attached to layer 2 attached to layer 3 attached to layer 4. Output of layer 1 goes to layer 2. You can draw out your diagram and write the code as: layer 1 connects to layer 2. You can express the diagram in a very simple way.
+
+In Keras, it's very easy to train. You just call model.fit() and to predict, model.predict(). In the background, it's running a training loop. Everything is fungible in all of these libraries. You can write custom losses in Keras, custom data loaders in Keras. You can do non-trivial things with Keras itself because there's not much abstraction between them.
+
+In terms of loading in Keras, it's similar to PyTorch: you define your model, then you can load in your state dict and set each parameter as trainable or not trainable. They have a shortcut: base_model.trainable = False sets the whole base model as frozen. You also have callbacks for early stopping, checkpointing, and so on.
+
+Comparing all the libraries: for PyTorch vision, you have torchvision; for Hugging Face vision, you have timm; for Keras (TensorFlow backend), TensorFlow has TF Hub of pre-trained models, so you'd get ResNet from TF Hub. OpenMM has MMPretrain as its library of pre-trained models.
+
+To load a pre-trained model: in PyTorch you call models.<model_name>(weights=...). In Hugging Face you call create_model. In Keras you define the model and set the weights. In OpenMM you fetch a config.
+
+For checkpointing, if you don't have an existing pre-trained model and want to load a specific checkpoint: for PyTorch you do load_state_dict; for Hugging Face you define the checkpoint path the same way as PyTorch; for Keras you have load_weights; and for OpenMMLab you also have load_weights.
+
+The whole goal is to show that conceptually each library does the same thing through different routes. For PyTorch, the pre-trained library is called torchvision.models. Because it's so common to do transfer learning for classification, many libraries have a shortcut for removing the head for classification. For PyTorch and Hugging Face, you set requires_grad to False and it's done by name. Keras handles this similarly, but it's not as trivial there.
+
+To freeze the model, whichever parameters you want to freeze, you set requires_grad to False. Hugging Face and PyTorch are similar in this aspect. Keras gives you a shortcut: base_model.trainable = False freezes all the previously trainable layers. In OpenMM, you set frozen_stages.
+
+Training loops: for PyTorch you write your own manual training loop. For Hugging Face, you have the Trainer API. For Keras, you have model.fit(). For OpenMMLab, you have runner.train(). Since OpenMMLab is based on PyTorch, there are different ways of doing it.
+
+For deployment: it's much easier to deploy models on Hugging Face; you just push to the Hugging Face Hub. Keras has model files that Google uses. OpenMMLab has a separate library for deployment called MMDeploy.
+
+As I mentioned, use PyTorch for custom code and research, for things not defined in the libraries. Hugging Face is easy for fast iteration. For TensorFlow, most people have dropped support, so I'd only use it for use cases requiring really fast serving, for mobile or edge devices or small models. TensorFlow shines in those cases because of TFLite. OpenMM is a computer vision specific framework.
+
+In terms of the tech stack, I'd also learn LangGraph and LangChain. These days everyone wants AI agent engineers.
+
+Can anyone tell me what object detection is? This is a review for your next class. What is the main problem you're trying to solve?
+
+Student response: Where the object actually is, in which part of the image?
+
+The core of object detection is not only to tell you what's in the image, but where it is. If your input is an image with a cat, dog, bicycle, and a bucket, the output for the cat will be the label "cat" and a bounding box around it, giving you XY coordinates. Depending on how your model is set up, it can give you each of the X and Y coordinates, or the change in height and width. It depends on how the images were labeled and how the model is set up.
+
+The main point of object detection is what is in the image and where it is. In classification, you're only saying what is in the image. So if you had to take a classification model and convert it to object detection, how would you do that? That's the question I'm trying to answer in these next few slides.
+
+Say I had the same ResNet-50 backbone. For classification, I add an average pooling layer, flatten it, and add a softmax for the 1000 classes I'm classifying. For object detection, I want to say what's in the image and the bounding box, so I want some non-trivial processing from my feature extractor that gives me both the label of the bounding box and the coordinates of the bounding box. I need a neck that does non-trivial processing that can give you both label and coordinates. That's why we have the neck.
+
+Student question: So besides the head, you also have two heads, the classification head and the bounding box head?
+
+Yes, you need the box around. All of this will be covered in your next class; I just wanted to give a preview of object detection.
+
+There are mainly 3 ways of doing object detection: YOLO, SSD (Single Shot Detector), and Feature Pyramid Network. I actually don't know what YOLO stands for. We're now on YOLO version 12 or so. I don't know if the name was meant as a meme or if it actually means something. I'll talk through why each was initially developed.
+
+Initially people developed YOLO. The thesis: your convolution network, as you go through the layers, has learned nice feature detectors. So you have these detectors that can tell you where particular things are and what they are. YOLO uses the very last feature map you get, the 7x7 final layer, and feeds that to your object detection algorithm. Think of object detection as just another neural network that takes in features and tells you the XY coordinates of the bounding box for that particular thing.
+
+In this case, you use the last feature map. If you were making a ResNet-based YOLO model, you take the whole network, get the output from the last feature map, and put it into your neck. You define a new neck that's an object detector; you can inherit from any object detector in the library and add a new classification head. You have a classification head, and your object detector module that gives you bounding boxes. The classification gives you what's in each bounding box, and you get labels for your image.
+
+What was the problem with YOLO? The problem was using just one feature map for all of the objects in the image. The CNN starts wide and goes narrow, narrow, narrow. The final feature map is 7x7, so each cell has a large receptive field; it captures big features but misses tiny far-away objects. If you have a tiny far-away dog or far-away person, that would be totally missed by YOLO. Version 1 of YOLO totally missed those; it detected everything from one feature map but missed all the tiny objects.
+
+People wanted to capture objects at different scales. So they came up with SSD (Single Shot Detector). Instead of using only the final layer, you take the output from each stage and feed it into your object detector. You get feature maps at different resolutions, so you can capture both big and small objects.
+
+But what was the problem there? If I take from the earlier layers, those have learned only rudimentary features; they have good spatial resolution but only see basic features like edges. So you don't get the complex context around your objects.
+
+People wanted both: the rich semantic context of the final layer, but also a big filter and a small filter. So you want both resolution and broad context information. They came up with the Feature Pyramid Network, which is the standard for object detection right now. A lot of the Faster R-CNN and Mask R-CNN models use this Feature Pyramid Network. This will be your object detection model, part of your neck.
+
+What FPN does, for each layer, is take the rudimentary feature map and the final feature map and add them together. You get both the semantic detail from the last layer and the spatial resolution of the early layers. Your next lecture might cover only YOLO and SSD; I don't know if it covers Feature Pyramid Network.
+
+The main goal is to get objects at every resolution but with as much context information as the last layer. It has non-trivial processing in your neck. The whole point is to show you that your neck can be extremely complex. In theory, you can take a classification model and convert it to an object detection model, but it's slightly non-trivial; you have to add this complexity in the neck. For your assignment, you could take a pre-trained YOLO or Faster R-CNN model and just use that.
+
+These are the steps involved in writing your neck to create the object detector, taking your classification head and adding object detection. The point is that you can essentially take a classification model and convert it to an object detection model. You can even take a text model and convert it to an image model. I don't know if it'd do any worse; it learns semantics, which is better than starting from scratch.
+
+MMDetection has a method called MMDet. This calls your checkpoint that's in your MMPretrain config file. You define a new neck, which would be your Feature Pyramid Network, before your detection head. The Feature Pyramid Network implements Faster R-CNN, YOLO, or whatever the current version is. You set it up so your neck is the Feature Pyramid Network. There are parameters you have to move into the network. Then you have other things for defining the region of interest and so on. The MMDetection model is for object detection, which is your assignment. But if you don't want to use it, there are libraries to directly call a Faster R-CNN model or other models from PyTorch's torchvision detection.
+
+I hope you got an appreciation of the basic building blocks of these neural networks. As long as you understand how to load the checkpoint, how to train it, and what the training loop looks like, that's most of it.
+
+Student question: Is this MMDetection? Your slides didn't have information on how to implement transfer learning. MMPretrain has dependencies; do we have the same program as a standard one?
+
+Most likely. I'd suggest creating a separate environment for MMPretrain with an older version of Python and an older version of Transformers.
