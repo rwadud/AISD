@@ -4,38 +4,6 @@
 
 ---
 
-## Course Logistics
-
-### Midterm Exam
-
-Midterm is on Tuesday, Feb. 23, at 2:00 pm.
-
-- The exam consists of **30 questions**: multiple-choice and true/false, with no essay questions.
-- Material includes **week 1 through week 6**.
-- Duration: **60 minutes**.
-- The exam is closed book. You may bring **one cheat sheet**: a single **letter-size page (8.5 × 11 inches)**, usable on both sides.
-- **Leave a 5 cm by 5 cm space in the top-left corner of each side** of your cheat sheet for the proctor's signature. If this specific area is missing, the cheat sheet cannot be used during the exam.
-- Arrive early to allow sufficient time for setup.
-
-**On exam day**:
-
-- Read the instructions before starting.
-- Write your **name and ID number** on the questionnaire and answer sheet.
-- Bring your **ID**.
-- Read carefully the **ICT exam conduct outline**.
-- Bring your **HB pencils and eraser**.
-- Scantron answer sheets are provided before the start of the exam together with the questionnaire.
-- Submit **both** the questionnaire and the Scantron answer sheet.
-
-### How to Prepare
-
-- **Lecture summary slides** are a good place to start. They do not contain all details, but make sure you understand the details underlying the main points.
-- **Do the labs**. Make sure you understand the answers you get.
-- **Code examples** demonstrated during the lecture (check the lecture materials folder on Brightspace).
-- Review the hybrid work.
-
----
-
 ## Recap from Previous Lectures
 
 ### N-gram Language Model
