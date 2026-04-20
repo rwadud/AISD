@@ -1,1 +1,1679 @@
-Well, then we'll not learn if you enter easily. And this is an itch of a normal machine learning model. Okay? They are not able to deal with a big data. So, deeply, you already work, have deal with a huge number of data, and you can utilize it. So still can get benefit of this huge number of it. And to try this, a new machine, a learning course, try to have a specific number, even the head, then try to increase it in the sub limit, in some limit, that your mother will not utilize this date. The performance will not increase, because this is the effect of machinery. Okay? But using in Europe, it work, it comes with the era of the big reason. If you have it working, can't do this. And this is advantage of a neuronimo. Now, in a deep neuronimo. We have many types of deep, uh, DMN, which this one is what you, you learn a new machine, machine. So, yeah. And then our land is certain. And not in and that's it. I think to see and it's related to machine pleasure, of course. Yeah, see, and it's directed machine vision. And INNYP, how news are it? Uh, advance it, the machine down equals. It has a specific use. There was time series. Time series. At work, perfect, it was a 5 CMC. Why? Nine series later has a specific function. Each, any stand, it is all that... What about our sentence? As you say, the functional through, yeah, intelligently. See, that's one, they think it will use, uh, the current neural, each one, to build the language model, because it's good ways dealing with the sequence of data, and it has overcome what's a problem related to neural network. Okay? So, but highlight, you cover it in details. As you see here, we always call a neural network as a stateful computation, because each time we compute the new everything is a complication in between. There's high understanding, at this time, G, and the previous headed state. Okay? And this is the important this. So each time, at time, is time, G1, we compute, why, how, protect, why, based on the current estate, and that radius state. So, we have have some information come from our... And it worked very well at that time. Okay? So each time an HD, any HD, it's a combination between the weight matrix of the M one, and the weight matches of the prettiest hidden state. Okay? And this is how the recurrent neural network. Right? Okay, so how to train our model? Using the current unit network, starting from that. Okay? See, our tockets, one, by one, and when at each step, again, one hot encoding, embedding layer, and then we have, we can compute ahead in layer for each uh, for each wall, and then compute the difference there, not, and then when we start at the end, we go to the end, see, at the end of time, we compute. Then, no, the rose function. And the total loss is the submission of all noses. Okay? This is how we can train RNA, right? For each sentence, you can lose a C. With these a sentence, step by step, we can find heaven speed, and compute the loss for each step, and then we can compute the loss and same, right? And then the back provocation. Come back to, to update, the head estate. This is happened during the train, okay? When we have a super self supervised taste. So, we know when we feed them, we know the next word is student, so computes a loss, based on this. And I'm only trained from this, okay? Okay. And then we use, during the testing, or using the language mode, RNN as a language model, we can do the same, within our tests, and the based on the learning, the weights, we can compete with the probability, what will happen at first? Because this is the modern film during the language. Right? We had the lies, it's parameter, to predict what is an institute. Okay? Right. And this is the difference between NN and RNM. So, and, and, you feel this is all the words, and then you have one hidden layer, and then you can find out what this one, one hidden name. But in RNN, each step will have a heavy weight. In each step, so we put our information from the one to step T, the end of your sentence. So we always propagate all the information because the input of each step is dependent on them, the headed state of the previous step. Okay? Now, I like this website, you can find, you can uh, check it in your, um, In your style. At that time, say it, uh, the neural need one model with, um, a huge number of speech, of obama, and then you say, meet the woman, you work, and then the mother generates as much. to them. Again, the result was not very accurate, but it's not a coherent. But it's, it's, it's a problem. I'm paying with this, okay? You can find that it's a great, interesting speech. Well, the model. Can predict... I'm a rifle, world, world. Him, what we call it in LLM, where the model cannot find the correct data, then you can put anything. Okay? Right. So, this has happened during the back normalation. Okay? So... Judy, reading H word... The head of the state will not update. When the head in space is updated, after that end of the sentence, and the computer told them, uh, probability, and then, We, the back room, I shouldn't get back from step 4, or stick T minus one, T minus 2, and then step one, which is one to one. This is how the back location go. In a sequence, like we read, in a sequence, that that provocation also computed in a pen port. Okay? Right. So, you're a bit work, or in current, you need work, you use more information. Because it's a high division. So, for each bystand, they computer provocation, if we have a graduate of this staff, fent on the gradient of this system. What is the graduate? By the way, in Europe. What do you mean by energy? the error function. Related to? Related to the inputs? Related to the weight. The function role, then the parameters, in neural network, is a weight. Okay? This is a parameter of your model, okay? So, all right, so, as your colleague said that, that... The gradient is at revative, so derivative by the meaning is height of a change, okay? So when compute, the leaf of a chip. This is that the semantic meaning of decorating, the friendship, okay? So this is a late topic. What is the rate of change of the loss function related to the parameter, which is faint, and interesting. Okay? And at the end, how we can compute, how the modern, how we have is their weight, so new wits. It was, huh? It's minus... Wait, it's perfect. Minus? What do we call it, learning rate? Yeah. Okay? Learning great, multiplied by? The river... This is a correct, and this is how we update the weight each button. Okay? And the living rate, it's something that the neural network left during that training. Now, consider that we have this recurrent renewal network. We have one, three, four steps. Sentence, I just for, for, sequence, okay? Now, at the end, we compute that. There was some, okay? And then we try to move again, with us, in a bad conversation, to the rest of the talking team. Okay. So, and this is as an agency for agent, so, for sure. Now, if we're trying to compute, what is the rate of a change of loss function relating to the headaches? So the computer, then, of the most functional, is related to... Okay, now we can help you. We computed this one, Chen Ru. The rape of a change of HMO related to H1, multiplied by the rape of a change of HGO, that was functioned, lead to next book. Is that correct? So, please, all that. Chain mode in the thrift. Okay? Now, have a plan? This is okay. Now, how about 10 computers? Rolling chain again, okay? So I replaced this with relative of HSV, HSV, relatively change of HSV, related to H2, multiplied by the loss, the regulated to the industry. Now, we want to compute. Yes. Using the seed, G. So it's 4, 3, 4, 5, 5. And this is how we can compute the rate of a change of the loss function in a step, one. Okay? This is okay. Right. Now, imagine if these numbers are smaller. What could happen? Usually, in any level, we can process, it means that... The mother were not left, so we stopped. The process. So, this is very, very small. They'll get me into that. There is so much... Yes. If the grade is smooth, there is no updating weight, okay? So it means there's no dependency between these two. And this is one of the rule types of the RNN, I have probation. What we calling benching gradient. Fancy immigration, because every time to compute that region from this step, it's a combination of water. We use all the derivatives of the previous system. So, the tokens near to the end, learn to move, and the toy has a, because the region is not to push. idea? Okay, this is an engine called... And this is one of the lowbacks of using RNN as a language. We cannot. Fine, the previous of utilize so far information, predicts things. In the sentences, oh. Okay? As you can see here, the rainy grates when, and decrees as we go from step four to the step one. Right. So, look at this example, and we have... try to print a ticket... Which... I always tried to paint her ticket, she found that the printer was out of dinner. She went to stationery store to buy Mortonette. It was very overpriced, and at the time, the tumour into the centre, she found a... What accident it was? Okay. So if the model are able to remember the ticket here, then it can protect the system here. But using RNN, due to the benching problem, the moment will lose, the information comes so far. And this is one of the drawbacks of using R&N in as an attitude. Okay? Any question? Okay, so the dependency here between tickets, which is another seven, the step, and the time you take it, cannot find these dependants, or the model, cannot find system events. All right, so... This is a problem in... RNN, so we cannot remember... the further step... that another man for more than update, for making me that, he insisted, then, before he's a step, then they started to think, okay, another architecture, and overcome this. Okay? And this architecture is NST, and long short, deter, then, right? So, do you have a visit? All right, so what is the difference? In RNN and MST. And a, and a, and a food for the food, so... Save the state of the song, or be it... Okay, so... Did you cover anything with machine building? Yeah. Okay, from which way? So understand the architecture, what is going on, what just use it. When do you go on? How are you? Did you do this? No? So, nice to be, so you just finished. What about our course, you forget everything? From week to week, or you still remember. Honestly. In me, don't... when we practice anymore. The lab makes it us to go through the game. And, okay, another thing is that that's why I make the the weekly, the weekly quiz that to keep you up to date. So please. Don't rely on ChatGPT to solve this question. So if just if you're self-time to review the lectures. And I was, okay, so now we understand, and this is one of the, what was that discussion between me and one of my students in the various semester, that he told me during the lecture, I understand everything. Okay? And I'm very happy with this. And after that, during that death, I forgot everything. So this is a natural, okay? If you didn't review, you will lost all the information you gained during the election. So you have to take notes, this is the first system, the action, because I had this experience before. When I am taking, you know, during the lecture, while I read my notes, I remember every single relationship. I never have the protestor mentioned that during the next year. So taking, you know, is very, very important. The 2nd thing is to have to be up to the west septure, okay? Right, so try to be up late. All right, so NSTM... I thought you were LSTN, best? yes. Okay, so he gave you the architecture or just... And he's explained the equations. I don't think the boy is coming, but, yeah, okay, it's a very complicated thing to understand it, even the equation, it is not easy, but at least you should be able to understand what is the background speaking, or the gender, if you're still. What is the improvement? And NSTM? For one point, with a sequence need, tie it seriously, okay? Where the cycle is very important. All of these things, the order, this is, this is, one, one of the 1960s. I remember that I worked in one of my research project. It was one of my, on the sun, school. You know, the sun is fun. It's like a time series there every year. The number of sunny spot changes. And based on this number, everything related to the weather and the environment may be changed. So forecasting, the number of satisfies year by year is very important and I want to ask you. Right, so long, short, the term, memory, trying to overcome the problem, come with RNN, to, they are not able to remember the dependency in the further steps. So, they do that by, they invited in 1997, and then, It was at by introducing 3 gates, or skates, right. They have, can you get a 4 gift kit? Using a 4 gate, they can decide. Which did I want to forget from the previous states, because it is not important to expecting or predicting what is what. And then we have, in this, to update this state for memory state every time. So, LSTTM come with a new extra, Talking or new extra new one, which is the state one. Okay? So, in, in, in, in, in, in, in, in, in, in, in, in, in, in, in, So, We have... So we have the airport, so at any step, we have the airport and we have the heading, the previous header state. Now, LTL introduced another MPT, which is the current distinct, or what is the current distinct? Okay. Then this is a forget, and we have a gamebook game to update the new information at every step, and then we have, they are okay to produce out. So the input for each state is the current input, the previous Hidden State, and the current memory skate. And the output is, the output plus what is that, the head instead, and the current. A memory state. So each time with each step, this memory state will be updated based on the data, okay? And it skipped. So what do you mean by it, even on, or off? So on games, allow the data to go off museums means we're not allowed the data to go. okay? And this is against the concept of the NST. And this is the architecture. Did you saw this architecture before? Right. So I will try, as much as I can, to simplify this architecture, so I divide it to a specific steps. Okay? So, This part will focus on this part and then again. So, a time tea, we compete at the beginning, that's, Forget kids. So the endput, at this time, is that, and put as XT, plus the previous head and state, plus they, previous state, which is a memory state. Okay? So this is the 3 ends. Then, using the previous, steady state, and the endput state, B, and U, the only function to calculate that for it to eat. So based on that, currently, and the previous head in the state, we can have a significant function, which the values won't function between, 0 and 1. So the higher value is written near to one means this is important, and the zeos means this is not important. Okay? That's why we use here as a white function. Okay? To compute that, forget how much data, we need to forget from the previous and how much data we need to keep it. And this is a rule holder, forget it. And this is will be what the white boy, the previous 70. So multiplication means we add the information. So if you have 2 vectors, and you multiply 2 vectors, that means, and the information in the topic. And this is what we have. So, multiplying by the previous estate, we can now decide which information from previous estate, we need to eat it, and which information we need to discuss. Because the output is between you and one. So high advantage here to one, we give it no advantage. That's why, you know, this is a gift. Okay? And this is with having in this how to complete the pocket. Now, the other part is, we try to compute for update. The state, the member state, okay? How, we using, again, the previous head and state, and the end of state, we can use or update the input rate, a signal function between the rates for the current state, and the way it's for the previous heavens. So, current state, each input has its weight, okay? And this is how we can compute that. Aren't able to get. based on the radio saving state and the data at this time, okay? So this is how we can compute them. Use a signoid to create or update. Yeah, get more. So every day we decide by this vector, what is the data that we need to add it to the current estate and what is the data that we not need to add? This is the one, the current, the elbow, plus the greatest head of state. And we can use this data to calculate or find the candidate to the state. Based on our current state, what is the candid state? The rotation, the rotation is... So, C head is attached to, H two, the weights, all fainted, make us head and state, and the current... input state. Okay? Candidate, hash, okay? And in Spanish, what is up? Usually... minus one, two... Ready for minus one to one. So that's why we use that? So we can create a candidate. New state, based on the current, and one and the various state. And then we can use how much you need and add it. to the previous state. So, the city is empty. Forget it, multiplied by CT, minus one, which if I'm from previous, has empty, multiplied by CT. And then now, we have a new memory seat. So the new memory state, and the first step we use a forget kit, to decide which information it's not important. We need to forget, and which information is important, we need to keep it. And then base of the airport, and the previous hit in the state, we carry it, huh? Candidate state. And then we add this information to that state. Now we have ST, new ST. related to the current, at T, at ST. So each time we repeat this, okay? Now, once we continue XD, now we want to do, write it out. Okay? What is output, the output, as social? It's a previous set. Plus, ahead of the previous thing. This is what we need to feed to the latest XT. Okay? This is bad using a forget it, so that, uh, sorry, the output kit. And I would get it decide which information we want to, as a new hidden estate. So, using, again, all the previous state and able to stay, and the current. CG, we can update the new head resting. output the new head distinct. Exactly. I hope so. It's very complicated, but this is the... Intend the structure of an NSTM new. And I think that that's the, okay, so this is related to one step. What happened in each type? Okay? So, the party, for the time, once, how much information, we need it, and then the endput? Uh, G, uh, N would sell, or N would car, or N would get, set the site, how we can update the city, the new state, these on current situation, and then I would get that the site, which information we live? Uh, because, and we, as an output to the next step. Okay? Right, so, again, to try to simplify it. So, this is what it is to compute the word that, okay, the public did, you think this is? I said, what function? X, always connection will forget some content when it's combined with a brain cell, and this is to compute the gatewood gate, and this is to compute the new self content, and this is to update the new, the previous state with the new content. And this is to compute out, okay? And this is true to sign, which, what is a fun pent of the heather state. Okay? This is a very good resources for NSTM. Uh, I recommended them to go to these resources and try to read more about everything. But again, this is the idea of NSTM. It is not a perfect way. In the latest section, we talk about the shortcoming limitation. And if you can in career, a language. So, but it is, actually, NSTM, and there is more advanced version of NSTM, there holds... You will give them what is the next version? Uh, 8 to... Even then, what is the next version? This... You get it... Eat it for guarded. I can't remember, but there is a lot of limitation using NSTM. That's why they started to find another architecture. And then, The idea evolved with step by step, as you will see any selection to come to the transform. That transformal architecture as a language model, try to overcome all the problem related to deep new and network in as a language model. Okay? So this is, uh, space. What is the name? I cannot believe that it's 8 or something like that. Now, And yes, you can use the NSTN. Simple and easy. What you have to do is, the stuff, I think it is the same, like, she learning, your mother is friendship, and it will be sequential. And then you add an NSTM. What is what? The Gated Record Unit? Okay, yes, maybe... Jerry in Poland Division. Okay, the second layer here. R N, N, we have to have a dense layer, and then with the activation option. Using a caress, a code is there, just use a function, but you have to understand how to endure. Okay? This is what we mean by creating a language is what they use in MST. I don't have Okay, so in any class code, And you know that some code, dating how to create a model, uh, large language in what they're using, NSTM. And even use it for a classification. So I can be in a small arms, and documenting both, with the steps, and then try to feed this for them, or tree, with someone that you can see, NST. I think there's so many here, I can need some attention. It's a sort of nice function, and... Okay. So, I gave it the seat as a G, and I asked the morning to carry it 10 words after this or the G seat. So, and this is what was... Keep learning that is, as you see. It's a lot quiet, thanks. Maybe because the number of the purpose is very sweet. While, uh, the heat pops play that important to me to improve, that is the generation, okay? I will publish this on the pride space to see all this example and be able to have to use NSTM with a glove, how to impact extract the embedding. Okay, so here's the embedding layer from health, and this is considered as an embedding layer before sequenction moment. So, he was more than I can eat at the moment. Okay. So, this quenching woman, where I thought that embedding delayer from that block. So, and then 3 in the morning, then I train the morning, of course. The performance, different, based on the embedding model, have more semantic meaning, but also the same, it generated. I feel it has been, and why I think it's just this explorer, but a little bit more coherent. Deserve the answers. Okay? No, this is not a perfect language, modern, the large language, more than now, didn't use the RLN or MLSTL, but the ID of transformer, as you will see, the next lesson. It's a end on this mod. So they take the argument and NSTM, and they try to build another architecture based on them. So this is how the idea is evolved. No one just struck from scratch. Start always by understanding what's happening before, and then then in a top office. And the idea of large language more than this, as we see, like, discussion. Any question? Is that clear? Okay. All right, so we can start our place, little barriers, so... Federal documents.
+question for the working vector we can choose the size of the vector 50 100 and so on so when we do the vector usually we add all the words and then the word that you're looking is one the rest is zero so if you have a course...
+
+This is a one-hot encoding.
+
+This is for one-hot encoding.
+
+So each vector represents each word.
+
+What is this only one in this vector?
+
+This is a vector for this word.
+
+This is for one-hot encoder.
+
+Yes.
+
+Okay, so what about that 15 means?
+
+When we have like 50 vector size?
+
+When we have thousands of words in a corpus, for instance.
+
+Alright, so?
+
+What happens to the word vector if we choose 50 for instance?
+
+Okay, so I mentioned, this can talk about the word embedding.
+
+Okay, so in a word embedding you may apply different techniques, word2vec or GloVe or fasttext.
+
+Okay?
+
+So what happened is we generate one more encoding for each token where we encode the index of this word.
+
+So each word in your vocabulary has a specific index.
+
+And we use this index to look up on your, for example, club, to exit track, this vector for this word.
+
+So you have an embedded vector.
+
+You create, like at the beginning, you create something like dictionary. when you have the word index, and then you have the corresponding vector of this word.
+
+And then when you combine all these words, you add them or you sum them, it's up to you to have a complete word emphatic for the whole sentence.
+
+Okay?
+
+So when we have a 50, it means 1 by 50 as a row vector?
+
+Yes.
+
+Or if you have multiple?
+
+Yeah, 50.
+
+If you decide what is a 50-dimensional block, so each word can be represented as a vector. of a 50-dimensional array.
+
+So here, the front of the value.
+
+Or any one.
+
+So I will put 50 there.
+
+And then you can choose, most probably, you can get a benefit of the pre-trained model.
+
+So don't feed your text and train your model with a word-to-text, stem, grab, or continuous.
+
+Rely on the pre-trained one.
+
+Okay?
+
+So when you upload any pre-trained one, you just get this, grab this from your data array.
+
+And to make this layer not trainable.
+
+When you create the model.
+
+So you will not train the embedding length.
+
+It's not part of this phase.
+
+So the values come from your embedding technique in February, OK?
+
+Yes.
+
+So next week we have a mission.
+
+Can we have access to participating creators?
+
+I think so.
+
+I publish all the participation questions and answers after I publish the goals.
+
+So make sure that you are able to see the question and the answer.
+
+Okay, maybe last week I didn't publish a quote.
+
+Okay, I will.
+
+Okay.
+
+I will make sure that each week has a quote published for this week.
+
+Okay.
+
+So, any other questions?
+
+Okay.
+
+So, very important, please.
+
+I will announce this in the practice space, but I like to give you the direction.
+
+Make sure that you have, as we agreed, you will have a sheet sheet.
+
+Okay?
+
+So, and this is specific size, and you can write on both sides.
+
+Write whatever you want.
+
+Handwriting, print it, whatever you want.
+
+Make sure that you have a specific space in both sides for your product sign.
+
+Okay?
+
+So, if you didn't bring this space, sheet sheet, I will not allow you to use a sheet sheet.
+
+Okay?
+
+Every student you just want you right any question.
+
+Well, how to Have to be the instruction again.
+
+You have to bring your ID I don't have a chance to meet you in person during the lab.
+
+So I know the faces So, please don't forget to bring your ID Mental and eraser and you have to submit a question and At the end of the Day And plus Work it's a part of your course.
+
+So make sure that you are familiar with the hybrid.
+
+So expect some questions You don't have any question I want to talk a little bit about what you are Assigning to the project the due date of the enrollment enrollment.
+
+I think it's near or finish Everyone make sure that you enrolled in a group.
+
+Otherwise, you have to send an email to me to enroll you by myself with a late penalty, okay?
+
+So make sure that you choose your group partner and then enroll yourself in the group.
+
+It's open from a long time.
+
+I announced this in the flight space, okay?
+
+In Assigning 2 was a project.
+
+I used to have a question answer system.
+
+At the beginning, I love the student to use any technique to create the question answers.
+
+But in this semester, I will have some concession or request that you have to use RAC.
+
+Is it RAC?
+
+Retriever Augmented Generation.
+
+Okay.
+
+R retriever Augmented Generation, where we connect the larger language model with exit and knowledge resource.
+
+Okay.
+
+Do you have an experience with this from the project?
+
+All right.
+
+Perfect.
+
+Good.
+
+So my objective is to create a question answer system based on directly here, where you can bring your own resources or knowledge.
+
+All right.
+
+So from now you start to think about which field you want to create your question answer system based on.
+
+Okay.
+
+So think about how to bring all this data, most probably most of this data comes from books.
+
+Some students choose to create a question answer system for educational purpose.
+
+So they choose a specific level and a specific subject, maybe high school, biology, chemistry, and then they get all the resources related to this system.
+
+And then they connect it to a larger language model.
+
+Of course, if you want to use Chattopadhyay or something that you have to pay for the token, it's up to you.
+
+But the requirement is not to use CellGBT or something like that.
+
+You don't have to pay.
+
+Otherwise, you can use, we have many, many, really large language model.
+
+And as you will see later on, there is a compressed version of this model.
+
+So at the beginning, the model is very huge.
+
+You need a huge speedy computer.
+
+But now there's a customized version of this model that you want to find with your laptop.
+
+So this is the idea of the project.
+
+And then we add another level for this question-answer system, especially for this semester.
+
+I discussed with Professor Ali, because he taught you last semester the creator suite.
+
+So you have a project at that time, too, you can talk.
+
+And then they can reply to you.
+
+So we built on the top of this, right?
+
+So you can talk and ask the question.
+
+And then they can reply with that answer.
+
+But where does the answer come from?
+
+This node.
+
+So we create another node in your creator that we can connect large-language model with external knowledge that you have to gather and create it.
+
+And then we build question-answer system.
+
+I hope it will work because expected documentation, we work on the details, but expected documentation may be on Thursday.
+
+So I will upload, I will announce this also the brightest base, most probably on Thursday, I will upload that as the documentation or a statement related to project, but this is a general idea.
+
+So from now, try to think about which you are source of, okay?
+
+So this is what you have to do now.
+
+And this is actually the main requirement in the proposal.
+
+What will be your source of knowledge?
+
+What do you choose with your group member?
+
+Which sort of knowledge you want to get?
+
+Some student, you know, grab some documentation that is alone, Canadian law, any other country.
+
+So some student talk about the history of a specific country, hometown, or something like that.
+
+So it's up to you to decide which answer So, from now, try to think about this, but this is the key points of your project.
+
+Any questions?
+
+Okay.
+
+You finished enrollment in the group or not yet?
+
+Everyone?
+
+So, make sure that I divide it to two sections as announced.
+
+So, from 1 to 10 group, it's related to section 101, and from 11 to 20, it's related to section 102.
+
+So, because try to separate the two lab sections.
+
+Okay?
+
+So, now, let's go to the next group.
+
+So, let's see.
+
+So, this is the last group.
+
+So, this is the last group.
+
+So, this is the last group.
+
+So, the last group is the last group.
+
+So, let's see.
+
+So, let's see.
+
+So, let's see.
+
+So, this is the last group.
+
+So, let's see.
+
+So, when you ignore in a group, try to stick with this requirement, right?
+
+Any other question?
+
+Is that clear?
+
+Okay.
+
+Good.
+
+Right.
+
+So, this is a recap from the previous lecture, when we start to talk about the language model.
+
+And this is the start point of large language model and the transform.
+
+So, starting from the previous lecture, and this lecture, we built our knowledge to have the people come up with a transform, which we will discuss it in, okay?
+
+So, last lecture, we took a n-megram language model to remember how this is a statistically based language model based on computing some probability, which word will come next.
+
+So we divide your text into sequence, n-megram, and you have to choose n, and then for each n-megram, we use n minus 1 gram to predict what is the next word, okay?
+
+And this is a question for apparently distribution for five grams.
+
+We computed by counting.
+
+So for any gram, to predict what is the word number three, given word number one and number two, we count how many times this word appears in your purpose divided by n minus one gram.
+
+How many times word one and word two appear in your purpose.
+
+And then this is the probability or chain.
+
+We use a chain probability rules to compute the whole word probability.
+
+So probability of w1, w2, w3 is probability of w1 multiplied by w.
+
+Probability of w2 given w1 multiplied by probability of w3 given w2 and so on.
+
+All right, so we discussed during the lecture, what is the limitation of this technique?
+
+And then we come up with that, and this is an example.
+
+So it's not a complete example, but it gives you some information.
+
+So if you have a simple purpose like this, how to compute the probability of hat given i, so probability how many times i have appeared in your purpose, divided by how many times i appear in your purpose, counting technique, okay?
+
+And then we discussed RNN as a deep neural network.
+
+We also have to predict as a language model based how we use RNN as a sequence, dealing with the sequence data, and then we come up with a specific limitation of RNN.
+
+So what is the specific limitation?
+
+Vanishing gradient.
+
+Vanishing gradient.
+
+So as you see here, we started to scan or process your sequence from flight modes and engines that generate word by word.
+
+Okay?
+
+So starting from the left, we feed the neural network with all five of our words, one by one.
+
+For each timestamp, we compute the heading state of the output for this timestamp, and then we consider as input for the next timestamp, which is the word.
+
+Okay?
+
+And as you see here, the nature of, at the end, here, the answer will depend on all the previous information.
+
+So, at each timestamp, this propagates the information to the next step.
+
+Okay?
+
+And this is, of course, improve the performance of the large language model, other than using the n-degree.
+
+And then, we had some problem related to RNN, branching gradients, so they started to think about another architecture that will recover this problem.
+
+They come up with the LSTM, long short state memory, where we have three gates, and this is the main feature of the LSTM.
+
+We have input gate to filter the states, which information based on the current timestamp to add it to the state, and then we have an input gate to update the state, and then we have an output gate to generate the output.
+
+The main difference between RNN and LSTM is we have an extra input, which is the previous cell state, okay?
+
+Which holds some memory from the previous state.
+
+And then each step we can decide which information we want to add it, and then propagate it to the next state, and which information we can forget, it's not important, so we can delete it from the current state.
+
+And so the input for each LSTM, its heading state, like RNN, the current input, like RNN, but we add here the cell state.
+
+And the output will be the same.
+
+So this is the output, a new cell state, and a new heading instead to consider as an input for the next LSTM.
+
+So LSTM and RNN are the same.
+
+It's a repeated, it's a loop, it's a sequence.
+
+But the content of the sequence or the structure inside each cell is completely, it's a different.
+
+Here we have a tange, tange usually, the output of tange comes from minus one to one.
+
+So tange always means adding information.
+
+But instead of having a simple timeshare inside each RNN, we have this structure inside LSTM.
+
+So this is the difference between RNN and LSTM.
+
+But at the same time, this comes with more computation power.
+
+So it shows between RNN and LSTM.
+
+It's based on your cost.
+
+OK, in a sequence, so dealing with a sequence, we have a mini form for dealing with a sequence of data.
+
+So in natural language of processing, when we have a sequence like this, we input a single element and then we process this using RNN or even LSTM, it's your choice, and then we have one output.
+
+This is a form of one of the types of the sequence, where we have an input and then we generate just one output.
+
+And this is an example of image classification.
+
+When you enter an image and then we have only one output classification of this image.
+
+And we have a different type of sequence-to-sequence, where we have one input and then you generate a sequence of many outputs.
+
+That's why we call this model one-to-many.
+
+We have one input and then you have a sequence of outputs. and an example of this type of models is image capture, where you feed an image and then the output is a text that describes this image.
+
+I think you have this application in your machine vision.
+
+Do you perform such an application in machine vision or not?
+
+Because this is related to the machine vision.
+
+Where you feed your RNN or CNN with an image, then you generate a description of this, automatically a description.
+
+Then we have another model, which is you enter a sequence of data, and then the output will show one, so many to one.
+
+Then example here, it's sentimental analysis.
+
+When you feed the model with a sentence, and then the output will be just positive, negative, or neutral.
+
+And also the image classification, or text classification.
+
+The same.
+
+It's follow this one.
+
+When you have a sequence, which is represent your sentence, your document, and then you have a condition, the output should be one classific, link, just one link.
+
+And we have many to many.
+
+And this is what you apply in advanced machine learning, when you have the stock market data, time series data.
+
+In a time series data, you enter a series of data, and you expect it what is the output, also the series of data.
+
+Forecasting for a year, forecasting for a month, depending on the time of your.
+
+The last one is many to many.
+
+And the best example for this is a translation or summarization, where the input is a huge sequence, and then you expect it what is the output, another sequence.
+
+And this is what we call it many to, okay?
+
+Exactly the different type, we'll talk about the most important type of this in NLP.
+
+So I talked here about many to one, where you have your feed, your model with a sequence of data, and you expect that just one out, true or false, label, positive, negative.
+
+So this is an example of the many to one in a sequence in NLP.
+
+So how do you deal with this, okay?
+
+Now, we have RNN as a sequence model, and we have LSTM as a sequence model.
+
+Now, how we can solve this problem, many to one, using this sequence?
+
+You know, using the sequence, we predicted RNN, we use it before as a language model.
+
+We will have a word, and then we expect what is the next word, okay?
+
+But here, we will try to use RNN or even LSTM in a different way, where we have sentence, and then we try to predict just one answer, one big classification, or the sentimental analysis, document detection, language detection, okay?
+
+When we have a sequence, and then the output is just one.
+
+Right, so when we try to use RNN in such tasks, we face a very important problem.
+
+What is the problem is, look at this sentence.
+
+The movie was terribly exciting, okay?
+
+In RNN, we process a sentence from to, okay, while we have used this word, don't have any info about what comes next.
+
+Don't have any information about the future word.
+
+And this is the nature of RNN or LST, a sequence.
+
+You started from left to right, and then process your word one by one.
+
+So process that, then process movie, and then process wars, and then at the end, excitement.
+
+Where we are here, it's exciting, we don't have any information related.
+
+So interpreting, we don't have any information about any future work, okay?
+
+Why?
+
+This type of problem, NLDP, we need to understand the whole sentence.
+
+Because this is maybe literally interpreting.
+
+I mean, at that time, send it as a negative, okay?
+
+After exciting, now we have the whole understanding, the whole context of the sentence.
+
+So, RNN failed to solve this type of problem.
+
+Sentimental analysis and imaging on classification.
+
+This is the classification.
+
+They think about improvement in LSTM to give him the chance to look at the previous and at the same time, the future information.
+
+They named this architecture as Bi-LSTM.
+
+So, and this is an example of what is appropriate to just use RNN or LSTM to model this sentence.
+
+So for each word, we have a heading vector, and then we have information from the previous one.
+
+We won't have any information from the future one.
+
+The generated output vector, it's based on all this type.
+
+So it may mislead your decision in this case.
+
+So that will be exciting, though we represent all the sentence in one vector, okay?
+
+So maybe at that time, it's classified as a neutral.
+
+So exciting may be balanced with terribly, so it may be classified as a neutral sentence.
+
+So by direction, we make two paths.
+
+From forward path, we have a forward RNN, and we also have a backward RNN.
+
+So two direction.
+
+We can turn the word from the beginning to end, a separate neural network with a separate embedding vector or a separate heading state.
+
+For forward, we create a specific heading state.
+
+So this heading state for the forward, and this is another heading state for the backward, and the result is a concatenation.
+
+So now, we can have a complete understanding for the context.
+
+We can look forward and we can look at the same time.
+
+This will help in using RNN for LSTM as in MN classification or sentimental analysis.
+
+So as you see here, we have here two different weights.
+
+So forward weights here, for input here in this direction, and this we have another heading weights based on the backward direction.
+
+So we have a heading state in forward and a different completely heading state for the back.
+
+And then the white hat, it's a combination with the end.
+
+Conglomeration with the forward.
+
+Yes.
+
+By assigning directional, how is that changed?
+
+Idea is, we feed your sentence.
+
+Okay, so in English, this is that sentence.
+
+How you feed this sentence.
+
+You feed your model with the first word, and then you feed your model with the second word.
+
+And even in Arabic, for example, Arabic is right to left.
+
+So again, I feed the first one, but I would just decrease in the opposite direction.
+
+But it's the idea here, which is very important, actually, the sequential time of this architecture.
+
+So I cannot feed the model with the whole sentence at once.
+
+There is no parallelism here.
+
+So the model has to wait until you see here, I cannot process X2 until I process X naught.
+
+I can do that because I have to wait for all that heading out of the state from X naught.
+
+When shenanigans.
+
+And this is one of the limitation.
+
+We will discuss it later.
+
+So step by step, this is the time we start.
+
+There is no parallelism at all.
+
+So we feed the model with the first word and wait until the model process this word and then we feed the model with the second word and so on.
+
+Okay?
+
+From right to left or from left to right, it doesn't matter.
+
+The idea of bidirectional here is we have the content, more comprehensive understanding of the whole sentence.
+
+Okay?
+
+So we scan the sentence from left to right and from right to left.
+
+And the result is a concatenation.
+
+This will improve the vanishing problem related to RNN and even using LSTM, it is not very good to deal with a long sentence.
+
+Vanishing problem still in LSTM.
+
+LSTM improved by cellist, but still, it suffered from a vanishing problem.
+
+Because it's a nature for any neural network training.
+
+This is completely improved or we can now use RNN and LSTM in a different problem related to RNN, which is a classification and a sentimental analysis.
+
+Because the nature of classifications in mental analysis, only a comprehensive understanding of the whole thing, not one by one, okay?
+
+And this is what bi-directional LSTM gave to us.
+
+Now, the heading state, the final heading state, is a combination of them.
+
+And the matching problem will be reduced, why?
+
+Because now, the model learn from both direction.
+
+So in this beautiful world, the learning rate will be very small, but we can compensate this because it's coming from Okay?
+
+Improve the value of the problem.
+
+We can now use LSTM, RNN in a different NLP class rather than language model.
+
+So using bidirection, we can use now for solving problems in this class.
+
+Many tools.
+
+Okay?
+
+And this is what actually a huge improvement.
+
+Right?
+
+So at y hat at each time stamp, the predicted y at each time stamp, as you see, As you see, it's a combination of forward cadence state and backward cadence state, force plus.
+
+Okay?
+
+Isn't it going to take more computational power to make the model slow?
+
+As long as you make your structure more complex, expense, computation expense, force, force and computation expense.
+
+Okay?
+
+It's based on your task and the nature of your task.
+
+It's accuracy, it's a big issue.
+
+So, computational power is not an issue in this case.
+
+So, it's based on your task.
+
+And actually, okay, choosing between the different architecture.
+
+Okay, and I did a lot of research relating to this field, but it's a dry land there, to be honest.
+
+It's good to know when we can use this architecture, what is the significance of this architecture, what is the main characteristic of this architecture, but actually at the end also it's a dry land there.
+
+Okay, you run your data, you have a data, you run your data with a specific architecture.
+
+If the performance is low, then we started to think about another architecture.
+
+And once actually, this is what I did in many researches.
+
+Once I found that architecture that Best of it was my data, then I tried to write my justification.
+
+You know, why I use this one.
+
+Okay, yeah, this is usually happens.
+
+Because you know, there is a lot of details related to each architecture, and your data, it's maybe different.
+
+So a lot of research is done in this, but we usually try to do this.
+
+Okay, so we try, try and error with hyperparameter, changes hyperparameter, changes architecture. when you come up with a test result, then go back and see why this model gave you a test result and write your test solution.
+
+Okay?
+
+So this is actually what happened.
+
+Okay.
+
+Now, in the final stand, so as I mentioned that it may be RNN or it may be LSTM, but the idea is we have a forward hidden state and then we have a backward hidden state and and the final hidden state is just a concatenation between the two hidden states.
+
+I think I have some code related to this.
+
+I'll include it.
+
+A little bit simpler than this.
+
+I try to use MyLSTM in a very small data and in sentimental analysis task.
+
+I have my text and then I have my label.
+
+And then I try to build a model based on this very small data.
+
+Of course, it's long, but the idea is the same.
+
+So the first step is localization, as usual, deleting your data, all this pre-processing step.
+
+And then we create, this is a requirement for LSTM and RLM.
+
+Compute the max or you can compute it based on your data.
+
+What is the maximum sentence length?
+
+It's a very important rule.
+
+Or you can decide to have a certain value as a maximum sentence length.
+
+Any sentence more than that, you ignore the rest.
+
+Any sentence less than that, you have to bed.
+
+And here you choose your technique for bedding.
+
+So bedding post, it means I fill the rest of the maximum sentence with zero.
+
+Sometimes you can choose bedding pre where you put the zeros at the beginning.
+
+Okay?
+
+But this is a very, very important.
+
+To compute it based on your data, what is the maximum length of any sentence in your data.
+
+So dynamically, you can compute the maximum length, or you decide to have it as a parameter at the beginning.
+
+Decide that the maximum length is 20 or 30 or whatever, and this is you have to specify.
+
+And then you will build as you see here.
+
+This is now my array it's a one-hot encoder related to the index of each word in your purpose and then During okay.
+
+So when I try to test anything and I expected you to do the same try to verify each step Okay, don't apply the method without a verifier.
+
+This is the correct output.
+
+So what you expected from this step?
+
+then try to verify to make sure that you are in a Correct way and this is actually very important when you use the embedding you create your embedding layer Using love or more than to pay for anything.
+
+Okay, try to test it you have a function and it's a common function to create an Dictionary and the endings and we grab this information from the glove For example, try to make sure that this is correct If you have a world then you can just extract the vector and you may have a similarity Check for this one and a very similar world to see if they are different Okay, so to make sure that the process is a smooth and goes in the correct way.
+
+So I compute the maximum length here, it's a seven and Calvary size in my purpose is 18 because this is a very important because we will try an embedding delay So the embedding delay of course, it depends on the vocabulary size depend on the output dimension of the dimensionality That you decided what?
+
+Now my dimensionality is 16.
+
+So each word will be represented as a vector of 16 okay, and To compute the dimensionality the embedding layer you have to identify.
+
+What is the maximum vocabulary size?
+
+sometimes it will not be easy to identify that your vocabulary size if you deal with a new generator, but this one of the parameter of hyperparameter for MSTL You have to decide what is your vocabulary size Don't make it as a dynamic because if you make it as a dynamic your model We don't have a view about that.
+
+I mentioned of your embedding.
+
+So you know what that I mentioned?
+
+In a glove we have different techniques to apply 50 we have hundreds and we have 300 but you can decide which one So here I will not I will not export the embedding from any Pre-trained the model so the embedding layer will be trainable.
+
+Okay, so the model will create Update the embedding layer based on the training process Okay so here I started to create the model the model is sequential and you understand what is a Sequential and this is the first layer, which is an embedding layer and then I have bi-directional LSTM and you decide how many cells here and then we have the last one layer Which is a sigmoid because we need only one hour Okay, and then we tell the model compile the model and this is the summary of your so here seven it's related to Maximum length of your sentence and 16 is your And then you create here and compute some parameter.
+
+Okay, and then for the bidirectional, it's 64 as I decided and then you have a dense layer, which is only one.
+
+Okay.
+
+All right So this is a summary and then I just test my model with Specific and then you have to do the same for the test data.
+
+Okay, you have to tokenize it So if you want to test the data, you have to perform the same process as you did during the training You have to tokenize it and you have also to badding to fit as an input for this Okay And then we have here I try to test that I want to make sure that my model actually trained the data to create an embedding vector.
+
+So I try to extract the embedding layer and then check what is the first value in the embedding layer.
+
+As you see here, the embedding layer, this is the embedding layer for love.
+
+It's these, so the embedding layer for love, embedding layer for movie, and embedding layer for life, to make sure that I train my text.
+
+So that dimension of the embedding gradient is 18 and 16.
+
+And this is match my parameter, as the vocabulary size was 18.
+
+And the dimension that I chose is 16.
+
+This is the type of the checkpoints you have to add it to your code to make sure that everything work as you predicted, okay?
+
+So another example here, I think I added something.
+
+So here I have a little bit huge data trained to the CSV, and this is how you can download it.
+
+And then try to make a classification sentimental analysis task.
+
+Again, here, as usual, try to explore your data.
+
+And this is the first step, in the machine learning, how to explore your data, check if there's a missing data, missing label.
+
+So try to find out how to do this thing.
+
+So I try to just explore my data.
+
+And the most important thing in exploring your data actually here to check if the data is biased or not related to the label.
+
+So I try here to figure out how many is the labels.
+
+So how many true and how many false.
+
+This is a very important.
+
+Like a machine, you have to have a balance data for training.
+
+Then I apply the same.
+
+So I decided because I don't know what is the vocabulary size of this text file, so I decided that the vocabulary size is 5,000.
+
+This should be actually, it's one of the hyperparameter of your model and you have to decide it in your mind.
+
+Pre-processing, usually pre-processing task, and then I have an embedded presentation.
+
+Again, in this time, I applied pre, so you can see the value.
+
+It's before the values.
+
+So you can use pre or post and PM.
+
+And this is the same.
+
+And embedding my feature now is 40.
+
+I have an embedding layer, bidirectional, and then a density.
+
+And then you can apply the classification accuracy training.
+
+If not severe, check the prediction.
+
+Print is a confusion matrix.
+
+And this is how you use BIOSTELLEN.
+
+As you see, the model is very simple.
+
+But you have to build your model in a sequential way to predict what is the label of this.
+
+We can use the same for any classification task or any sentimental analysis task.
+
+Both are work with the bidirectional LSTM.
+
+When we use this model, sending it forward, LSTM or high-end, or when we use bi-LSTM.
+
+The problem with bi-LSTM, you should have the access for the whole sentence during the testing.
+
+It will not work with a real-time application, the live stream, because with the live stream, we don't have an access for the whole sentence.
+
+So for the live stream, a real-time application cannot use via STM.
+
+So via STM, use it when you have access, a full access for the sentence during the testing, not during the test.
+
+So during the testing, we have to have the full access So we can write the whole word.
+
+And so it would not work with language modeling anymore.
+
+Bio-STM is not a good model for language.
+
+Because in the language model, we have sentence or have a word.
+
+And we try to make what is a word the context.
+
+So we don't have during the interface or during the testing.
+
+Training, we have a full access.
+
+But during the testing, we don't have this access.
+
+Auto-compilation, when you write a message, Autocompilation will not work, cannot model autocompilation process.
+
+We don't have a choice, only a single LSTM or a single target.
+
+Okay.
+
+So they come up again with more computation power.
+
+Because here we have a bit of a single pass, we have two pass, instead of one heading state, we have two heading state, computation of average or concatenation of each heading state takes computation power.
+
+So the model will become complex, then it takes time during the training and also during the testing or using this.
+
+Okay, and this is I just give you an example of the, and S&P during the patient.
+
+First, and that in general, we have a.
+
+And then you have my addiction and it is up to you to compute how many so don't use huge number.
+
+Then your mother will make over 30 or don't use a small number.
+
+Then we can not the performance would be affected.
+
+So again, this is a type of a hyperparameter.
+
+How many heading sets in your architecture.
+
+Okay?
+
+Any questions until now?
+
+Perfect.
+
+So, building on top of LSTM, they tried to find a solution for a complex structure or complex sentence.
+
+When you have a complex sentence, and you want to understand the context of this sentence.
+
+So, they mentioned that just a single pass forward for this sentence, it will not capture the complexity or the actual structure of this text.
+
+So they think it will improve the performance using a multi-layer LSTM.
+
+Sometimes we call it stack LSTM.
+
+The stack can work.
+
+So this is the first layer and output layer, which is the heading space, and the input for the next.
+
+So for the first layer, what is the input?
+
+It's a word.
+
+The input for each one here is a word, current stamp, and the previous hidden state.
+
+For each time stamp in this layer, the input is the current word plus the previous hidden state.
+
+In case of LSTM, hidden state at the end and state state.
+
+And then the hidden state of this layer will be considered as an input for the second layer.
+
+So we try to keep understanding the content of the set.
+
+So we update the hidden layer with the second layer where we can play from our multiple-layer structure in your set.
+
+And this is improved, actually, many of many-to-one classification or sentimental analysis.
+
+What are the words that make the state of layer on as an input for the second layer?
+
+This is another application.
+
+And actually, the energy quantization and solid, this classification task and sentimental analysis.
+
+But it comes with more training, more parameters.
+
+It has a huge number of parameters.
+
+And the number of layers, if you choose it from your model, it's one of the challenges.
+
+But how many layers?
+
+If you choose a huge number of layers, make your model suffer from perfecting.
+
+Choose a less number of layers.
+
+Maybe you will not capture the whole complex structure of your test.
+
+So it's one of the hyperparameters.
+
+Again, try and error.
+
+Another option is, what is your task?
+
+So it's based on criticality of your task, criticality of the output.
+
+It's a trade-off of the computation and the calculus.
+
+But this is one of the other improvements they introduced to RNN, or Sequence Deep Neural Network models.
+
+As you can see here in more detail, here this is an X node, it's your input stamp, a time stamp X node.
+
+It's computed if you use an RNN, the input here is the previous heading state and the output from this time stamp, so it's computed vertically for each word, okay?
+
+So for each word, this will happen.
+
+Then the last will be the final heading state, so the second and we can do on TELS.
+
+Again, what is the problem?
+
+More computation.
+
+And then the main problem here is the sequential nature of the process.
+
+I cannot add x1 until I process x1.
+
+No parallelism.
+
+No parallelism.
+
+And with a high computation point.
+
+And then we have the last type here is many-to-many.
+
+Many-to-many task in NLE, where we have an input sequence And we expect it as an output as another sentence.
+
+The main example here is the translation.
+
+So you feed your model with a sentence with a specific language.
+
+And you expect that the output is a translation of this sentence, which is another sentence from another language.
+
+Or summarization, where you enter here your text, and the output is summarization of your text.
+
+And then how we think how we can use RMM and LSTM in this type of task related to the natural language process, okay?
+
+Right, so they come up with a new technique which we call it sequence to sequence technique, Sec to Sec, and this is actually part of your transform.
+
+That transform is actually built on this concept.
+
+So what is a sequence to sequence technique?
+
+So we enter a sequence and we expect an output, But the main important part here, varying lengths.
+
+In your translation, when you translate between a language and another language, is that true that the number of words as a source language equal the number of words as a target?
+
+No.
+
+Of course not.
+
+In a technical summarization, the number of input source is not equal to help.
+
+So sequence sequence is very good to deal with a varying lengths input.
+
+I don't need to bet in this case.
+
+They have a technique to deal with a variable length input, which is, this is the main architecture of what we call it architecture implement the sequence, sequence, we call it encoder and digit.
+
+So the architecture consists into two different components.
+
+The first component, which we call it encoder, which we feed, for example, in translation, we feed our English source sentence, And then after processing the input, the encoder share its output to the decoder.
+
+The decoder take the input from encoder and then began to translate this word.
+
+And this is a basic architecture for encoder-decoder.
+
+I have an encoder for processing the input.
+
+And then we have one out from this encoder used as an input for the decoder to start to process the text.
+
+So we generate the translation in a different language or generate a sample, okay?
+
+And this is the basic architecture.
+
+Right, so again, inside the encoder, we can use LSTM, you can use RNN, it's based on your task.
+
+And then the most important part here is the output of the encoder.
+
+One, fix it to the speech, and it is fixed.
+
+So we encode all the information in the input in this fixed lens vectors to be entered as an input for the decoder.
+
+So the decoder takes this information and depends on this information and the current word at each time, try to predict what is that next to.
+
+So it's like language model, okay?
+
+The same idea like language model.
+
+So in a decoder part of it, from the decoder it's like a language model.
+
+Basically the information come from the encoder And what my state here, I try to predict the next one.
+
+And that's it.
+
+So we consider the translation problem as a conditional language, where based on the input, we try to predict what is out.
+
+So they look at the translation problem as a conditional language.
+
+So if you try to predict probability of predicting y given x, it's probability of predicting y given x, probability of predicting y2 given y1 plus x, y3, y1, y2 plus x.
+
+What is the x in this case?
+
+The fixed givens.
+
+So we consider this as a language model.
+
+And then we can compute the probability and bring our model based on this case.
+
+So this is what happens inside encoder algebra.
+
+The encoder here, this is a source in English language or French, whatever, what is your source?
+
+So I feed the encoder with the source, XRNN or LSTN, whatever, but the final here state is the one faxing state, and we enter to the decoder based on that.
+
+Current hidden state, what's come here from the encoder, I try to compute the probability over yourself.
+
+And this is happened actually during the training.
+
+So there is a difference between training and test.
+
+Can you imagine how we train the translation problem?
+
+What happened?
+
+What we can keep?
+
+In pairs of one sentence.
+
+Number, where are you?
+
+Sentence.
+
+There.
+
+It's an English sentence, and this is the equivalent.
+
+And the model, what the model tried to do during the training, find the alignment between the source and the target.
+
+And this is the training object.
+
+So when you train the translation model, the model with huge number of barriers.
+
+This is a sentence from English, and this is a sentence from French, or any other language.
+
+And then the model, when we feed the model here, this is again during the training, so we feed the model with the first sentence, and then based on the output, we'll try to compute the probability, the loss at each stage, and the total loss at the end is the average of all the loss.
+
+So as you see here, this is the total loss.
+
+And we can use the back propagation from end to end during the training.
+
+And this is how the model find the alignment between the source language and the target language.
+
+And this is what happened during the training.
+
+OK?
+
+Any questions?
+
+All right.
+
+So during the testing, we don't have access to the target.
+
+OK?
+
+So during the testing, we have access to the source.
+
+You feed the model with the English text.
+
+And you ask the model to predict.
+
+So again, it's like a language model.
+
+So here, I compress all the information.
+
+I get it from the encoder in the last hidden state.
+
+And the last hidden state will be considered as an input for the encoder.
+
+And then the encoder, each step, a timestamp in the encoder, use that previous hidden state and then try to predict what is the next one.
+
+And for example, when you predict this one, it will be predicted based on the previous hidden state of that previous one.
+
+Language mode.
+
+Okay.
+
+Is that clear?
+
+And this is how we train and test translation using RNN or LSTM.
+
+Right?
+
+Okay.
+
+What is the problem in this mode?
+
+We call this problem, it's a common problem and we call it a bottleneck.
+
+What do you mean the bottleneck?
+
+We compress all the information come from encoded in a one-fixed length vector which you would consider as an input for the decoder.
+
+And this is one of the common problems.
+
+How is this information?
+
+Maybe the sentence is small or big.
+
+How we compress all the information in just one-fixed vector and decoder doesn't have any access to any of this header state, only for this one, the last one.
+
+And this is what we call it in this type of architecture, set encoder, decoder architecture.
+
+The main problem with encoder decoder is that the fixed size, header state.
+
+It's like you read a book, and then I ask you to summarize this book in one paragraph, and this is a paragraph.
+
+And then I ask you to create a book from this parameter.
+
+It is the same height.
+
+How we can compress all this information in this small text size?
+
+So this is how we can use it.
+
+So this is what we call a bottleneck.
+
+And this is one of the main problems in using RNN or LSTM in this type of task in NLP, summarization or translation.
+
+Another problem here, as we mentioned before, the sequential nature of that, of RNN or LSTM, OK?
+
+No parallelization.
+
+There is no parallel processing.
+
+I cannot apply any parallel processing.
+
+I have to wait the decoder.
+
+Then I see these two decoders.
+
+The sequential nature, it's a big issue, OK?
+
+And so based on this, the bottleneck problem and the sequential nature of the RNN or LSTM that we have to parse any sentence one-to-one, reading one-to-one, they come up with another solution for this problem.
+
+What we call it, attention.
+
+So what is the idea of attention?
+
+If you are away from the college for one or two weeks, And then when you come back, you find out that you are required.
+
+So next day you have a midterm, you have a quiz and you have an assignment.
+
+So what you have to do in this case?
+
+Focus on the one that has the most of the money.
+
+Priorities.
+
+Set your priorities.
+
+Yeah, this is what we did.
+
+Actually, yes.
+
+OK, what is that more value?
+
+If the midterm is a 20 percent, the quiz is one percent, the assignment is five percent.
+
+Which one?
+
+I have to focus on.
+
+So give a priority to some task.
+
+OK?
+
+Give a weight for some task.
+
+The weight, the task which has a high weight, this is a high priority.
+
+And this is the idea of the occasion.
+
+The other problem in the sequence to sequence is they consider each word in the sentence has equal importance.
+
+In RSTM and NSTM, each word has the same importance. while actually some words may be more important than the other.
+
+So if I write a sentence like this, I can make the sentence.
+
+And this is the nature of any sentence in any natural language.
+
+Some words are highly important to create the context or to make you understand the context of the sentence, and some words are less important.
+
+So, for example, here, that is not important.
+
+So, I, for example, is not important.
+
+And I for love, whatever is important, but less important, and that.
+
+So, how do we come up with an idea to give a different weight for each input based on how it's important in the translation output or in a summarization?
+
+what is the key word in your input sequence, okay?
+
+And this is the idea of attention.
+
+So the idea of attention is something like that.
+
+I have different words in each time step.
+
+So T, T1, T2, T3, and for each word, we have a vector.
+
+So this is a V1, this is V, this is your input, and we have the output, which is Y1, Y2, Y3, Y4.
+
+What we need to do is to see how to add a different weight for each word based on its importance.
+
+You remember the similarity measurements?
+
+So, for example, in a two-dimensional space, you have a vector that represents one word, V1.
+
+What about the node?
+
+They are similar.
+
+Then we expected the output to be something like that.
+
+The node row and the P are not similar.
+
+The node row, each step in the decoder, we compute we have an axis to all the inputs.
+
+And we can compute the weight more.
+
+This is the idea of message mechanism.
+
+So actually, what happened, attention is the weight average over the set of input.
+
+Compute the weights and decoder and compute the pairwise similarity between each encoder hidden state and each decoder hidden state.
+
+Now, the decoder hidden state has an access to each element inside the input, not only the fixed legs, the bottom leg.
+
+Now he has a direct access, and then we can compute the weighted average, transfer this weighted average to probability to find out which word has higher probability than the other one at this time stamp.
+
+And this is the stamp introduces by this.
+
+So the benefits are variable length, input length, bounded dependency.
+
+And the whole idea at each stamp, the decoder use direct connection with the encoder for each time stamp.
+
+And this is represented like this.
+
+So this is the encoder where you feed your source, translation, or something like that.
+
+And then here, for each time step I have, I can compute that dot product between the heading state of this step, heading state of this step, heading state of this step, average, compute the weighted average, and to come up with what we call it attention score for this one.
+
+OK?
+
+And this is happening like this.
+
+So dot product for each heading step.
+
+And then we add, use probability, to have a probability, then we figure out that at this time stamp, this word has higher priority or higher weight than the other to define what is a translation I have to use it for.
+
+Sorry, so far, when we do the labs, we try to omit the stop words, omit the punctuations like commas or stop or full stops.
+
+For translation, should we keep them on?
+
+Yeah, for translation, for sure.
+
+For sure, stop words, it's very important in the translation.
+
+Or full stop commas.
+
+Yes.
+
+Yeah.
+
+For sure, for translation, we have to keep everything.
+
+I was going to say, for example, I, like the word was bad.
+
+Yes.
+
+You said, was, then I, or not.
+
+Yes.
+
+Translating it to a language that I is gender-specific, or was, in the past, in a different grammatical time that we'll collect, even though words are important.
+
+OK. I agree with you.
+
+Every word has importance.
+
+I don't mean that we ignore it.
+
+But every word has a different weight.
+
+We're not ignoring it, because the performance of the translation helps reflect the input, your input, our sentence with all the grammar and all the syntax structure.
+
+And if the translator output with another sentence which includes all this information, this is how we measure the performance of the translation.
+
+If you remember, maybe five before, 20, we can say 10 years ago.
+
+I think you can notice now the performance of any translator now from 10 years ago.
+
+Okay, that's a huge difference.
+
+That's because it has improved in the structure, improved in the architecture, and we come up with a big step in the improvement, which is after 2017, the transport.
+
+But this all the steps, it leads us step by step to come up with how the transformer idea come up and the research from Google, how to publish their work.
+
+They will not invent it a week.
+
+They just build this knowledge base on all the previous trials, all the previous structure, and then they try to improve the performance of oil.
+
+So it's up on the top of the others, not from scratch.
+
+Okay, so this happen at each step.
+
+To compute the predictor of the white hat, okay?
+
+So the last one, It will be the input for that using the head state and the output from here, which is the weighted average.
+
+Then we can use it to predict y hat at each state.
+
+And we repeat the process for each time step.
+
+So for y2, we have the same process.
+
+Wait, access to all the previous head and state of the encoder, compute the average weighting, and then use it as an input for to produce what is the next word in the puzzle.
+
+And that's it.
+
+OK, is that clear?
+
+Attention, it's very important.
+
+And it come up with a very brilliant idea to improve the performance of such tasks, translation and summarization.
+
+Is it solved all the problems?
+
+We're still away from perfect to deal with such tasks, OK?
+
+So attention, happiness, benefits, those challenges.
+
+OK, so we have benefits.
+
+We can deal with the variables.
+
+We can now have a deeper understanding for the context.
+
+We can, we will not deal with each word as independent or have the same weight to producing the output.
+
+But we still have some challenges.
+
+So what is the main challenges?
+
+We didn't fix the parameters.
+
+We didn't fix the parallax.
+
+Sequential.
+
+It's still there.
+
+We have the sequential problem.
+
+OK?
+
+We need to improve the computation.
+
+We cannot wait the model to process one more to do or one time stamp to move it to use the output from this head and state as input for the next state.
+
+Sequentialization.
+
+And another problem is, does the word the position has represented any way in such a system?
+
+The position of the word.
+
+So we present in such a system, the position of the word.
+
+And here somehow, the position of this word, no information about the position of the word, no information about how, no way to overcome that parameter, that the sequential mention or.
+
+Mention it at what point?
+
+Then if we come with, in 2017, with a group of researchers in Google, they published the word, attention is all you need.
+
+So they introduce attention, the same idea of the attention, but they improve it in the two different ways.
+
+They improve it with self-attention, and they will improve it with multi-head attention.
+
+So they help in the idea of attention, which is a thought product to compute what is important of this word, but they improve it in some way by introducing what we call self-attention and multi-layer, multi-head attention.
+
+So the transformer, it is a sequence-to-sequence model with a self-attention.
+
+This is the architecture of the transformer.
+
+You have the input and then the transformer can use the output.
+
+What's inside this block?
+
+It's encoder-decoder.
+
+The same idea, but in more detail, with more improvement, but the same idea.
+
+We have encoder and we have a decoder.
+
+What is the architecture of encoder?
+
+It's different from the previous encoder in sequence-to-sequence model, all right?
+
+And what is the architecture of decoder?
+
+It's very similar to encoder, but with a little bit difference, okay?
+
+But they are using the same idea.
+
+We have an encoder and we have a decoder.
+
+And there's a connection between encoder and decoder.
+
+And they handle parallelism.
+
+So now we don't need to be at some level of parallelism in the process of dealing with the encoder, using a self-head or self-attention technique or multi-head attention technique.
+
+So I don't want to start encoder-decoder now because the encoder architecture is very complicated and huge, and there is a lot of details.
+
+One of the important details is now the input for the encoder is not just a word, but a vector representing this word.
+
+They add more information about the position of this word.
+
+So they have very intelligent techniques to encode the position of each word.
+
+So the vector, now we just note the embedding vector.
+
+It's an embedding vector plus the position vector.
+
+So now I feed the encoder with two important information, like the vector embedding plus the encoding of this word.
+
+So they solve the problem of the position.
+
+We can have now information about the position of each word because this is a very important rule in any language, The position of all the centers, the structure, the gram, the position is very important.
+
+So, they feel this information as an input for the decode.
+
+The input for here, it's an embedding vector using the previous embedding vector technique.
+
+Gram wanted to make positive text, okay?
+
+Vector.
+
+And then we add a positional technique using cosine and sine and cosine.
+
+A very intelligent actually process to how to add a position for this vector.
+
+And then they feed it to the decoder.
+
+The decoder consists of six different layers.
+
+And then the output of encoder, the decoder will have access to the output for each layer in the encoder.
+
+The architecture is very complicated.
+
+I hope that next lecture I will try to finish it at all, but I cannot divide it into two lectures.
+
+That's why I make it the next lecture to go to the encoder.
+
+Once we understand the structure of the encoder, I will go to the encoder layer by layer.
+
+I give you information how, what happened during these layers, and then encode a decoder.
+
+It's very similar to decoder with just a little bit different at the top layer.
+
+So the last layer of the decoder, this is the only difference between encoder and decoder.
+
+Okay?
+
+Any questions?
+
+Okay?
+
+Any questions?
+
+Is that clear?
+
+The encoder-decoder sequence, how we use RNN and LSTM to handle a different task in the different NLP tasks.
+
+And I think this will be, I think, laptop.
+
+I show you an example, I try to create a translator to show you how the translation happened here.
+
+This is a translation with attention and this is a translation.
+
+So what happened during the training?
+
+I just have, as you saw here, a sample data, again, as an input for any translation task, a pair of sentences.
+
+So I have some sentences here in English, some sentences here in French, and then I just add the start and the end to identify the start and the end for each sentence.
+
+Tokenization, embedding, and then here I use a glob as an embedding vector.
+
+So I will not train the model to create an embedding vector for my data.
+
+I just use a glob.
+
+And this is a common function in Glob.
+
+You may see it many, many times.
+
+I will create a dictionary where you create an index for each word and use this index to access the vector for the long.
+
+And then here, and this is the encoder.
+
+This is the structure of the encoder.
+
+I tried to put some key comments to understand what's going on.
+
+The embedding dimension here is 50.
+
+So I decided to only have 50 based on the block, which is 50. 128 is the size of hidden state of the state of the hidden state state.
+
+Okay.
+
+So in LSTM, you remember we have a hidden state and we have a cell memory, which you would call it a state cell.
+
+Okay.
+
+And then we have here, so this is one of the hyperparameters that you have to specify when using LSTM.
+
+What is the dimension of the hidden state?
+
+Okay.
+
+And then we have encoded the inputs.
+
+It's an embedding layer come from the glove, trainable force.
+
+So what do you mean by trainable force?
+
+This layer will not be part of that training.
+
+It's a freezing layer.
+
+I don't want, I already come with the vector from the pre-trained model.
+
+So if you come with that, if you create an embedding layer, come from any pre-trained model, so you have to add this one.
+
+Trainable, true if you want to train it, false if you don't want to.
+
+So trainable here is false.
+
+And actually by default it's false.
+
+So be careful of this because trainable by default is false.
+
+We will not train this layer.
+
+But if you come up with your data and you want to train this data, this should be specified as true.
+
+Okay.
+
+So be careful of this.
+
+And then the encoder here, I have LSTM with a return state is true.
+
+What is the return state?
+
+The output for each state here is I want to return it.
+
+Why?
+
+Because decoder will use it.
+
+So I want to output the output here for each state.
+
+OK?
+
+And then, so the output here of the encoder state, this is not with attention, by the way.
+
+So the combination of state H and the state C.
+
+What is a state H and a state C?
+
+if you have an encoder.
+
+This is without an edge.
+
+This is encoder, encoder.
+
+What is this?
+
+Let's see, g and h, g, l, memory state will be input for the next Student is talking.
+
+Ah, time, ah, ok.
+
+Ah, it's 29, ok.
+
+The quiz, it's open now?
+
+Yes, yes.
+
+I need password.
