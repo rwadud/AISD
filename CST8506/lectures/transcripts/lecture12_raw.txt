@@ -1,0 +1,783 @@
+The simplest way is to check the number of items, possible item sets.
+
+We need the possible subsets of these items.
+
+Number would be 2 to the power of d.
+
+And actually, it should be 2 to the power of d minus 1.
+
+When we don't consider the empty set.
+
+Okay, so, add a total number of possible association rules can be computed using this formula.
+
+But at the end, that would be three to the power of b minus two to the power of b plus one, plus one.
+
+So if, for example, we have two items, a and b, a and b, the number of rows would be three to the power of two minus two plus one, a nine minus eight to the power of two, okay?
+
+So it seems that we can have eight possible rows.
+
+We can use the other three.
+
+For three, that would be the number of possible rows in the association equals six, okay?
+
+Number of possible rows, number of possible candidate rows would be 600, true.
+
+If you increase it, so just, you can think about the, as I said, Walmart, okay, or the other hypermarkets.
+
+So how many items do they have?
+
+More than 1,000, so then the number of the possible rows, number of possible rules would be more than millions, probably.
+
+So it means that this brute force search doesn't make sense, right?
+
+Is it clear?
+
+Yes?
+
+So we need to have another approach.
+
+But before that, let's look at something here.
+
+Assume that we have these transactions, these transactions, And based on the items that we have here, we can find some kind of rules, example rules.
+
+Like for example, mint and diaper implies beer, or mint and beer, so diaper, diaper, beer, mint, okay, whatever.
+
+If you see here, the items, all the items, are the same as milk, diaper, beer, milk, beer, diaper, diaper, beer, milk, beer, milk, diaper, but in different rules, right?
+
+Now, if you find the support and confidence for these four components for these rules, we will see that the support for all of them are the same, but their confidence are different.
+
+Why?
+
+Why the support are the same?
+
+Because in this support from law, so we can support from a number of transactions for all rules, we are looking at the same transaction table.
+
+The number of transactions is the same.
+
+Then we get the union of the both sides, so for all of them, if we get the union, we will get the same set. means that, or here, means that, or here, means that, or here.
+
+So you see, you know, in the sets, the order of the items are not the same.
+
+So because of that, the support for order rules are the same, but the confidence are different.
+
+So my difference, now the numerator is, say, denominator, because of the denominator, All rules are binary partitions.
+
+We have two partitions, same item sets.
+
+So we have diaper here.
+
+Then rules originating from, this is the rule.
+
+The rules originating from the same item sets, from the same item set, have identical support, but can have different, then since the supports for these rules, which are extracted from the same item sets, we can separate the confidence and support from.
+
+Now, to find or extract these association rules, we define two-step approach.
+
+At the first step, we find the frequent item sets, right?
+
+So, we find or generate the frequent item sets from all the items that we have in our transactions.
+
+Then, after generating the items, all the item sets or supports is greater than or equal to the minimum support.
+
+Then we found these frequent item sets.
+
+We can generate the rules from items.
+
+So how?
+
+For the item set generation, frequent item set generations, we only should look at the supports.
+
+Right?
+
+We only look at the supports.
+
+Then for the rule generation, we will consider the confidence of the rules, candidate rules, that you can extract from those frequent item sets. and still these frequent items that you're looking for are computationally expensive.
+
+You know, a question I'm frequently told, this is all the items in this transaction, all the items, bread, milk, diaper, eggs, all the items that we have, all the items.
+
+But among those four items, We have the subset of those items are repeated frequently as whole transactions.
+
+That kind of item sets, we call them as frequent items.
+
+For example, if you see here, both appear in this transaction.
+
+But if you look at the print, So it's bread and milk, bread and milk.
+
+So we can consider, if you assume that the minimum support is three, minimum support is three, bread and milk is frequent items.
+
+But again, finding just, we found this bread and milk easily from this small set of transactions with this small number of items.
+
+It's just by manually expectation, right.
+
+If you have lots of transactions with huge number of items, finding these frequent item sets wouldn't be that easy.
+
+In general, it's very easy.
+
+Now, for example, if you have D items, you have D items.
+
+So the all possible item sets, subsets, would be true to the power of, for example, Let's assume that we have four items, five items, A, B, C, D, E. Or you can look at the A, B, C, D. All possible item sets that you can construct from these items would be something like, for example, A, A star, C, A star, A and B, A and C, A and D, A and E. Then here, C and C, B and D, B and E. C and D, B and C, B and D. And then in the next level, so this is two item sets.
+
+One item set, this sets, K item sets, K, K, C, A, B, C, A, B, B, A, B, E, A, B, A, B, A, B, C, A, B, C, A, B, C, A, C, A, C, A, C, E. Similarly for the other.
+
+And for four items set, we have ABCD, ABCE, MEE, ABP.
+
+And five item sets.
+
+This lattice is for five items, right?
+
+Now, if V, so it means that, OK, what's the usage of this lattice?
+
+What's the usage of this lattice?
+
+Each of these nodes can be considered as item set.
+
+And among these item sets, some of them should be frequent item sets.
+
+So we should find those frequent item sets from these item sets.
+
+How we can do it?
+
+So how do we start from the ABCD?
+
+This is a different subject.
+
+No, I mean, the basics.
+
+Maybe a basic approach, the frequent item sets.
+
+So these are all our, so then to find the frequent item sets, what should we do?
+
+You find maybe item, you start by adding a compile of them.
+
+No, I mean, what's the process?
+
+So for each item, these are the item sets.
+
+We know these are our item sets, okay?
+
+We are looking for frequent item sets.
+
+How do we define the frequent item sets for?
+
+The minimum support.
+
+So if the support of item set is greater than or equal to minimum support, okay?
+
+So then we consider that item set as the frequent items.
+
+So it means that in the very basic step, we should find the support for each item set or each node here.
+
+Okay, we should find the support, okay?
+
+Then we should compare it with the minimum support.
+
+If it was greater than or equal to the minimum support, okay, then we will consider that node the What's the problem Only five items We need to find the how many supports But if you want to So For the That Items And Candidate Candidate frequent item set is a really frequent item set So We should reduce the cost of finding the frequent item set How can we reduce the cost?
+
+Reducing the number of rows, reducing the total length of those potential items, or producing the candidates To reduce the cost of this process, we should reduce either the number of candidates or reduce the number of items We can reduce the number of candidates, so we can use the kind of pruning to reduce the M Then we can reduce the number of transactions.
+
+So this at the first step, at the first glance, that can be kind of nonsense What do we mean by reducing the number of transactions?
+
+Reducing the number of transactions means that we are neglecting some transactions So is it good to neglect the transactions?
+
+In general, it's not good.
+
+But sometimes we can neglect some of them For example, if you have a transaction with just one item, then that item is not that popular So we can neglect that transaction or we can reduce the number of comparisons to find the support of each candidate's frequent item set We should find the support, and to find the support of each candidate's frequent item set, we should look at all the transactions So the overall number of comparisons would be n by n To reduce the cost, we can also reduce the number of comparisons How we can reduce the number of comparisons?
+
+It's a kind of advanced technique You will see it in a very advanced machine learning course For simplicity, you can use the hashing method or Merkle tree approach to compress the number of the transactions and the candidates If you want to know more about the other approach, you can send me an email, just like the last week, all of you sent me an email requesting slides This time again you can send me an email I was waiting for the emails I remember I was attending a conference around 7 years ago in Belgium The presenter presented something very interesting And at the end he said that if you are interested in the topic, send me an email and I will send the presentation to you And up to today, every month, I send an email to him Send me stuff I didn't know him yet I thought you should be like me Now let's look at this reducing number of candidates So to reduce the number of candidates approach, we first introduce the concepts Priority principle What is the priority principle?
+
+A priority principle says, if an item set is frequent, then all of the subsets must also be frequent Okay, so, for example, if you say that, if this item set is frequent, says that, if this is, all its subsets must be frequent.
+
+So, all its subsets mean this one, this one, this one, this one, this one, this one, this one, this one, this one, this one.
+
+And again, this one, E, B, C, B, okay, would be frequent, okay?
+
+Principle holds.
+
+Due to the polynomial x and y, if x is subset of y, then support of x, all means would be greater than support of y.
+
+You can just simply check it for yourself from one of these notes.
+
+If I have, if I have subset alpha, beta, gamma.
+
+If it's support, support is one.
+
+So the support is one, support is one.
+
+The number of occurrences of these items together in all transactions, right?
+
+Should be this one.
+
+So definitely, definitely the support of alpha and beta would be greater than or equal to a big number of the items.
+
+The support of its subset would be greater than or equal to the support of an item set never exceeds the support of its subset.
+
+This is now a time or term property of the support, okay.
+
+So you saw, Can I look at this prior experience of Hamilton property from other perspective?
+
+Can see, can say that, okay, if we found that this set is infrequent, it's not frequent item set, okay?
+
+So then we can say all its supersets, okay, be infrequent, will be frequent. it's the same as the previous rule.
+
+See, this is the priory set, a priory rule set.
+
+If a set, if an item set is frequent, all its subsets must be frequent.
+
+So if we assume that this is a frequent item set, its subsets must be frequent.
+
+It means that this should be frequent, This should be frequent, this should be frequent, this should be, but again, so for this one, let's say for this one.
+
+If these three are infrequent, are frequent items, so then the subsets must be frequent.
+
+And now look at here.
+
+If we assume that these are frequent, the subsets must be frequent, but we know that this set, this item set, is not frequent.
+
+So it means that all its supersets are infrequent.
+
+And how we use it?
+
+So just we can throw these parts out, that is.
+
+So it means that there is no need to compare, to consider these candidates, okay?
+
+Consider these candidates to find their supports to see if they are frequent or not, right?
+
+Any question?
+
+Action?
+
+So somebody will be waiting for.
+
+And then.
+
+It's interesting actually, finding better.
+
+But by the way, so if you wanna use the tools to do the association mining, You cannot use the scaler.
+
+So you can...
+
+I think you are familiar with the Weka?
+
+Yeah.
+
+So you can use the Weka or if you want to do kind of programming, there is a library, ML Extends.
+
+So yeah, if I remember it correctly, ML Extends.
+
+So there are lots of rules.
+
+You can use...
+
+So they provide everything, all the rules.
+
+How to probe the frequent item sets.
+
+You need to define, give the tools these transactions, and the number of items.
+
+And means for maximum confidence.
+
+Then what kind of approach you want to use for reducing using the number of transactions or reducing the number of comparisons.
+
+For example, if you want to use the hash American tree or hash tree, you should define the hash function.
+
+Then those tools take care of the rest of the stuff.
+
+We have these item sets and we assume that our minimum support is 3.
+
+And we are looking for maximum 3 item sets. maximum three items, a subset with maximum three items.
+
+So if you wanna consider all the possible subsets, number of the possible would be combination of one, six plus two of six plus three of six.
+
+So everything is plus three plus 20.
+
+So we know C of n, n goes to n factorial divided by n factorial minus n minus n minus n factorial.
+
+Did you notice?
+
+So then, at the first step, we generate one item sets.
+
+One item sets means that the item sets with only one item.
+
+So each of these individual items would be a candidate frequent item set.
+
+Candidate frequent item set.
+
+So, I can print code name, beer, beer, diaper, and so on.
+
+Now, we count them.
+
+We support count, right?
+
+Okay, so beer, bread, how many times appeared?
+
+One, two, three, four. typically for the others.
+
+But our minimum support is three.
+
+Our minimum support is three.
+
+It means that the Coke and eggs must be in regard to the most vinegar.
+
+Because the support count is less than the main support count.
+
+OK. Now we have bread, milk, beer, and as frequent one item set.
+
+Now we should generate two item sets.
+
+Two item sets from where?
+
+From this one item set.
+
+OK, so now, OK, two item sets.
+
+No need to generate candidate in order to consult.
+
+We don't need to look at the scope and text.
+
+But, that's been neglected.
+
+Then, that would be the candidate frequent item, two item sets would be bread and milk, bread and beer, bread and diaper, beer and milk, diaper and milk, beer and milk.
+
+So we can consider how to see that.
+
+For bread and milk, the soft-breeze statistic, bread and milk, bread and milk, bread, bread, milk, one, bread, milk, two, and bread and milk, three.
+
+Then we have beer and bread, beer and bread, one, beer, bread, two, two.
+
+Similarly for the others.
+
+Looking at these terms, we see that the support for beer and bread and beer and milk are true.
+
+And they are less than, smaller than minimum support.
+
+So it means that we should neglect these two items.
+
+Now, for the triplets, for the three item sets, we should consider these two item sets.
+
+Bread, milk, beer, diet.
+
+So milk and beer are the eliminates.
+
+So why in the milk and beer is in the last one?
+
+Last one is beer, bread, milk, right?
+
+Beer, yeah, okay.
+
+So here we have bread, milk.
+
+Bread, milk.
+
+Bread, milk, we have it.
+
+Then we have...
+
+Milk, beer should have been eliminated, right?
+
+Yeah, just beer, beer, beer, diaper, beer, diaper, milk.
+
+Red diaper milk, red diaper milk.
+
+So if you combine these two, so you can get red diaper milk, red diaper milk.
+
+So then for beer, beer diaper milk, beer diaper milk.
+
+Beer diaper milk from this one.
+
+Then there are red milk, beer.
+
+And if you find the game, the support card, the support cards for all of the frequent item sets are smaller than not-frequent-three-item sets.
+
+Not-frequent-three-item sets.
+
+Now let's have a look at the priority algorithm.
+
+So this algorithm is parallel flow So it's a bit heavy, but it's very simple.
+
+So first, we have FK and FK-U. FK is Frequent K-Item Sets.
+
+FK is Show the Frequent K-Item Sets.
+
+Then we have AK, Candidate K-Item Sets.
+
+So all the K item sets are not necessarily frequent K item sets.
+
+So it means that frequent K item sets will be subset of these K item sets.
+
+So now the algorithm will be starting with K equals to 1, 1 item set.
+
+Then generate F1, frequent 1 item sets. just the one we did.
+
+Then fk, a frequent k item.
+
+First we generate the candidate item sets, k item sets.
+
+So we say generate a k plus 1 from a frequent k item set.
+
+After, so first here, we generated the candidate 1 item set.
+
+Then from this, we draw the ones with the lower support cards.
+
+Then we got this one, right?
+
+And the FK.
+
+Then for the candidate two item sets, we use these item sets.
+
+Similarly, candidate.
+
+So generate A and K plus one, two item sets.
+
+Generate the candidate, two item sets.
+
+From frequent, one item sets.
+
+Then we should do the pruning.
+
+Simply prune candidate items in A and K plus one.
+
+Containing subsets of length K that are infrequent.
+
+We should look at its subsets.
+
+If we find a subset which is not frequent, We will remove them.
+
+So in support counting, count the support of each candidate in LK plus one by scanning the DB.
+
+And then candidate elimination, then we eliminate candidates in LK plus one.
+
+Are infrequent, leaving only those that are. we will remove all the cache base, the support count is smaller than the minimum support that we defined, right?
+
+What's your point?
+
+We can implement everything, right?
+
+Just for real, we wanna implement it.
+
+Like finally, we have a new language that you know.
+
+Essentially, we will use it.
+
+Given, say, I'll assume we have it.
+
+So just for implementation, you need to know what are the inputs and what are the outputs.
+
+So the inputs would probably be...
+
+No, the inputs is clear.
+
+The inputs should be this transaction table.
+
+The transaction table and...
+
+The output would essentially be something like a dictionary.
+
+Yeah, yeah, the output must be...
+
+No, no, the output should be a set of subsets of the items.
+
+So, first item, first item.
+
+Everyone, let's say we generated candidate three item sets.
+
+Candidate three item sets.
+
+Candidate three item sets from these items are something like this.
+
+We are vertical, we are vertical, diaper, we are down to, diaper, to make.
+
+These are candidate tree item sets.
+
+All of them are not necessarily frequent.
+
+We should prune them.
+
+We should decrease them.
+
+After removing, let's say pruning, we're going to have something like this.
+
+Let's assume that we first generated one frequent item set.
+
+And we created frequent two item sets.
+
+And these are my two frequent item sets.
+
+Frequent two item sets.
+
+Here, frequent two item sets.
+
+Now, based on these, based on these frequent items, two item sets, I generated the candidate three item sets.
+
+Candidate three item sets.
+
+Now, I should prove.
+
+So for example, for example, just looking and looking at this one, should it be removed or should it remain?
+
+This one.
+
+We don't have red, white.
+
+Yeah, OK. So yeah, exactly.
+
+We said that based on the probability, if set is frequent, all subsets must be frequent.
+
+So if we consider diapers and eggs, because diapers are a subset of this one, that should be frequent.
+
+But in my frequent two item set, I don't have diapers and eggs.
+
+So it means that this should be 10 to 10, so we don't have quota diapers here.
+
+Yeah.
+
+Can you also use the minimum number of different parameters that you think will increase the frequency of the frequent item to generate the frequent item sets.
+
+For now, we are using the minimum support to generate the frequent item sets.
+
+Then when we found the frequent item sets, then we can generate the candidate rules from those frequent item sets.
+
+At this step, we are trying to find the frequent item sets only based on the minimum support. item sets, frequent two item sets are different than frequent three item sets.
+
+We create, we generate three frequent three item sets based on frequent two item sets, right?
+
+Okay, so here, okay, so we say, we say that the only, let's say, the only frequent three item sets, just how you can use this one.
+
+If you can find any subset of two items from these item sets, candidate item sets, that are not here, you can throw them.
+
+Who understood?
+
+So if you are like, who is here?
+
+So you are, is the result of pruning the final result?
+
+Because it doesn't make sense why you would be pruning, if you're pruning only the ones that are not in the figure.
+
+If you are only removing the ones that you prune, you should have way more than what have way more than what you're showing in this context.
+
+Yeah, yeah.
+
+So it's possible to have more.
+
+I don't know why you're just trying to unroll it.
+
+Because this took one 10-minute pruning.
+
+The item set.
+
+Frag diagrams.
+
+Yeah, after pruning.
+
+So that should be after pruning.
+
+Yeah, after pruning.
+
+But there's more than that, right?
+
+Yes.
+
+Now, so I assume that everyone is here, and everyone understood the painting concept.
+
+And so everyone is okay with this beautiful topic?
+
+Okay.
+
+Now, yes, thank you for this question.
+
+So now the question is, why we are doing this pruning?
+
+To reduce the water.
+
+You see here, when we have, you know, after generating these candidate tree item sets, To prune them, to prune them, we can make three item sets.
+
+We are not looking at here, this one, right?
+
+We are only looking at this frequent two item sets and frequent one item sets.
+
+So, for example, if you have here, if you have, let's say we have here five, four subsets, item sets here.
+
+And let's assume that we have three item sets here.
+
+We only look at those without finding the support, without calculating the support.
+
+So, that's why we are using the priority algorithm candidate to find the frequent item sets.
+
+So, we have here, let's say, we have two items.
+
+This, by combining these two frequent item sets, we can have the candidate, we can generate the candidate three item sets, right?
+
+And then we can just prove it, prove them to get this.
+
+Candidate generation, so to generate the candidate item set, we can use frequent K minus one item sets and frequent K minus one item sets.
+
+How we can use that?
+
+We say that we merge two frequent K minus one item sets.
+
+If the first K minus two items are identical.
+
+For example, assume that our frequent three item sets, We have these item sets.
+
+ABC, ABE, ACBDC items.
+
+In my and frequent items.
+
+Frequent tree item sets.
+
+Now, I wanna create a candidate.
+
+Let's say, candidate for item sets using frequent tree item sets.
+
+Okay, now, based on this, can merge ABC and ABD, why?
+
+Because now these two are first two, I can get ABD, I can combine, I can merge ABC, ABD to get ABCD.
+
+And similarly, ABD, ABD to get ABD.
+
+You cannot merge these two, AB, A, C, D, If we manage the pool, we will get A, B, D, C, A, B, C, D. In that case, the order is measured.
+
+But in general, there are no prefix of them.
+
+So then for candidate 3, assume that our frequent 3 items are the A, B, D frequent 3 item sets.
+
+And N for candidate 4 item sets.
+
+Like this one, candidate 4 item sets.
+
+Then we need to do the pruning.
+
+Why?
+
+Because ACE and BCE are, how do you find that?
+
+How do you find that?
+
+Just by looking at this frequent tree item set.
+
+So these two, ACE and BCE, are not in this frequent tree item set.
+
+So we can remove this one from pruning.
+
+Also, we can prune A, B, D, E. A, B, D is infrequent.
+
+We don't have A infrequent tree item.
+
+So after pruning, we can go ahead and we can get the candidate item sets, frequent item sets, and we can apply the pruning to identify all frequent tree items.
+
+And over here, we generate one item set.
+
+So we prone them, one item sets, okay, then we prone, cocker, egg.
+
+Then based on that, based on these item sets, these item sets, we generate the candidate, candidate, hold up, candidate, two item sets, okay, then again we prone these two, and generate the, and then finally, we have another alternate for merge the item sets. the last K-2 item of the first one is identical to the first K-2 item of the second one.
+
+For example, if our frequent tree item set includes these items, ABC, we can merge ABC with BCD, since now the last two items of the first one are identical to the first two items of the second one.
+
+OK?
+
+We get the ABC.
+
+We add similarly, this is for candidate generation.
+
+And after generating these candidates, we need to do the pruning.
+
+So similar, if you have these frequent tree item sets, And using this approach, we're preparing the candidate for item sets, ABCD, ABDE, ACDE, ECD.
+
+But for in the pruning time, say that, okay, ABDE can be pruned because ADE is infrequent because we don't have this subset here.
+
+We don't have it here in frequency.
+
+And similarly for this one.
+
+And finally, after pruning, we're gonna have A, B, C, only A, B, C.
+
+Okay, now we generated all frequent item sets.
+
+In the first step of the algorithm for the association rule mining.
+
+If you remember, I said, the association rule mining has two step approach, right?
+
+In the first step, we should generate the items.
+
+Then we should generate the rules, extract the rules.
+
+So we are done with the first step.
+
+Now to the next step, after scanning database to determine the supports of each candidate items.
+
+So that's after finding the item set, after finding the item sets, okay?
+
+After finding the frequent item sets, how we, sorry, what should we do?
+
+But after finding the frequent item sets, we should find the support, their support.
+
+And for the next step, for the next step, what should we do?
+
+We have the frequent item sets that we know that their support is greater Now, what should we do?
+
+We should find a subset of these frequent item sets. these waypoint itemset like, let's say, if our waypoint itemset is S if it should find all non-empty subsets S such that F, right, N-1 for example, let's say, A and B how many, just with this, how many association rules 1, 2, 3, 4, 5, 6, 7, right?
+
+and after generating these rules Look at the confidence, the confidence score.
+
+The rules with the highest confidence score would be our final association.
+
+Confidence score for all of these rules, state rules, and the ones that satisfy the confidence score is higher than the minimum confidence would be our final set out.
+
+So excuse me.
+
+So how would you like, would there be a way to potentially prune those brooms as well?
+
+Prune?
+
+Yes.
+
+Yeah, actually here, actually here, there is no rules to prune the brooms.
+
+It can have it.
+
+There are some techniques.
+
+There are some techniques to find the more promising subsets like F and Q. Pruning means that we should generate all of these candidate brooms, then remove them.
+
+But it's not possible here.
+
+Because here, the only way to prune the roots is just to find the confidence score.
+
+So it means that we are doing everything wrong.
+
+But here, there are some techniques to make some limits on f's, not consider all possible f's, all possible subsets.
+
+So that's it.
+
+Any questions?
+
+No questions.
+
+So if there is no question, thank you so much.
+
+Do you have a limitation class for remedial learners For the final, like, can they be together?
+
+Yeah.
+
+For the next week, you have two more weeks, right?
+
+So you have also, you have two person for the weekend, radio, or friendly.
+
+College center survey, but there will be an ad.
+
+No, it's a personal survey.
+
+Yeah, the college won't be, we don't have you.
+
+We have Professor Anu.
+
+Yeah, so then it's better to pick it.
+
+Thank you so much.
+
+Thank you.
+
+I can't wait to see your work, which you do right now.
+
+So I think it's always fun.
+
+It's more than a minute.

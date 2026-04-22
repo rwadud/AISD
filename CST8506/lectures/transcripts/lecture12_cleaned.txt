@@ -1,0 +1,75 @@
+The simplest way is to check the number of possible itemsets. We need the possible subsets of these items, which is 2^d. Actually, it should be 2^d minus 1 if we don't consider the empty set.
+
+The total number of possible association rules can be computed using the formula 3^d minus 2^(d+1) plus 1. For example, when d = 6, the number of possible candidate association rules is 602. If you increase d, think about Walmart or other hypermarkets. How many items do they have? More than 1,000, so the number of possible rules would be in the millions. This means the brute-force search doesn't make sense, so we need another approach.
+
+Before that, let's look at these transactions. Based on the items we have, we can find some example rules such as {Milk, Diaper} implies {Beer}, {Milk, Beer} implies {Diaper}, or {Diaper, Beer} implies {Milk}. All these rules use the same items, Milk, Diaper, and Beer, arranged in different positions.
+
+If you compute the support and confidence for these rules, the support for all of them is the same, but the confidence differs. Why is the support the same? Because in the support formula, we compute support over the same transaction table, and for every rule the union of the left and right sides is the same set. The order of items in the set doesn't matter. That's why the support for all these rules is identical. The confidence differs because the denominators differ.
+
+All these rules are binary partitions of the same itemset. Rules originating from the same itemset have identical support but can have different confidence. Since rules extracted from the same itemset share the same support, we can decouple the confidence and support requirements.
+
+To extract association rules, we define a two-step approach. In the first step, we find the frequent itemsets from all the items in our transactions. After we have all itemsets whose support is greater than or equal to the minimum support, we have the frequent itemsets. In the second step, we generate rules from those itemsets.
+
+For frequent itemset generation, we only look at support. For rule generation, we consider the confidence of the candidate rules that you can extract from the frequent itemsets. Finding the frequent itemsets is still computationally expensive.
+
+A question I am frequently asked: these are all the items in the transactions (Bread, Milk, Diaper, Eggs, and so on). But among those items, some subsets are repeated frequently across transactions. That kind of itemset we call a frequent itemset. For example, if the minimum support is three, {Bread, Milk} is a frequent itemset. We found it easily from this small transaction set with this small number of items, just by inspection. But with many transactions and a huge number of items, finding frequent itemsets is not that easy.
+
+In general, if you have d items, the number of all possible itemsets is 2^d. For example, assume we have five items A, B, C, D, E. All possible itemsets include the 1-itemsets {A}, {B}, {C}, {D}, {E}; the 2-itemsets {A,B}, {A,C}, {A,D}, {A,E}, {B,C}, {B,D}, {B,E}, {C,D}, {C,E}, {D,E}; then the 3-itemsets; then the 4-itemsets; and finally the 5-itemset {A,B,C,D,E}. This lattice is drawn for five items.
+
+What is the usage of this lattice? Each node represents an itemset, and some of them should be frequent itemsets. We need to find the frequent itemsets within the lattice.
+
+How do we identify a frequent itemset? An itemset is frequent if its support is greater than or equal to the minimum support. So in the very basic step, we compute the support for each node in the lattice, then compare it with the minimum support. If the support is at least the minimum, we label that node as a frequent itemset.
+
+What is the problem with this basic approach? Even with only five items, we need to compute support for many itemsets, and a candidate frequent itemset is not necessarily a true frequent itemset. So we need to reduce the cost of finding frequent itemsets.
+
+How can we reduce the cost? We can reduce the number of candidates M by using pruning. We can also reduce the number of transactions N, which at first glance sounds strange because it means neglecting some transactions. In general that is not good, but sometimes it is acceptable. For example, if a transaction contains only one item, that item is not popular, so we can neglect that transaction. We can also reduce the number of comparisons N times M, because computing the support of each candidate requires checking every transaction. Reducing comparisons is an advanced technique; for simplicity, you can use a hashing method or a hash tree approach to compress the number of transactions and candidates.
+
+Now let's look at reducing the number of candidates. We introduce the Apriori principle. The Apriori principle says: if an itemset is frequent, then all of its subsets must also be frequent. For example, if a given itemset is frequent, all of its subsets at each level must also be frequent.
+
+The principle holds due to the following property: for any X and Y, if X is a subset of Y, then the support of X is greater than or equal to the support of Y. You can check this yourself. If a triple {alpha, beta, gamma} has support s (meaning the three items co-occur s times across transactions), then any transaction containing all three also contains any pair among them. So the support of {alpha, beta} is at least s. The support of an itemset never exceeds the support of any of its subsets. This is the anti-monotone property of support.
+
+We can view this Apriori property from another perspective. If we find that a set is infrequent, then all of its supersets are also infrequent. This is the contrapositive of the previous rule. How do we use it? We can prune the supersets of any infrequent itemset. There is no need to consider those candidates or compute their supports.
+
+If you want to use tools for association rule mining, you cannot use scikit-learn. You can use Weka, or if you want to do programming, there is a library called mlxtend. mlxtend provides everything, including all the rules. You give the tool the transactions, the number of items, the minimum support, and the minimum confidence. Then you choose the approach for reducing the number of transactions or comparisons. For example, if you want to use a hash tree, you define the hash function, and the tool takes care of the rest.
+
+Consider this example. We have these itemsets and assume the minimum support is 3, and we are looking for subsets with at most three items. If we considered all possible subsets, the count would be C(6,1) + C(6,2) + C(6,3) = 6 + 15 + 20 = 41. Recall that C(n, k) equals n! divided by k! times (n − k)!.
+
+At the first step, we generate the 1-itemsets, itemsets with only one item. Each individual item is a candidate frequent 1-itemset: Bread, Coke, Milk, Beer, Diaper, Eggs. We count their supports. Bread appears 4 times, and so on for the others. Our minimum support is 3, so Coke and Eggs are eliminated because their support counts are below 3. We are left with Bread, Milk, Beer, and Diaper as frequent 1-itemsets.
+
+Now we generate 2-itemsets from the frequent 1-itemsets. There is no need to generate candidates involving Coke or Eggs. The candidate 2-itemsets are {Bread, Milk}, {Bread, Beer}, {Bread, Diaper}, {Beer, Milk}, {Diaper, Milk}, and {Beer, Diaper}. We count their supports: {Bread, Milk} has support 3, {Bread, Beer} has support 2, and similarly for the others. Looking at the counts, {Bread, Beer} and {Beer, Milk} have support 2, which is below the minimum support, so we eliminate those two.
+
+For the 3-itemsets, we use the frequent 2-itemsets {Bread, Milk}, {Bread, Diaper}, {Diaper, Milk}, and {Beer, Diaper}. The candidate 3-itemsets generated from these are {Bread, Diaper, Milk}, {Beer, Diaper, Milk}, {Beer, Bread, Diaper}, and {Beer, Bread, Milk}. When we compute the support counts for all of these candidates, every count is below the minimum support, so there are no frequent 3-itemsets.
+
+Now let's look at the Apriori algorithm. Notation: F_k is the frequent k-itemsets, and L_k is the candidate k-itemsets. Not every candidate k-itemset is frequent, so the frequent k-itemsets form a subset of the candidate k-itemsets.
+
+The algorithm starts with k = 1. Generate F_1, the frequent 1-itemsets, as we just did. Then in general, for each k: first we generate candidate (k+1)-itemsets L_{k+1} from F_k. In our example, we started with candidate 1-itemsets, dropped those below minimum support, and obtained F_1. Then for candidate 2-itemsets we used F_1, and so on. After generating L_{k+1}, we do candidate pruning: prune any candidate in L_{k+1} that contains a subset of length k that is infrequent. If any subset of a candidate is not frequent, we remove the candidate. Next is support counting: count the support of each surviving candidate in L_{k+1} by scanning the database. Finally, candidate elimination: remove candidates in L_{k+1} whose support is below the minimum support, leaving F_{k+1}.
+
+For implementation, you need to know the inputs and outputs. The input is the transaction table. The output is a set of subsets of the items, that is, the frequent itemsets.
+
+Now assume we generated candidate 3-itemsets. The candidates from our example are {Beer, Bread, Diaper}, {Beer, Diaper, Milk}, {Bread, Diaper, Milk}, and {Beer, Bread, Milk}. Not all of them are necessarily frequent, so we prune.
+
+Assume we first generated frequent 1-itemsets, then frequent 2-itemsets. Based on the frequent 2-itemsets, I generated the candidate 3-itemsets. Now I should prune. For example, examining one candidate: should it be removed or should it remain? If the candidate contains a pair that is not in the frequent 2-itemsets, we remove it. By the Apriori property, if a set is frequent, all of its subsets must be frequent. So if I consider the pair {Diaper, Eggs}, since Diaper appears in a candidate containing Eggs, that pair would need to be in my frequent 2-itemsets. But I do not have {Diaper, Eggs} there, so the candidate must be pruned.
+
+Student question: Can you use parameters other than minimum support to generate the frequent itemsets? For now, we are using only minimum support to generate the frequent itemsets. Once we have the frequent itemsets, we can generate the candidate rules from them. At this step, we find the frequent itemsets based on minimum support alone.
+
+Frequent 2-itemsets are different from frequent 3-itemsets. We generate candidate 3-itemsets based on frequent 2-itemsets. If you find any 2-subset of a candidate 3-itemset that is not in the frequent 2-itemsets, you throw the candidate out.
+
+Student question: Is the result of pruning the final result? It seems the pruned set should still contain more items than what is shown. Yes, it is possible to have more. What is shown is what remains after pruning in this particular example.
+
+Why are we doing this pruning? To reduce the workload. After generating the candidate 3-itemsets, to prune them we only look at the frequent 2-itemsets and frequent 1-itemsets, not the full lattice. Without calculating support, we remove infeasible candidates. That is why we use the Apriori algorithm to find frequent itemsets.
+
+For candidate generation, we can use the F_{k-1} × F_{k-1} method. We merge two frequent (k-1)-itemsets if their first (k-2) items are identical. For example, assume our frequent 3-itemsets are F_3 = {ABC, ABD, ABE, ACD, BCD, BDE, CDE}. To create candidate 4-itemsets, we can merge ABC and ABD because they share the prefix AB, giving ABCD. Similarly, merge ABC and ABE to get ABCE, and merge ABD and ABE to get ABDE. You cannot merge ABD and ACD because they share only a prefix of length one (A), not length two.
+
+So the candidate 4-itemsets generated by this method are L_4 = {ABCD, ABCE, ABDE}. Then we prune. Prune ABCE because ACE and BCE are infrequent; they are not in F_3. Prune ABDE because ADE is infrequent. After pruning, L_4 = {ABCD}.
+
+There is an alternate F_{k-1} × F_{k-1} merge method: merge two frequent (k-1)-itemsets if the last (k-2) items of the first are identical to the first (k-2) items of the second. For example, given frequent 3-itemsets including ABC and BCD, we can merge them since the last two items of the first (BC) match the first two items of the second (BC), giving ABCD. Similarly, merge ABD with BDE to get ABDE; merge ACD with CDE to get ACDE; merge BCD with CDE to get BCDE.
+
+This is for candidate generation. After generating these candidates, we prune. With F_3 = {ABC, ABD, ABE, ACD, BCD, BDE, CDE}, the alternate method produces candidate 4-itemsets L_4 = {ABCD, ABDE, ACDE, BCDE}. During pruning, prune ABDE because ADE is infrequent; prune ACDE because ACE and ADE are infrequent; prune BCDE because BCE is infrequent. After pruning we have only ABCD.
+
+Now we have generated all the frequent itemsets. This is the first step of the association rule mining algorithm. Recall that association rule mining has a two-step approach: first generate the frequent itemsets, then extract the rules. We are done with the first step.
+
+For the next step, after finding the frequent itemsets and their supports, we find the non-empty subsets of each frequent itemset. Given a frequent itemset L, we find all non-empty subsets f of L such that f → L − f satisfies the minimum confidence.
+
+If |L| = k, there are 2^k minus 2 candidate association rules (ignoring L → ∅ and ∅ → L). After generating these rules, we look at the confidence scores. The rules whose confidence score is above the minimum confidence threshold become our final association rules.
+
+Student question: Is there a way to prune these rules? There are techniques to find more promising subsets. But strictly pruning the rules would require computing the confidence score, which means we would have to compute everything anyway. However, there are techniques to limit which subsets f we consider, so we do not have to enumerate all 2^k minus 2 subsets.
