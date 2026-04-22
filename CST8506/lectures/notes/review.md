@@ -1,4 +1,4 @@
-# Lecture 12: Review of Class Imbalance, Anomaly Detection, Ensemble Learning, Association Rule Mining, and Hyperparameter Tuning
+# Review of Class Imbalance, Anomaly Detection, Ensemble Learning, Association Rule Mining, and Hyperparameter Tuning
 
 ## 1. Class Imbalance
 
