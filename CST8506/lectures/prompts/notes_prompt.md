@@ -40,6 +40,7 @@ When in doubt about whether something is "verbal redundancy" or "substantive det
 - If the lecturer describes a process or pipeline, add a visual representation (Mermaid diagram or structured list).
 - If the lecturer gives a partial example, complete it.
 - Always label any added content with a subtle marker like *(added)* or *(reconstructed example)* so the student knows it wasn't explicitly spoken.
+- Add easy to understand examples of your own to illustrate complex concepts, especially if the lecturer's examples were brief or abstract.
 
 ## DO NOT
 - Omit or summarize away any substantive content from the lecture (see PRESERVATION PRIORITIES for what counts as substantive).
@@ -52,5 +53,5 @@ When in doubt about whether something is "verbal redundancy" or "substantive det
 - Use em dashes, en dashes, hyphens used as dashes, or semicolons anywhere in the output. Use commas, periods, or separate sentences instead.
 
 ## OUTPUT
-- A single Markdown file placed at `notes/lectureX.md` (replace X with the lecture number).
+- A single Markdown file placed at `notes/lectureX.md` (replace X with the lecture number if known or use the file name).
 - The notes should be comprehensive enough that a student who missed the lecture could study from them alone.

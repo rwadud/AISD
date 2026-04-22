@@ -1,0 +1,1399 @@
+is there any kind of imbalance?
+
+Or is there a number of samples from different classes?
+
+So let's say we have a class imbalance problem.
+
+So then we introduce some methods, sampling methods with basic methods to deal with this problem.
+
+Then we talk about the automatic detection.
+
+So these are different problems, different tasks that we can see the class imbalance problem like the credit card fraud detection or intrusive landlords, et cetera.
+
+And the important thing that we talked about the imbalance problem or the topic was about the evaluation metrics.
+
+So if you remember, I mentioned that the here this does not reflect the performance of the model.
+
+So in class, if we have the class imbalance problem, usually for most of the time, correct detection of the minor sample are important for us, not the major sample.
+
+For example, in disease detection for let's say for detecting if someone has HIV or I don't know any kind of disease.
+
+So the correct detection of HIV is much more important than the healthy detection of the healthy people.
+
+Somebody doesn't have any kind of disease.
+
+So for example, if we have here, say we have our data set, it has 1,000 samples.
+
+So only 10 of them are from the minor class or let's say they have some disease.
+
+And 990 of them are, if you have just able to check or the healthy people or the 990 of them which don't have any, they don't have any kind of disease.
+
+Correct me if I'm wrong.
+
+If our model not able to show any of people with 990 plus zero or 1000.
+
+So the accuracy of model would be 90, which is meaningless.
+
+So because of that, we say that Here we should use another kind of precision recall and score.
+
+What is score?
+
+So, which is the harmonic mean of the precision and and also we talked about the how we can interpret the precision and recall.
+
+So, remember precision is true positives while true positives are false negatives.
+
+But you know in precision, so A plus C, A plus C is the sum of these columns.
+
+And sum of these columns, according to this predictor, plus C is the overall number of samples that are predicted as positive.
+
+So but A here, it shows a tone.
+
+You say that in precision that among all the samples that are predicted positive, how many of them were correctly positive?
+
+So for the recall, what would be the interpretation of the recall?
+
+Number of correctly predicted positives?
+
+A plus A plus B. Now, A plus B is actual positives.
+
+So among all the actual positive samples, how many of them predicted corrective?
+
+By the way, so this precision and recall are not only for the classification task.
+
+For the information retrieval task, they are also important.
+
+For example, let's say when you search Google, and it retrieves something for you.
+
+So again, how can say where precision is important and where recall is important?
+
+Which one is more important?
+
+It depends on the scenario.
+
+It depends on the problem you think.
+
+OK. So let's say for the information retrieval, which one is more important?
+
+Precision?
+
+you usually want to be sometimes precision, sometimes the recall.
+
+You want to have all the relevant documents retrieved.
+
+So add this one.
+
+Then if you have class imbalance problem, if you have class imbalance problem, so usually precision and recall wouldn't be balanced.
+
+So in the ideal case, in the ideal case, the precision and recall must be close to each other.
+
+But when we have, in the case of the, in the existence of the class imbalance problem, usually we will have a gap between the recall and precision.
+
+And most of the time, most of the time, in class imbalance problem case, precision would be much higher than the recall.
+
+You can think about it, why this will happen based on error rate or minus accuracy.
+
+So, the positive predictive value, this precision recall, the sensitivity or key period to positive rates, or specificity to negative rates, and these are just formulas.
+
+So, then we talked about the ROC, area ROC, to showing the relation between the true positive rate and false positive rate, And then to compare different models based on the ROC.
+
+We say that we should look at the area under curve.
+
+This part.
+
+Area under curve.
+
+And the model with the large area under curve would be much better than the other one with the low area, small area under curve.
+
+So, this is about how we can use the ROC model to decide about when we should use which model in which time.
+
+By the way, don't forget, usually, not the rule, the rule has been different model we keep getting.
+
+And then we can use different models for different data.
+
+For different samples.
+
+So for example, here.
+
+See that here, this part, and what that area under there, and what for this model.
+
+But this part is bigger than this part.
+
+So here, area under this blue curve.
+
+So you can decide about, you know, you can decide about this piece, which one you should use for which sample based on their performance.
+
+It's a bit complicated, so it needs to do kind of your first kind of clustering on the sample.
+
+Put the different samples in different clusters, then apply different models on some representative of the cluster to see which model works better on which cluster.
+
+So then, based on that, you can assign for the new sample, so first you need to assign samples to one of the clusters.
+
+Then, based on what you have decided before, you decide which model should be used for this new sample.
+
+So we talked about how we can solve this class imbalance problem. the simplest solution is to do the sampling or the resampling.
+
+So we can do the resampling in two ways.
+
+So undersampling and oversampling.
+
+If you undersampling and oversampling, undersampling means that we try to reduce the number of negative samples or the samples from the majority class.
+
+And why with the undersampling, with the oversampling, we mean increasing the number of samples from the minor class.
+
+So there are different approach for both undersampling and the oversampling.
+
+But the simplest way for both of them is just doing it randomly, random undersampling and random oversampling.
+
+How do we decide if we have multi-class in the problem?
+
+How do we decide which one should pick up and over some class, or which one?
+
+Like if you have three or four classes, and they have different balances.
+
+How do we decide which one to take?
+
+So usually, it's a kind of hyperparameter.
+
+There you go.
+
+So usually, if you have to select, it's up to you.
+
+You can say, OK, this is C1, number 2, C2.
+
+You can start by this.
+
+Ok, I am going to over sample these two.
+
+The samples from these two classes.
+
+This one, ok.
+
+Then we also, we can say, taking this class, you know, my reference.
+
+Then you need to do over sampling for this other sample.
+
+Or you can take this one.
+
+So, for this one, then you need to over sample these two.
+
+Or you can do it in a heuristic way, okay?
+
+Select just to guess what is the best, you know, or the suitable number of the class, the number of the sample.
+
+Then you can just come back and do the over sampling for other sample.
+
+For example, when I say the heuristic, okay?
+
+We will start with a model and see if we can do something better.
+
+I don't know what the question is.
+
+Okay, so for each minor sample, for each minor sample, first we need to find the k-nearest neighbors from the minor sample, and not the major sample.
+
+Then, we should take the difference between the instances.
+
+Is it clear?
+
+Or do you want me to show those samples in order?
+
+and the circles for each sample each sample first it should be then each page difference between the instance and random number to any move and clone then sample then not enough we should repeat it with the newly created symbol and nothing unique but if you have some sample some numeric sample from the sample we can numerically, that's fine, that's fine.
+
+Okay, but for the images, for the images, no, or the point of care, then we talked about the anomaly detection.
+
+So what are the anomalies or outliers?
+
+So the outliers, sample, or, or the normal sample.
+
+So they are the difference between the nodes and they are similar to the nodes.
+
+But it's more different.
+
+Oh, the noise by the sample?
+
+Different.
+
+The noise samples are invalid samples.
+
+So, for example, but the outliers are different than the norm, but they are not invalid.
+
+Right?
+
+For example, let's say we have a dataset, and they can say, oh, the, I don't know, salary or something.
+
+Employee salary, yeah.
+
+Yeah, employee salary.
+
+So in the data set, in the data set, so we see that the norm of the salary is something between, I don't know, 100K and 120K. But then if you see, you see some sample, I don't know, 900.
+
+They're outlier. but it's possible, it's possible, they are not invalid, it's possible, but sometimes, so for example, you see that in the business there, I don't know, for example, let's say you have something, they are not valid.
+
+You are saying that the employee salary, the currency is different.
+
+Yeah, the currency is different or the location, or you know, for example, the education level is not aligned with the salary.
+
+Or I don't know, let's say the birth date of the person is not valid birth date.
+
+So these are the NOEs.
+
+Noise always are inward, but the outliers are back but deeper.
+
+And they can destroy our data analysis.
+
+If we want to know something general about the data set, the outliers can destroy our analysis.
+
+Because of that, we try to find the outliers and exclude them from our data.
+
+So we talked about the causes of the anomaly for the outliers.
+
+So when we have data from different classes, so for the measuring the weight of the origin, but few people are able to realize the reports from the origin.
+
+Someone with, I don't know, three meters, it's very not known.
+
+But also, it's possible.
+
+It is possible.
+
+But this is out there.
+
+But for example, if you have a data set of the basketball players, so if you see that the best player, you know, the height of the best player, for example, is less than one meter.
+
+This is the note.
+
+Anyway, also the data error in the entry time, the entry time.
+
+Who had her past two years baby.
+
+Then we talked about the anomaly.
+
+So we said that we have statistical approach.
+
+What is statistical approach?
+
+We have some information about this.
+
+We talked about the proximity based based on the similarity.
+
+Similarity is a subset of proximity.
+
+The other is more of...
+
+Most are...
+
+Then we talked about the reconstruction.
+
+And the output for the open coder must be the same.
+
+So for the normal data, for the normal data, we should give the input, the normal data as input, and the same normal data as output.
+
+Then we train, right?
+
+But for the output, we should give a normal data and input.
+
+And the output should be the same. but 4 have the out and power input and here any kind of neural model can be placed you can design this model, you can have it as you want so, what's the usage of this autoencoder?
+
+why you use the autoencoder?
+
+keep the contacts light no, not contacts but using the other models like the MFP or CNN You can also have the aura, for example.
+
+You see, when we use dimension of our input data, to this hidden layer, like pixel, whatever.
+
+So this would be a vector.
+
+Then we give the curve to the decoder model, and the original.
+
+So the first usage of the autoencoder is encoding the data in lower dimension.
+
+And then, how we can use it?
+
+Then we can use it for what we can use it for data compression.
+
+Compression.
+
+Compression.
+
+Compression.
+
+So instead of storing high dimensional data, we can store an encoded version of the other side.
+
+Another one, another usage of the autoencoder, noise reduction.
+
+So if we don't have any noise, if we don't have any noise, so we need to train this model.
+
+We need to train this model.
+
+To train the model, we should have input and also the targets, or the outputs, expected outputs, right?
+
+So since the outputs must be the same as the inputs, that's fine.
+
+So we can give the input data, and for the expected output, can give the same input, right?
+
+Now, if we don't have any noise in our data set, all the data samples are okay, then we'll give the exactly the same data or same samples as input and output, right?
+
+But if we assume that we have some noisy sample in our dataset, okay?
+
+And we know those noisy samples.
+
+Okay, so let me say the noisy sample.
+
+Noisy sample equals to the sample plus noise, right?
+
+Now, if we know those noisy samples in our train, our dataset, right?
+
+So for noise reduction or for noise removal, We can give a noisy sample as input, noisy sample as input, and a sample without noise as the expected output, right?
+
+So in that case, we will force the model to remove the noise from the input, the channel.
+
+Who understood?
+
+So that means the model has to learn that output first?
+
+The output?
+
+How model will understand that noise?
+
+The model.
+
+For the anomaly or outlier, we assume that the outlier and noise are contaminated data.
+
+Data with kind of noise contamination.
+
+I don't want to use this term.
+
+Because we try to reconstruct the original sample.
+
+If the sample, if we assume that our sample is an okay sample without any contamination.
+
+So then, in the output, we should get the same input.
+
+Okay?
+
+If the difference between this output and this input is zero.
+
+There is no difference between the input and output.
+
+It means that there is no contamination.
+
+Okay?
+
+But if there was a difference between the output and the input, it means that our input data is contaminated.
+
+Then we talked about the one-class SVM.
+
+So one-class SVM was a model for the solution to find the anomalies.
+
+So if you remember, we said that for the SVM or for any kind of classification model, we need to have labeled data.
+
+But here, for the annotation, we don't have any label.
+
+So by using one-class SVM, we assume that.
+
+So we just put the center region as a data, negative.
+
+And then we find the boundary for the sample. and we say, okay, if we have any sample outside the boundary, with some specific distance, that would be the outline.
+
+And class imbalance.
+
+So the classifier fusion or ensemble learning approach.
+
+So ensemble learning, we set up using one classifier. we try to create classifiers.
+
+And then combine those several classifiers to create final results.
+
+And the idea behind the ensemble learning was just relying on only one, the opinion of one expert.
+
+We try to get the opinion from several experts. aggregate this several opinions to final.
+
+So, that's the ensemble approach.
+
+First, generate pool of classifiers, then combine.
+
+There are some issues here.
+
+For example, first, is it always good to...
+
+First, how we can...
+
+First, you know, how we can generate, you know, different Can we have identical classifiers in our pool?
+
+No.
+
+No identical means the same.
+
+We cannot have the same classifiers in our pool.
+
+So the classifiers must be diverse, must be different.
+
+So we should apply this diversity, we should make sure of the diversity of the classifiers To do that, we can do, how we can do that?
+
+Yeah, there are lots of approach.
+
+So first, if we use different training data, we use different training data, the same classifier, we can have different classifier at the end.
+
+The same classifier, the same thing, right?
+
+So this is one approach.
+
+Another approach, another approach.
+
+We can have the same training data with one classifier with different setting, different values for the hyperparameter.
+
+That would be another solution.
+
+Again, we can have the different training data, different training data with the same classifier with different setting, okay?
+
+Another solution, we can have same training data with different classifiers.
+
+SVM, naive grade, I don't know, the neural model, whatever.
+
+Okay.
+
+Another solution.
+
+Now, we transform the same training data, different classifiers, okay, different classifiers, result in different classifiers, okay.
+
+When I say declassifier, the algorithm, usually the algorithm, all the algorithms are declassifiers.
+
+So this is the last one.
+
+Same training data, multiple version of the different classifier with different settings.
+
+So you can have one is SPL, hundreds of SPLs with 100 different settings, plus hundreds of the neural model with different architecture or different settings.
+
+I don't know the different, let's say, the decision tree.
+
+This way, we can create our pool.
+
+Now, we solve the diversity.
+
+Also, there are some metrics to evaluate the amount of the diversity between different classifiers.
+
+Right?
+
+So again, in a simplest way, in a simplest way, for the, in the ensemble learning, we can just take the majority vote, and take the votes of the, or the opinions of different classifiers, and take the majority vote as the, our final prediction, right?
+
+This is not that good, okay?
+
+If we can get, treating all the classifiers as the same in Perth, it's not that good, because you know, sometimes you say, okay, if we have a classifier with, I don't know, let's say 80% score in a pool and at the same time, if you have a classifier with, let's say, 60% of score at the pool, okay.
+
+So if you take a simple majority vote, okay, it means that we treat these two the same.
+
+So for that, we can use weighted majority voting.
+
+So the classifier, the higher performance, can have higher rates.
+
+Another thing that you can do, like, on our ensemble approach, before combining the classifier, is classifier selection.
+
+So you are familiar with the feature selection.
+
+And for the classifier selection, I think you already did it.
+
+When you were about deciding which model is better, you have some model, okay?
+
+So you're about deciding which one you should use.
+
+You say, okay, we can evaluate the models on our test, our, I don't know, validation data, based on the FS score, precision or accuracy.
+
+All you can do will be cross-validation, and you select the ones with the highest score, right?
+
+So that's for the model selection, one model selection, among the different models that you have, right?
+
+But in classifier selection, here in Ensembl Learning, we are now selecting subset of classifier from our pool.
+
+And instead of, let's say for example, you train 500 classifiers, and you want to combine them.
+
+Combining 500 classifiers is not always good.
+
+Sometimes it can, you know, reduce the performance of the model, performance of the, the overall performance, right?
+
+So to overcome this problem, Instead of combining all the classifiers inside our pool, at the first step we apply kind of classifier selection to select a subset of the promising classifiers and then combine them.
+
+So in general, say, the ensemble learning, it goes to classifier generation plus classifier selection plus classifier combination, okay?
+
+How we can select that set of classifiers?
+
+There are several ways to do that.
+
+The first one, the simplest one, is just kind of, let's say, pitch forward selection.
+
+Okay?
+
+You, first, you can sort your classifiers, okay, based on the performance, okay, from the highest performing classifiers to the lowest one.
+
+Okay?
+
+Then you can add, just at each step, you can add one classifier to your pool, okay, and evaluate the results on the validation data.
+
+Do you understand?
+
+Okay.
+
+Then, next step, the second classifier should be You can add to the pool again, combine the results and evaluate if the result was better than the previous one.
+
+You can keep the new classifier inside your set.
+
+Otherwise you can remove it.
+
+Then, you can move to the next classifier.
+
+So this is one way.
+
+Another way is backward elimination.
+
+So in background elimination, again, you have the sorted classifiers based on the effort format.
+
+And this time, you start with all the classifiers, combining all the classifiers.
+
+At the first, assuming that you have 500 classifiers in your pool, the first step, you combine all 500 classifiers. and evaluate the results of the evaluation.
+
+By the way, inside the parameters, when I say the combined parameter, combined classifier, so you should do it sample by sample.
+
+Classified combination means so aggregating the label sample by sample.
+
+Okay?
+
+So for example, say classified combination, Then we start with all the classifiers, evaluate the results.
+
+Then you should remove the classifier with the lowest performance.
+
+This one is the lowest performance.
+
+Then we remove this one, again, while we should aggregate the results, but without this color.
+
+Then evaluate the results, if this time the results were better than the previous one, we should remove that classifier and continue removing, otherwise we should keep it. and then continue with this one second lowest performance and so on again, a similar scenario if the results were better than the previous one or the family related to the previous one the best results if the results were better than the best results remove it otherwise you should stop so after we remove that so again we calculate a new calculation with that one we kept I think this should be familiar for you.
+
+You should.
+
+You did it, I think, in your report for feature selection.
+
+Did you do it?
+
+Feature selection.
+
+Yeah, but not this way.
+
+The similar argument here that you're using for the classifier selection, you can use it for feature selection as well.
+
+But is it the majority, what in feature selection, you do not have the majority working.
+
+Just for the forward selection, we should, for each feature that we are selecting, we train a model, we predict the results, and evaluate the results.
+
+In that, the majority vote for something like that, right?
+
+And similarly, for the back card elimination, instead of taking the majority voting, We start with all features, train a model, evaluate it on the evaluation data, then we remove the last one here, but here for the features we don't have the performance.
+
+We cannot show them based on their performance.
+
+We can order them in order.
+
+Okay, remove the last one.
+
+These are similar to classifier selection approach, are similar to the basic feature selection from another solution.
+
+For feature selection, classifier selection.
+
+Thank you.
+
+Thank you.
+
+Thank you.
+
+You're all manually.
+
+Yes.
+
+Manually.
+
+We have the feature.
+
+Yeah, you can do it here as well.
+
+OK. You can do it here as well, just by looking at the performance, not only the performance, but looking at the true positive and false positive.
+
+For example, for the same sample, so that's the diversity.
+
+So the correlation for the feature can map here, can map here for the diverse identifier.
+
+Another solution?
+
+Second land method?
+
+No.
+
+In feature selection, you also have random feature selection, right?
+
+I gave you here, you can have random classifier selection.
+
+Right?
+
+Another solution, you can use the meta heuristic for finding best set of classifiers.
+
+When you have lots of classifiers in your pool, it's not that easy problem.
+
+Because, for example, if you have 500 samples, 500 classifiers in your pool, the number of possible subsets that you can use as promising classifiers would be 2 to the power of 500.
+
+Okay, that will be 2 to the power of 500 minus 1.
+
+So this is not an easy problem.
+
+So for this kind of problem, you can use the heuristic or metaheuristic model approach like the genetic algorithm, particle swarm optimization algorithm, I don't know, ADC.
+
+The algorithm or simulated engineering algorithm or you kind of understood.
+
+And you also possibly could be prove why ensemble learning model works.
+
+Okay.
+
+So then say that, okay, the ensemble method works basically with the classifiers that are very sensitive to everything.
+
+Everything means the training data change in the hyperparameters, change in the settings of the algorithm.
+
+So like the decision tree, neural networks, and neural networks are high in the initial state.
+
+So, remember learning?
+
+What if you have these kind of classifiers in your pool?
+
+Then we talked about the bias variant.
+
+If you remember, we mentioned different variants and over-pitting and under-pitting.
+
+So when we have the high variance, we have over-pitting.
+
+Over-pitting, so it means that the over-pitting in the classifiers works fine on our training data, but it doesn't work on our validation data or test data.
+
+So, in that case, say we have high variance, and with high bias, say our model most probably has over-pitting, it's unrepeating, it's unrepeated.
+
+It means that it doesn't work for training data or test data.
+
+There are different solutions for dealing with the overfitting and underfitting.
+
+You can name.
+
+For underfitting, how can we solve the underfitting problem?
+
+Adding more data.
+
+Training for longer period.
+
+So first of all, what are the reasons for the underfitting?
+
+The training is not clean. and the models are not good.
+
+That's one of the reasons.
+
+That is too small.
+
+That's another reason.
+
+Model is very simple.
+
+Model is very simple.
+
+They have low amount of training data.
+
+The quality of data is not good.
+
+So if you can solve one of these reasons, then we can improve, we can evolve, you know.
+
+Other reasons for overfitting?
+
+The class imbalance?
+
+Model...
+
+Many times.
+
+Changing a lot over time.
+
+Memorizing many details.
+
+And changing data.
+
+Okay, so what's the reasons for that?
+
+Reasons for that.
+
+Let's see other definition of the overfitting.
+
+The other definition of the overfitting is, you know, that our model instead of learning, it's memorizing the pattern.
+
+Memorizing the sample.
+
+Data leak.
+
+So, what's the reason for that?
+
+Data leak.
+
+Not for me.
+
+We do not remove the prediction from the trading set, and model will run from it, right?
+
+It's something that we have to remove.
+
+We cannot remove the prediction.
+
+We don't need the prediction.
+
+In the training.
+
+In the training.
+
+Okay, but if there's an indicator that can point to us, the prediction, then, if there's any feature that can actually lead to that.
+
+If we don't remove that feature.
+
+Feature?
+
+Mm-hmm.
+
+Yeah, that's not about the, I know it's general, it's general for improving performance, okay?
+
+It's not really to the order.
+
+The main reason for the overfitting is complexity of the model.
+
+If we use very complex model, then most model would be overfitting.
+
+The size of data set can cause to the overfitting, size of the data set, number of samples, small samples, small samples.
+
+So the small data set can cause to the overfitting, correct or box, for example, can also be so hard.
+
+Yeah, so in general, we say the learning.
+
+So the general rule, the general rule.
+
+So this is important.
+
+If I ask you the first thing, I'm going to ask you how you can avoid your own.
+
+The first thing that you all mentioned is increasing the training.
+
+So it means that if you look at the literature, you'll find it as well.
+
+But if you increase the data, means that if you have small data set, small size data set, you will have the priority.
+
+But it's not correct.
+
+If you have a small data set and you train your model for several folks, for lots of people, then model will memorize those samples.
+
+But if you have small sets, small size data sets, but you don't train the model for a lot of epochs, for the loss of epochs, okay, your model will be under-repeated, not over-repeated.
+
+Because of that, increasing the size of data is solution for both problems.
+
+Understood?
+
+for example, the CNN, the classification, with adding extra layers and dropouts.
+
+Yeah, so there are other approaches as well.
+
+So, though, adding the regularization factor, also like the, you know, the loss function, like, you know, the R1, R2, or adding the other regularization layer, like the dropouts, okay?
+
+They are the ways to decrease the complexity of the model.
+
+They are not related to the data.
+
+So they are about decreasing the complexity.
+
+So we talked about how we can answer the question.
+
+Any question?
+
+It's actually making much clearer than the last day.
+
+It's getting much better now.
+
+But I think I mentioned these things last time.
+
+So you did.
+
+Our concentration wasn't good.
+
+I think I missed a lot of components.
+
+You have to try it.
+
+So yes, first of all, the complexity of the model is simple.
+
+Knowing that your model, if your model is complex or simple, it is pretty easy.
+
+Just by looking at the number of parameters, your model usually will be taking you So, you're just looking at the number of parameters, you can say, okay, the model is imperfect, or the architecture of the model is also imperfect.
+
+So, because now you are only familiar with the linear, linear, the order model. another CNN here, I don't know, a polling vendor here, or multiple MMP liars, you know, one after each other.
+
+But this is not the only architecture.
+
+So there are lots of, you know, very complicated architectures as well.
+
+For example, one of the, this is not in the corridor information, but for example, each of these models, of the digital model can have different architecture, different purpose.
+
+For example, say you are working with text.
+
+What kind of task you can do on text?
+
+Sentiment analysis?
+
+Summarization, translations.
+
+Sentiment analysis.
+
+This is a very, not general case, but a very classic.
+
+Sentiment analysis, summarization is what we can include if we go in the extractive summarization.
+
+So we can have, we have the same text.
+
+We have the same text.
+
+We can do sentiment analysis.
+
+We can do name and see recognition.
+
+We can do part of the speech recognition on the same text.
+
+We can do text summarization.
+
+We can do topic modeling, right?
+
+So and lots of other things.
+
+Dependency, finding the dependency between the parts of the sphere.
+
+Yeah.
+
+OK. Yeah.
+
+For now, you only use the model for only one time, right?
+
+Just use the model or the combination of the model for one time, sentimental image classification.
+
+It is also possible to have a model to do multiple times, say, one for image, for classification, one, everything, we don't estimate classification or something like that.
+
+In the image, image classification, object classification, data, and so on and so forth.
+
+This is now at the multi-task learning.
+
+We learn multiple tasks at the same time.
+
+We solve multiple tasks.
+
+So, now, there was a number of parameters for the avoid indicator for the complexity of the sample and the architecture of the model, of the U-Hauwi training model.
+
+If you need to... for the training data, if I have enough training samples, for the U-Hauwi model, if you have... 700 samples, the question is, are you familiar with bagging or should we train it again?
+
+Can you explain it again?
+
+So, the debugging approach Yeah, there is no more class anyway.
+
+It should be good.
+
+The debugging approach, what we are trying to do, first, we create different stops, different training data by sampling each replacement.
+
+Here we have the original one, the one which we imported.
+
+We create the sample, then turn it to debug.
+
+It means that, in the same training data, we can have a repetition of the sum samples, or so, some samples will not be appeared in one or some of our training data.
+
+Then, with each of these training samples, training sets, training data sets, we will create a classifier, train classifier, train classifier, And then apply it on the, our test set or the evaluation set.
+
+Then you can combine the results.
+
+Okay?
+
+So this is the backing, the sample of the first solution that I mentioned for, for what?
+
+For creating a diverse set of declassifiers.
+
+Do you remember?
+
+For creating the, for enforcing the diversity declassifier.
+
+We set the first solution using different training sets.
+
+Different training sets doesn't mean that we should go and collect different training samples, right?
+
+To train different training sets means that it's like different sets with different samples.
+
+So that would be the backing algorithm.
+
+Which classification algorithm we should use for training our classifier?
+
+Any classification, any classifier you can use.
+
+You can use SVM, you can use agentry, you can use neural models, right?
+
+Also, a kind of advanced model instead of using, you know, instead of using the only one classifier with all training sets, you can use multiple classifiers.
+
+So, the first round, the first, so first, we train, fire, we need that, so all the, all the classified rules, or the 34 labels, 34 labels, then for the other round, for the other training set, say, we have, you know, otherwise, it should be also, if it should be one, it should be one.
+
+Maybe for the others as well, and here, And here, sample is less than 0.34.
+
+One can transfer.
+
+Now, for example, say we have some sample anywhere.
+
+We use to classify based on this one.
+
+Second one, we classify based on this.
+
+And similarly for the other.
+
+Then we simply take the duality.
+
+Or since here we have only two labels, we can sum them up.
+
+And look at the sign of the sum.
+
+So then, now if I want to evaluate my ensemble or my bagging model.
+
+Okay, this slide, in the bagging algorithm, all the classifiers train with different training sets, okay, and the same class, and the same.
+
+So, we all are the same.
+
+But for the boosting algorithm, we put weights on classifiers, okay, and we consider those weights for our combination instead.
+
+And how we do that?
+
+So in the boosting method, there are different algorithms in this category, from the boosting category.
+
+But the most famous one is AdaBoost M1.
+
+So how AdaBoost M1 works, almost similar to the bagging At the first time, at the first time, we give the weights to the samples as well.
+
+We have two types of weights.
+
+Weights of the sample, weights of the classifier.
+
+At the first step, at the beginning, all the samples are of the same weight.
+
+So the weights are, so, same for the, also the samples training set creation step is similar to the bagging.
+
+It's sampling with replacement, but considering the weights of the sample as well.
+
+So it means that if a sample has more weight, so the probability of that sample being selected for the training set would be high, right?
+
+At the first step, all the samples have the same weight.
+
+That means that the first training set, first training set, likely all the samples are of the same weight.
+
+And this sample is the first training.
+
+Now, when we create trainings, we train first classifier.
+
+Then we apply the trained classifier on our original training set, not the training set that we trained that classifier.
+
+Understood?
+
+We train the classifier with this second row.
+
+We train it.
+
+But we should test it on this first row, the original.
+
+OK. Now, we should look at the samples, the labels, OK?
+
+So if we see this classifier classifies some samples correctly, OK, so definitely this classifier classifies some samples correctly and some samples incorrectly, right?
+
+So we should increase the probability or the weight of those samples that are predicted wrong or incorrect, and we should decrease the weight of the samples that are predicted correctly by the first classifier, right?
+
+Understood?
+
+Who understood?
+
+Then, now the weights are changed.
+
+In the second step, I will ask a question to see, make sure that you understood or not.
+
+So, in the second step, the second round, we should consider the weights into account.
+
+We should take the weight into account.
+
+So the sample, the first one we change the weights of the sample.
+
+So in the second round, we should consider those change weights to select or to re-sample our data.
+
+So then the samples with the higher weights would be of higher probability to be selected. to be selected.
+
+And the sample with the low probability, with the low weights, they have low probability to be selected.
+
+Then we will create this one.
+
+In the second classifier, we train the second classifier.
+
+Then we should apply the second classifier on what?
+
+On?
+
+Original.
+
+Again, original data set.
+
+Original data set. we should look at the sample that are predicted right or correct.
+
+And just the, and based on that, also we will have the, you know, the weights of the classifiers as well.
+
+So at the end, at the end, when we are done, we should combine the predictions, okay, but considering the weights of the classifiers, right?
+
+So this is the analogous.
+
+This way we can find the importance of the classifier.
+
+So this is just, you can use, not keep on this one, you can use the performance of classifier instead of this formula.
+
+So then with this formula, we can update the weight of the sample.
+
+How do you choose the weight of the classifier?
+
+Or in the case of the sample, how do you choose the weight of classifier?
+
+So at the first time, the first round, all the samples are of the same weight, 1 over n.
+
+Okay, then in the second step, in the next step, you know the weight of the sample j in the i plus 1 step, okay, with this formula, it goes to weight of j at the current step, okay.
+
+Now, divided by the sum of the weights of the all samples, this is the normalization factor, okay, pi, e to the power of importance of the classifier, okay, importance of the classifier.
+
+Compare the, what are the advantages and disadvantages of these two models, again, which one is faster?
+
+parallel, yes we can run it in parallel, we can run different classifiers in parallel, can we run the other boosting methods in parallel?
+
+No.
+
+We cannot.
+
+Then any other advantage?
+
+It predicts that the, it gives us better results because it focuses on the ones that we predicted incorrectly, then finally we can...
+
+Yeah, usually, usually bagging is not guaranteed.
+
+In the machine learning, so nothing is guaranteed.
+
+So even this, you know, even we remember through mathematical proof that the ensemble learning should work, but again, it's not guaranteed.
+
+So we cannot say definitely always boosting algorithms work better than bagging methods.
+
+If it was correct, so now today this is the answer of learning algorithm.
+
+So we have this ensemble learning.
+
+In general, this ensemble learning solution for...
+
+Okay, so what's the random forest or alpha flow?
+
+The random forest is same and similar to the bagging algorithm, But the only difference, differences here is instead of any kind of classifiers, you have to use decision tree.
+
+Decision tree and instead of having different training samples or different subset of, different set of training samples, okay?
+
+You can have different subset of features.
+
+Okay, so the training set, the training samples for all the classifiers would be the same, but the feature would be different.
+
+Again, this feature, how we should select the feature, again, it's sampling with the first one.
+
+The gradient boosting is also similar to the gradient.
+
+I see that you have some concepts from the beginning, from the, you know, I know the last term from the year 2015, actually.
+
+By the total number.
+
+It's that hard.
+
+It's the same form, right?
+
+You posted after midterm?
+
+Yeah, the same.
+
+It's not that technical.
+
+It's background, it's models, large length, so if you don't have...
+
+It's most probably the after midterm syllabus.
+
+I don't know.
+
+Which chapters do you do?
+
+I have a question.
+
+We end up this road, similar to where we are.
+
+We evade from the goal, that goal.
+
+Control over mankind.
+
+Complete control over humanity.
+
+Control over.
+
+Hands up, you know.
+
+When we see every day lots of people are killed all over the world by AI techniques, using AI techniques.
+
+And we are...
+
+We need that.
+
+Destruction?
+
+You're talking about the AI destruction?
+
+Yeah.
+
+Yeah, the AI is making decision to human lives.
+
+Yes.
+
+So, also another evaluation.
+
+This one was only one evaluation.
+
+Three other evaluations.
+
+I think they, I thought, reduce the force focused on using AI.
+
+To increase the income.
+
+Yeah, and reduce the employee. many people lose their jobs.
+
+But I have a question on this.
+
+If you use AI for the entry-level job, how are you going to produce the senior-level job at the end?
+
+So most probably, so to answer this question, I would say most probably the definitions would be changed.
+
+So if you don't have any experience, how are you going to build up the knowledge?
+
+No, not about the experience.
+
+When you can do everything, then you you are rephrasing or changing the definition of everything.
+
+So today, the senior, I don't know, senior expert, the definition for this term is something, but tomorrow will be something else.
+
+So it's very simple.
+
+The power or the main controller, we play with the world.
+
+Elon Musk was, I mean, he hasn't saying anything, so he's saying that in the future, the human being, we don't have to work. you'll just enjoy what you're not enjoying now.
+
+Yeah, OK. Yeah.
+
+That's great.
+
+So if you go to the downtown, you will see that most of the people, if they are enjoying life.
+
+If you don't have a goal in your life, then you'll be bored, and people will start doing suicide.
+
+And it's important for us to be aware of the end of this road and to avoid, personally, avoid reaching that point.
+
+So yeah, yeah.
+
+You're AI is responding to you.
+
+I was here.
+
+You're talking about me.
+
+I'm going to respond.
+
+I'm not from Iran.
+
+OK. So let's continue.
+
+So for the association rule mining, so the association rule mining was another type of task.
+
+It's mostly from data mining domain, not machine learning.
+
+But it's good to have some idea about it.
+
+Because sometimes there are some works, I saw some work that's trying to break the machine learning rule to this association rule mining.
+
+The goal of the association rule mining is assuming that we have a set of transactions.
+
+With each transaction including no different item, data items or whatever, any kind of item based on know the transaction.
+
+We want to find the relation in current sets of the item.
+
+For example, if you have this transaction, set of transactions, we are looking for some these kind of rules to see which set of data item comes along with the other set of data.
+
+Again, it's not that easy to find these kinds of codes.
+
+Just looking at the data sets, this side, you can say, okay, we have a very limited number of items.
+
+We have a limited number of transactions.
+
+You can manually inspect these transactions and find out the codes.
+
+We have millions of items, like the, you know, 10 billion or more transactions every day.
+
+I don't know, every day, every month, every day.
+
+We also here set up two items or one item.
+
+Maybe we can have, you know, set up, I don't know, 5,000 items and I don't know, 300 items, other items.
+
+In rule mining, we are trying to find these kind of rules.
+
+So again, we talked about different concepts.
+
+Item sets here, a collection of one or more items.
+
+For example, let's say each row here can be converted as a set of items.
+
+A item set, if the number A number of, find the support count, it's a progress of an item.
+
+How many times, how many times, items in a collection, Then we have the support transaction, support count divided by number of transactions.
+
+Then we have the frequent item set, so we say the frequent item set to support greater than or equal to minimum support.
+
+We should define the minimum support threshold, okay?
+
+And if we have an item set, support greater than minimum support frequently or in another word, most of the customers in terms of the, you know, the transaction, commercial transaction, the most of the customers, they bought this frequent item set, this item set.
+
+So, we evaluate the quality of the buying, so there will be more support threshold and the confidence greater than minimum confidence.
+
+And these two are higher parameters, definitely.
+
+What is the simplest approach?
+
+The simplest approach to find the rule.
+
+The simplest we have is the set of items.
+
+Find one of the simple.
+
+Find all possible subsets of items.
+
+How many possible items, subsets we have here?
+
+Two to the power of n.
+
+Two to the power of n times two to the power of n, in the simplest way.
+
+So, if we assume it's a vote for every person, so we should check for each possible solution.
+
+It should not be available.
+
+Not a million of items.
+
+So, we should.
+
+There should cost a lot.
+
+So, this is the next formula.
+
+So, say for this, for this transaction, for this transaction, we can have, let's say, these kind of rules.
+
+Some rules.
+
+The number of transactions is the same.
+
+Do you know?
+
+These, all these six rules.
+
+The same.
+
+The same.
+
+None of that is supported.
+
+Only defense rules, two steps like from the key, from this should come from this gray contactor set.
+
+Why?
+
+It should come from the gray contactor set.
+
+Greater than the minimum support.
+
+So then after creating or generating this frequent item set, we will generate new rules.
+
+Or we will discover the rules.
+
+So the rules here, in this step, fall into the law.
+
+But on behalf of this method, if we have two items that are very correlated, but they're not frequent, we won't find it, right?
+
+They are two items that are always sold together.
+
+I can't think of something. but the two things that are always sold together, but they're not like a item that's sold often to be the store, because it's not a frequent item set.
+
+Yeah, it's not a frequent item set.
+
+But they can't buy it.
+
+For example, for example, let's say in Walmart.
+
+Beers.
+
+I don't know, let's say these two items are sold together.
+
+Okay, yeah, but every week or every month, Only two customers that they buy these two, but always they buy these two together.
+
+But these are not the frequent items.
+
+Who's that part?
+
+So, but now, why this frequent item set generation is not the process?
+
+The number of items.
+
+Just as I mentioned, to find the frequent item sets, we need to first find all possible subsets of the item set.
+
+Then, we should compare our transaction data set to see how many times it is occurring in our transaction set.
+
+So, it's a lot of work and computations.
+
+So, for example, let's pick how many different item sets we can have.
+
+Here we do generate all possible subsets of the item set.
+
+And for each of them, check how many transactions are there.
+
+All transactions.
+
+How we can pick up the item set in the report of each database.
+
+For each of them, you should go through the...
+
+So, it means that if you have n number of transactions, maximum w, I can pick each transaction.
+
+So for each item set, we can have N different subsets.
+
+In general, the number of the complexity of creating all these possible item sets would be O of O of.
+
+Mark everything or every W, all the possible, you know, these subsets of the item. we need to say that if an item set is frequent, then all of its subsets must also be frequent.
+
+So we can also say another way, if item set is not all the supersets of that subset, that set, would be also infrequent, right?
+
+So this is the algorithm.
+
+We assume that x is a subset of y.
+
+The support of x is always an item set.
+
+All sets must be coherent, then every other set.
+
+First, we generate the first item.
+
+For the one-item set, three-item sets, definitely we should not have coherence.
+
+So we're not proving that, and compare it with the issue in the last rule, so here, with A of k plus one from Fk, then we prove it for the support term.
+
+Can we prove 10-unit item sets in A of k plus one containing subset of the length k that are incorrect?
+
+And support term, we find there's a term.
+
+Can we prove A of item sets?
+
+One way to measure frequent K minus 1 items is if the first K minus 2 items are, let's say we have the last K minus 2 item, first one, first K minus 2 item of the second one.
+
+For example, last K is here, and after that, to find the rule, all the, in the simplest way, to check all the possible subsets of the frequent item sets and create candidate rules.
+
+And this time, we should look at the confidence.
+
+But again, if you want to apply the broad-force approach, that would be very expensive.
+
+So to do that, there are some other methods, algorithms, that you should see in the future courses or...

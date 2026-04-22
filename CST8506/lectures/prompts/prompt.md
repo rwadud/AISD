@@ -45,7 +45,7 @@ Read the full cleaned output against the raw source top to bottom. For each para
 - A rewrite that preserves all substantive information but changes surface wording is NOT an alteration of substantive information.
 
 **OUTPUT**
-Write the cleaned transcript to lecture[X]_cleaned.txt, where [X] is the lecture number.
+Write the cleaned transcript to file[X]_cleaned.txt, where [X] is the lecture number (if known).
 After Pass 6, emit an interpretations log in chat. Structure it as:
 - **Confirmed** (terms verified against companion material): one line each.
 - **Guessed** (inferred from context, not verified): one line each, include reasoning.
