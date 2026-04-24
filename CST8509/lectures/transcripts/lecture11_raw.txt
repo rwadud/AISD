@@ -1,0 +1,751 @@
+then you would call it step size.
+
+Gamma, the discount factor.
+
+The discount factor gamma, the main reason for gamma being what?
+
+The discount factor.
+
+Remember that one when we calculated the return?
+
+So the return from time t is going to be the current reward and the discounted future rewards.
+
+And the further into the future we go, the more discounted it is because the discount factor is less than 1.
+
+And there are the main reason that we go by is that if an episode doesn't end, then this equation still makes sense because as this goes to infinity, then the whole infinite statement converges to a finite.
+
+Without the discount factor, it could go infinite.
+
+We don't like that in mathematics.
+
+The other intuition behind discount factor is you know much less about future rewards than immediate rewards.
+
+There's a lot more uncertainty about this value, and so you don't take it into account as much as this value.
+
+So you get the whole thing here, and you get a small fraction of this one, and even smaller fraction of the ones that get more and more uncertain.
+
+So we have this equation, and I plan to come back to this slide occasionally to look at this.
+
+This is the big learning step in our Q-Learning algorithms that we've been doing since the beginning.
+
+And it's a little bit like value iteration, value iteration one episode at a time.
+
+Can anybody tell me what's an advantage of this Q-Learning stuff compared to value iteration?
+
+If I'm saying it's so similar to value iteration with reward and that sort of thing, then what is a main difference between Q-Learning and value iteration?
+
+Think about, for example, you need to know what the environment is going to do in advance when you're doing Q-Learning, when you're doing value iteration.
+
+Yes, you do.
+
+And even, let's compare Monte Carlo to Q-Learning.
+
+What's an advantage of Q-Learning compared to Monte Carlo?
+
+Yeah, you start learning right away, so you start sort of doing the value iteration.
+
+You start that right at the beginning.
+
+And because of many episodes of training, we are relying on our little agent to visit every state in the world.
+
+Because remember, there might be a billion dollar reward hidden in one of those squares that we should find, even though we're good at getting minus 13 reward.
+
+So this slide is what we've been doing a lot of in this course, and not much is going to change.
+
+We're going to tie in this value function approximation topic to this slide.
+
+And OK, we know why we need to do value function approximation, because our realistic problems are not going to be as easy as cliff walking.
+
+For the three blocks with four positions world, they're not that easy.
+
+We're going to have, if we get into the real world, we have six blocks, six positions.
+
+And by the way, our PPO attempt at six by six with action masking is still running, and it's not doing very well.
+
+So I think there's a reason why we don't have a standard block stacking world solution in the Junnasian effect.
+
+OK. So this Q-table, Q-learning, I've heard you say many times, when we do a Q-learning agent, one of the very first things we do is we instantiate a Q-table.
+
+So if the state space is very large, we will have a very large Q-table.
+
+And if the action space is large, think of continuous action.
+
+So, very large action space.
+
+Q-learning is not feasible.
+
+And in Go, there's 10 to the 170 states.
+
+So you could try in your Python interpreter, if you analyze a Q-table for 10 to the 170th state, I think you're going to run out of memory.
+
+Unless you have one of these really big machines in a data center.
+
+No, I'm kidding.
+
+You're going to run out of memory.
+
+But, yeah, quantum computing and so forth, that's another topic.
+
+But maybe I'll tell you.
+
+So I was hinting that maybe quantum computing could represent 10 to the 170th state.
+
+That's not what quantum computing is all about.
+
+Quantum computing is about taking advantage of quantum mechanics to solve some very specific problems.
+
+It only can help you with a very small subset of problems.
+
+For example, one of the problems it can help you with is factoring large numbers.
+
+And that's just because you can configure a quantum qubit array.
+
+I don't know the details, but you can configure an array of a certain length, and then the superposition of states and everything helps you find the two factors of a large number.
+
+And it turns out that that's what cracking cryptography is.
+
+And so that's why they worry about Bitcoin, and Bitcoin has to hurry up, because the equivalent of Y2K in quantum computing is coming.
+
+Bitcoin has to get its act together and move away from the encryption algorithm that it's based on.
+
+And that's a trick.
+
+That is a big trick to migrate Bitcoin over to that because it's a distributed system.
+
+Nobody controls it.
+
+I hope you've got an interesting thing going on with Bitcoin.
+
+Anyway, I digress.
+
+So, here is our answer.
+
+Quick, easy answer.
+
+Our conversation is over.
+
+Instead of using a value function, we approximate that value function with a neural network with these weights.
+
+So it's just a new function that takes your state and your weights and it gives you what the value function would have given you for that state.
+
+Easy peasy.
+
+Or, in our Q-learning, we have the action value function.
+
+Instead of having just these parameters, we have neural network weights.
+
+And that is a new function which approximates the old function.
+
+Okay, so that's pretty good.
+
+So we're almost done.
+
+And then we can update these weights using some kind of learning.
+
+We're going to be looking at temporal distance learning first.
+
+That's our DQN algorithm.
+
+OK. So, in Q-learning, we were learning Q, which is this Q, action value function, and DQN, deep Q network.
+
+So, we've got a deep learning network that is going to take the place of our Q table.
+
+Interesting.
+
+We have a Q network instead.
+
+Now, instead of updating the Q table, it has to train a network.
+
+And we know that, I'm hoping you know by now, that training a neural network, a deep neural network, is not as simple as just updating a cell in the table.
+
+We have to give it many examples.
+
+And it gets the idea after many examples.
+
+So, we'll see how that plays out.
+
+And it's just an approximation of Q. The real Q, we may never be able to represent it, and we just have to admit from the get-go that our Q network is never going to give us a perfect answer for every possible state.
+
+It'll be an approximation.
+
+So the input to this Q network is state.
+
+So we have a Q network and the input is state.
+
+And then the output is the action values.
+
+And there is the same number of action values as there are actions in the world.
+
+So that's how this Q network works.
+
+I'll draw it on the board.
+
+We get our state and then it goes through a neural network.
+
+And this is a schematic diagram of a two hidden layer neural network where there's connections, all the connections.
+
+And then we have the outputs.
+
+So 1, 2, 3, 4, 5, 6, 8, this will be 8 actions.
+
+So I will say maybe 17, 13, minus 1, 2, 3, 7, 6.
+
+So we need in a state, maybe that state is 88, and that 88 propagates through our network.
+
+We're going to flatten this, by the way, so that everybody doesn't come in.
+
+But for now, let's just look at this discrete A8 state, feed it through the network, and then outcome the action values for action 0, 1, 2, 3, 4, 6, 7, or however many actions we have.
+
+So if we want to use this the way we do with Q-learning, we would pick the action given the state.
+
+We would pick the action with the highest, So these values can tell us what action.
+
+So in general, the structure of the way DQN works is it's going to use two of these networks.
+
+And because, very similar to policy evaluation where we were sweeping through the whole world, updating the values.
+
+And so we're changing values that we're using in our suite.
+
+Because if we change all of the values around a certain state, then when we go to update that state, we're using updated values.
+
+So that might be a problem.
+
+So there is this notion of keeping a copy of the old value function and use the old value function consistently to update the new one.
+
+And then when we fully updated the new one, that gets copied over to the old one.
+
+And we also learned that it doesn't really matter much in the case of dynamic programming.
+
+But in Q-learning, stabilizer is a little bit like a very analogous to a step size or a learning rate, if you like.
+
+And I'll try to explain what I mean.
+
+So this structure here is really not all that different from what I've drawn here.
+
+There's a 64 node layer in layer one.
+
+Layer two is 64 by default.
+
+And we've got the output layer as well.
+
+There is a flattening process where everything is gonna be converted to a big one-hot vector.
+
+Well, not necessarily one-hot vector.
+
+It might be two one-hot vectors.
+
+So our multi-discrete observation might be four and two.
+
+So remember, multi-discrete, well, discrete, let's talk about discrete first.
+
+Discrete space, say there's 80 actions or 80 states, that's zero to 79.
+
+Multi-discrete would be something like 80, 40, and that is two numbers.
+
+The first one, zero to 79, and the second one, zero to 30, and so forth.
+
+The more multi-discrete dimensions we have, the more of these ranges we have.
+
+So how does this get flattened out into one-hot vectors?
+
+I did have to use, let's take the zero off, make it a little easier, okay.
+
+So let's say 3, 2, 3, 2 is in this multi-discrete space because 3 is in this range and 2 is in this range.
+
+And the actual state we're talking about is 3, 2.
+
+So what this is gonna be is the range, this vector can represent any number between zero and seven with a one-hot vector.
+
+One-hot vector for 3, this guy.
+
+I might be off by one there, but this is the idea.
+
+And then we also do the same with this guy.
+
+Zero to 3, so that's our flattening step where we have a one-hot vector for 3 and a one-hot vector for 2.
+
+Feed this down into our, that's this step here.
+
+Flattening to a 1D vector and then it's our action values.
+
+Now this little box down here is talking about how there's two of these.
+
+They're exactly the same in structure because one is a copy.
+
+One is basically going to be a copy of the other and it won't change.
+
+So we're going to change one.
+
+We're going to use this one, change this one.
+
+And every once in a while we're going to copy this one over and make them the same.
+
+So this is the same.
+
+The online network is actively updated via gradients or not in the upcoming slides.
+
+There may be training steps to minimize the loss function based on temporal difference of error.
+
+More on that coming in slides.
+
+And then there's this target network which is a lagged copy.
+
+So it's a copy of the online network and it's supposed to provide stable Q-value targets.
+
+Because we don't want to read the...
+
+In fact, we're reading the target network in order to update this guy instead of reading this guy to update this guy.
+
+The problem with using the same network to update that very same network is you might, you've got a moving target.
+
+And the example that is often used is that of a, say a dog chasing a squirrel, where the dog with four legs is after the squirrel with the tail.
+
+And the idea is that if the dog moves that way, then if we change, if we do an update this and the squirrel moves down here, then the dog is kind of, it's going to be constantly chasing a moving target and never getting closer, so to speak.
+
+That's how this is explained for stabilizing the training.
+
+So we keep the squirrel target, we keep him frozen for a little while to give the dog some, a target that's going to be existing for a while.
+
+We learn from that, and then we let the squirrel move.
+
+That's what this is saying.
+
+So, in the old days, well, not too long ago, in fact it's still kind of true, it was a hard update.
+
+So the weights of the online network would be copied directly into the target network.
+
+That's a straight update.
+
+But, in modern times, there is this tau parameter and polyac updating, which is going to just move the weights of the target a little bit towards the online network.
+
+Not all the way there, just a little bit.
+
+So we're thinking of step size here, right?
+
+We update the Q table.
+
+We have a step size of one in our first lab.
+
+We had a step size of one, so we just threw away the old value and put the new value in there.
+
+With a step size, we keep some part of the old value and then incorporate part of the new value in there.
+
+And that's what Polyag is doing.
+
+It's keeping most of the old value and updating it slowly.
+
+So the idea is that there's less oscillation.
+
+This stabilizes the learning and there's less oscillation.
+
+So what I mean by oscillation is that maybe this value is too low, so it gets changed way too high.
+
+And way too high causes it to go way too low again.
+
+And then if it's way too low, then it goes way too high again. and it oscillates around a value instead of converging to a value.
+
+That's this.
+
+That's why there are two of these networks.
+
+We keep one of them steady and we use this for the information while we're changing this one.
+
+Occasionally we just copy this one over.
+
+This is our approximation to our Q table.
+
+So we've got to update this once in a while.
+
+What is the loss function of this network?
+
+That's this.
+
+So we've got the reward plus gamma times the max of the two targets minus the Q on line.
+
+So there's these two.
+
+This is the one that has the most recent information.
+
+This is the one we're keeping constant for stableness.
+
+And the difference between those, this is a mean square error, and so this is our loss.
+
+We want this to be zero in this network.
+
+How do we do that?
+
+Here's the way this is going to work.
+
+There's a replay buffer in DQN.
+
+So we start off interacting with the environment, and we get some data, some interactions, trajectories, transitions.
+
+They get stored in a buffer.
+
+So we don't immediately start training yet.
+
+We do some interaction first.
+
+In fact, there's a learning starts parameter to the DQN model, which will be something like 1,000 or 2,000 maybe.
+
+And that's how many steps it will go, filling the buffer before it does the first training.
+
+And then for training, it's going to apply the data to the network so that, and you know, I think you know by now how this backpropagation of the error works.
+
+It's going to take the error, and then through this magical process called backpropagation of the gradient, see this is a function where this is the input and this is the output.
+
+There is a partial derivative of this in terms of that, this in terms of that, and this in terms of that.
+
+And so we can propagate these partial derivatives back.
+
+In other words, tweak all of these values in the correct direction so that now when we put in this value, we get the one we want with zero loss.
+
+That's the idea behind the backpropagation.
+
+So we've got an error in our output.
+
+We know through backpropagation how to change all of these values so that when we do it again, we don't get the errors.
+
+And that's the magic of machine learning, folks.
+
+That's backpropagation popularized or sort of rediscovered and popularized by Geoffrey Hinton.
+
+That's why he is such a famous person.
+
+This is why machine learning works, backpropagation.
+
+And you have all heard of backpropagation, have you?
+
+Good, that's a relief.
+
+All right, so then this line here, every once in a while, we take our weights from our online network and copy them over, either using some slow update method or just clobber the old values, one and two.
+
+So training, this will summarize what we've just talked about, collects transitions stored in the replay buffer.
+
+And then the training is done on random batches from the training buffer.
+
+So it doesn't do it in the same order.
+
+In Q-learning, the training happens in order as the interactions proceed.
+
+And when we're doing the value function approximation, we get a batch of interactions. and then we take random batches and we train our network.
+
+That's this value network.
+
+It's this thing that's approximating this action value function.
+
+It's just done by default after every four interactions.
+
+But if we have, like, it'll do 1,000 learning starts, and then after the learning starts, it'll do the training process every four interactions by default.
+
+And then every once in a while, the target network is updated.
+
+Now, can we see loss function, so this, smearing of this, all throughout the new value and the old value, third gamma, old value, new value.
+
+That's what we've been doing.
+
+Sorry, new value, old value.
+
+That's what we've been doing from the beginning.
+
+It makes Q-learning work.
+
+It is a development equation.
+
+And then look at how similar it ends up being.
+
+Or gamma, their user set Y, just a few network.
+
+In the end, what's happened is we're using this neural network instead of the neural networks that their training requirements, it's not surprising there's more to it than just a PDVS.
+
+Questions about DQN?
+
+Value function, yeah I see you back, but value function approximation, because this is our action value function.
+
+We need a state, and we get out the values of the actions that's being taken in that state.
+
+Yeah, I'm sorry.
+
+I was wondering, are there any other, like, it doesn't have a fully connected layer, are there any other models that they would use?
+
+Yeah, like I say, value function approximation is approximately reinforcement learning.
+
+So this is, DQM is, this is like the defaults.
+
+Defaults, every four interactions.
+
+By default, we have 64, 64, rel u.
+
+That's just the default.
+
+You could use other structures.
+
+You might use 128 and 128.
+
+And with SB3, you can parameterize these things.
+
+And that's just parameterizing Q-learning.
+
+So now we're going to go on to a second algorithm, which is PPO, which works quite differently.
+
+It's actor critic, still doing value function approximation.
+
+So we're still going to be able to find a value function network in there.
+
+And that's just two of the many, many algorithms and the defaults of two of the many algorithms.
+
+So it's a value function approximation is a big So there is this PPO is another algorithm and there is a beautiful video.
+
+I'm not going to take the time to watch it all in this class.
+
+But there is a video linked to here's the link is up top.
+
+That's the link that goes through the step one, step two.
+
+Step one, step three, step four is here.
+
+Step five, step six, and then seven.
+
+And then step eight is to repeat six and seven.
+
+Step nine is to repeat three to eight.
+
+Now we're not going to absorb all of the detail of this slide.
+
+So you wouldn't be asked to draw this during a test, thank goodness. goodness.
+
+But we're just looking at it to see how these algorithm, these value function approximation algorithms might work.
+
+Here's our value function here.
+
+This is the critic network and we don't start with the the critic network we sort of start with the actor network and we collect a bunch of trajectories.
+
+That's what this is.
+
+So we start with a policy.
+
+We've got a separate actor network which is we feed in a state and then it gives us probabilities for actions.
+
+And the value function or the value network we feed in a state and we get a value for that state as the output.
+
+So how are these two networks used?
+
+We can think of this is almost getting close to our policy iteration where we're using both of them.
+
+We're using one to update the other and vice versa.
+
+And so I'm just going to sort of sketch out the steps we go through so we can see how this is going to change from at the beginning.
+
+He's written down 0.25 for four actions and he's using the cliff walking world as an example.
+
+It's not convenient for us.
+
+We've heard of cliff walking.
+
+But he simplified it to the minimum state size, state space, and still will be cliff walking now.
+
+So what he has done here is he said in the beginning I feed in step 7 that's the beginning state 1 2 3 4 5 6 7 that's why starting state is 7 so we feed in 7 and we get out all 0.25s for our four actions so that's not any we have no information yet and then we start collecting a batch of trajectories and one of those trajectories we go to the right off the cliff a different one we go up in a different one we go that way and then for these trajectories we have to calculate the returns now he is calling it rewards to go which is q right we uh we who are steeped in something call this returns returns are your future cumulative rewards.
+
+He doesn't want to say return apparently he wants he wants to say reward to go reward to come But anyway, so reward to go and he writes out the RT plus gamma times RT plus 1 And so we can calculate the rewards to go for these trajectories And we filled it in here.
+
+We have the value of this the current state.
+
+You know, that's Minus 50 because that's what he's starting off with.
+
+This is all just garbage in here.
+
+So we get a garbage answer out Garbage he started with was minus 50.
+
+The rewards are here because we can have the reward for the action that was taken and the log of the probability for the various actions that were taken and the log of the probability is eventually going to come up in the loss function, so you get the log of a probability here.
+
+And that's why it's called the logs of the probabilities of actions.
+
+Okay, so that's step four and then in step five we can calculate the advantages.
+
+So the advantage is basically for the action we have chosen, we get a better value than what is currently being given by our value function.
+
+So that's an advantage.
+
+So all of them have an advantage.
+
+Some of the advantages are worse than others.
+
+Step five.
+
+Step six, we take that, since we have now some values that can compete with what our value function is currently producing.
+
+Now we want to start optimizing this by minimizing this loss function and this loss function is the sum of the differences so the difference between this and this and the difference between this and this and the difference between this and this, square that, sum of the squares, and that gives us our loss that we're trying to minimize.
+
+So that will move this minus 50 closer to a meaningful value.
+
+That's step 5.
+
+Sorry, step 6.
+
+Minimize, or we started optimizing this.
+
+Step 7, we want to update the actor network and then that's done with this loss function which is clicked for four reasons.
+
+It's illustrating the clipping of the function here.
+
+And clipping is done to keep things from changing too fast.
+
+Again, it's like our dog and our squirrel.
+
+We want to keep things going in a stable manner without oscillating too high, too low, too high, too low.
+
+So the clipping is an effort to keep things from being too high.
+
+So the updates are limited, and the updates here are limited by the clipping.
+
+And so after, so step seven is to apply this loss function, and then we propagate.
+
+We do the back propagation of the gradient, and I'll tweak all of these values to try to make it so that when you enter your seventh state here, you get a more meaningful value to the probabilities of the attributes.
+
+Step seven, and then step eight is we do six and seven again.
+
+And then step nine is we repeat the whole thing, three, eight, plus more trajectories and losses.
+
+So we've got an actual value function and policy function interacting together.
+
+That seems a lot like policy improvement.
+
+It is a lot like policy improvement.
+
+This is also your actor-critic.
+
+Actor with the actions and critic telling you how good it is in that state.
+
+So that's another example of value function approximation or value function.
+
+And so he goes through this video starting right here and he starts writing this.
+
+And he's going to draw this whole thing and tell you why he's drawing it, why I was drawing it.
+
+So that will be good if you didn't get a lot of the stuff.
+
+Okay, so questions about that?
+
+Any thoughts or questions?
+
+So this ties in what I intend this discussion about DQN and PPO, trying to tie it into Q-learning, what we've been doing this whole time.
+
+And also, it's sort of a good place for us to end the course, because value function approximation is basically what the important part of it is.
+
+Okay, so then we have some of the fun stuff, and many of you don't even need this anymore because you've already demonstrated your assignment.
+
+But, if we want to put actors in our gazebo simulated worlds, there's a nice tutorial here at this URL, and let's go take a look at that.
+
+If you follow the URL on the slide, then you get to a tutorial.
+
+This applies to the old Gazebo.
+
+Even I am confused a little bit at this point.
+
+Oh, I see.
+
+I see.
+
+Yes, I'm not confused.
+
+I saw gazebosim.org.
+
+GazeboSim is the new one, but this is classic.gazeboSim.
+
+So, GazeboSim is the site now.
+
+GazeboSim is the new version of Gazebo.
+
+Our Amazon house, that we like, is in the older gazebo.
+
+No problem.
+
+We can use the older gazebo.
+
+It doesn't have any fatal flaws that are going to cause our laptops to crash or anything.
+
+If your laptop's crashing, it's a different reason.
+
+But this is a tutorial about actors, and so we go through the translation, there's all these links.
+
+So, here's an actor, and there are various links, like the upper arm and the lower arm and the hand, and there's an artviz, artviz can show you all the links in a robot.
+
+And then the animation can be translation or rotation, and you can combine them like this, that.
+
+The actor, the human actors are really just a curiosity for us.
+
+We want something that's, what I wanted you to be working on is something that's very easy to detect and we can move around.
+
+And so a red ball is easy to detect.
+
+And so that's why we use a red ball.
+
+You can take this and turn this into a sphere and make it red, and then you're almost all the way there.
+
+This is tracing out a square pattern with this trajectory.
+
+The 1, minus 1, minus 1, 1, 1, 1, and 1, minus 1, 1, is tracing out a square.
+
+And then the actual trajectory ends up being this.
+
+So many of you already know how to do the trajectory.
+
+You've already done it.
+
+The times are the governor of what state comes first.
+
+So if I move time zero down in between two and three, it's still going to be time zero.
+
+It's still the first time.
+
+So we can take the XML for this cube and we can dump it into our house.
+
+We can flatten out this square pattern that it's tracing.
+
+We can just flatten it out to make it go back and forth.
+
+Then we have what we need.
+
+We have an easily identified actor that goes back and forth, so we're going to apply PTO to that.
+
+See if we can train it, create three using PTO.
+
+And that should be very feasible.
+
+A big part of the value of doing this is the journey along the way, even getting accustomed to Linux command line.
+
+For those of you who avoid the Linux command line, but by the end of the assignment, solve an extremely simple reinforcement learning situation, and then you can go on.
+
+If you end up working in reinforcement learning, you're going to have to dig down deeper in a lot of these areas that we've just touched on.
+
+There we go, red ball, trajectory.
+
+Looks like this trajectory does go back and forth, but that's only going from 1 minus 1, 1, 1, back to 1 minus 1.
+
+So this is more waypoints than you need to get the small house.
+
+I will leave this as an exercise for you to try adding a humanoid actor to a small house.
+
+And whoever has registered in Asylum 2 already knows all this stuff, but in Asylum 2 we are creating a gymnasium environment that uses a ROS2 node to publish twist messages.
+
+You take an action, it publishes a twist message, and then it gets a reward.
+
+And if you state some sort of function of our camera picture, that's how we set up that reinforcement learning in the drum room.
+
+So that's real demonstrations of your assignment two and dockerization of assignment two.
+
+So anybody got assignment two dockerized yet?
+
+And you're busy.
+
+Oh, got it.
+
+You've got a lot of stuff.
+
+But hopefully this was not like, a lot of the math is hard, that quiz, that dynamic programming quiz.
+
+Yeah, I know it's first time you write it, it's hard.
+
+But then the second time you see it on the final exam, it's not going to be as hard.
+
+And we had so much fun with Gazebo.

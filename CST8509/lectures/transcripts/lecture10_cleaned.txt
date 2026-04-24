@@ -1,0 +1,139 @@
+I've implemented a shoe follower. You know how last semester it used to do hand commands, maybe even some voice. It can follow hands, but it also pays attention to shoes. In theory, it should follow me around if I walk. It is connected to the wireless at my house. It will not be able to do that here, so after a few seconds or so I will give up on this.
+
+The A2 folder has DQN stuff, PPO, and this would be your ROS 2 or Gymnasium package for the Gymnasium environment. What should happen is that we should see ROS 2 is not installed here, but if I bring up the Docker image and get it running, now I can achieve a stack. I want to run a bash shell. This is the command that I am running. This is the container that I am running it in. This is the Docker magic to run a command. This means interactive terminal.
+
+Now I am inside the Docker container running a shell. Notice that I am in the ROS 2 workspace. This workspace has already been built. If I list the files here, we are in the root of an already built workspace. Inside this Docker container, we are running Humble. Outside the Docker container, on the laptop, it is 24.04 Jazzy.
+
+This is showing us that regardless of what our laptop is running, it might even be running Windows, we can achieve a Linux environment similar to a virtual machine. But it is lighter weight than a virtual machine because the jobs the kernel is doing are coming from the host. That is different from the VMware or VirtualBox VMs you set up last semester, because those were actually running the kernel and everything involved in running a machine. Docker will not run the kernel, especially on a Linux version like this. The kernel comes from the base environment. But all the utilities and the configuration are for 22.04.
+
+Notice that it is not saying command not found anymore. Because I do not have network connectivity, something is going on with my setup. I am not going to take the time to troubleshoot it right now because you know how this is supposed to go. Let us pretend that I have all the topics. I should see all three topics here. Then I can launch my program. I can say ROS 2 launch AISD Vision my script launch, and it even accepts tab completion there.
+
+This is a launcher. You were not required to do the launcher last semester, if I recall correctly. But this is using a launcher. Inside that launcher, it is going to launch the image publisher node, the hands analysis node, and the move node. Basically, all the nodes related to vision will be brought up. It brings up a window. This is where the shoe process has died, but it should be able to see hands. We can see it is doing the hand command on stay. If I did have network connectivity, which is a very small thing, then it would be behaving just like it did last semester with the ROS nodes running natively on the laptop.
+
+I am in a Docker environment that is built just to run this robot stuff. It does not have text editors or anything else. It does have cat, so I can show you, as I promised, the content of the launcher file in case you are curious about how that works. It will run the image publisher node, the hands node, the shoes node, which is the shoe follower, the move node, and the turtle simulator.
+
+Again, I am in the Docker container. I cannot ping my IP address because ping is not here. Enough of that demonstration. Let us go to today.
+
+This is a hastily constructed slide deck, but hopefully you will not mind. It does not have a green background or anything for branding, but it is meant to give us the points that we need to talk about for this Docker stuff.
+
+The problem we are trying to solve is the misery of Python virtual environments across workspaces and system installs. These things combine to cause problems for us. In fact, if we migrate to 24.04, not with Humble firmware but with the Iron firmware in the Create 3, we cannot do it the same way that we used to do it. We cannot just install everything natively on the laptop, like pip install TensorFlow, or whatever you need right on the laptop. It will not work in 24.04 due to changes.
+
+The professional way of dealing with all of these Python virtual environments and workspaces is to use Docker. Docker gives us a resolution for these virtual environments, and then we run the same Docker image on various machines: 24.04, 22.04, or even Windows WSL machines. ROS 2, Gazebo, and the Python virtual environment are all handled.
+
+A little bit of Docker terminology: there is the Docker image and then there is the Docker container. A Docker image cannot be changed, but we can rebuild it. We can throw away the old one and build a new one. It is layered. That means if we change our Dockerfile, then when we rebuild the image, the previous layers are cached. The ones before the layer we changed can be reused from the last time we built. Only the ones we have changed and the ones after that need to be built. Think about layers when we look at some Dockerfiles later.
+
+We create images from a Dockerfile. The script contains all the build instructions. We are also using Docker Compose, which is another configuration environment. It is analogous to Kubernetes, container orchestration on a small scale. We are using Docker Compose for that.
+
+Images are stored on disk, but similar to GitHub, you can also store images on Docker Hub, the central repository. We are going to take advantage of that, because we will be able to bring down a Humble ROS desktop image. We will be able to base our Dockerfile on Humble ROS desktop, Humble meaning Ubuntu Linux 22.04 and the Humble version of ROS 2, all ready to go for us to add our stuff to it.
+
+Then there is the container. The container is the instance that we are running. Containers are mutable. When I say docker compose up with the detached option, it is going to be running a container. They are mutable in the sense that when I run commands in that Docker container, my bash command history is going to be stored. The next time I access a shell on that Docker container, that history will still be there. But if I bring the container down and then run another container, all my history will be gone. So they are ephemeral in that way.
+
+We can deal with persistent volumes. We can use a Docker Compose file to say this folder on my native laptop should be this folder inside the container. Then when we write to that folder inside the container, we will actually write it to that folder in the native file system.
+
+You start a container using the docker run command. You are going to see me using an alternative, docker compose up. I am not going to insist on a particular way of getting things going, but I am going to show you the way I do it.
+
+When you are working on Lab 5, it tells you that you are allowed to use AI to do Lab 5, and it gives you a prompt template to fill in. One potential issue might be that you prompt it and it gives you a perfect Dockerfile, you just run it, it works, and then you do not learn as much. What I am hoping for is that you prompt it, you get a Dockerfile, you run into issues, and you have to investigate those issues. With AI these days, it will be able to explain what is wrong and how to resolve it with Docker. And then there is always me in the lab. You can always come and get help from me.
+
+The key concepts are FROM, RUN, COPY, and CMD. In what context are we talking about those? Let me show you a Dockerfile.
+
+Here is a Docker demonstration. Let us look at one that is more interesting to us. Our goal is not to memorize this file. Our goal is not to take a picture of this file either. This is not your solution. This is a different Dockerfile from the one you are going to need.
+
+This is a Dockerfile that I am running on a Jazzy environment. I am using Jazzy, not Humble, and this is running on a Jetson ARM machine. Do not worry, I will tell you what to put in FROM for our Intel based machines, or your standard older laptop, or whatever. If you have an ARM machine, then you will probably need to deal with an ARM binary based image. But FROM is our bottom layer, and this is going to give us a ROS Jazzy ROS base, analogous to ROS Humble ROS base. That comes with Ubuntu already there, and ROS is already there. We may need to install Gazebo.
+
+Here is our base layer, and then we have another layer created by this RUN command. Notice how it is doing an apt get update and apt get install for various things. We have ffmpeg in here and PortAudio. This is going to support our AISD hearing package, but we do not need this for our assignment. Like I say, this Dockerfile is not the one you want.
+
+After RUN, this is a Linux command. The continuation onto the next line is what this backslash means. It is supposed to be parameterized for using either Jazzy or Humble. You can see that going on here. It installs ROS, either Jazzy or Humble. I do not know what create message is. That is the next layer.
+
+Then we have a working directory. It is going to be ROS 2 workspace. Then we can run more commands. We are setting up a Python virtual environment here. The virtual environment is going to be stored in slash opt slash ROSDM. This is how we are going to be handling a central Python install versus a virtual environment Python install. There is just going to be the virtual environment. When it does a pip install, it is going to install into this environment here.
+
+The next thing is doing some pip installs. We are accustomed to using rosdep to install all of our dependencies, but I think you have seen that pip installs are going to try to install either to the active virtual environment or to the central install for Python. Apt installs are always going to install to the root. What can work as an issue avoidance technique is to preinstall the dependencies, especially the ones that do not have the rosdep key. We are going to see that maybe coming later.
+
+This is a bunch of pip install commands and compiled Python libraries or Python packages that are necessary to get your CST 8504 packages running. On Humble, you need to install this NumPy because there will be some sort of error if you do not reinstall this NumPy. You are not going to have this problem with your assignment Dockerization. This is a different thing.
+
+Then it is building the workspace. We have a bunch of pip installing and then building the workspace. We copy the current directory. This is where the Docker image is being built. We are going to copy the contents of this folder into this directory inside the container. Then we are going to source the ROS setup and do a rosdep update and a rosdep install. We are going to skip keys on that rosdep install because we have already installed the correct versions.
+
+The rosdep dependency installer is great when it works properly, but you may have seen that sometimes it will install a version of NumPy that is too new. It will install maybe MediaPipe, and then it will be using NumPy greater than two, and those are incompatible. The way we make sure our pip installs are compatible and have the versions we need is to specify all the versions we need. I already know that MediaPipe 10.14 has been very carefully chosen because it is the last one that includes the shoes module. If I want that thing to follow my shoes around, I need an older version of MediaPipe with the solutions API. That is what I am doing here. I am getting all the different versions.
+
+The DepthAI stuff does not apply to you. It never has. DepthAI is for a binocular camera with depth sensing, and that is what I am doing on this Jetson with this kind of camera. But when we build it, we skip a lot of these things that we have already installed with skip keys, and then we do a full build with symlink install.
+
+Remember the recording directory and the model directory. We had to create those. They were in the shared area of the various modules. This is what that is doing. It is programmatically not forgetting to create those directories.
+
+Then it sets up the bashrc. Whenever I log in and access the bash prompt, the .bashrc is going to be loaded. This is arranging for the .bashrc to have certain contents. It is going to have the sourcing of the underlay and the sourcing of the overlay, and it is going to activate the Python virtual environment that we have created. All of this stuff is going into the bashrc. It is not doing it now. It is putting the source command into the bashrc.
+
+At the very end here, when the Docker container is brought up, it is going to run a bash shell, which will not go away. So the container will stay up. If we ran a command like ls, then the container would come down when that command finished. Sometimes in Dockerfiles, like in my slides, you will see sleep infinity, which is just doing something to keep this container up forever.
+
+I am in a Windows environment here, so I have Docker Desktop running. In the slides, it will show you how to hook this Docker up to WSL 2. This checkbox here means that Docker Desktop is going to put symlinks into my WSL 2 environment so that the Docker command comes to life and collaborates with Docker Desktop on Windows.
+
+Let us do docker compose up with the detached option. It is building. We will come back and watch this later and check in on it later.
+
+The FROM instruction was the first one. The first layer we saw had a big FROM. What you are going to be interested in is FROM OSRF, the Open Source Robotics Foundation. OSRF is a Docker Hub identifier, a little bit like a GitHub repository. We are starting with Ubuntu 22.04 with Humble and ROS 2 Humble already installed. That is good. It will save us a lot of work. If we had to start from straight Ubuntu, then we would have to run commands to install ROS 2 and so on.
+
+The RUN keyword in Docker executes a command inside the image at build time. We saw commands to put lines into the bashrc. We saw pip install commands. We saw sudo apt install commands. Those are done with RUN. It is done in layers, so the earlier RUN commands are the earlier layers. If you change something in the Dockerfile, then it has to start at the layer that you changed. The previous RUN command results are stored, and when you change something, it has to redo from there on.
+
+The apt command template is something you will see over and over again. In these apt commands, RUN is the Docker keyword that means run this as a command inside the image at build time. It is apt get. We can use apt if we like, apt update and apt upgrade. But this last thing here is standard in Dockerfiles.
+
+We are seeing two ampersand ampersands in here. Can anybody tell us what the ampersand ampersand means in a Linux command line? Yes. This is like Boolean logic. The AND means that if this is successful, then we still need to do this one. If it was OR, vertical bar vertical bar, then we would just run commands until one was successful. But when it is AND, it runs commands in order. If this is unsuccessful, everything stops because it is Boolean. If it cannot ever make the rest of it true because the beginning is not true, then it will not try.
+
+That is what you want in these commands or designs. This must succeed, and if this succeeds, then you go on to the next one. This one is installing these two packages, and assuming that succeeds, it is going to remove all of the lists in var lib apt. These files are the lists of packages that get updated when we do apt get update. We do not want them in the Docker image because they take up space. We can always get them back by doing apt get update. We keep our Docker containers clean with this. You will see this over and over again when AI gives you Dockerfiles.
+
+COPY copies files or directories from your host machine into the image. We can bring in the package that we are working on, the source code for the package we are working on, configuration files, patches, assets, and things. It knows you are working in robotics, so there is a camera file and so forth. It creates a new file system layer in the image. These files are actually going to be inside the container. If you change them in the container, it will not result in any changes outside the container. That is what COPY is doing.
+
+CMD gives us the behavior. It acts as the container entry behavior, what the container does. If we wanted to launch a service, we could just do docker compose up detached attach, and it would run the command. If that command is launching our ROS 2 nodes, all of them in the launch file, that is what will happen by default. The way I am using Docker in all these examples in this lecture, we are just putting bash as the command. We access that bash command line and take control inside the container. That is how I am doing it. But we do not have to do it that way. It can automatically run a meaningful command.
+
+ROS 2 in Docker involves host networking, GPU, and X11 passthrough. On Linux, or at least in Windows Subsystem for Linux on a Windows machine with Docker, this tends to be handled by certain entries in our Docker Compose file.
+
+Here in the volumes area, this is where we can identify a host system folder, and it is going to appear as this folder inside the Docker container. We have dot in the host system corresponding to slash ros2 workspace slash source slash AISD. This is the name of my project. If I make changes here, they would actually be changes on the host file system.
+
+This X11 stuff is for the GUI. The device directory could be used by maybe the camera or something like that. The camera is an interesting one because with Windows Subsystem for Linux, it does not have USB passthrough by default. We cannot access the camera inside a container unless we take action to do it. For your assignment 2, you are not using the camera of your laptop. You are using a virtual camera. Everything will be fine. The virtual camera will still be able to look around inside that AWS Small House. This should make the GUI display on your Windows machine.
+
+I will show you the Docker demonstration. There is nothing here except docker compose and Dockerfile. Let us take a look at what this is going to do. This is going to give me Ubuntu 24.04 as my base environment. This is setting a configuration environment variable for the front end. I do not consider this all that important for what we are doing. It is going to install the X11 apps because what I wanted to do is run xeyes. xeyes is one of the X11 applications, so I needed to install the X11 applications and sudo. Then this is that standard line that tries to keep the directory clean.
+
+It is creating a non root user, and this is going to be where I end up when I execute a bash shell. The command that this container runs is sleep forever. That stops it from coming down immediately after we bring it up. This command will run forever and keep it up. The alternative is just put bash here. Bash runs forever.
+
+There is our Dockerfile to run xeyes. Docker Compose is pretty simple. It gives our service a name. When we do Docker Compose up, we are going to use gui demo. The file has the image name, container name, environment variables, and here is our X11 hookup. It is both networking and processing.
+
+When I launch this container, it is running. Then I do docker compose exec gui demo and run the shell. Here I am inside the Docker container, and I am a non root user because Docker Compose set this non root user up for me. If I do lsb release a, I do not think this is installed. It is not. But we do have xeyes installed. I am going to run xeyes, and there is xeyes. These programs have been around for 40 years or so. That is running on Unix and being displayed on Linux, similar to what we used to do with setting the display.
+
+In this container, xeyes is running and displaying on Windows. When you are finished Lab 5, it is not going to be xeyes. It is going to be Gazebo and RViz.
+
+If you want, we can do another terminal. I have another one of these prompts now. I am inside the container in two windows, and these are not the same instance of the terminal environment. But if I have my Create 3 simulation running here, I could come to a different window, access the same container, and issue an undocking command. Just like we do in the native environment, we start up another terminal window. But you are going to need to be at the same prompt. Not the native prompt, but the container prompt in both cases.
+
+I am exiting the container. It is still building. Almost at the end.
+
+How do we get this all set up for Windows? This is the kind of thing you can find out by asking ChatGPT pretty quickly. But I think it is comforting if you see it from a slide that I give you. To get WSL 2 installed on modern Windows 11, you run a PowerShell terminal and say wsl install. That will do it.
+
+You have other options. You can list the available distributions. You can install a specific version of Linux. As far as I am aware, Ubuntu is the default. The wsl install command is going to do this by default, at least for now, but at any time they could upgrade the default version to 24.04 or whatever. This might be to save this for us. We can list what is installed and we can change the default for when we run Ubuntu on our Windows machine, which version we get.
+
+Then Docker Desktop. That is all you need for WSL, and then you just need to install Docker Desktop on Windows. This is telling us that it connects to the WSL 2 instance via symlinks. I am running Docker Desktop on Windows now. Here it is. In the settings area, I can make sure I am using the WSL 2 based engine, which coordinates with the WSL 2 that I have. If I were to shut this down, I would shut down Docker Desktop. Then in my WSL 2, the Docker command disappears. The Docker command is only there when Docker Desktop is running.
+
+This shows you how to find the settings and set it to use WSL 2. I am very happy with Microsoft for doing this because we now all have an alternative, in a way, to Linux machines. It is quite good. It can relatively seamlessly access both the native Windows file system and the Linux file system. They are separate.
+
+I will show you what I mean by that. When you create a new window, you can choose PowerShell or regular command prompt. I myself am not too clear on what Microsoft considers to be the difference between these two. I come from real operating systems. In a real operating system, you have a terminal and then you run a shell. The shell is what you are talking to when you issue commands. In the Windows world, they have a PowerShell terminal, and I think that might just be a terminal that runs the PowerShell interpreter. Some Microsoft expert, somebody who knows the inside workings of Microsoft, can explain that to us.
+
+When I run Ubuntu, I get another prompt. I configured this to be my default, so when I click a new tab it gives me that. If I want to get at the C drive, it is under mnt C in Linux. All of this is the root of the C drive of this Windows laptop. You can go down to users. The users on this machine are most likely in this home page. You see a bunch of Microsoft hack stuff, which they put into their operating system. It works, so they get to keep doing it.
+
+That is how you get it installed on Windows. On Linux, you would go to docker.com install on Ubuntu, and it will give you the set of commands to install Docker and get it running on Linux. This is not necessary when you are in Windows Linux in WSL 2. That is just for Linux boxes. What you are going to do to install Docker on Windows is just install Docker Desktop.
+
+There is a little command at the bottom that adds whoever is installing Docker to the Docker group by the root user. Docker is a privileged service, which means that in order to bring up Docker containers, you need to be privileged. On Linux, we do that by adding the user to a privileged group called Docker. This command is not enough to make this user immediately able to use Docker. They need to log out and back in so their groups will be set up.
+
+Accessing the shell is what you have seen me doing: docker compose exec name, then whatever command you want to run. Interactive terminal allocates a pseudo terminal. This slide is pretty self explanatory.
+
+You do not have to use Docker Compose to use Docker. I find it convenient, and it is somewhat the modern way to go, at least according to my AIs that I have been talking to lately.
+
+Here is an example Docker Compose file. This one, ROS Sim, is going to be the name that we can bring up. We have environment variables that get set, volumes that have been set, privilege, and standard input. This file we can solve, but we do not have to memorize the service name. There is no way to do that.
+
+Here is another one. This is the xeyes one that I showed you already, and you could try this one out. This is the Docker Compose file. This is the line by line explanation of that Docker Compose file. Most of this is ready. Then the Dockerfile that I used for xeyes is here. This is where xeyes gets used. If you want other utilities, then you could install them here.
+
+We are just waiting for that. Let us see if I can run this one. It is already built. I need the Docker container name. Where I want it to go, I can always get to the simulator repository and check out Humble.
+
+Let us see what happens here. For Assignment 2, this is what I mean when I say that there is a process running here and I do not have a shell. Just like I can create another terminal that is inside a Docker container on a host machine.
+
+This is your goal. Like I say, you can use AI for issues that you are having. One thing we intend is to pay attention to this. When it gets printed out and we see info, info, info, info, there may be warnings. If you see error, you have something to investigate.
+
+Ask your favorite AI model: this is launching a Create 3 simulator in Gazebo with a Small House world and getting this error. What could explain that? It will tell you maybe you have a dependency missing, or something needs to be adjusted.
+
+This is one of the most important things I would tell any aspiring developer: find out what the error message is. The first question you are going to be asked by an experienced developer is, what do the logs say? My program is not working. What do the logs say? My program is not working. What is the error message? That is the first thing you want to find out. Do not make the mistake of ignoring the error messages that might show up here, because those will be critical for you if your Create 3 is still in that broken state.
+
+The build has finished, so it does take some time. But the beauty is that once it is built, this is the first time I have built this Docker image on this machine, so it needed to do a lot of downloading: TensorFlow, lots of CUDA stuff. It takes a long time. But once it is built, if you change your own source code, that is probably going to be a layer after the time consuming stuff. You do see some time savings after the first build.
+
+Any questions about this Dockerization stuff?
